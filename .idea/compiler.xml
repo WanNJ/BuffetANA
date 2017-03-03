@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="BuffClient (1) (groupId)" />
+        <module name="BuffClient (2) (BuffetANA)" />
+        <module name="BuffettANA" />
+        <module name="BuffettANA)" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BuffClient (1) (groupId)" target="1.5" />
+      <module name="BuffClient (2) (BuffetANA)" target="1.5" />
+      <module name="BuffettANA" target="1.5" />
+      <module name="BuffettANA)" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,29 @@
+.root{
+	-fx-font-family: Roboto;	
+    src:"/resources/roboto/Roboto-Regular.ttf";
+}
+
+/* Input Demo */
+
+
+
+
+.jfx-decorator {
+	-fx-decorator-color: RED;
+}
+.jfx-decorator .jfx-decorator-buttons-container{
+	-fx-background-color:-fx-decorator-color;
+}
+.jfx-decorator .resize-border{
+	-fx-border-color:-fx-decorator-color;
+	-fx-border-width: 0 4 4 4;
+}
+
+
+.jfx-text-field .errorLabel, .jfx-password-field .errorLabel , .jfx-text-area .errorLabel{
+	-fx-text-fill : #D34336;
+}
+.jfx-text-field .errorIcon, .jfx-password-field .errorIcon, .jfx-text-area .errorIcon{
+	-fx-text-fill : #D34336;
+}
+

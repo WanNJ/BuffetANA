@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BuffClient.iml" filepath="$PROJECT_DIR$/BuffClient.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../BuffServer/BuffClient (1) (BuffetANA).iml" filepath="$PROJECT_DIR$/../BuffServer/BuffClient (1) (BuffetANA).iml" />
     </modules>
   </component>
 </project>

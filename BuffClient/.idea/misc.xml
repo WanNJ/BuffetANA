@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
-  <component name="MavenProjectsManager">
-    <option name="originalFiles">
-      <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/../BuffServer/pom.xml" />
-      </list>
-    </option>
-=======
   <component name="ClientPropertiesManager">
     <properties class="javax.swing.AbstractButton">
       <property name="hideActionText" class="java.lang.Boolean" />
@@ -49,7 +37,6 @@
       <property name="caretAspectRatio" class="java.lang.Double" />
       <property name="caretWidth" class="java.lang.Integer" />
     </properties>
->>>>>>> origin/master
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" project-jdk-name="JDK1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

@@ -1,0 +1,6 @@
+.gitignore
+*.class
+*.xml
+*.iml
+.Ds_Store
+

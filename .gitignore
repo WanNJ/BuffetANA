@@ -16,3 +16,6 @@ BuffClient/.idea
 BuffServer/.idea
 
 /.idea
+.DS_Store
+
+BuffClient/.DS_Store

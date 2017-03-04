@@ -1,5 +1,6 @@
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.svg.SVGGlyphLoader;
+import gui.functions.LinesPanelController;
 import gui.main.MainController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
@@ -28,7 +29,7 @@ public class Main extends Application {
 			}	
 		}).start();
 
-		Flow flow = new Flow(MainController.class);
+		Flow flow = new Flow(LinesPanelController.class);
 		DefaultFlowContainer container = new DefaultFlowContainer();
 		flowContext = new ViewFlowContext();
 		flowContext.register("Stage", stage);

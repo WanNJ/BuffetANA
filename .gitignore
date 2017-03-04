@@ -1,8 +1,18 @@
-
 *.class
+*.iml
+.Ds_Store
 
-testEchart/.idea/workspace.xml
+/BuffServer/target
+/BuffClient/target
+BuffServer/.idea/workspace.xml
+BuffClient/.idea/workspace.xml
 
-BuffServer/.idea/misc.xml
+BuffClient/.idea/workspace.xml
 
-*.class
+BuffClient/.idea/encodings.xml
+
+BuffClient/.idea
+
+BuffServer/.idea
+
+/.idea

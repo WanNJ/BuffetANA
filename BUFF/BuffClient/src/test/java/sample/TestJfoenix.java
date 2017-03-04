@@ -3,8 +3,6 @@ package sample;
 import com.jfoenix.controls.JFXButton;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * @author zjy
  */

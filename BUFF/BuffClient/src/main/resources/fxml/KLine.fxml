@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<ScrollPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <JFXTabPane prefHeight="500.0" prefWidth="500.0">
+         <tabs>
+            <Tab text="日K">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox />
+                              <LineChart prefHeight="500.0" prefWidth="500.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="周K">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+               </content>
+            </Tab>
+            <Tab text="月K">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+               </content>
+            </Tab>
+            <Tab text="季K">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+               </content>
+            </Tab>
+            <Tab text="年K">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </content>
+</ScrollPane>

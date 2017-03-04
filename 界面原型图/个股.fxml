@@ -89,7 +89,7 @@
                               </BarChart>
                               <HBox prefHeight="25.0" prefWidth="740.0">
                                  <children>
-                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton selected="true" text="VOL" />
                                     <JFXToggleButton text="MA" />
                                     <JFXToggleButton text="KDJ" />
                                  </children>
@@ -142,7 +142,7 @@
                               </BarChart>
                               <HBox prefHeight="25.0" prefWidth="740.0">
                                  <children>
-                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton selected="true" text="VOL" />
                                     <JFXToggleButton text="MA" />
                                     <JFXToggleButton text="KDJ" />
                                  </children>
@@ -195,7 +195,7 @@
                               </BarChart>
                               <HBox prefHeight="25.0" prefWidth="740.0">
                                  <children>
-                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton selected="true" text="VOL" />
                                     <JFXToggleButton text="MA" />
                                     <JFXToggleButton text="KDJ" />
                                  </children>
@@ -248,7 +248,7 @@
                               </BarChart>
                               <HBox prefHeight="25.0" prefWidth="740.0">
                                  <children>
-                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton selected="true" text="VOL" />
                                     <JFXToggleButton text="MA" />
                                     <JFXToggleButton text="KDJ" />
                                  </children>
@@ -299,6 +299,13 @@
                                     <NumberAxis side="LEFT" />
                                  </yAxis>
                               </BarChart>
+                              <HBox prefHeight="25.0" prefWidth="740.0">
+                                 <children>
+                                    <JFXToggleButton selected="true" text="VOL" />
+                                    <JFXToggleButton text="MA" />
+                                    <JFXToggleButton text="KDJ" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

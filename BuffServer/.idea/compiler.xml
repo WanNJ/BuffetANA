@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="BuffClient" />
+        <module name="BuffServer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="BuffClient" target="1.5" />
+      <module name="BuffServer" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

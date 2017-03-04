@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BuffClient.iml" filepath="$PROJECT_DIR$/BuffClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BuffServer.iml" filepath="$PROJECT_DIR$/BuffServer.iml" />
     </modules>
   </component>
 </project>

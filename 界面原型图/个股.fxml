@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <TableView prefHeight="573.0" prefWidth="237.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="自选股" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </left>
+   <top>
+      <HBox prefHeight="27.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="个股" textAlignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="480.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TabPane tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="日K">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefWidth="489.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="MA" />
+                                    <Label text="MA5:3233.13" textFill="#f59a11" />
+                                    <Label text="MA10:3333.44" textFill="#2c76ee" />
+                                    <Label text="MA20:3333.43" textFill="#e011fc" />
+                                    <Label text="MA30:3333.55" textFill="#15d9fc" />
+                                    <Label text="MA60:3333.55" textFill="#d03313" />
+                                 </children>
+                              </HBox>
+                              <LineChart prefHeight="311.0" prefWidth="740.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="成交量" />
+                                    <Label text="总量:163733270" textFill="#50f514" />
+                                    <Label text="MAVOL5:168862188" textFill="#f59a11" />
+                                    <Label text="MAVOL10:138455652" textFill="#2c76ee" />
+                                 </children>
+                              </HBox>
+                              <BarChart prefHeight="176.0" prefWidth="740.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                              <HBox prefHeight="25.0" prefWidth="740.0">
+                                 <children>
+                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton text="MA" />
+                                    <JFXToggleButton text="KDJ" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="周K">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="540.0" prefWidth="740.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="MA" />
+                                    <Label text="MA5:3233.13" textFill="#f59a11" />
+                                    <Label text="MA10:3333.44" textFill="#2c76ee" />
+                                    <Label text="MA20:3333.43" textFill="#e011fc" />
+                                    <Label text="MA30:3333.55" textFill="#15d9fc" />
+                                    <Label text="MA60:3333.55" textFill="#d03313" />
+                                 </children>
+                              </HBox>
+                              <LineChart prefHeight="311.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="成交量" />
+                                    <Label text="总量:163733270" textFill="#50f514" />
+                                    <Label text="MAVOL5:168862188" textFill="#f59a11" />
+                                    <Label text="MAVOL10:138455652" textFill="#2c76ee" />
+                                 </children>
+                              </HBox>
+                              <BarChart prefHeight="176.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </BarChart>
+                              <HBox prefHeight="25.0" prefWidth="740.0">
+                                 <children>
+                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton text="MA" />
+                                    <JFXToggleButton text="KDJ" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="月K">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="540.0" prefWidth="740.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="MA" />
+                                    <Label text="MA5:3233.13" textFill="#f59a11" />
+                                    <Label text="MA10:3333.44" textFill="#2c76ee" />
+                                    <Label text="MA20:3333.43" textFill="#e011fc" />
+                                    <Label text="MA30:3333.55" textFill="#15d9fc" />
+                                    <Label text="MA60:3333.55" textFill="#d03313" />
+                                 </children>
+                              </HBox>
+                              <LineChart prefHeight="311.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="成交量" />
+                                    <Label text="总量:163733270" textFill="#50f514" />
+                                    <Label text="MAVOL5:168862188" textFill="#f59a11" />
+                                    <Label text="MAVOL10:138455652" textFill="#2c76ee" />
+                                 </children>
+                              </HBox>
+                              <BarChart prefHeight="176.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </BarChart>
+                              <HBox prefHeight="25.0" prefWidth="740.0">
+                                 <children>
+                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton text="MA" />
+                                    <JFXToggleButton text="KDJ" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="季K">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="540.0" prefWidth="740.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="MA" />
+                                    <Label text="MA5:3233.13" textFill="#f59a11" />
+                                    <Label text="MA10:3333.44" textFill="#2c76ee" />
+                                    <Label text="MA20:3333.43" textFill="#e011fc" />
+                                    <Label text="MA30:3333.55" textFill="#15d9fc" />
+                                    <Label text="MA60:3333.55" textFill="#d03313" />
+                                 </children>
+                              </HBox>
+                              <LineChart prefHeight="311.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="成交量" />
+                                    <Label text="总量:163733270" textFill="#50f514" />
+                                    <Label text="MAVOL5:168862188" textFill="#f59a11" />
+                                    <Label text="MAVOL10:138455652" textFill="#2c76ee" />
+                                 </children>
+                              </HBox>
+                              <BarChart prefHeight="176.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </BarChart>
+                              <HBox prefHeight="25.0" prefWidth="740.0">
+                                 <children>
+                                    <JFXToggleButton text="VOL" />
+                                    <JFXToggleButton text="MA" />
+                                    <JFXToggleButton text="KDJ" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="年K">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="540.0" prefWidth="740.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="MA" />
+                                    <Label text="MA5:3233.13" textFill="#f59a11" />
+                                    <Label text="MA10:3333.44" textFill="#2c76ee" />
+                                    <Label text="MA20:3333.43" textFill="#e011fc" />
+                                    <Label text="MA30:3333.55" textFill="#15d9fc" />
+                                    <Label text="MA60:3333.55" textFill="#d03313" />
+                                 </children>
+                              </HBox>
+                              <LineChart prefHeight="311.0" prefWidth="740.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <HBox prefHeight="21.0" prefWidth="740.0" spacing="10.0">
+                                 <children>
+                                    <Label text="成交量" />
+                                    <Label text="总量:163733270" textFill="#50f514" />
+                                    <Label text="MAVOL5:168862188" textFill="#f59a11" />
+                                    <Label text="MAVOL10:138455652" textFill="#2c76ee" />
+                                 </children>
+                              </HBox>
+                              <BarChart prefHeight="168.0" prefWidth="763.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </BarChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

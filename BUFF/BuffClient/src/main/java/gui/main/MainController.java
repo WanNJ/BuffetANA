@@ -7,8 +7,8 @@ import com.jfoenix.controls.JFXPopup.PopupHPosition;
 import com.jfoenix.controls.JFXPopup.PopupVPosition;
 import com.jfoenix.controls.JFXRippler;
 import datafx.AnimatedFlowContainer;
+import gui.functions.TestUIController;
 import gui.sidemenu.SideMenuController;
-import gui.uicomponents.ButtonController;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -80,7 +80,7 @@ public class MainController {
 		// create the inner flow and content
 		context = new ViewFlowContext();
 		// set the default controller 
-		Flow innerFlow = new Flow(ButtonController.class);
+		Flow innerFlow = new Flow(TestUIController.class);
 
 		flowHandler = innerFlow.createHandler(context);
 		context.register("ContentFlowHandler", flowHandler);

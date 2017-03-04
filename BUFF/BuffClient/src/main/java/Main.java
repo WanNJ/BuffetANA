@@ -9,7 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainDemo extends Application {
+public class Main extends Application {
 
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
@@ -21,7 +21,7 @@ public class MainDemo extends Application {
 
 		new Thread(()->{
 			try {
-				SVGGlyphLoader.loadGlyphsFont(MainDemo.class.getResourceAsStream("/resources/fonts/icomoon.svg"),"icomoon.svg");
+				SVGGlyphLoader.loadGlyphsFont(Main.class.getResourceAsStream("/resources/fonts/icomoon.svg"),"icomoon.svg");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -36,10 +36,10 @@ public class MainDemo extends Application {
 		
 		JFXDecorator decorator = new JFXDecorator(stage, container.getView());
 		decorator.setCustomMaximize(true);
-		Scene scene = new Scene(decorator, 800, 800);
-		scene.getStylesheets().add(MainDemo.class.getResource("/resources/css/jfoenix-fonts.css").toExternalForm());
-		scene.getStylesheets().add(MainDemo.class.getResource("/resources/css/jfoenix-design.css").toExternalForm());
-		scene.getStylesheets().add(MainDemo.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
+		Scene scene = new Scene(decorator, 1200, 800);
+		scene.getStylesheets().add(Main.class.getResource("/resources/css/jfoenix-fonts.css").toExternalForm());
+		scene.getStylesheets().add(Main.class.getResource("/resources/css/jfoenix-design.css").toExternalForm());
+		scene.getStylesheets().add(Main.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
 		//		stage.initStyle(StageStyle.UNDECORATED);
 		//		stage.setFullScreen(true);
 		stage.setMinWidth(700);

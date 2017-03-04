@@ -1,4 +1,4 @@
-package gui.uicomponents;
+package gui.functions;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.validation.ValidationFacade;

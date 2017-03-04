@@ -22,7 +22,7 @@
 								</JFXHamburger>
 							</StackPane>
 						</JFXRippler>
-						<Label>Material Design</Label>
+						<Label>导航区</Label>
 					</leftItems>
 					<rightItems>
 						<JFXRippler fx:id="optionsRippler" maskType="CIRCLE"

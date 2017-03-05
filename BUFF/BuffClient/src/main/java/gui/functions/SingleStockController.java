@@ -1,6 +1,5 @@
 package gui.functions;
 
-import com.jfoenix.controls.JFXDrawer;
 import datafx.AnimatedFlowContainer;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -11,18 +10,16 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.util.Duration;
+import vo.DailyKLineVO;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-
-import static io.datafx.controller.flow.container.ContainerAnimations.*;
+import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/4.
@@ -53,6 +50,15 @@ public class SingleStockController {
     private Label volLabel;
     @FXML
     private Label adjCloseIndexLabel;
+    @FXML
+    private TableView<DailyKLineVO> stockDetailsTable;
+    @FXML
+    private TableColumn<DailyKLineVO, LocalDate> dateColum;
+    @FXML
+    private TableColumn<DailyKLineVO, Double> closeIndexColum;
+    @FXML
+    private TableColumn<DailyKLineVO, Double> rangeColum;
+
 
     
     private  Parent lineContent; // 包含所欲的画线内容
@@ -71,7 +77,7 @@ public class SingleStockController {
         LineHandler = innerFlow.createHandler(context);
         context.register("LineHandler", LineHandler);
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-        root.setCenter(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
+        root.setCenter(LineHandler.start());
     }
 
 }

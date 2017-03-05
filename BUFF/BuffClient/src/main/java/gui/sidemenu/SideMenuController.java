@@ -23,12 +23,36 @@ public class SideMenuController {
 	private ViewFlowContext context;
 
 	@FXML
-	@ActionTrigger("combobox")
-	private Label combobox;
+	@ActionTrigger("market")
+	private Label market;
 
 	@FXML
-	@ActionTrigger("testUI")
-	private Label testUI;
+	@ActionTrigger("KDJLine")
+	private Label KDJLine;
+
+	@FXML
+	@ActionTrigger("Kline")
+	private Label Kline;
+
+	@FXML
+	@ActionTrigger("LinesPanel")
+	private Label LinesPanel;
+
+	@FXML
+	@ActionTrigger("MALine")
+	private Label MALine;
+
+	@FXML
+	@ActionTrigger("SingleStock")
+	private Label SingleStock;
+
+	@FXML
+	@ActionTrigger("VOLLine")
+	private Label VOLLine;
+
+	@FXML
+	@ActionTrigger("thermometer")
+	private Label thermometer;
 	
 	@FXML
 	private JFXListView<?> sideList;
@@ -38,8 +62,14 @@ public class SideMenuController {
 		sideList.propagateMouseEventsToParent();
 		FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
-		bindNodeToController(combobox, ComboBoxController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(testUI, TestUIController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(market, MarketController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(KDJLine, KDJLineController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(Kline, KlineController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(LinesPanel, LinesPanelController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(MALine, MALineController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(VOLLine, VOLLineController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
 	}
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

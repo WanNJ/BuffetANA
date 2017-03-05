@@ -29,7 +29,7 @@ public class Main extends Application {
 			}	
 		}).start();
 
-		Flow flow = new Flow(SingleStockController.class);
+		Flow flow = new Flow(MainController.class);//这个地方不要动，好不容易才搞好的
 		DefaultFlowContainer container = new DefaultFlowContainer();
 		flowContext = new ViewFlowContext();
 		flowContext.register("Stage", stage);

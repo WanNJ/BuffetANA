@@ -5,5 +5,5 @@ package vo;
  */
 public enum StockState {
     RED,
-    GREEN
+    GREEN,
 }

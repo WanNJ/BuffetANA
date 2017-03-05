@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox prefHeight="50.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
@@ -82,4 +86,17 @@
          </children>
       </StackPane>
    </right>
+   <left>
+      <StackPane prefHeight="550.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTreeTableView />
+            <HBox prefHeight="30.0" prefWidth="250.0">
+               <children>
+                  <JFXButton prefHeight="20.0" prefWidth="100.0" text="自选股票" />
+                  <JFXTextField prefHeight="30.0" prefWidth="137.0" promptText="搜索" />
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </left>
 </BorderPane>

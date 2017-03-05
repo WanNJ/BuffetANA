@@ -9,15 +9,12 @@ import io.datafx.controller.FXMLController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
 
-@FXMLController(value = "/resources/fxml/LinesPane.fxml" , title = "Lines Pane container")
+@FXMLController(value = "/resources/fxml/ui/LinesPane.fxml" , title = "Lines Pane container")
 public class LinesPanelController {
         @FXML
         private  JFXToggleButton  MAtoggle;
@@ -43,14 +40,19 @@ public class LinesPanelController {
     private void initialize() {
         try {
 
-            KLineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/KLine.fxml"));
-            MALineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/MALine.fxml"));
-            VOLLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/VOLLine.fxml"));
-            KDJLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/KDJLine.fxml"));
+            //加载四条线的节点信息
+            KLineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/ui/KLine.fxml"));
+            MALineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/ui/MALine.fxml"));
+            VOLLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/ui/VOLLine.fxml"));
+            KDJLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/ui/KDJLine.fxml"));
+
+
             gridPane.setRowIndex(KLineChild,1);
             gridPane.setRowIndex(MALineChild,2);
             gridPane.setRowIndex(VOLLineChild,3);
             gridPane.setRowIndex(KDJLineChild,4);
+
+            //默认设置可以打开K线
             KLinetoggle.selectedProperty().set(true);
             gridPane.getChildren().add(KLineChild);
 
@@ -59,6 +61,7 @@ public class LinesPanelController {
             e.printStackTrace();
         }
     }
+
         @FXML
         private void handleMAtoggle(){
             if(MAtoggle.isSelected()){

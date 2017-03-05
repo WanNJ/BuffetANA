@@ -1,6 +1,7 @@
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.svg.SVGGlyphLoader;
 import gui.functions.SingleStockController;
+import gui.main.MainController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
@@ -28,7 +29,7 @@ public class Main extends Application {
 			}	
 		}).start();
 
-		Flow flow = new Flow(SingleStockController.class);
+		Flow flow = new Flow(MainController.class);//这个地方不要动，好不容易才搞好的
 		DefaultFlowContainer container = new DefaultFlowContainer();
 		flowContext = new ViewFlowContext();
 		flowContext.register("Stage", stage);

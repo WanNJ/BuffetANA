@@ -26,12 +26,18 @@ public class LinesPanelController {
         @FXML
         private  JFXToggleButton  KDJToggle;
         @FXML
-        private GridPane gridPane;
+        private  JFXToggleButton KLinetoggle;
+        @FXML
+        private  GridPane gridPane;
 
 
         private Parent KLineChild;//KLine node
 
         private Parent MALineChild;//MALineChild node
+
+        private Parent VOLLineChild; //VOLLineChild node
+
+        private Parent KDJLineChild; //KDJLineChild node
 
         @FXML
     private void initialize() {
@@ -39,8 +45,13 @@ public class LinesPanelController {
 
             KLineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/KLine.fxml"));
             MALineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/MALine.fxml"));
+            VOLLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/VOLLine.fxml"));
+            KDJLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/KDJLine.fxml"));
             gridPane.setRowIndex(KLineChild,1);
             gridPane.setRowIndex(MALineChild,2);
+            gridPane.setRowIndex(VOLLineChild,3);
+            gridPane.setRowIndex(KDJLineChild,4);
+            KLinetoggle.selectedProperty().set(true);
             gridPane.getChildren().add(KLineChild);
 
 
@@ -60,11 +71,30 @@ public class LinesPanelController {
 
         @FXML
         private  void handleKDJtoggle(){
+            if(KDJToggle.isSelected()){
+                gridPane.getChildren().add(KDJLineChild);
+            }else{
+                gridPane.getChildren().remove(KDJLineChild);
+            }
         }
 
         @FXML
         private void handleVOLtoggle(){
+            if(VOLToggle.isSelected()){
+                gridPane.getChildren().add(VOLLineChild);
+            }else{
+                gridPane.getChildren().remove(VOLLineChild);
+            }
+        }
 
+
+        @FXML
+        private void handleKLinetoggle(){
+            if(KLinetoggle.isSelected()){
+                gridPane.getChildren().add(KLineChild);
+            }else{
+                gridPane.getChildren().remove(KLineChild);
+            }
         }
 
 //        private void loadOnTheScreen(){

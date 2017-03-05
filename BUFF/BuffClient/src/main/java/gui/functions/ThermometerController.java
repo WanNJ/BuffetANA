@@ -16,27 +16,10 @@ import javax.annotation.PostConstruct;
 public class ThermometerController {
 
 	@FXML private StackPane root;
-	@FXML private JFXDatePicker datePicker;
-	@FXML private JFXComboBox<String> jfxComboBox;
-	@FXML private JFXComboBox<String> jfxEditableComboBox;
 	
 	@PostConstruct
 	public void init() throws FlowException, VetoException {
-		datePicker.setDialogParent(root);
 
-		jfxComboBox.focusedProperty().addListener((o, oldVal, newVal) -> {
-			if (!newVal) {
-				ValidationFacade.validate(jfxComboBox);
-			}
-		});
-		
-		ChangeListener<? super Boolean> comboBoxFocus = (o, oldVal, newVal) -> {
-			if (!newVal) {
-				ValidationFacade.validate(jfxEditableComboBox);
-			}
-		};		
-		jfxEditableComboBox.focusedProperty().addListener(comboBoxFocus);
-		jfxEditableComboBox.getJFXEditor().focusedProperty().addListener(comboBoxFocus);				
 	}
 	
 }

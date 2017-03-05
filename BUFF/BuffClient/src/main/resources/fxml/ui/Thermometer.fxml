@@ -1,139 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.validation.RequiredFieldValidator?>
-<?import com.jfoenix.validation.ValidationFacade?>
-<?import de.jensd.fx.fontawesome.Icon?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-	<HBox alignment="BASELINE_CENTER" maxHeight="300" maxWidth="500" spacing="100">
-		<VBox spacing="20">
-			<children>
-				<Label styleClass="title-label">Combo Box</Label>
-				<ValidationFacade>
-					<control>
-						<JFXComboBox id="jfxComboBox" prefWidth="200" promptText="Select Item">
-							<items>
-								<FXCollections fx:factory="observableArrayList">
-									<Label>
-										Item 1
-										<graphic>
-											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="STAR" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-											</StackPane>
-										</graphic>
-									</Label>
-									<Label>
-										Item 2
-										<graphic>
-											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="HEART" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-											</StackPane>
-										</graphic>
-									</Label>
-									<Label>
-										Item 3
-										<graphic>
-											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="WARNING" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-											</StackPane>
-										</graphic>
-									</Label>
-									<Label>
-										Item 4
-										<graphic>
-											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-											</StackPane>
-										</graphic>
-									</Label>
-									<Label>
-										Item 5
-										<graphic>
-											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="TABLET" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-											</StackPane>
-										</graphic>
-									</Label>
-								</FXCollections>
-							</items>
-						</JFXComboBox>
-					</control>
-					<validators>
-						<RequiredFieldValidator message="Input Required!">
-							<Icon awesomeIcon="WARNING" style="-fx-font-family: FontAwesome;" />
-						</RequiredFieldValidator>
-					</validators>
-				</ValidationFacade>
-			</children>
-		</VBox>
-
-
-		<VBox spacing="14">
-			<Label styleClass="title-label">Editable Box</Label>
-			<ValidationFacade>
-				<control>
-					<JFXComboBox id="jfxEditableComboBox" editable="true" maxWidth="200" promptText="Select/Edit Items">
-						<items>
-							<FXCollections fx:factory="observableArrayList">
-								<Label>
-									Item 1
-									<graphic>
-										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="STAR" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-										</StackPane>
-									</graphic>
-								</Label>
-								<Label>
-									Item 2
-									<graphic>
-										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="HEART" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-										</StackPane>
-									</graphic>
-								</Label>
-								<Label>
-									Item 3
-									<graphic>
-										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="WARNING" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-										</StackPane>
-									</graphic>
-								</Label>
-								<Label>
-									Item 4
-									<graphic>
-										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-										</StackPane>
-									</graphic>
-								</Label>
-								<Label>
-									Item 5
-									<graphic>
-										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="TABLET" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
-										</StackPane>
-									</graphic>
-								</Label>
-							</FXCollections>
-						</items>
-					</JFXComboBox>
-				</control>
-				<validators>
-					<RequiredFieldValidator message="Input Required!">
-						<Icon awesomeIcon="WARNING" style="-fx-font-family: FontAwesome;" />
-					</RequiredFieldValidator>
-				</validators>
-			</ValidationFacade>
-		</VBox>
-	</HBox>
-   <JFXDatePicker fx:id="datePicker" overLay="true" />
+   <JFXTabPane rotateGraphic="true" side="LEFT" stylesheets="@../../css/jfoenix-components.css">
+      <tabs>
+         <Tab text="总交易量">
+           <content>
+			   <StackPane>
+				   <children>
+					   <BarChart StackPane.alignment="CENTER">
+						   <xAxis>
+							   <CategoryAxis side="BOTTOM" />
+						   </xAxis>
+						   <yAxis>
+							   <NumberAxis side="LEFT" />
+						   </yAxis>
+					   </BarChart>
+				   </children>
+			   </StackPane>
+           </content>
+         </Tab>
+         <Tab text="涨/跌停股票数">
+			 <content>
+				 <StackPane>
+					 <children>
+						 <BarChart StackPane.alignment="CENTER">
+							 <xAxis>
+								 <CategoryAxis side="BOTTOM" />
+							 </xAxis>
+							 <yAxis>
+								 <NumberAxis side="LEFT" />
+							 </yAxis>
+						 </BarChart>
+					 </children>
+				 </StackPane>
+			 </content>
+		 </Tab>
+         <Tab text="涨/跌幅超过5%股票数">
+            <content>
+				<StackPane>
+					<children>
+						<BarChart StackPane.alignment="CENTER">
+							<xAxis>
+								<CategoryAxis side="BOTTOM" />
+							</xAxis>
+							<yAxis>
+								<NumberAxis side="LEFT" />
+							</yAxis>
+						</BarChart>
+					</children>
+				</StackPane>
+            </content>
+         </Tab>
+         <Tab text="当天涨/跌大于上一个交易日 5 %的股票数">
+            <content>
+				<StackPane>
+					<children>
+						<BarChart StackPane.alignment="CENTER">
+							<xAxis>
+								<CategoryAxis side="BOTTOM" />
+							</xAxis>
+							<yAxis>
+								<NumberAxis side="LEFT" />
+							</yAxis>
+						</BarChart>
+					</children>
+				</StackPane>
+            </content>
+         </Tab>
+      </tabs></JFXTabPane>
 
 </StackPane>

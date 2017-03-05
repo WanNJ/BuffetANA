@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
 
-@FXMLController(value = "/resources/fxml/Main.fxml", title = "Material Design Example")
+@FXMLController(value = "/resources/fxml/ui/Main.fxml", title = "Material Design Example")
 public class MainController {
 
 	@FXMLViewFlowContext

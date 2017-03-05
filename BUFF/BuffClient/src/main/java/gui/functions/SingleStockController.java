@@ -1,5 +1,6 @@
 package gui.functions;
 
+import com.jfoenix.controls.JFXDatePicker;
 import datafx.AnimatedFlowContainer;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import vo.DailyKLineVO;
 
 import javax.annotation.PostConstruct;
@@ -34,9 +36,13 @@ public class SingleStockController {
     //@FXML private JFXDrawer drawer;
 
     @FXML
-    private BorderPane root;
+    private StackPane root;
     @FXML
-    private DatePicker datePicker;
+    private BorderPane borderPane;
+    @FXML
+    private StackPane detailsPane;
+    @FXML
+    private JFXDatePicker datePicker;
     @FXML
     private Label openIndexLabel;
     @FXML
@@ -67,8 +73,7 @@ public class SingleStockController {
 
     @PostConstruct
     public void init() throws FlowException, VetoException {
-
-
+        datePicker.setDialogParent(root);
 
         context = new ViewFlowContext();
         // set the default controller
@@ -77,7 +82,7 @@ public class SingleStockController {
         LineHandler = innerFlow.createHandler(context);
         context.register("LineHandler", LineHandler);
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-        root.setCenter(LineHandler.start());
+        borderPane.setCenter(LineHandler.start());
     }
 
 }

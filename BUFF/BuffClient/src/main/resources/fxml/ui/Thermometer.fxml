@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.validation.RequiredFieldValidator?>
 <?import com.jfoenix.validation.ValidationFacade?>
-<?import de.jensd.fx.fontawesome.*?>
+<?import de.jensd.fx.fontawesome.Icon?>
 <?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
-           xmlns="http://javafx.com/javafx/2.2">
-	<HBox spacing="100" maxWidth="500" maxHeight="300" alignment="BASELINE_CENTER">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+	<HBox alignment="BASELINE_CENTER" maxHeight="300" maxWidth="500" spacing="100">
 		<VBox spacing="20">
 			<children>
 				<Label styleClass="title-label">Combo Box</Label>
 				<ValidationFacade>
 					<control>
-						<JFXComboBox id="jfxComboBox" prefWidth="200"
-							promptText="Select Item">
+						<JFXComboBox id="jfxComboBox" prefWidth="200" promptText="Select Item">
 							<items>
 								<FXCollections fx:factory="observableArrayList">
 									<Label>
 										Item 1
 										<graphic>
 											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="STAR" size="1.5em" style=";"
-													styleClass="custom-jfx-list-view-icon" />
+												<Icon awesomeIcon="STAR" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 											</StackPane>
 										</graphic>
 									</Label>
@@ -32,8 +33,7 @@
 										Item 2
 										<graphic>
 											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="HEART" size="1.5em" style=";"
-													styleClass="custom-jfx-list-view-icon" />
+												<Icon awesomeIcon="HEART" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 											</StackPane>
 										</graphic>
 									</Label>
@@ -41,8 +41,7 @@
 										Item 3
 										<graphic>
 											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="WARNING" size="1.5em" style=";"
-													styleClass="custom-jfx-list-view-icon" />
+												<Icon awesomeIcon="WARNING" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 											</StackPane>
 										</graphic>
 									</Label>
@@ -50,8 +49,7 @@
 										Item 4
 										<graphic>
 											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";"
-													styleClass="custom-jfx-list-view-icon" />
+												<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 											</StackPane>
 										</graphic>
 									</Label>
@@ -59,8 +57,7 @@
 										Item 5
 										<graphic>
 											<StackPane styleClass="custom-jfx-list-view-icon-container">
-												<Icon awesomeIcon="TABLET" size="1.5em" style=";"
-													styleClass="custom-jfx-list-view-icon" />
+												<Icon awesomeIcon="TABLET" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 											</StackPane>
 										</graphic>
 									</Label>
@@ -82,16 +79,14 @@
 			<Label styleClass="title-label">Editable Box</Label>
 			<ValidationFacade>
 				<control>
-					<JFXComboBox id="jfxEditableComboBox" editable="true"
-						maxWidth="200" promptText="Select/Edit Items">
+					<JFXComboBox id="jfxEditableComboBox" editable="true" maxWidth="200" promptText="Select/Edit Items">
 						<items>
 							<FXCollections fx:factory="observableArrayList">
 								<Label>
 									Item 1
 									<graphic>
 										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="STAR" size="1.5em" style=";"
-												styleClass="custom-jfx-list-view-icon" />
+											<Icon awesomeIcon="STAR" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 										</StackPane>
 									</graphic>
 								</Label>
@@ -99,8 +94,7 @@
 									Item 2
 									<graphic>
 										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="HEART" size="1.5em" style=";"
-												styleClass="custom-jfx-list-view-icon" />
+											<Icon awesomeIcon="HEART" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 										</StackPane>
 									</graphic>
 								</Label>
@@ -108,8 +102,7 @@
 									Item 3
 									<graphic>
 										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="WARNING" size="1.5em" style=";"
-												styleClass="custom-jfx-list-view-icon" />
+											<Icon awesomeIcon="WARNING" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 										</StackPane>
 									</graphic>
 								</Label>
@@ -117,8 +110,7 @@
 									Item 4
 									<graphic>
 										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";"
-												styleClass="custom-jfx-list-view-icon" />
+											<Icon awesomeIcon="UNIVERSITY" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 										</StackPane>
 									</graphic>
 								</Label>
@@ -126,8 +118,7 @@
 									Item 5
 									<graphic>
 										<StackPane styleClass="custom-jfx-list-view-icon-container">
-											<Icon awesomeIcon="TABLET" size="1.5em" style=";"
-												styleClass="custom-jfx-list-view-icon" />
+											<Icon awesomeIcon="TABLET" size="1.5em" style=";" styleClass="custom-jfx-list-view-icon" />
 										</StackPane>
 									</graphic>
 								</Label>
@@ -143,7 +134,6 @@
 			</ValidationFacade>
 		</VBox>
 	</HBox>
+   <JFXDatePicker fx:id="datePicker" overLay="true" />
 
 </StackPane>
-
-

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * Created by slow_time on 2017/3/3.
  */
-public class DailyKLinePO {
+public class StockPO {
 
     private String name;
     private String market;
@@ -15,9 +15,25 @@ public class DailyKLinePO {
     private double low_Price;
     private double open_Price;
     private double close_Price;
-    private StockState state;
     private long volume;
 
+
+    public StockPO() {
+
+    }
+
+    public StockPO(String name, String market, String code, LocalDate date, double high_Price, double low_Price,
+                   double open_Price, double close_Price, long volume) {
+        this.name = name;
+        this.market = market;
+        this.code = code;
+        this.date = date;
+        this.high_Price = high_Price;
+        this.low_Price = low_Price;
+        this.open_Price = open_Price;
+        this.close_Price = close_Price;
+        this.volume = volume;
+    }
 
     public String getName() {
         return name;
@@ -66,12 +82,6 @@ public class DailyKLinePO {
     }
     public void setClose_Price(double close_Price) {
         this.close_Price = close_Price;
-    }
-    public StockState getState() {
-        return state;
-    }
-    public void setState(StockState state) {
-        this.state = state;
     }
     public long getVolume() {
         return volume;

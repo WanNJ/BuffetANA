@@ -1,24 +1,21 @@
 package gui.functions;
 
 import com.jfoenix.controls.JFXDatePicker;
-import datafx.AnimatedFlowContainer;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.FlowHandler;
-import io.datafx.controller.flow.container.ContainerAnimations;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import vo.DailyKLineVO;
+import vo.KLinePieceVO;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -57,13 +54,13 @@ public class SingleStockController {
     @FXML
     private Label adjCloseIndexLabel;
     @FXML
-    private TableView<DailyKLineVO> stockDetailsTable;
+    private TableView<KLinePieceVO> stockDetailsTable;
     @FXML
-    private TableColumn<DailyKLineVO, LocalDate> dateColum;
+    private TableColumn<KLinePieceVO, LocalDate> dateColum;
     @FXML
-    private TableColumn<DailyKLineVO, Double> closeIndexColum;
+    private TableColumn<KLinePieceVO, Double> closeIndexColum;
     @FXML
-    private TableColumn<DailyKLineVO, Double> rangeColum;
+    private TableColumn<KLinePieceVO, Double> rangeColum;
 
 
     

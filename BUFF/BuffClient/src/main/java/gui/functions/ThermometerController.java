@@ -12,6 +12,9 @@ import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * @author zjy
+ */
 @FXMLController(value = "/resources/fxml/ui/Thermometer.fxml" , title = "Material Design Example")
 public class ThermometerController {
 

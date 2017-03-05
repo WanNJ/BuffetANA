@@ -54,6 +54,7 @@ public class SingleStockController {
     @FXML
     private Label adjCloseIndexLabel;
 
+    
     private  Parent lineContent; // 包含所欲的画线内容
 
     private FlowHandler  LineHandler;

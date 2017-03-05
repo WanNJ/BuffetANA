@@ -16,6 +16,7 @@ public class StockPO {
     private double open_Price;
     private double close_Price;
     private long volume;
+    private double adjCloseIndex;
 
 
     public StockPO() {
@@ -23,7 +24,7 @@ public class StockPO {
     }
 
     public StockPO(String name, String market, String code, LocalDate date, double high_Price, double low_Price,
-                   double open_Price, double close_Price, long volume) {
+                   double open_Price, double close_Price, long volume, double adjCloseIndex) {
         this.name = name;
         this.market = market;
         this.code = code;
@@ -33,6 +34,8 @@ public class StockPO {
         this.open_Price = open_Price;
         this.close_Price = close_Price;
         this.volume = volume;
+        this.adjCloseIndex = adjCloseIndex;
+
     }
 
     public String getName() {
@@ -89,4 +92,6 @@ public class StockPO {
     public void setVolume(long volume) {
         this.volume = volume;
     }
+    public double getAdjCloseIndex() { return adjCloseIndex; }
+    public void setAdjCloseIndex(double adjCloseIndex) { this.adjCloseIndex = adjCloseIndex; }
 }

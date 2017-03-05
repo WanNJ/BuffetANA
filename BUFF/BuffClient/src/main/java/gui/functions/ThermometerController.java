@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 
 import javax.annotation.PostConstruct;
 
-@FXMLController(value = "/resources/fxml/ui/Combobox.fxml" , title = "Material Design Example")
+@FXMLController(value = "/resources/fxml/ui/Thermometer.fxml" , title = "Material Design Example")
 public class ThermometerController {
 	
 	@FXML private JFXComboBox<String> jfxComboBox;

@@ -9,7 +9,13 @@
 		<String fx:value="side-menu" />
 	</styleClass>
 	<JFXListView  fx:id="sideList">
-		<Label fx:id="combobox"> combobox </Label>
-		<Label fx:id="testUI"> testUI </Label>
+		<Label fx:id="market"> 大盘 </Label>
+		<Label fx:id="KDJLine"> KDJLine </Label>
+		<Label fx:id="Kline"> Kline </Label>
+		<Label fx:id="LinesPanel"> LinesPanel </Label>
+		<Label fx:id="MALine"> MALine </Label>
+		<Label fx:id="SingleStock"> SingleStock </Label>
+		<Label fx:id="VOLLine"> VOLLine </Label>
+		<Label fx:id="thermometer"> 市场温度计 </Label>
 	</JFXListView>
 </StackPane>

@@ -7,6 +7,6 @@ import io.datafx.controller.FXMLController;
  * 测试用
  */
 @FXMLController(value = "/resources/fxml/ui/Checkbox.fxml" , title = "Material Design Example")
-public class TestUIController {
+public class MarketController {
 
 }

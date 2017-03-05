@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXPopup.PopupHPosition;
 import com.jfoenix.controls.JFXPopup.PopupVPosition;
 import com.jfoenix.controls.JFXRippler;
 import datafx.AnimatedFlowContainer;
-import gui.functions.TestUIController;
+import gui.functions.MarketController;
 import gui.sidemenu.SideMenuController;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
 
-@FXMLController(value = "/resources/fxml/ui/Main.fxml", title = "Material Design Example")
+@FXMLController(value = "/resources/fxml/Main.fxml", title = "Material Design Example")
 public class MainController {
 
 	@FXMLViewFlowContext
@@ -80,7 +80,7 @@ public class MainController {
 		// create the inner flow and content
 		context = new ViewFlowContext();
 		// set the default controller 
-		Flow innerFlow = new Flow(TestUIController.class);
+		Flow innerFlow = new Flow(MarketController.class);
 
 		flowHandler = innerFlow.createHandler(context);
 		context.register("ContentFlowHandler", flowHandler);

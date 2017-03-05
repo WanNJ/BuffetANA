@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javax.annotation.PostConstruct;
 
 @FXMLController(value = "/resources/fxml/ui/Combobox.fxml" , title = "Material Design Example")
-public class ComboBoxController {
+public class ThermometerController {
 	
 	@FXML private JFXComboBox<String> jfxComboBox;
 	@FXML private JFXComboBox<String> jfxEditableComboBox;

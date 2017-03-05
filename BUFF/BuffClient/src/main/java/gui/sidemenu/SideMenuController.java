@@ -27,28 +27,8 @@ public class SideMenuController {
 	private Label market;
 
 	@FXML
-	@ActionTrigger("KDJLine")
-	private Label KDJLine;
-
-	@FXML
-	@ActionTrigger("Kline")
-	private Label Kline;
-
-	@FXML
-	@ActionTrigger("LinesPanel")
-	private Label LinesPanel;
-
-	@FXML
-	@ActionTrigger("MALine")
-	private Label MALine;
-
-	@FXML
 	@ActionTrigger("SingleStock")
 	private Label SingleStock;
-
-	@FXML
-	@ActionTrigger("VOLLine")
-	private Label VOLLine;
 
 	@FXML
 	@ActionTrigger("thermometer")
@@ -63,12 +43,7 @@ public class SideMenuController {
 		FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
 		bindNodeToController(market, MarketController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(KDJLine, KDJLineController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(Kline, KlineController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(LinesPanel, LinesPanelController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(MALine, MALineController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(VOLLine, VOLLineController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
 	}
 

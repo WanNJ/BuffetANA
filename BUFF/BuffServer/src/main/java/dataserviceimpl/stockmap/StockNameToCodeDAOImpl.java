@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Created by slow_time on 2017/3/5.
@@ -41,15 +40,6 @@ public class StockNameToCodeDAOImpl implements StockNameToCodeDAO {
                 }
             }
             return nameToCode;
-        }
-    }
-
-    public static void main(String[] args) {
-        StockNameToCodeDAO test = new StockNameToCodeDAOImpl();
-        HashMap<String, String> temp = test.getNameToCodeMap();
-        Set<String> name = temp.keySet();
-        for(String i : name) {
-            System.out.println(i + "," + temp.get(i));
         }
     }
 }

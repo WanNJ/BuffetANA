@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -9,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox prefHeight="50.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,15 +24,15 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="179.21151733398438" minHeight="0.0" prefHeight="33.52301025390625" vgrow="NEVER" />
-                <RowConstraints maxHeight="521.2654647827148" minHeight="10.0" prefHeight="176.45001220703125" vgrow="NEVER" />
+                <RowConstraints maxHeight="179.21151733398438" minHeight="0.0" prefHeight="33.52301025390625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="521.2654647827148" minHeight="10.0" prefHeight="176.45001220703125" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="521.2654647827148" minHeight="10.0" prefHeight="340.54998779296875" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <HBox prefHeight="22.0" prefWidth="250.0">
                      <children>
                         <JFXButton alignment="TOP_LEFT" prefHeight="27.0" prefWidth="92.0" text="详细信息" />
-                        <DatePicker fx:id="datePicker">
+                        <DatePicker>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -60,15 +59,15 @@
                         <Label text="最低指数" GridPane.rowIndex="3" />
                         <Label text="成交量" GridPane.rowIndex="4" />
                         <Label text="复权收盘指数" GridPane.rowIndex="5" />
-                        <Label fx:id="openIndexLabel" text="Label" GridPane.columnIndex="1" />
-                        <Label fx:id="closeIndexLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="highIndexLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="lowIndexLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="volLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label fx:id="adjCloseIndexLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Label" GridPane.columnIndex="1" />
+                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
-                  <ScrollPane GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                      <content>
                         <TableView>
                           <columns>
@@ -79,9 +78,6 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
-                           <cursor>
-                              <Cursor fx:constant="V_RESIZE" />
-                           </cursor>
                         </TableView>
                      </content>
                   </ScrollPane>
@@ -90,4 +86,17 @@
          </children>
       </StackPane>
    </right>
+   <left>
+      <StackPane prefHeight="550.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTreeTableView />
+            <HBox prefHeight="30.0" prefWidth="250.0" spacing="20.0">
+               <children>
+                  <JFXButton prefHeight="20.0" prefWidth="100.0" text="自选股票" />
+                  <JFXTextField prefHeight="30.0" prefWidth="137.0" promptText="搜索" />
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </left>
 </BorderPane>

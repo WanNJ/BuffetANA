@@ -37,7 +37,7 @@ public class LinesPanelController {
         private Parent KDJLineChild; //KDJLineChild node
 
         @FXML
-    private void initialize() {
+        private void initialize() {
         try {
 
             //加载四条线的节点信息

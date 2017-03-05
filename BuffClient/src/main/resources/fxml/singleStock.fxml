@@ -36,15 +36,4 @@
          </children>
       </StackPane>
    </left>
-   <right>
-      <StackPane prefHeight="150.0" prefWidth="250.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="50.0" prefWidth="250.0">
-               <children>
-                  <JFXButton prefHeight="30.0" prefWidth="250.0" text="详细信息" />
-               </children>
-            </HBox>
-         </children>
-      </StackPane>
-   </right>
 </BorderPane>

@@ -11,10 +11,10 @@ public class DailyKLineVO {
     private String market;
     private String code;
     private LocalDate date;
-    private double high_Price;
-    private double low_Price;
-    private double open_Price;
-    private double close_Price;
+    private double highPrice;
+    private double lowPrice;
+    private double openPrice;
+    private double closePrice;
     private StockState state;
     private long volume;
 
@@ -43,29 +43,29 @@ public class DailyKLineVO {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public double getHigh_Price() {
-        return high_Price;
+    public double getHighPrice() {
+        return highPrice;
     }
-    public void setHigh_Price(double high_Price) {
-        this.high_Price = high_Price;
+    public void setHighPrice(double high_Price) {
+        this.highPrice = high_Price;
     }
-    public double getLow_Price() {
-        return low_Price;
+    public double getLowPrice() {
+        return lowPrice;
     }
-    public void setLow_Price(double low_Price) {
-        this.low_Price = low_Price;
+    public void setLowPrice(double low_Price) {
+        this.lowPrice = low_Price;
     }
-    public double getOpen_Price() {
-        return open_Price;
+    public double getOpenPrice() {
+        return openPrice;
     }
-    public void setOpen_Price(double open_Price) {
-        this.open_Price = open_Price;
+    public void setOpenPrice(double open_Price) {
+        this.openPrice = open_Price;
     }
-    public double getClose_Price() {
-        return close_Price;
+    public double getClosePrice() {
+        return closePrice;
     }
-    public void setClose_Price(double close_Price) {
-        this.close_Price = close_Price;
+    public void setClosePrice(double close_Price) {
+        this.closePrice = close_Price;
     }
     public StockState getState() {
         return state;

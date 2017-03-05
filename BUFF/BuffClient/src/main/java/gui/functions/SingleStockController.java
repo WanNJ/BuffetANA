@@ -6,9 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import vo.DailyKLineVO;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/4.
@@ -32,6 +36,15 @@ public class SingleStockController {
     private Label volLabel;
     @FXML
     private Label adjCloseIndexLabel;
+    @FXML
+    private TableView<DailyKLineVO> stockDetailsTable;
+    @FXML
+    private TableColumn<DailyKLineVO, LocalDate> dateColum;
+    @FXML
+    private TableColumn<DailyKLineVO, Double> closeIndexColum;
+    @FXML
+    private TableColumn<DailyKLineVO, Double> rangeColum;
+
 
     private  Parent lineContent; // 包含所欲的画线内容
 

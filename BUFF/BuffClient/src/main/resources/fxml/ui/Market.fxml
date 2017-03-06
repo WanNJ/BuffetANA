@@ -1,14 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
-           xmlns="http://javafx.com/javafx/2.2">
 
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <GridPane>
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <JFXTabPane>
+            <tabs>
+               <Tab text="所有股票">
+                  <content>
+                     <StackPane>
+                        <children>
+                           <JFXTreeTableView StackPane.alignment="CENTER_LEFT" />
+                        </children>
+                     </StackPane>
+                  </content>
+               </Tab>
+               <Tab text="自选股">
+                  <content>
+                     <StackPane prefHeight="150.0">
+                        <children>
+                           <JFXTreeTableView />
+                        </children>
+                     </StackPane>
+                  </content>
+               </Tab>
+               <Tab text="最近浏览">
+                  <content>
+                     <StackPane prefHeight="150.0">
+                        <children>
+                           <JFXTreeTableView />
+                        </children>
+                     </StackPane>
+                  </content>
+               </Tab>
+            </tabs>
+         </JFXTabPane>
+         <JFXTabPane GridPane.columnIndex="1">
+            <tabs>
+               <Tab text="分时图">
+                  <content>
+                     <StackPane>
+                        <children>
+                           <LineChart>
+                              <xAxis>
+                                 <CategoryAxis side="BOTTOM" />
+                              </xAxis>
+                              <yAxis>
+                                 <NumberAxis side="LEFT" />
+                              </yAxis>
+                           </LineChart>
+                        </children>
+                     </StackPane>
+                  </content>
+               </Tab>
+               <Tab text="K线图">
+                  <content>
+                     <StackPane prefHeight="150.0">
+                        <children>
+                           <LineChart>
+                              <xAxis>
+                                 <CategoryAxis side="BOTTOM" />
+                              </xAxis>
+                              <yAxis>
+                                 <NumberAxis side="LEFT" />
+                              </yAxis>
+                           </LineChart>
+                        </children>
+                     </StackPane>
+                  </content>
+               </Tab>
+            </tabs>
+         </JFXTabPane>
+      </children>
+   </GridPane>
 </StackPane>
-
-

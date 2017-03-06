@@ -10,8 +10,8 @@ import java.time.format.DateTimeParseException;
 public class DateUtil {
 
     //The date pattern that is used for conversion.
-    private static final String DATE_PATTERN_LINE = "d-M-yy";
-    private static final String DATE_PATTERN_SLASH = "d/M/yy";
+    private static final String DATE_PATTERN_LINE = "M-d-yy";
+    private static final String DATE_PATTERN_SLASH = "M/d/yy";
 
     // The date formatter.
     private static final DateTimeFormatter DATE_FORMATTER_LINE =

@@ -18,6 +18,7 @@ import java.util.List;
 public class StockDAOImpl implements StockDAO {
     @Override
     public List<StockPO> getStockInfoByCode(String code) {
+        String codeFile = "/Users/slow_time/BuffettANA/Data/Code/" + code + ".csv";
         return null;
     }
 
@@ -32,11 +33,7 @@ public class StockDAOImpl implements StockDAO {
             String line;
 
             while ((line = br.readLine()) != null) {
-                String[] stockInfo = line.split("\t");
-                StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], stockInfo[8], DateUtil.parseSlash(stockInfo[1]),
-                Double.parseDouble(stockInfo[3]), Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
-                        Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
-                stockPOs.add(stockPO);
+                stockPOs.add(generateStockPO(line));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -50,5 +47,14 @@ public class StockDAOImpl implements StockDAO {
             }
             return stockPOs;
         }
+    }
+
+
+    private StockPO generateStockPO(String fileLine) {
+        String[] stockInfo = fileLine.split("\t");
+        StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], stockInfo[8], DateUtil.parseSlash(stockInfo[1]),
+                Double.parseDouble(stockInfo[3]), Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
+                Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
+        return stockPO;
     }
 }

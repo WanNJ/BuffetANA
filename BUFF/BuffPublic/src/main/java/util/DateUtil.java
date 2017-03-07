@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
+ * Noninstantiable utility class, used to transfer between String and LocalDate
  * Created by slow_time on 2017/3/5.
  */
 public class DateUtil {
@@ -14,10 +15,14 @@ public class DateUtil {
     private static final String DATE_PATTERN_SLASH = "M/d/yy";
 
     // The date formatter.
-    private static final DateTimeFormatter DATE_FORMATTER_LINE =
-            DateTimeFormatter.ofPattern(DATE_PATTERN_LINE);
-    private static final DateTimeFormatter DATE_FORMATTER_SLASH =
-            DateTimeFormatter.ofPattern(DATE_PATTERN_SLASH);
+    private static final DateTimeFormatter DATE_FORMATTER_LINE = DateTimeFormatter.ofPattern(DATE_PATTERN_LINE);
+    private static final DateTimeFormatter DATE_FORMATTER_SLASH = DateTimeFormatter.ofPattern(DATE_PATTERN_SLASH);
+
+
+    //Suppress default constructor for noninstantiability
+    private DateUtil() {
+        throw new AssertionError();
+    }
 
     /**
      * Returns the given date as a well formatted String. The above defined

@@ -1,5 +1,6 @@
 package blserviceimpl.singlestock;
 
+import blservice.exception.DateIndexException;
 import blservice.singlestock.KLineService;
 import vo.KLinePieceVO;
 
@@ -11,17 +12,17 @@ import java.util.List;
  */
 public class KLineServiceImpl implements KLineService {
     @Override
-    public List<KLinePieceVO> getDailyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
         return null;
     }
 
     @Override
-    public List<KLinePieceVO> getWeeklyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) {
         return null;
     }
 
     @Override
-    public List<KLinePieceVO> getMonthlyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) {
         return null;
     }
 }

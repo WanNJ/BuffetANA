@@ -7,8 +7,8 @@ import java.time.LocalDate;
  */
 public class StockVolVO {
 
-    LocalDate date;
-    long vol;
+    public LocalDate date;
+    public long vol;
 
 
     public StockVolVO() {

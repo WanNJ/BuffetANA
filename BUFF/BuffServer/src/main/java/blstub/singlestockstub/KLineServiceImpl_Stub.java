@@ -1,5 +1,6 @@
 package blstub.singlestockstub;
 
+import blservice.exception.DateIndexException;
 import blservice.singlestock.KLineService;
 import vo.KLinePieceVO;
 
@@ -13,10 +14,9 @@ import java.util.List;
 public class KLineServiceImpl_Stub implements KLineService {
 
     @Override
-    public List<KLinePieceVO> getDailyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
         if(beginDate.isAfter(endDate)) {
-            System.out.println("beginDate cannot be after endDate");
-            return null;
+            throw new DateIndexException(beginDate, endDate);
         }
         List<KLinePieceVO> kLinePieceVOs = new ArrayList<>();
         int temp = 0;
@@ -27,16 +27,21 @@ public class KLineServiceImpl_Stub implements KLineService {
             temp++;
             beginDate = beginDate.plusDays(1);
         }
+        kLinePieceVOs.sort((kLinePieceVO1, kLinePieceVO2) -> {
+            if(kLinePieceVO1.date.isEqual(kLinePieceVO2.date))
+                return 0;
+            return kLinePieceVO1.date.isBefore(kLinePieceVO2.date) ? -1 : 1;
+        });
         return kLinePieceVOs;
     }
 
     @Override
-    public List<KLinePieceVO> getWeeklyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) {
         return null;
     }
 
     @Override
-    public List<KLinePieceVO> getMonthlyssKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) {
         return null;
     }
 }

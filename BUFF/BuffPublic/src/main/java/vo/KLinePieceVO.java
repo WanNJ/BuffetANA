@@ -7,11 +7,11 @@ import java.time.LocalDate;
  */
 public class KLinePieceVO {
 
-    LocalDate date;
-    double highPrice;
-    double lowPrice;
-    double openPrice;
-    double closePrice;
+    public LocalDate date;
+    public double highPrice;
+    public double lowPrice;
+    public double openPrice;
+    public double closePrice;
 
     public KLinePieceVO() {
 

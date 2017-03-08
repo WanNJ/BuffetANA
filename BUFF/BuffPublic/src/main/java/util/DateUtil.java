@@ -83,4 +83,15 @@ public class DateUtil {
             return null;
         }
     }
+
+    /**
+     * 用来判断所给日期是否在某两个日期之间，与两个日期相等也算在两者之间
+     * @param testDate 待判断的日期
+     * @param beginDate 起始日期
+     * @param endDate 结束日期
+     * @return
+     */
+    public static boolean isBetween(LocalDate testDate, LocalDate beginDate, LocalDate endDate) {
+        return !(testDate.isAfter(endDate) || testDate.isBefore(beginDate));
+    }
 }

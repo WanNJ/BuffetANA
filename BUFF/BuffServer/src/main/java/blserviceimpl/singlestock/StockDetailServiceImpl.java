@@ -27,7 +27,7 @@ public enum StockDetailServiceImpl implements StockDetailService {
 
 
     StockDetailServiceImpl() {
-        DAOFactoryService factory = new DAOFactoryServiceImpl();
+        factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
         code = "";
     }

@@ -1,5 +1,6 @@
 package blservice.singlestock;
 
+import blservice.exception.DateIndexException;
 import vo.KLinePieceVO;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public interface KLineService {
      * @param endDate 日K线图的结束日期
      * @return
      */
-    List<KLinePieceVO> getDailyssKLine(String code, LocalDate beginDate, LocalDate endDate);
+    List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException;
 
     /**
      * 用户进行具体个股周K线图搜索时，调用的方法
@@ -26,7 +27,7 @@ public interface KLineService {
      * @param endDate 周K线图的结束日期
      * @return
      */
-    List<KLinePieceVO> getWeeklyssKLine(String code, LocalDate beginDate, LocalDate endDate);
+    List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate);
 
     /**
      * 用户进行具体个股月K线图搜索时，调用的方法
@@ -35,5 +36,5 @@ public interface KLineService {
      * @param endDate 月K线图的结束日期
      * @return
      */
-    List<KLinePieceVO> getMonthlyssKLine(String code, LocalDate beginDate, LocalDate endDate);
+    List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate);
 }

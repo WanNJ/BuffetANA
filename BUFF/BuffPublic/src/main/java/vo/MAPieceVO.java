@@ -7,13 +7,13 @@ import java.time.LocalDate;
  */
 public class MAPieceVO {
 
-    double MA5;
-    double MA10;
-    double MA30;
-    double MA60;
-    double MA120;
-    double MA240;
-    LocalDate date;
+    public double MA5;
+    public double MA10;
+    public double MA30;
+    public double MA60;
+    public double MA120;
+    public double MA240;
+    public  LocalDate date;
 
 
     public MAPieceVO() {

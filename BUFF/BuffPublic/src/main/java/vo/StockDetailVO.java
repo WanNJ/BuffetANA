@@ -4,15 +4,15 @@ package vo;
  * Created by slow_time on 2017/3/5.
  */
 public class StockDetailVO {
-    double highPrice;
-    double lowPrice;
-    double openPrice;
-    double closePrice;
-    long vol;
+    public double highPrice;
+    public double lowPrice;
+    public double openPrice;
+    public double closePrice;
+    public  long vol;
     /**
      * 复权收盘指数
      */
-    double adjCloseIndex;
+    public double adjCloseIndex;
 
     public StockDetailVO() {
 

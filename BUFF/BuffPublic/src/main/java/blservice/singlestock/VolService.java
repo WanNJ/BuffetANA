@@ -1,5 +1,6 @@
 package blservice.singlestock;
 
+import blservice.exception.DateIndexException;
 import vo.StockVolVO;
 
 import java.time.LocalDate;
@@ -17,5 +18,5 @@ public interface VolService {
      * @param endDate
      * @return
      */
-    List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate);
+    List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException;
 }

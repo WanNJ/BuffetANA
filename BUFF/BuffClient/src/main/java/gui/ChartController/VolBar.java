@@ -4,6 +4,8 @@ import javafx.scene.Group;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Region;
 
+import java.time.LocalDate;
+
 /**
  * Created by wshwbluebird on 2017/3/8.
  */
@@ -31,7 +33,7 @@ public class VolBar extends Group {
         setAutoSizeChildren(false);
         getChildren().addAll(bar);
         updateStyleClasses_Eastern();
-        tooltip.setGraphic(new TooltipContentCandleStick());
+        tooltip.setGraphic(new TooltipContentVolStick());
         Tooltip.install(bar, tooltip);
     }
 
@@ -40,13 +42,19 @@ public class VolBar extends Group {
 
     }
 
+    /**
+     * 更新每个柱状图节点的数值
+     * @param heightOffset
+     * @param candleWidth
+     * @param openAboveClose
+     */
     public void update(double heightOffset, double candleWidth,boolean openAboveClose ) {
         //提前设置 bar的宽度  不然会有问题
         if (candleWidth == -1) {
             candleWidth = bar.prefWidth(-1);
         }
         this.openAboveClose = openAboveClose;
-        System.out.println( "vol    "+heightOffset+" "+ candleWidth+"  "+ openAboveClose);
+        //System.out.println( "vol    "+heightOffset+" "+ candleWidth+"  "+ openAboveClose);
         //更新CSS 参数
         updateStyleClasses_Eastern();
 
@@ -54,8 +62,23 @@ public class VolBar extends Group {
         bar.resizeRelocate(-candleWidth / 2, 0, candleWidth, heightOffset);
     }
 
+
     /**
-     * 为画出的
+     * 更新工具存储栏的信息
+     * @param date
+     * @param vol
+     * @param change
+     * @param rate
+     */
+    public void updateTooltip(LocalDate date, long vol, long change, double rate) {
+        TooltipContentVolStick tooltipContentVolStick = (TooltipContentVolStick) tooltip.getGraphic();
+        //System.out.println();
+        tooltipContentVolStick.update(date, vol, change, rate);
+        // tooltip.setText("Open: "+open+"\nClose: "+close+"\nHigh: "+high+"\nLow: "+low);
+    }
+
+    /**
+     * 为画出的bar  添加CSS
      */
     private void updateStyleClasses_Eastern(){
         getStyleClass().setAll("volestick-vol");

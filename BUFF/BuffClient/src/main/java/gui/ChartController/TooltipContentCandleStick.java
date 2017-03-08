@@ -20,10 +20,12 @@ class TooltipContentCandleStick extends GridPane {
         Label close = new Label("收盘:");
         Label high = new Label("最高:");
         Label low = new Label("最低:");
+
         open.getStyleClass().add("candlestick-tooltip-label");
         close.getStyleClass().add("candlestick-tooltip-label");
         high.getStyleClass().add("candlestick-tooltip-label");
         low.getStyleClass().add("candlestick-tooltip-label");
+
         setConstraints(open, 0, 0);  //参数：Node  column row
         setConstraints(openValue, 1, 0);
         setConstraints(close, 0, 1);

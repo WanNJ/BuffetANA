@@ -21,7 +21,7 @@ public class VolExtraVO {
     /**
      * 成交量
      */
-    public long vol;
+    public long volume;
     /**
      * 与前一日相比的变化率
      *
@@ -31,7 +31,7 @@ public class VolExtraVO {
     /**
      * 与前一日相比的变化值
      */
-    public double changeValue;
+    public long changeValue;
 
     /**
      * 开盘价是否高于收盘价
@@ -46,15 +46,15 @@ public class VolExtraVO {
     /**
      * 全部数据初始化构造方法
      * @param date
-     * @param vol
+     * @param volume
      * @param changeRate
      * @param changeValue
      */
-    public VolExtraVO(LocalDate date, long vol, double changeRate, double changeValue,boolean openAboveClose){
-        this.changeRate = changeRate;
+    public VolExtraVO(LocalDate date, long volume, double changeRate, long changeValue,boolean openAboveClose){
+        this.changeValue = changeValue;
         this.changeRate = changeRate;
         this.date = date;
-        this.vol = vol;
+        this.volume = volume;
         this.openAboveClose = openAboveClose;
     }
 
@@ -63,7 +63,7 @@ public class VolExtraVO {
      * @param stockVolVO
      */
     public VolExtraVO(StockVolVO stockVolVO){
-        this.vol = stockVolVO.vol;
+        this.volume = stockVolVO.vol;
         this.openAboveClose = stockVolVO.openAboveClose;
         this.date = stockVolVO.date;
         this.changeRate  = 0;

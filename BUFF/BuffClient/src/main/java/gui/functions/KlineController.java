@@ -25,7 +25,7 @@ public class KlineController {
     @FXML
     private void initialize() {
         LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 10, 30);
+        LocalDate second = LocalDate.of(2015, 10, 10);
         KLineServiceImpl_Stub kLineServiceImpl_stub = new KLineServiceImpl_Stub();
         List<KLinePieceVO>  vos  = null;
         try {

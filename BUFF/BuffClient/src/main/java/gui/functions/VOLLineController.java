@@ -27,7 +27,7 @@ public class VOLLineController {
     @FXML
     private void initialize() {
         LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 11, 10);
+        LocalDate second = LocalDate.of(2015, 10, 10);
         VolServiceImpl_Stub volServiceImpl_stub  =  new VolServiceImpl_Stub();
 
         List<StockVolVO> vos  = null;

@@ -191,11 +191,11 @@ public class VolBarChart extends XYChart<String,Number> {
 
                 //  实体化 自定义的组件图像
                 if (itemNode instanceof VolBar && extra != null) {
-                     System.out.println("iam a bar");
+                     //System.out.println("iam a bar");
                     VolBar volBar = (VolBar) itemNode;
 
-
-                    double high = getYAxis().getDisplayPosition(extra.vol);
+                    //System.out.println("extra:  "+extra.volume);
+                    double high = getYAxis().getDisplayPosition(0);
                     double low = getYAxis().getDisplayPosition(0);
 
                     // calculate candle width
@@ -203,7 +203,7 @@ public class VolBarChart extends XYChart<String,Number> {
 
                     // update candle
                     volBar.update(high - y, candleWidth, extra.openAboveClose);
-
+                    volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
                     // position the candle
                     volBar.setLayoutX(x);
                     volBar.setLayoutY(y);
@@ -289,14 +289,19 @@ public class VolBarChart extends XYChart<String,Number> {
 
             //计算额外附加值
             VolExtraVO volExtraVO =  new VolExtraVO();
+            volExtraVO.date = vo.date;
+
             if(i!=0){
                 StockVolVO last =  stockVolVOs.get(i-1);
                 volExtraVO.changeValue = vo.vol - last.vol;
                 volExtraVO.openAboveClose = vo.openAboveClose;
+                volExtraVO.volume = vo.vol;
+
 
                 //为了保险起见还是检验一下吧!!!!
+                System.out.println("last:  "+last.vol);
                 if(last.vol!=0){
-                    volExtraVO.changeRate =  volExtraVO.changeValue/last.vol;
+                    volExtraVO.changeRate =  (double)volExtraVO.changeValue*100/last.vol;
                 }
             }
 

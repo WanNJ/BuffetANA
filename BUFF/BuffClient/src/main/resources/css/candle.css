@@ -37,12 +37,7 @@
 
 
 
-.candlestick-tooltip-label {
-    -fx-font-size: 0.75em;
-    -fx-font-weight: bold;
-    -fx-text-fill: #666666;
-    -fx-padding: 2 5 2 0;
-}
+
 
 .candlestick-average-line {   /**/
     -fx-stroke: rgba(205, 206, 0, 0.51);

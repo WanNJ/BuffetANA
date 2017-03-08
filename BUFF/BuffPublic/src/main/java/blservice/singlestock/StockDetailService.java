@@ -1,10 +1,10 @@
 package blservice.singlestock;
 
+import javafx.collections.ObservableList;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by slow_time on 2017/3/5.
@@ -24,5 +24,5 @@ public interface StockDetailService {
      * @param code 个股的名称编码
      * @return 某一个股每一天的简要信息
      */
-    List<StockBriefInfoVO> getStockBriefInfo(String code);
+    ObservableList<StockBriefInfoVO> getStockBriefInfo(String code);
 }

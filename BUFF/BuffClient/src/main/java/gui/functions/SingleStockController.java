@@ -1,6 +1,9 @@
 package gui.functions;
 
+import blservice.singlestock.StockDetailService;
 import com.jfoenix.controls.JFXDatePicker;
+import factory.BlFactoryService;
+import factory.BlFactoryServiceImpl;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -8,14 +11,15 @@ import io.datafx.controller.flow.FlowHandler;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import vo.KLinePieceVO;
+import javafx.util.Callback;
+import vo.StockBriefInfoVO;
+import vo.StockDetailVO;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -45,7 +49,6 @@ public class SingleStockController {
     @FXML
     private Label closeIndexLabel;
     @FXML
-
     private Label highIndexLabel;
     @FXML
     private Label lowIndexLabel;
@@ -54,13 +57,13 @@ public class SingleStockController {
     @FXML
     private Label adjCloseIndexLabel;
     @FXML
-    private TableView<KLinePieceVO> stockDetailsTable;
+    private TableView<StockBriefInfoVO> stockDetailsTable;
     @FXML
-    private TableColumn<KLinePieceVO, LocalDate> dateColum;
+    private TableColumn<StockBriefInfoVO, LocalDate> dateColum;
     @FXML
-    private TableColumn<KLinePieceVO, Double> closeIndexColum;
+    private TableColumn<StockBriefInfoVO, Number> closeIndexColum;
     @FXML
-    private TableColumn<KLinePieceVO, Double> rangeColum;
+    private TableColumn<StockBriefInfoVO, Number> rangeColum;
 
 
     
@@ -68,8 +71,18 @@ public class SingleStockController {
 
     private FlowHandler  LineHandler;
 
+    private StockDetailService stockDetailService;
+    private BlFactoryService factory;
+    private String code;
+
     @PostConstruct
     public void init() throws FlowException, VetoException {
+
+        //初始化所要用到的逻辑层接口
+        factory = new BlFactoryServiceImpl();
+        stockDetailService = factory.createStockDetailService();
+
+        //初始化界面用到的各种控件
         datePicker.setDialogParent(root);
 
         context = new ViewFlowContext();
@@ -80,6 +93,47 @@ public class SingleStockController {
         context.register("LineHandler", LineHandler);
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
         borderPane.setCenter(LineHandler.start());
+
+        //为日期选择器绑定监听器
+        final Callback<DatePicker, DateCell> dayCellFactory =
+                new Callback<DatePicker, DateCell>() {
+                    @Override
+                    public DateCell call(final DatePicker datePicker) {
+                        return new DateCell() {
+                            @Override
+                            public void updateItem(LocalDate item, boolean empty) {
+                                super.updateItem(item, empty);
+                                showStockDetails(item);
+                            }
+                        };
+                    }
+                };
+        datePicker.setDayCellFactory(dayCellFactory);
+        //为股票简要信息列表绑定监听器
+        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showStockDetails(newValue.date.get())
+        );
     }
 
+    public void setStockCode(String code) {
+        this.code = code;
+    }
+
+    private void showStockDetails(LocalDate date) {
+        StockDetailVO stockDetailVO = stockDetailService.getSingleStockDetails(code, date);
+        openIndexLabel.setText(String.valueOf(stockDetailVO.openPrice));
+        closeIndexLabel.setText(String.valueOf(stockDetailVO.closePrice));
+        highIndexLabel.setText(String.valueOf(stockDetailVO.highPrice));
+        lowIndexLabel.setText(String.valueOf(stockDetailVO.lowPrice));
+        volLabel.setText(String.valueOf(stockDetailVO.vol));
+        adjCloseIndexLabel.setText(String.valueOf(stockDetailVO.adjCloseIndex));
+    }
+
+    private void showStockBriefInfo() {
+        ObservableList<StockBriefInfoVO> stockBriefInfoVOs = stockDetailService.getStockBriefInfo(code);
+        stockDetailsTable.setItems(stockBriefInfoVOs);
+        dateColum.setCellValueFactory(cellData -> cellData.getValue().date);
+        closeIndexColum.setCellValueFactory(cellData -> cellData.getValue().closePrice);
+        rangeColum.setCellValueFactory(cellData -> cellData.getValue().range);
+    }
 }

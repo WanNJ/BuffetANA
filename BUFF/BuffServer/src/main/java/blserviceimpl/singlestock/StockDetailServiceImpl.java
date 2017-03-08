@@ -5,12 +5,13 @@ import blserviceimpl.util.PO2VOUtil;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import po.StockPO;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,14 +53,14 @@ public enum StockDetailServiceImpl implements StockDetailService {
     }
 
     @Override
-    public List<StockBriefInfoVO> getStockBriefInfo(String code) {
+    public ObservableList<StockBriefInfoVO> getStockBriefInfo(String code) {
         if(!code.equals(this.code)) {
             this.code = code;
             this.stockPOs = stockDAO.getStockInfoByCode(code);
         }
 
         if(stockPOs != null && stockPOs.size() > 0) {
-            List<StockBriefInfoVO> stockBriefInfoVOs = new ArrayList<>();
+            ObservableList<StockBriefInfoVO> stockBriefInfoVOs = FXCollections.observableArrayList();
             StockPO stockPO1 = stockPOs.get(0);
             for(StockPO stockPO2 : stockPOs) {
                 StockBriefInfoVO stockBriefInfoVO = PO2VOUtil.stockPO2StockBriefInfoVO(stockPO1, stockPO2);

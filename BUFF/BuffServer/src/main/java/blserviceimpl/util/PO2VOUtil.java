@@ -1,6 +1,7 @@
 package blserviceimpl.util;
 
 import po.StockPO;
+import vo.KLinePieceVO;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 
@@ -37,5 +38,10 @@ public class PO2VOUtil {
         StockBriefInfoVO stockBriefInfoVO = new StockBriefInfoVO(stockPO2.getName(), stockPO2.getDate(), stockPO2.getCode(),
                 stockPO2.getClose_Price(), (stockPO2.getClose_Price() - stockPO1.getClose_Price()) / stockPO1.getClose_Price());
         return stockBriefInfoVO;
+    }
+
+    public static KLinePieceVO stockPO2KLinePieceVO(StockPO stockPO) {
+        return new KLinePieceVO(stockPO.getDate(), stockPO.getHigh_Price(), stockPO.getLow_Price(),
+                stockPO.getOpen_Price(), stockPO.getClose_Price());
     }
 }

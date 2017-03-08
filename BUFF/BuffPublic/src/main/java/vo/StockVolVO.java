@@ -9,14 +9,16 @@ public class StockVolVO {
 
     public LocalDate date;
     public long vol;
+    public boolean openAboveClose;
 
 
     public StockVolVO() {
 
     }
 
-    public StockVolVO(LocalDate date, long vol) {
+    public StockVolVO(LocalDate date, long vol,boolean openAboveClose) {
         this.date = date;
         this.vol = vol;
+        this.openAboveClose = openAboveClose;
     }
 }

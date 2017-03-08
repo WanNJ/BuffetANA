@@ -335,6 +335,7 @@ public class KLineChart extends XYChart<String, Number> {
             kLineChart.getData().add(series);
         }
         kLineChart.setData(data);
+
         //System.out.println("datasize:   "+data.size());
         double curWidth = HpixelPerValue*kLinePieceVOs .size();
         if(curWidth<Width){

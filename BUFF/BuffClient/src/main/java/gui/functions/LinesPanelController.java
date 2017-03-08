@@ -15,6 +15,7 @@ import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 import javax.annotation.PostConstruct;
@@ -47,6 +48,8 @@ public class LinesPanelController {
 
         private FlowHandler KLineHandler;
 
+        private FlowHandler VOLHandler;
+
 //        @FXML
 //        private void initialize() {
 //        try {
@@ -76,33 +79,24 @@ public class LinesPanelController {
     @PostConstruct
     public void init() throws FlowException, VetoException {
 
-//        context = new ViewFlowContext();
-//        // set the default controller
-//        Flow innerFlow = new Flow(KlineController.class);
-//
-//        KLineHandler = innerFlow.createHandler(context);
-//        context.register("KLineHandler", KLineHandler);
-//        //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-//        gridPane.getChildren().add(KLineHandler.start());
+// context = new ViewFlowContext();
+        // set the default controller
+        Flow klineFlow = new Flow(KlineController.class);
+        Flow volFlow = new Flow(VOLLineController.class);
+        KLineHandler = klineFlow.createHandler(context);
+        VOLHandler = volFlow.createHandler(context);
+        context.register("KLineHandler", KLineHandler);
+        context.register("VOLHandler", VOLHandler);
+        //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
+        gridPane.addRow(1,KLineHandler.start());
+        gridPane.addRow(2,VOLHandler.start());
     }
 
 
 
         @FXML
         private void handleMAtoggle() throws FlowException {
-//            if(MAtoggle.isSelected()){
-//                gridPane.getChildren().add(MALineChild);
-//            }else{
-//                gridPane.getChildren().remove(MALineChild);
-//            }
-            context = new ViewFlowContext();
-            // set the default controller
-            Flow innerFlow = new Flow(KlineController.class);
 
-            KLineHandler = innerFlow.createHandler(context);
-            context.register("KLineHandler", KLineHandler);
-            //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-            gridPane.getChildren().add(KLineHandler.start());
 
         }
 

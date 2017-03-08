@@ -1,5 +1,6 @@
 package gui.functions;
 
+import blservice.exception.DateIndexException;
 import blstub.singlestockstub.KLineServiceImpl_Stub;
 import gui.ChartController.KLineChart;
 import io.datafx.controller.FXMLController;
@@ -26,7 +27,12 @@ public class KlineController {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 10, 30);
         KLineServiceImpl_Stub kLineServiceImpl_stub = new KLineServiceImpl_Stub();
-        List<KLinePieceVO>  vos  = (kLineServiceImpl_stub.getDailyssKLine("code",first,second));
+        List<KLinePieceVO>  vos  = null;
+        try {
+            vos = kLineServiceImpl_stub.getDailyKLine("code",first,second);
+        } catch (DateIndexException e) {
+            e.printStackTrace();
+        }
         ObservableList<KLinePieceVO> dayList=  FXCollections.observableArrayList();
         for (KLinePieceVO temp : vos) {
             dayList.add(temp);

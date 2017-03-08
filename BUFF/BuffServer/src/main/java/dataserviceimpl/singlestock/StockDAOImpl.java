@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by slow_time on 2017/3/5.
+ * Created by slow_time on 2017/3/8.
  */
-public class StockDAOImpl implements StockDAO {
+public enum StockDAOImpl implements StockDAO{
+    STOCK_DAO_IMPL;
+
     @Override
     public List<StockPO> getStockInfoByCode(String code) {
         String codeFile = "/Users/slow_time/BuffettANA/Data/Code/" + code + ".csv";

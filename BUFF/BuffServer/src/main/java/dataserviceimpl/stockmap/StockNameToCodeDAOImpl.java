@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by slow_time on 2017/3/5.
+ * Created by slow_time on 2017/3/8.
  */
-public class StockNameToCodeDAOImpl implements StockNameToCodeDAO {
+public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
+    STOCK_NAME_TO_CODE_DAO_IMPL;
 
     public static final String MAP_FILENAME = "/Users/slow_time/BuffettANA/Data/StockMap.csv";
 

@@ -11,11 +11,11 @@ import dataserviceimpl.stockmap.StockNameToCodeDAOImpl;
 public class DAOFactoryServiceImpl implements DAOFactoryService {
     @Override
     public StockDAO createStockDAO() {
-        return new StockDAOImpl();
+        return StockDAOImpl.STOCK_DAO_IMPL;
     }
 
     @Override
     public StockNameToCodeDAO createStockNameToCodeDAO() {
-        return new StockNameToCodeDAOImpl();
+        return StockNameToCodeDAOImpl.STOCK_NAME_TO_CODE_DAO_IMPL;
     }
 }

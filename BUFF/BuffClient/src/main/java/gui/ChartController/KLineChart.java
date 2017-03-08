@@ -3,7 +3,6 @@ package gui.ChartController;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.ScheduledService;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -24,6 +23,11 @@ import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/7.
+ */
+
+
+/**
+ * K 线图
  */
 public class KLineChart extends XYChart<String, Number> {
 
@@ -238,6 +242,8 @@ public class KLineChart extends XYChart<String, Number> {
                 seriesPath = (Path) series.getNode();
                 seriesPath.getElements().clear();
             }
+
+            //迭代  获取每一个要画的node
             while (iter.hasNext()) {
                 Data<String, Number> item = iter.next();
 
@@ -247,10 +253,10 @@ public class KLineChart extends XYChart<String, Number> {
                 double y = getYAxis().getDisplayPosition(getCurrentDisplayedYValue(item));
 
                 Node itemNode = item.getNode();
-                KLineExtraVO extra = (KLineExtraVO) item.getExtraValue()
+                KLineExtraVO extra = (KLineExtraVO) item.getExtraValue();
 
 
-                        ;
+                //  实体化 自定义的组件图像
                 if (itemNode instanceof Candle && extra != null) {
                     // System.out.println("iam a candle");
                     Candle candle = (Candle) itemNode;

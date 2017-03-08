@@ -110,11 +110,11 @@ public class LinesPanelController {
         }
 
         @FXML
-        private void handleVOLtoggle(){
+        private void handleVOLtoggle() throws FlowException {
             if(VOLToggle.isSelected()){
-                gridPane.getChildren().add(VOLLineChild);
+                gridPane.addRow(2,VOLHandler.start());
             }else{
-                gridPane.getChildren().remove(VOLLineChild);
+                gridPane.getChildren().remove(VOLHandler);
             }
         }
 

@@ -37,7 +37,7 @@ public class KlineController {
         for (KLinePieceVO temp : vos) {
             dayList.add(temp);
         }
-        System.out.println("list size:   "+dayList.size());
+        //System.out.println("list size:   "+dayList.size());
         KLineChart candleStickChart = KLineChart.createChart(dayList);
         DayLinePane.centerProperty().setValue(candleStickChart);
 

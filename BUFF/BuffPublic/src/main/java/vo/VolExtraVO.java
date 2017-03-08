@@ -37,7 +37,7 @@ public class VolExtraVO {
      * 开盘价是否高于收盘价
      * 决定颜色用
      */
-    boolean openAboveClose;
+    public boolean openAboveClose;
 
     public VolExtraVO(){
 
@@ -68,5 +68,6 @@ public class VolExtraVO {
         this.date = stockVolVO.date;
         this.changeRate  = 0;
         this.changeValue = 0;
+        this.openAboveClose = false;
     }
 }

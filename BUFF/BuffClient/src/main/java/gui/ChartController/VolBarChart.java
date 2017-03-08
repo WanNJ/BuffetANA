@@ -1,15 +1,23 @@
 package gui.ChartController;
 
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.util.Duration;
 import vo.KLineExtraVO;
-import vo.KLinePieceVO;
 import vo.StockVolVO;
 import vo.VolExtraVO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/8.
@@ -50,34 +58,200 @@ public class VolBarChart extends XYChart<String,Number> {
         setData(data);
     }
 
+    /**
+     *
+     * @param series
+     * @param itemIndex
+     * @param item
+     */
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
-
+        Node volbar = createVolbar(getData().indexOf(series), item, itemIndex);
+        if (shouldAnimate()) {
+            volbar.setOpacity(0);// 设置不透明
+            getPlotChildren().add(volbar);
+            // fade in new candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+            ft.setToValue(1);
+            ft.play();
+        } else {
+            getPlotChildren().add(volbar);
+        }
+        // always draw average line on top
+        if (series.getNode() != null) {
+            series.getNode().toFront();
+        }
     }
 
     @Override
     protected void dataItemRemoved(Data<String, Number> item, Series<String, Number> series) {
+        final Node volbar = item.getNode();
+        if (shouldAnimate()) {
+            // fade out old candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+            ft.setToValue(0);
+            ft.setOnFinished(new EventHandler<ActionEvent>() {
 
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    getPlotChildren().remove(volbar);
+                }
+            });
+            ft.play();
+        } else {
+            getPlotChildren().remove(volbar);
+        }
     }
 
     @Override
     protected void dataItemChanged(Data<String, Number> item) {
+        final Node volbar = item.getNode();
+        if (shouldAnimate()) {
+            // fade out old candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+            ft.setToValue(0);
+            ft.setOnFinished(new EventHandler<ActionEvent>() {
 
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    getPlotChildren().remove(volbar);
+                }
+            });
+            ft.play();
+        } else {
+            getPlotChildren().remove(volbar);
+        }
     }
 
     @Override
     protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
-
+        for (int j = 0; j < series.getData().size(); j++) {
+            Data item = series.getData().get(j);
+            Node volbar = createVolbar(seriesIndex, item, j);
+            if (shouldAnimate()) {
+                volbar.setOpacity(0);
+                getPlotChildren().add(volbar);
+                // fade in new candle
+                FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+                ft.setToValue(1);
+                ft.play();
+            } else {
+                getPlotChildren().add(volbar);
+            }
+        }
     }
 
     @Override
     protected void seriesRemoved(Series<String, Number> series) {
+        for (XYChart.Data<String, Number> d : series.getData()) {
+            final Node volBar = d.getNode();
+            if (shouldAnimate()) {
+                // fade out old candle
+                FadeTransition ft = new FadeTransition(Duration.millis(500), volBar);
+                ft.setToValue(0);
+                ft.setOnFinished(new EventHandler<ActionEvent>() {
 
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        getPlotChildren().remove(volBar);
+                    }
+                });
+                ft.play();
+            } else {
+                getPlotChildren().remove(volBar);
+            }
+        }
     }
 
     @Override
     protected void layoutPlotChildren() {
+        // 如果没有数据  直接返回
+        if (getData() == null) {
+            return;
+        }
+        // 根据序列数据的数量 在图上画点
 
+        for (int seriesIndex = 0; seriesIndex < getData().size(); seriesIndex++) {
+            Series<String, Number> series = getData().get(seriesIndex);
+            Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);
+
+
+            //迭代  获取每一个要画的node
+            while (iter.hasNext()) {
+                Data<String, Number> item = iter.next();
+
+                // 根据x的值得到绘图中的像素点横坐标
+                double x = getXAxis().getDisplayPosition(getCurrentDisplayedXValue(item));
+                // 根据y的值得到绘图中的像素点纵坐标
+                double y = getYAxis().getDisplayPosition(getCurrentDisplayedYValue(item));
+
+                Node itemNode = item.getNode();
+                VolExtraVO extra = (VolExtraVO) item.getExtraValue();
+
+
+                //  实体化 自定义的组件图像
+                if (itemNode instanceof VolBar && extra != null) {
+                     System.out.println("iam a bar");
+                    VolBar volBar = (VolBar) itemNode;
+
+
+                    double high = getYAxis().getDisplayPosition(extra.vol);
+                    double low = getYAxis().getDisplayPosition(0);
+
+                    // calculate candle width
+                    double candleWidth = -1;
+
+                    // update candle
+                    volBar.update(high - y, candleWidth, extra.openAboveClose);
+
+                    // position the candle
+                    volBar.setLayoutX(x);
+                    volBar.setLayoutY(y);
+                }
+
+            }
+        }
+    }
+
+    /**
+     *更新轴宽调整数据
+     */
+    @Override
+    protected void updateAxisRange(){
+        final Axis<String> xa = getXAxis();
+        final Axis<Number> ya = getYAxis();
+        List<String> xData = null;
+        List<Number> yData = null;
+        if (xa.isAutoRanging()) {
+            xData = new ArrayList<String>();
+        }
+        if (ya.isAutoRanging()) {
+            yData = new ArrayList<Number>();
+        }
+        if (xData != null || yData != null) {
+            for (Series<String, Number> series : getData()) {
+                for (Data<String, Number> data : series.getData()) {
+                    if (xData != null) {
+                        xData.add(data.getXValue());
+                    }
+                    if (yData != null) {
+                        KLineExtraVO extras = (KLineExtraVO) data.getExtraValue();
+                        if (extras != null) {
+                            yData.add(extras.getHighPrice());
+                            yData.add(extras.getLowPrice());
+                        } else {
+                            yData.add(data.getYValue());
+                        }
+                    }
+                }
+            }
+            if (xData != null) {
+                xa.invalidateRange(xData);
+            }
+            if (yData != null) {
+                ya.invalidateRange(yData);
+            }
+        }
     }
 
     /**
@@ -118,6 +292,7 @@ public class VolBarChart extends XYChart<String,Number> {
             if(i!=0){
                 StockVolVO last =  stockVolVOs.get(i-1);
                 volExtraVO.changeValue = vo.vol - last.vol;
+                volExtraVO.openAboveClose = vo.openAboveClose;
 
                 //为了保险起见还是检验一下吧!!!!
                 if(last.vol!=0){
@@ -187,5 +362,18 @@ public class VolBarChart extends XYChart<String,Number> {
             }
         }
         return min;
+    }
+
+
+    private Node createVolbar(int seriesIndex, final Data item, int itemIndex) {
+        Node volBar = item.getNode();
+        // check if candle has already been created
+        if (volBar instanceof VolBar) {
+            ((VolBar) volBar).setSeriesAndDataStyleClasses("series" + seriesIndex, "data" + itemIndex);
+        } else {
+            volBar = new VolBar();
+            item.setNode(volBar);
+        }
+        return volBar;
     }
 }

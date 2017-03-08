@@ -18,14 +18,7 @@
                         <VBox prefHeight="550.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox prefHeight="20.0" prefWidth="200.0" />
-                              <LineChart prefHeight="550.0" prefWidth="600.0">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
+                              <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../css/VolBar.css" />
                            </children>
                         </VBox>
                      </children>

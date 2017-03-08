@@ -178,7 +178,7 @@ public class KLineChart extends XYChart<String, Number> {
     }
 
     /**
-     *
+     *更新轴宽调整数据
      */
     @Override
     protected void updateAxisRange() {

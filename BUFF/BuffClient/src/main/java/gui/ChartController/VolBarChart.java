@@ -30,8 +30,8 @@ public class VolBarChart extends XYChart<String,Number> {
 
 
 
-    private static final int  Height=200;
-    private static final int  Width=600;
+    private static final int  Height=600;
+    private static final int  Width=550;
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -201,10 +201,10 @@ public class VolBarChart extends XYChart<String,Number> {
                     // calculate candle width
                     double candleWidth = -1;
 
-                    // update candle
+                    // update volBar
                     volBar.update(high - y, candleWidth, extra.openAboveClose);
                     volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
-                    // position the candle
+                    // position the volBar
                     volBar.setLayoutX(x);
                     volBar.setLayoutY(y);
                 }
@@ -235,10 +235,10 @@ public class VolBarChart extends XYChart<String,Number> {
                         xData.add(data.getXValue());
                     }
                     if (yData != null) {
-                        KLineExtraVO extras = (KLineExtraVO) data.getExtraValue();
+                        VolExtraVO extras = (VolExtraVO) data.getExtraValue();
                         if (extras != null) {
-                            yData.add(extras.getHighPrice());
-                            yData.add(extras.getLowPrice());
+                            yData.add(extras.volume);
+                            yData.add(0);
                         } else {
                             yData.add(data.getYValue());
                         }
@@ -299,7 +299,7 @@ public class VolBarChart extends XYChart<String,Number> {
 
 
                 //为了保险起见还是检验一下吧!!!!
-                System.out.println("last:  "+last.vol);
+                //System.out.println("last:  "+last.vol);
                 if(last.vol!=0){
                     volExtraVO.changeRate =  (double)volExtraVO.changeValue*100/last.vol;
                 }
@@ -328,9 +328,12 @@ public class VolBarChart extends XYChart<String,Number> {
 
         //仿照  确定显示界面的大小
         double curWidth = HpixelPerValue*stockVolVOs .size();
+        System.out.println("Bar:   "+curWidth);
+
         if(curWidth<Width){
             curWidth=Width;
         }
+        System.out.println("Bar:   "+curWidth);
         volBarChart.setPrefSize(curWidth,Height*0.95);
 
 

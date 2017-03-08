@@ -41,7 +41,6 @@ public class TooltipContentVolStick extends GridPane {
 
     public void update(LocalDate date, long vol, long change, double rate) {
         dateValue.setText(date.toString());
-        System.out.println(vol);
         volValue.setText(String.valueOf(vol));
         changeVolValue.setText(String.valueOf(change));
         changeRateValue.setText(String.format("%.5f",rate)+"%");

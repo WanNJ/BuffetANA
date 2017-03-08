@@ -15,21 +15,8 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <LineChart prefHeight="500.0" prefWidth="500.0">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </LineChart>
-                           </children>
-                        </VBox>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <BorderPane fx:id="DayLinePane" prefHeight="521.0" prefWidth="500.0" stylesheets="@../../css/candle.css" />
                      </children>
                   </AnchorPane>
                </content>

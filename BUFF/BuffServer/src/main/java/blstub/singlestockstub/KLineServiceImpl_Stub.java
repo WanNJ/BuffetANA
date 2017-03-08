@@ -21,8 +21,8 @@ public class KLineServiceImpl_Stub implements KLineService {
         List<KLinePieceVO> kLinePieceVOs = new ArrayList<>();
         int temp = 0;
         while(!beginDate.isAfter(endDate)) {
-            KLinePieceVO kLinePieceVO = new KLinePieceVO(beginDate, 11.25 + temp, 10.92 + temp,
-            11.02 + temp, 11.16 + temp);
+            KLinePieceVO kLinePieceVO = new KLinePieceVO(beginDate, 112.5 + temp, 109.2 + temp,
+            110.2 + temp, 111.5 + temp);
             kLinePieceVOs.add(kLinePieceVO);
             temp++;
             beginDate = beginDate.plusDays(1);

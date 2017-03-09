@@ -17,14 +17,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox prefHeight="20.0" prefWidth="200.0" />
-                              <LineChart>
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
+                              <BorderPane fx:id="borderPane" stylesheets="@../../css/MaLine.css" />
                            </children>
                         </VBox>
                      </children>

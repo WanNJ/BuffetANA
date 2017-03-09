@@ -141,16 +141,10 @@ public class SingleStockController {
             showStockDetails(date);
         });
 
-<<<<<<< HEAD
+
         //初始化界面数据
         datePicker.setValue(LocalDate.of(2014, 4, 29));
         this.setStockInfo("1");
-=======
-        //为测试使用的，之后会删去
-        this.code = "1";
-//        showStockDetails(LocalDate.of(2014, 4, 29));
-        //showStockBriefInfo();
->>>>>>> origin/master
     }
 
     public void setStockInfo(String code) {

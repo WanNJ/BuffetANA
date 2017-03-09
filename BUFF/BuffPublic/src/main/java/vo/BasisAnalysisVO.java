@@ -9,4 +9,12 @@ public class BasisAnalysisVO {
     public double openPrice;
     public double closePrice;
     public double changeRate;
+
+    public BasisAnalysisVO() {
+        highPrice = 0;
+        lowPrice = Double.MAX_VALUE;
+        openPrice = 0;
+        closePrice = 0;
+        changeRate = 0;
+    }
 }

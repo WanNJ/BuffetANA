@@ -9,4 +9,9 @@ import java.time.LocalDate;
 public class DailyClosingPriceVO {
     public LocalDate date;
     public double closePrice;
+
+    public DailyClosingPriceVO (LocalDate date, double closePrice) {
+        this.date = date;
+        this.closePrice = closePrice;
+    }
 }

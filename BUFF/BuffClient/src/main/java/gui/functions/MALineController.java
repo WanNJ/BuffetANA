@@ -28,8 +28,9 @@ public class MALineController {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 10, 12);
         MALineService maLineService = new MALineServiceImpl_Stub();
+        List<MAPieceVO> list = null;
         try {
-            List<MAPieceVO> list  = maLineService.getMAInfo("code",first,second);
+            list = maLineService.getMAInfo("code",first,second);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

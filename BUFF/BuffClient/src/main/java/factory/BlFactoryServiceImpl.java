@@ -1,9 +1,6 @@
 package factory;
 
-import blservice.singlestock.KLineService;
-import blservice.singlestock.MALineService;
-import blservice.singlestock.StockDetailService;
-import blservice.singlestock.VolService;
+import blservice.singlestock.*;
 import rmi.RemoteHelper;
 
 /**
@@ -28,5 +25,10 @@ public class BlFactoryServiceImpl implements BlFactoryService {
     @Override
     public VolService createVolService() {
         return RemoteHelper.getInstance().getVolService();
+    }
+
+    @Override
+    public AllStockService createAllStockService() {
+        return RemoteHelper.getInstance().getAllStockService();
     }
 }

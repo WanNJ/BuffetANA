@@ -1,9 +1,6 @@
 package rmi;
 
-import blservice.singlestock.KLineService;
-import blservice.singlestock.MALineService;
-import blservice.singlestock.StockDetailService;
-import blservice.singlestock.VolService;
+import blservice.singlestock.*;
 
 import java.rmi.Remote;
 
@@ -40,6 +37,10 @@ public class RemoteHelper {
 
 	public VolService getVolService() {
 		return (VolService)remote;
+	}
+
+	public AllStockService getAllStockService() {
+		return (AllStockService)remote;
 	}
 	
 }

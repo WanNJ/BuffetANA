@@ -1,6 +1,8 @@
 package dataservice.stockmap;
 
-import java.util.HashMap;
+import po.StockNameAndCodePO;
+
+import java.util.List;
 
 /**
  * 将所有股票的名字与它的编码一一对应
@@ -8,5 +10,5 @@ import java.util.HashMap;
  */
 public interface StockNameToCodeDAO {
 
-    HashMap<String, String> getNameToCodeMap();
+    List<StockNameAndCodePO> getNameToCodeMap();
 }

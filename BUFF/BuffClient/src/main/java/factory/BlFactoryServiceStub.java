@@ -1,9 +1,7 @@
 package factory;
 
-import blservice.singlestock.KLineService;
-import blservice.singlestock.MALineService;
-import blservice.singlestock.StockDetailService;
-import blservice.singlestock.VolService;
+import blservice.singlestock.*;
+import blstub.singlestockstub.AllStockServiceImpl_Stub;
 import blstub.singlestockstub.KLineServiceImpl_Stub;
 import blstub.singlestockstub.StockDetailServiceImpl_Stub;
 import blstub.singlestockstub.VolServiceImpl_Stub;
@@ -15,6 +13,11 @@ public class BlFactoryServiceStub implements BlFactoryService {
     @Override
     public KLineService createKLineService() {
         return new KLineServiceImpl_Stub();
+    }
+
+    @Override
+    public AllStockService createAllStockService() {
+        return new AllStockServiceImpl_Stub();
     }
 
     @Override

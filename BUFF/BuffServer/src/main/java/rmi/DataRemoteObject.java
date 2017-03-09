@@ -1,10 +1,8 @@
 package rmi;
 
 import blservice.exception.DateIndexException;
-import blservice.singlestock.KLineService;
-import blservice.singlestock.MALineService;
-import blservice.singlestock.StockDetailService;
-import blservice.singlestock.VolService;
+import blservice.singlestock.*;
+import blserviceimpl.singlestock.AllStockServiceImpl;
 import blserviceimpl.singlestock.KLineServiceImpl;
 import blserviceimpl.singlestock.StockDetailServiceImpl;
 import blserviceimpl.singlestock.VolServiceImpl;
@@ -15,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.List;
 
-public class DataRemoteObject extends UnicastRemoteObject implements KLineService, MALineService, StockDetailService, VolService {
+public class DataRemoteObject extends UnicastRemoteObject implements KLineService, MALineService, StockDetailService, VolService, AllStockService {
 	/**
 	 *  RMI 接口
 	 */
@@ -24,11 +22,13 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	private MALineService maLineService;
 	private StockDetailService stockDetailService;
 	private VolService volService;
+	private AllStockService allStockService;
 
 	protected DataRemoteObject() throws RemoteException {
 		this.kLineService = KLineServiceImpl.K_LINE_SERVICE;
 		this.stockDetailService = StockDetailServiceImpl.STOCK_DETAIL_SERVICE;
 		this.volService = VolServiceImpl.VOL_SERVICE;
+		this.allStockService = AllStockServiceImpl.ALL_STOCK_SERVICE;
 	}
 
 	@Override
@@ -64,6 +64,11 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	@Override
 	public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
 		return volService.getStockVol(code, beginDate, endDate);
+	}
+
+	@Override
+	public List<StockNameAndCodeVO> getAllStock() throws RemoteException {
+		return allStockService.getAllStock();
 	}
 
 

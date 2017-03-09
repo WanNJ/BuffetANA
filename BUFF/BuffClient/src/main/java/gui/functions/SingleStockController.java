@@ -3,7 +3,7 @@ package gui.functions;
 import blservice.singlestock.StockDetailService;
 import com.jfoenix.controls.JFXDatePicker;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
+import factory.BlFactoryServiceStub;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -14,10 +14,11 @@ import io.datafx.controller.util.VetoException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 
@@ -59,11 +60,11 @@ public class SingleStockController {
     @FXML
     private TableView<StockBriefInfoVO> stockDetailsTable;
     @FXML
-    private TableColumn<StockBriefInfoVO, LocalDate> dateColum;
+    private TableColumn<StockBriefInfoVO, LocalDate> dateColumn;
     @FXML
-    private TableColumn<StockBriefInfoVO, Number> closeIndexColum;
+    private TableColumn<StockBriefInfoVO, Number> closeIndexColumn;
     @FXML
-    private TableColumn<StockBriefInfoVO, Number> rangeColum;
+    private TableColumn<StockBriefInfoVO, Number> rangeColumn;
 
 
     
@@ -79,7 +80,7 @@ public class SingleStockController {
     public void init() throws FlowException, VetoException {
 
         //初始化所要用到的逻辑层接口
-        factory = new BlFactoryServiceImpl();
+        factory = new BlFactoryServiceStub();
         stockDetailService = factory.createStockDetailService();
 
         //初始化界面用到的各种控件
@@ -94,25 +95,17 @@ public class SingleStockController {
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
         borderPane.setCenter(LineHandler.start());
 
+
         //为日期选择器绑定监听器
-        final Callback<DatePicker, DateCell> dayCellFactory =
-                new Callback<DatePicker, DateCell>() {
-                    @Override
-                    public DateCell call(final DatePicker datePicker) {
-                        return new DateCell() {
-                            @Override
-                            public void updateItem(LocalDate item, boolean empty) {
-                                super.updateItem(item, empty);
-                                showStockDetails(item);
-                            }
-                        };
-                    }
-                };
-        datePicker.setDayCellFactory(dayCellFactory);
-        //为股票简要信息列表绑定监听器
-        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showStockDetails(newValue.date.get())
-        );
+        datePicker.setOnAction(event -> {
+            LocalDate date = datePicker.getValue();
+            showStockDetails(date);
+        });
+
+        //为测试使用的，之后会删去
+        this.code = "";
+//        showStockDetails(LocalDate.of(2014, 4, 29));
+        showStockBriefInfo();
     }
 
     public void setStockCode(String code) {
@@ -132,8 +125,12 @@ public class SingleStockController {
     private void showStockBriefInfo() {
         ObservableList<StockBriefInfoVO> stockBriefInfoVOs = stockDetailService.getStockBriefInfo(code);
         stockDetailsTable.setItems(stockBriefInfoVOs);
-        dateColum.setCellValueFactory(cellData -> cellData.getValue().date);
-        closeIndexColum.setCellValueFactory(cellData -> cellData.getValue().closePrice);
-        rangeColum.setCellValueFactory(cellData -> cellData.getValue().range);
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().date);
+        closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePrice);
+        rangeColumn.setCellValueFactory(cellData -> cellData.getValue().range);
+        //为股票简要信息列表绑定监听器
+        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showStockDetails(newValue.date.get())
+        );
     }
 }

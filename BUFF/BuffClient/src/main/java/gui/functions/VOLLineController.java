@@ -1,16 +1,13 @@
 package gui.functions;
 
 import blservice.exception.DateIndexException;
-import blstub.singlestockstub.KLineServiceImpl_Stub;
 import blstub.singlestockstub.VolServiceImpl_Stub;
-import gui.ChartController.KLineChart;
 import gui.ChartController.VolBarChart;
 import io.datafx.controller.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import vo.KLinePieceVO;
 import vo.StockVolVO;
 
 import java.time.LocalDate;
@@ -27,7 +24,7 @@ public class VOLLineController {
     @FXML
     private void initialize() {
         LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 10, 10);
+        LocalDate second = LocalDate.of(2015, 11, 10);
         VolServiceImpl_Stub volServiceImpl_stub  =  new VolServiceImpl_Stub();
 
         List<StockVolVO> vos  = null;

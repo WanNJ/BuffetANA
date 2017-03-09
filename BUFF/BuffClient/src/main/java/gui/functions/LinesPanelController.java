@@ -4,7 +4,9 @@ package gui.functions;
  * Created by wshwbluebird on 2017/3/4.
  */
 
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXToggleButton;
+import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -26,38 +28,43 @@ import java.io.IOException;
 
 @FXMLController(value = "/resources/fxml/ui/LinesPane.fxml" , title = "Lines Pane container")
 public class LinesPanelController {
-        @FXMLViewFlowContext
-        private ViewFlowContext context;
-        @FXML
-        private  JFXToggleButton  MAtoggle;
-        @FXML
-        private  JFXToggleButton  VOLToggle;
-        @FXML
-        private  JFXToggleButton  KDJToggle;
-        @FXML
-        private  JFXToggleButton KLinetoggle;
-        @FXML
-        private  GridPane gridPane;
+    @FXMLViewFlowContext
+    private ViewFlowContext context;
+    @FXML
+    private  JFXToggleButton  MAtoggle;
+    @FXML
+    private  JFXToggleButton  VOLToggle;
+    @FXML
+    private  JFXToggleButton  KDJToggle;
+    @FXML
+    private  JFXToggleButton KLinetoggle;
+    @FXML
+    private  GridPane gridPane;
+    @FXML
+    private JFXDatePicker from;
+    @FXML
+    private JFXDatePicker to;
+    @FXML
+    private StackPane root;
 
+    /**
+     *画图的handler
+     */
+    private FlowHandler KLineHandler;
 
-        /**
-         *画图的handler
-         */
-        private FlowHandler KLineHandler;
+    private FlowHandler VOLHandler;
 
-        private FlowHandler VOLHandler;
+    private FlowHandler MaHandler;
 
-        private FlowHandler MaHandler;
+    /**
+     * 存储加载线程时 生成的容器
+     * add by wsw
+     */
+    private StackPane klinePane;
 
-        /**
-         * 存储加载线程时 生成的容器
-         * add by wsw
-         */
-        private StackPane klinePane;
+    private StackPane volPane;
 
-        private StackPane volPane;
-
-        private StackPane maPane;
+    private StackPane maPane;
 
 //        @FXML
 //        private void initialize() {
@@ -110,7 +117,7 @@ public class LinesPanelController {
         klinePane = KLineHandler.start();
         gridPane.addRow(1,klinePane);
         //gridPane.addRow(3,MaHandler.start());
-       // gridPane.addRow(2,VOLHandler.start());
+        // gridPane.addRow(2,VOLHandler.start());
 
 
         //为每个toggle button添加监听方法
@@ -144,6 +151,12 @@ public class LinesPanelController {
                 e.printStackTrace();
             }
         });
+
+        //初始化界面用到的各种控件
+        from.setDialogParent(root);
+        to.setDialogParent(root);
+        //为日期选择器加上可选范围的控制
+        DatePickerUtil.initDatePicker(from,to);
     }
 
 
@@ -186,5 +199,4 @@ public class LinesPanelController {
             gridPane.getChildren().remove(klinePane);
         }
     }
-
 }

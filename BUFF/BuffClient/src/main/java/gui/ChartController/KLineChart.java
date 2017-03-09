@@ -326,7 +326,7 @@ public class KLineChart extends XYChart<String, Number> {
                     (vo.date.toString(),vo.openPrice,
                             new KLineExtraVO(vo.highPrice,vo.lowPrice,vo.openPrice,vo.closePrice,
                                     (vo.lowPrice+vo.highPrice)/2)));
-            new XYChart.Data<String,Number>();
+            //new XYChart.Data<String,Number>();
         }
         ObservableList<XYChart.Series<String,Number>> data = kLineChart.getData();
 
@@ -365,7 +365,7 @@ public class KLineChart extends XYChart<String, Number> {
                 min = temp.lowPrice;
             }
         }
-        return min;
+        return min<0? 0:min;
     }
 
     /**

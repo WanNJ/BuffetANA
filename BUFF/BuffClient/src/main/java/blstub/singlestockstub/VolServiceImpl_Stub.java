@@ -4,6 +4,7 @@ import blservice.exception.DateIndexException;
 import blservice.singlestock.VolService;
 import vo.StockVolVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Random;
  */
 public class VolServiceImpl_Stub implements VolService{
     @Override
-    public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
+    public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         List<StockVolVO> stockVolVOs = new ArrayList<>();
         Random random = new Random(10);
         while(!beginDate.isAfter(endDate)) {

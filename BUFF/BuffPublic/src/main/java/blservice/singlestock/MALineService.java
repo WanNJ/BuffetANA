@@ -2,13 +2,15 @@ package blservice.singlestock;
 
 import vo.MAPieceVO;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * Created by slow_time on 2017/3/5.
  */
-public interface MALineService {
+public interface MALineService extends Remote {
 
     /**
      * 获得该个股的均线图数据
@@ -17,5 +19,5 @@ public interface MALineService {
      * @param endDate 均线图的结束日期
      * @return
      */
-    List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate);
+    List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 }

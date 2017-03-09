@@ -1,11 +1,12 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/5.
  */
-public class MAPieceVO {
+public class MAPieceVO implements Serializable {
 
     public double MA5;
     public double MA10;

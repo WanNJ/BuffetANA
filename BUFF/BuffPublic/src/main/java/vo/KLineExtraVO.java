@@ -4,10 +4,12 @@ package vo;
  * Created by wshwbluebird on 2017/3/7.
  */
 
+import java.io.Serializable;
+
 /**
  * 用于储存 放在tooltip中的额外信息
  */
-public class KLineExtraVO {
+public class KLineExtraVO implements Serializable {
 
     public double highPrice;
     public double lowPrice;

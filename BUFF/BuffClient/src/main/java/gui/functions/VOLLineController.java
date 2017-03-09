@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import vo.StockVolVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class VOLLineController {
         try {
             vos = volServiceImpl_stub.getStockVol("code",first,second);
         } catch (DateIndexException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
         ObservableList<StockVolVO> dayList=  FXCollections.observableArrayList();

@@ -9,6 +9,7 @@ import po.StockPO;
 import util.DateUtil;
 import vo.StockVolVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public enum VolServiceImpl implements VolService {
     }
 
     @Override
-    public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
+    public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(!code.equals(this.code)) {
             this.code = code;
             this.stockPOs = stockDAO.getStockInfoByCode(code);

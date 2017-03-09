@@ -10,6 +10,7 @@ import po.StockPO;
 import util.DateUtil;
 import vo.KLinePieceVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public enum KLineServiceImpl implements KLineService {
     }
 
     @Override
-    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
+    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(!code.equals(this.code)) {
             this.code = code;
             this.stockPOs = stockDAO.getStockInfoByCode(code);
@@ -57,12 +58,12 @@ public enum KLineServiceImpl implements KLineService {
     }
 
     @Override
-    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         return null;
     }
 
     @Override
-    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         return null;
     }
 }

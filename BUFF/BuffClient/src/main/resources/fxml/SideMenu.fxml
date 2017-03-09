@@ -10,7 +10,7 @@
 	</styleClass>
 	<JFXListView  fx:id="sideList">
 		<Label fx:id="market"> 大盘 </Label>
-		<Label fx:id="SingleStock"> SingleStock </Label>
+		<Label fx:id="SingleStock"> 个股 </Label>
 		<Label fx:id="thermometer"> 市场温度计 </Label>
 	</JFXListView>
 </StackPane>

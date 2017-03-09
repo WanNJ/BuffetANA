@@ -90,43 +90,61 @@ public class LinesPanelController {
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
         gridPane.addRow(1,KLineHandler.start());
         gridPane.addRow(2,VOLHandler.start());
+
+        //为每个toggle button添加监听方法
+        KLinetoggle.setOnAction(event -> handleKLinetoggle());
+        MAtoggle.setOnAction(event -> {
+            try {
+                handleMAtoggle();
+            } catch (FlowException e) {
+                e.printStackTrace();
+            }
+        });
+        VOLToggle.setOnAction(event -> {
+            try {
+                handleVOLtoggle();
+            } catch (FlowException e) {
+                e.printStackTrace();
+            }
+        });
+        KDJToggle.setOnAction(event -> handleKDJtoggle());
     }
 
 
 
-        @FXML
-        private void handleMAtoggle() throws FlowException {
+    @FXML
+    private void handleMAtoggle() throws FlowException {
 
 
+    }
+
+    @FXML
+    private  void handleKDJtoggle(){
+        if(KDJToggle.isSelected()){
+            gridPane.getChildren().add(KDJLineChild);
+        }else{
+            gridPane.getChildren().remove(KDJLineChild);
         }
+    }
 
-        @FXML
-        private  void handleKDJtoggle(){
-            if(KDJToggle.isSelected()){
-                gridPane.getChildren().add(KDJLineChild);
-            }else{
-                gridPane.getChildren().remove(KDJLineChild);
-            }
+    @FXML
+    private void handleVOLtoggle() throws FlowException {
+        if(VOLToggle.isSelected()){
+            gridPane.addRow(2,VOLHandler.start());
+        }else{
+            gridPane.getChildren().remove(VOLHandler);
         }
+    }
 
-        @FXML
-        private void handleVOLtoggle() throws FlowException {
-            if(VOLToggle.isSelected()){
-                gridPane.addRow(2,VOLHandler.start());
-            }else{
-                gridPane.getChildren().remove(VOLHandler);
-            }
+
+    @FXML
+    private void handleKLinetoggle(){
+        if(KLinetoggle.isSelected()){
+            gridPane.getChildren().add(KLineChild);
+        }else{
+            gridPane.getChildren().remove(KLineChild);
         }
-
-
-        @FXML
-        private void handleKLinetoggle(){
-            if(KLinetoggle.isSelected()){
-                gridPane.getChildren().add(KLineChild);
-            }else{
-                gridPane.getChildren().remove(KLineChild);
-            }
-        }
+    }
 
 //        private void loadOnTheScreen(){
 //            gridPane.c

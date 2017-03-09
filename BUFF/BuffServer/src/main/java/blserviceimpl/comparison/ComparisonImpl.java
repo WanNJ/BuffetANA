@@ -80,12 +80,11 @@ public class ComparisonImpl implements ComparisonService{
     @Override
     public List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) {
         dailyLogReturnVOs = new ArrayList<DailyLogReturnVO>();
-        dailyLogReturnVOs.add(new DailyLogReturnVO(dailyClosingPriceVOS.get(0).date, 0));
-        for(int i = 1; i < dailyClosingPriceVOS.size(); i++) {
-            dailyLogReturnVOs.add(new DailyLogReturnVO(dailyClosingPriceVOS.get(i).date,
-                    dailyClosingPriceVOS.get(i - 1).closePrice / dailyClosingPriceVOS.get(i).closePrice));
+        dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(0).getDate(), 0));
+        for(int i = 1; i < specificStockPOs.size(); i++) {
+            dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(i).getDate(),
+                    specificStockPOs.get(i - 1).getAdjCloseIndex() / specificStockPOs.get(i).getAdjCloseIndex()));
         }
-
         return dailyLogReturnVOs;
     }
 

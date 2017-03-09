@@ -65,8 +65,10 @@ public enum StockDetailServiceImpl implements StockDetailService {
             for(StockPO stockPO2 : stockPOs) {
                 StockBriefInfoVO stockBriefInfoVO = PO2VOUtil.stockPO2StockBriefInfoVO(stockPO1, stockPO2);
                 if(stockBriefInfoVO != null)
+                {
                     stockBriefInfoVOs.add(stockBriefInfoVO);
-                stockPO1 = stockPO2;
+                    stockPO1 = stockPO2;
+                }
             }
             return stockBriefInfoVOs;
         }

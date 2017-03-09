@@ -35,7 +35,7 @@ public enum StockDAOImpl implements StockDAO{
      * 执行IO操作
      * 根据所给的文件名，读取出里面所有的股票数据，并转换成PO列表的形式传出去
      * @param fileName 所要查询的文件名
-     * @return 若所给文件不存在，则返回null
+     * @return 若所给文件不存在，则返回null，该方法返回的List已经是按日期从小到大排好序的
      */
     private List<StockPO> generateStockPOs(String fileName) {
         List<StockPO> stockPOs = null;
@@ -52,6 +52,11 @@ public enum StockDAOImpl implements StockDAO{
                         Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
                 stockPOs.add(stockPO);
             }
+            stockPOs.sort((stockPO1, stockPO2) -> {
+                if(stockPO1.getDate().isEqual(stockPO2.getDate()))
+                    return 0;
+                return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
+            });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {

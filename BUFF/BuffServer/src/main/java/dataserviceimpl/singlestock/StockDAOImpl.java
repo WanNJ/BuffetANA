@@ -20,13 +20,13 @@ public enum StockDAOImpl implements StockDAO{
 
     @Override
     public List<StockPO> getStockInfoByCode(String code) {
-        String codeFile = "/Users/slow_time/BuffettANA/Data/Code/" + code + ".csv";
+        String codeFile = "../Data/Code/" + code + ".csv";
         return generateStockPOs(codeFile);
     }
 
     @Override
     public List<StockPO> getStockInfoByDate(LocalDate date) {
-        String timeFile = "/Users/slow_time/BuffettANA/Data/Time/" + DateUtil.formatLine(date) + ".csv";
+        String timeFile = "../Data/Time/" + DateUtil.formatLine(date) + ".csv";
         return generateStockPOs(timeFile);
     }
 

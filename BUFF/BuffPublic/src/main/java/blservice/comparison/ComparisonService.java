@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
+ * 两股比较接口
  * Created by Accident on 2017/3/9.
  */
 public interface ComparisonService {

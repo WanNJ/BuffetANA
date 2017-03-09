@@ -1,11 +1,12 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/5.
  */
-public class KLinePieceVO {
+public class KLinePieceVO implements Serializable {
 
     public LocalDate date;
     public double highPrice;

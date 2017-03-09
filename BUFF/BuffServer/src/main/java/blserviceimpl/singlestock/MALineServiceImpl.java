@@ -3,6 +3,7 @@ package blserviceimpl.singlestock;
 import blservice.singlestock.MALineService;
 import vo.MAPieceVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class MALineServiceImpl implements MALineService {
     @Override
-    public List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         return null;
     }
 }

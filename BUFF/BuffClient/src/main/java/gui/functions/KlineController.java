@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import vo.KLinePieceVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class KlineController {
         try {
             vos = kLineServiceImpl_stub.getDailyKLine("code",first,second);
         } catch (DateIndexException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
         ObservableList<KLinePieceVO> dayList=  FXCollections.observableArrayList();

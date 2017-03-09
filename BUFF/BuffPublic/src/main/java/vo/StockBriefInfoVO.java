@@ -2,23 +2,44 @@ package vo;
 
 import javafx.beans.property.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/5.
  */
-public class StockBriefInfoVO {
-    public StringProperty name;
-    public ObjectProperty<LocalDate> date;
-    public StringProperty code;
-    public DoubleProperty closePrice;
-    public DoubleProperty range;
+public class StockBriefInfoVO implements Serializable {
+    public String name;
+    public LocalDate date;
+    public String code;
+    public double closePrice;
+    public double range;
 
     public StockBriefInfoVO(String name, LocalDate date, String code, double closePrice, double range) {
-        this.name = new SimpleStringProperty(name);
-        this.date = new SimpleObjectProperty<>(date);
-        this.code = new SimpleStringProperty(code);
-        this.closePrice = new SimpleDoubleProperty(closePrice);
-        this.range = new SimpleDoubleProperty(range);
+        this.name = name;
+        this.date = date;
+        this.code = code;
+        this.closePrice = closePrice;
+        this.range = range;
+    }
+
+    public StringProperty nameProperty() {
+        return new SimpleStringProperty(name);
+    }
+
+    public ObjectProperty<LocalDate> dateProperty() {
+        return new SimpleObjectProperty<>(date);
+    }
+
+    public StringProperty codeProperty() {
+        return new SimpleStringProperty(code);
+    }
+
+    public DoubleProperty closePriceProperty() {
+        return new SimpleDoubleProperty(closePrice);
+    }
+
+    public DoubleProperty rangeProperty() {
+        return new SimpleDoubleProperty(range);
     }
 }

@@ -1,11 +1,12 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by slow_time on 2017/3/5.
  */
-public class StockVolVO {
+public class StockVolVO implements Serializable {
 
     public LocalDate date;
     public long vol;

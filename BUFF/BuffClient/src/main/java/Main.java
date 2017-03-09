@@ -1,6 +1,5 @@
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.svg.SVGGlyphLoader;
-import gui.functions.SingleStockController;
 import gui.main.MainController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
@@ -9,12 +8,16 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import runner.ClientRunner;
 
 public class Main extends Application {
 
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
 	public static void main(String[] args) {
+		//启动RMI
+		ClientRunner cr = new ClientRunner();
+
 		launch(args);
 	}
 

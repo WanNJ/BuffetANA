@@ -1,12 +1,13 @@
 package blstub.singlestockstub;
 
 import blservice.singlestock.StockDetailService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by slow_time on 2017/3/8.
@@ -18,8 +19,8 @@ public class StockDetailServiceImpl_Stub implements StockDetailService {
     }
 
     @Override
-    public ObservableList<StockBriefInfoVO> getStockBriefInfo(String code) {
-        ObservableList<StockBriefInfoVO> stockBriefInfoVOs = FXCollections.observableArrayList();
+    public List<StockBriefInfoVO> getStockBriefInfo(String code) throws RemoteException {
+        List<StockBriefInfoVO> stockBriefInfoVOs = new ArrayList<>();
         StockBriefInfoVO stockBriefInfoVO1 = new StockBriefInfoVO("深发展Ａ", LocalDate.of(2014,4,29), "1", 11.16, 2);
         StockBriefInfoVO stockBriefInfoVO2 = new StockBriefInfoVO("深发展Ａ", LocalDate.of(2014,4,28), "1", 11.03, -1);
         StockBriefInfoVO stockBriefInfoVO3 = new StockBriefInfoVO("深发展Ａ", LocalDate.of(2014,4,27), "1", 11.25, 3);

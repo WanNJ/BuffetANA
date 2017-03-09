@@ -4,6 +4,7 @@ import blservice.exception.DateIndexException;
 import blservice.singlestock.KLineService;
 import vo.KLinePieceVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class KLineServiceImpl_Stub implements KLineService {
 
     @Override
-    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException {
+    public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(beginDate.isAfter(endDate)) {
             throw new DateIndexException(beginDate, endDate);
         }
@@ -36,12 +37,12 @@ public class KLineServiceImpl_Stub implements KLineService {
     }
 
     @Override
-    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getWeeklyKLine(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         return null;
     }
 
     @Override
-    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) {
+    public List<KLinePieceVO> getMonthlyKLine(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         return null;
     }
 }

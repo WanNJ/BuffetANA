@@ -1,7 +1,6 @@
 package runner;
 
 import rmi.RemoteHelper;
-import rmiDemo.RMIDemoService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -46,17 +45,5 @@ public class ClientRunner {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public void test() throws RemoteException{
-        RMIDemoService rmiDemoService = RemoteHelper.getInstance().getRMIDemoService();
-        String ans = rmiDemoService.getRmiDemoString();
-        System.out.println(ans);
-		 
-	}
-	
-	public static void main(String[] args) throws RemoteException{
-		ClientRunner cr = new ClientRunner();
-		cr.test();
-	}
+
 }

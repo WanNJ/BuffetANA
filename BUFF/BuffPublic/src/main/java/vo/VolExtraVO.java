@@ -1,5 +1,6 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -12,7 +13,7 @@ import java.time.LocalDate;
  * 用于存储在tooltip中的数据
  * TODO 在考虑是不是把MA线的显示数据 也放到这里   和还是加一个bar???
  */
-public class VolExtraVO {
+public class VolExtraVO implements Serializable {
     /**
      * x 轴的显示时间
      */

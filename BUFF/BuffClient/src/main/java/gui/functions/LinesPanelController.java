@@ -14,9 +14,11 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -38,17 +40,24 @@ public class LinesPanelController {
         private  GridPane gridPane;
 
 
-        private Parent KLineChild;//KLine node
-
-        private Parent MALineChild;//MALineChild node
-
-        private Parent VOLLineChild; //VOLLineChild node
-
-        private Parent KDJLineChild; //KDJLineChild node
-
+        /**
+         *画图的handler
+         */
         private FlowHandler KLineHandler;
 
         private FlowHandler VOLHandler;
+
+        private FlowHandler MaHandler;
+
+        /**
+         * 存储加载线程时 生成的容器
+         * add by wsw
+         */
+        private StackPane klinePane;
+
+        private StackPane volPane;
+
+        private StackPane maPane;
 
 //        @FXML
 //        private void initialize() {
@@ -83,52 +92,65 @@ public class LinesPanelController {
         // set the default controller
         Flow klineFlow = new Flow(KlineController.class);
         Flow volFlow = new Flow(VOLLineController.class);
+        Flow maFlow = new Flow(MALineController.class);
+
+
         KLineHandler = klineFlow.createHandler(context);
         VOLHandler = volFlow.createHandler(context);
+        MaHandler = maFlow.createHandler(context);
+
+
         context.register("KLineHandler", KLineHandler);
         context.register("VOLHandler", VOLHandler);
+        context.register("MaHandler", MaHandler);
+        //
         //drawer.setContent(LineHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-        gridPane.addRow(1,KLineHandler.start());
-        gridPane.addRow(2,VOLHandler.start());
+        maPane = MaHandler.start();
+        volPane = VOLHandler.start();
+        klinePane = KLineHandler.start();
+        gridPane.addRow(1,klinePane);
+        //gridPane.addRow(3,MaHandler.start());
+       // gridPane.addRow(2,VOLHandler.start());
     }
 
 
 
         @FXML
-        private void handleMAtoggle() throws FlowException {
+        private void handleMAtoggle() throws FlowException, VetoException {
+            if(MAtoggle.isSelected()){
+              gridPane.addRow(3,maPane);
+            }else{
+               MaHandler.destroy();
+               gridPane.getChildren().remove(maPane);
 
+            }
 
         }
 
         @FXML
-        private  void handleKDJtoggle(){
-            if(KDJToggle.isSelected()){
-                gridPane.getChildren().add(KDJLineChild);
-            }else{
-                gridPane.getChildren().remove(KDJLineChild);
-            }
+        private  void handleKDJtoggle() throws FlowException {
+
         }
 
         @FXML
         private void handleVOLtoggle() throws FlowException {
             if(VOLToggle.isSelected()){
-                gridPane.addRow(2,VOLHandler.start());
+                gridPane.addRow(2,volPane);
             }else{
-                gridPane.getChildren().remove(VOLHandler);
+                VOLHandler.destroy();
+                gridPane.getChildren().remove(volPane);
             }
         }
 
 
         @FXML
-        private void handleKLinetoggle(){
+        private void handleKLinetoggle() throws FlowException {
             if(KLinetoggle.isSelected()){
-                gridPane.getChildren().add(KLineChild);
+                gridPane.addRow(1,klinePane);
             }else{
-                gridPane.getChildren().remove(KLineChild);
+                KLineHandler.destroy();
+                gridPane.getChildren().remove(klinePane);
             }
         }
 
-//        private void loadOnTheScreen(){
-//            gridPane.c
-//        }
 }

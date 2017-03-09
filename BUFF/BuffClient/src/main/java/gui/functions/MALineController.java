@@ -26,7 +26,7 @@ public class MALineController {
     @FXML
     private void initialize() {
         LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 10, 10);
+        LocalDate second = LocalDate.of(2015, 10, 12);
         MALineService maLineService = new MALineServiceImpl_Stub();
         try {
             List<MAPieceVO> list  = maLineService.getMAInfo("code",first,second);
@@ -35,7 +35,7 @@ public class MALineController {
         }
 
         ObservableList<MAPieceVO>   vos =  FXCollections.observableArrayList();
-        for (MAPieceVO temp : vos) {
+        for (MAPieceVO temp : list) {
             vos.add(temp);
         }
 

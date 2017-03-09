@@ -9,4 +9,9 @@ import java.time.LocalDate;
 public class DailyLogReturnVO {
     public LocalDate date;
     public double logReturnIndex;
+
+    public DailyLogReturnVO(LocalDate date, double logReturnIndex) {
+        this.date = date;
+        this.logReturnIndex = logReturnIndex;
+    }
 }

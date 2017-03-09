@@ -12,6 +12,14 @@ import java.util.List;
  * Created by Accident on 2017/3/9.
  */
 public interface ComparisonService {
+
+    /**
+     * 针对同一股票重新设置日期区间（不用再次访问数据层）
+     * @param beginDate 查询起始日期
+     * @param endDate 查询结束日期
+     */
+    void resetDateRange(LocalDate beginDate, LocalDate endDate);
+
     /**
      * 给两股对比提供股票总体信息
      * @param stockCode 股票编号

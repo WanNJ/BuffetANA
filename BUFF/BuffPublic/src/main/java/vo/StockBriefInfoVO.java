@@ -39,7 +39,7 @@ public class StockBriefInfoVO implements Serializable {
         return new SimpleDoubleProperty(closePrice);
     }
 
-    public DoubleProperty rangeProperty() {
-        return new SimpleDoubleProperty(range);
+    public StringProperty rangeProperty() {
+        return new SimpleStringProperty(String.format("%.2f", range * 100) + "%");
     }
 }

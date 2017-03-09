@@ -26,7 +26,6 @@ import vo.StockDetailVO;
 import javax.annotation.PostConstruct;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by slow_time on 2017/3/4.
@@ -67,7 +66,7 @@ public class SingleStockController {
     @FXML
     private TableColumn<StockBriefInfoVO, Number> closeIndexColumn;
     @FXML
-    private TableColumn<StockBriefInfoVO, Number> rangeColumn;
+    private TableColumn<StockBriefInfoVO, String> rangeColumn;
 
 
     
@@ -78,6 +77,8 @@ public class SingleStockController {
     private StockDetailService stockDetailService;
     private BlFactoryService factory;
     private String code;
+    private ObservableList<StockBriefInfoVO> stockBriefInfoVOs = FXCollections.observableArrayList();
+
 
     @PostConstruct
     public void init() throws FlowException, VetoException {
@@ -87,6 +88,42 @@ public class SingleStockController {
         stockDetailService = factory.createStockDetailService();
 
         //初始化界面用到的各种控件
+
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
+        rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
+
+        //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
+//        rangeColumn.setCellFactory(column -> {
+//            return new TableCell<StockBriefInfoVO, String>() {
+//                @Override
+//                protected void updateItem(String item, boolean empty) {
+//                    super.updateItem(item, empty);
+//
+//                    if (item == null || empty) {
+//                        System.out.println("hhh");
+//                        setText(null);
+//                        setStyle("");
+//                    } else {
+//                        setItem(item);
+//                        if (item.startsWith("-"))
+//                            this.setTextFill(Color.GREEN);
+//                        else
+//                            this.setTextFill(Color.RED);
+//                    }
+//                }
+//            };
+//        });
+        stockDetailsTable.setItems(this.stockBriefInfoVOs);
+
+        //为股票简要信息列表绑定监听器
+        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    showStockDetails(newValue.dateProperty().get());
+                    datePicker.setValue(newValue.dateProperty().get());
+                }
+        );
+
         datePicker.setDialogParent(root);
 
         context = new ViewFlowContext();
@@ -105,15 +142,25 @@ public class SingleStockController {
             showStockDetails(date);
         });
 
-        //为测试使用的，之后会删去
-        this.code = "1";
-//        showStockDetails(LocalDate.of(2014, 4, 29));
-        showStockBriefInfo();
+        //初始化界面数据
+        datePicker.setValue(LocalDate.of(2014, 4, 29));
+        this.setStockInfo("1");
     }
 
-    public void setStockCode(String code) {
+    public void setStockInfo(String code) {
         this.code = code;
+        this.stockBriefInfoVOs.removeAll();
+        try {
+            stockDetailService.getStockBriefInfo(code).forEach(stockBriefInfoVO -> {
+                this.stockBriefInfoVOs.add(stockBriefInfoVO);
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        showStockDetails(LocalDate.of(2014, 4, 29));
     }
+
+
 
     private void showStockDetails(LocalDate date) {
         StockDetailVO stockDetailVO = null;
@@ -133,50 +180,5 @@ public class SingleStockController {
             volLabel.setText(String.valueOf(stockDetailVO.vol));
             adjCloseIndexLabel.setText(String.valueOf(stockDetailVO.adjCloseIndex));
         }
-    }
-
-    private void showStockBriefInfo() {
-        List<StockBriefInfoVO> stockBriefInfoVOs = null;
-        try {
-            stockBriefInfoVOs = stockDetailService.getStockBriefInfo(code);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        ObservableList<StockBriefInfoVO> stockBriefInfo = FXCollections.observableArrayList();
-        stockBriefInfoVOs.forEach(stockBriefInfoVO -> {
-            stockBriefInfo.add(stockBriefInfoVO);
-        });
-
-        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-        closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
-        rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
-
-        //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
-//        rangeColumn.setCellFactory(column -> new TableCell<StockBriefInfoVO, Number>() {
-//            @Override
-//            protected void updateItem(Number item, boolean empty) {
-//                super.updateItem(item, empty);
-//
-//                if (item == null || empty) {
-//                    setText(null);
-//                    setStyle("");
-//                }
-//                else {
-//                    setItem(item);
-//                    if (item.doubleValue() >= 0)
-//                        this.setTextFill(Color.RED);
-//                    else
-//                        this.setTextFill(Color.GREEN);
-//                }
-//            }
-//        });
-        stockDetailsTable.setItems(stockBriefInfo);
-
-
-
-        //为股票简要信息列表绑定监听器
-        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showStockDetails(newValue.dateProperty().get())
-        );
     }
 }

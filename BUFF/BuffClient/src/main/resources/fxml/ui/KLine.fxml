@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<ScrollPane blendMode="EXCLUSION" hbarPolicy="NEVER" prefHeight="569.0" prefWidth="500.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane blendMode="EXCLUSION" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <JFXTabPane prefHeight="550.0" prefWidth="500.0">
+      <JFXTabPane>
          <tabs>
             <Tab text="日K">
                <content>
-                  <AnchorPane>
-                     <children>
-                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <BorderPane fx:id="DayLinePane" prefHeight="521.0" prefWidth="500.0" stylesheets="@../../css/candle.css" />
-                     </children>
-                  </AnchorPane>
+                  <BorderPane fx:id="DayLinePane" stylesheets="@../../css/candle.css" />
                </content>
             </Tab>
             <Tab text="周K">
                <content>
-                  <AnchorPane blendMode="EXCLUSION" minHeight="0.0" minWidth="0.0" />
+                  <AnchorPane blendMode="EXCLUSION" />
                </content>
             </Tab>
             <Tab text="月K">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+                  <AnchorPane />
                </content>
             </Tab>
             <Tab text="季K">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+                  <AnchorPane minHeight="0.0" />
                </content>
             </Tab>
             <Tab text="年K">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" />
+                  <AnchorPane minWidth="0.0" />
                </content>
             </Tab>
          </tabs>

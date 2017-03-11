@@ -2,8 +2,6 @@ package util;
 
 import java.util.*;
 
-import static com.sun.javafx.tools.resource.DeployResource.Type.data;
-
 /**
  * Created by Accident on 2017/3/9.
  */

@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<ScrollPane blendMode="EXCLUSION" hbarPolicy="NEVER" hmax="0.0" prefHeight="550.0" prefWidth="500.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane blendMode="EXCLUSION" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="500.0">
+      <JFXTabPane>
          <tabs>
             <Tab text="日VOL">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="200.0">
-                     <children>
-                        <VBox layoutY="2.0" prefHeight="518.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
-                           <children>
-                              <HBox prefHeight="20.0" prefWidth="200.0" />
-                              <BorderPane fx:id="borderPane" prefHeight="202.0" prefWidth="509.0" stylesheets="@../../css/VolBar.css" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
+                  <BorderPane fx:id="borderPane" stylesheets="@../../css/VolBar.css" />
                </content>
             </Tab>
             <Tab text="月VOL">

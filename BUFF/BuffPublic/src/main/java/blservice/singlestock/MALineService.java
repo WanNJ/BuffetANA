@@ -20,4 +20,6 @@ public interface MALineService extends Remote {
      * @return
      */
     List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+
+
 }

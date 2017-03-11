@@ -28,4 +28,6 @@ public class MALineServiceImpl_Stub implements MALineService {
         return maPieceVOs;
     }
 
+
+
 }

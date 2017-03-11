@@ -29,9 +29,8 @@ import java.util.List;
 public class VolBarChart extends XYChart<String,Number> {
 
 
-
-    private static final int  Height=600;
-    private static final int  Width=550;
+    private static final int  Height=800;
+    private static final int  Width=1000;
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid

@@ -3,6 +3,7 @@ package gui.functions;
 import blservice.exception.DateIndexException;
 import blstub.singlestockstub.VolServiceImpl_Stub;
 import gui.ChartController.ChartController;
+import gui.ChartController.KLineChartController;
 import gui.ChartController.VOLChartController;
 import gui.ChartController.VolBarChart;
 import io.datafx.controller.FXMLController;
@@ -38,6 +39,21 @@ public class VOLLineController {
         borderPane.centerProperty().setValue(volChartController.getChart());
 
 
+    }
+
+
+    /**
+     * 监听器改图
+     * @param code
+     * @param first
+     * @param second
+     */
+    public void upDateGraph( String code ,LocalDate first , LocalDate second ){
+        VOLChartController volChartController = ChartController.INSTANCE.getVOLChartController();
+        volChartController.setStartDate(first);
+        volChartController.setEndDate(second);
+        volChartController.drawChat();
+        borderPane.centerProperty().setValue(volChartController.getChart());
     }
 
 }

@@ -3,6 +3,7 @@ package gui.functions;
 import blservice.singlestock.MALineService;
 import blstub.singlestockstub.MALineServiceImpl_Stub;
 import gui.ChartController.ChartController;
+import gui.ChartController.KLineChartController;
 import gui.ChartController.MAChartController;
 import gui.ChartController.MALineChart;
 import io.datafx.controller.FXMLController;
@@ -36,5 +37,20 @@ public class MALineController {
         borderPane.centerProperty().setValue(maChartController.getChart());
 
 
+    }
+
+
+    /**
+     * 监听器改图
+     * @param code
+     * @param first
+     * @param second
+     */
+    public void upDateGraph( String code ,LocalDate first , LocalDate second ){
+        MAChartController maChartController = ChartController.INSTANCE.getMAChartController();
+        maChartController.setStartDate(first);
+        maChartController.setEndDate(second);
+        maChartController.drawChat();
+        borderPane.centerProperty().setValue(maChartController.getChart());
     }
 }

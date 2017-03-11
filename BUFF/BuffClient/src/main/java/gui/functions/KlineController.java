@@ -6,6 +6,7 @@ import gui.ChartController.ChartController;
 import gui.ChartController.KLineChart;
 import gui.ChartController.KLineChartController;
 import io.datafx.controller.FXMLController;
+import io.datafx.controller.flow.action.ActionMethod;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,29 +31,29 @@ public class KlineController {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 10, 10);
         KLineServiceImpl_Stub kLineServiceImpl_stub = new KLineServiceImpl_Stub();
-//        List<KLinePieceVO>  vos  = null;
-//        try {
-//            vos = kLineServiceImpl_stub.getDailyKLine("code",first,second);
-//        } catch (DateIndexException e) {
-//            e.printStackTrace();
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//        ObservableList<KLinePieceVO> dayList=  FXCollections.observableArrayList();
-//        for (KLinePieceVO temp : vos) {
-//            dayList.add(temp);
-//        }
-        //System.out.println("list size:   "+dayList.size());
 
-
-        // 单例模式的添加方法
         KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
 
 
         kLineChartController.setkLineService(kLineServiceImpl_stub);
         kLineChartController.drawChat();
         DayLinePane.centerProperty().setValue(kLineChartController.getChart());
-
-
     }
+
+    /**
+     * 监听器改图
+     * @param code
+     * @param first
+     * @param second
+     */
+    public void upDateGraph( String code ,LocalDate first , LocalDate second ){
+        KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
+        kLineChartController.setStartDate(first);
+        kLineChartController.setEndDate(second);
+        kLineChartController.drawChat();
+        DayLinePane.centerProperty().setValue(kLineChartController.getChart());
+    }
+
+
+
 }

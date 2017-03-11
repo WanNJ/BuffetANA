@@ -31,8 +31,8 @@ import java.util.List;
 public class MALineChart extends LineChart<String, Number> {
 
     //TODO  这里参照学长代码进行设计   以后要修改为自己的
-    private static final int  Height=600;
-    private static final int  Width=550;
+    private static final int  Height=800;
+    private static final int  Width=1000;
 
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart

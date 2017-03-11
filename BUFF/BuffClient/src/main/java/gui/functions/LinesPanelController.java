@@ -6,6 +6,7 @@ package gui.functions;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXToggleButton;
+import gui.ChartController.MAChartController;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -24,6 +25,7 @@ import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 @FXMLController(value = "/resources/fxml/ui/LinesPane.fxml" , title = "Lines Pane container")
@@ -157,6 +159,20 @@ public class LinesPanelController {
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
+
+        /**
+         *  为起始时间增加监听器
+         */
+        from.setOnAction(event -> {
+            handleTime();
+        });
+
+        /**
+         * 为结束时间增加监听器
+         */
+        to.setOnAction(event -> {
+            handleTime();
+        });
     }
 
 
@@ -165,6 +181,11 @@ public class LinesPanelController {
     private void handleMAtoggle() throws FlowException, VetoException {
         if(MAtoggle.isSelected()){
             gridPane.addRow(3,maPane);
+//            LocalDate first = LocalDate.of(2015, 10, 1);
+//            LocalDate second = LocalDate.of(2015, 10, 5);
+//            KlineController klineController =
+//                    (KlineController)KLineHandler.getCurrentView().getViewContext().getController();
+//            klineController.upDateGraph("asd",first,second);
         }else{
             MaHandler.destroy();
             gridPane.getChildren().remove(maPane);
@@ -198,5 +219,25 @@ public class LinesPanelController {
             KLineHandler.destroy();
             gridPane.getChildren().remove(klinePane);
         }
+    }
+
+    /**
+     * 设置增加监听器的动作
+     */
+    private void handleTime(){
+        LocalDate first = from.getValue();
+        LocalDate second = to.getValue();
+        if(first!=null && second!=null && first.isBefore(second)){
+            KlineController klineController =
+                    (KlineController)KLineHandler.getCurrentView().getViewContext().getController();
+            klineController.upDateGraph("code",first,second);
+            MALineController maLineController =
+                    (MALineController)MaHandler.getCurrentView().getViewContext().getController();
+            maLineController.upDateGraph("code",first,second);
+            VOLLineController volLineController =
+                    (VOLLineController)VOLHandler.getCurrentView().getViewContext().getController();
+            volLineController.upDateGraph("code",first,second);
+        }
+
     }
 }

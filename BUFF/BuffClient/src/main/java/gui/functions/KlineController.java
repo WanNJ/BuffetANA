@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.exception.DateIndexException;
 import blstub.singlestockstub.KLineServiceImpl_Stub;
+import gui.ChartController.ChartController;
 import gui.ChartController.KLineChart;
 import gui.ChartController.KLineChartController;
 import io.datafx.controller.FXMLController;
@@ -42,9 +43,12 @@ public class KlineController {
 //            dayList.add(temp);
 //        }
         //System.out.println("list size:   "+dayList.size());
-        KLineChartController kLineChartController = new KLineChartController();
-        kLineChartController.setStartDate(first);
-        kLineChartController.setEndDate(second);
+
+
+        // 单例模式的添加方法
+        KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
+
+
         kLineChartController.setkLineService(kLineServiceImpl_stub);
         kLineChartController.drawChat();
         DayLinePane.centerProperty().setValue(kLineChartController.getChart());

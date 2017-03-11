@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.exception.DateIndexException;
 import blstub.singlestockstub.VolServiceImpl_Stub;
+import gui.ChartController.ChartController;
 import gui.ChartController.VOLChartController;
 import gui.ChartController.VolBarChart;
 import io.datafx.controller.FXMLController;
@@ -28,7 +29,9 @@ public class VOLLineController {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 11, 10);
         VolServiceImpl_Stub volServiceImpl_stub  =new VolServiceImpl_Stub();
-        VOLChartController volChartController  =new VOLChartController();
+
+        //单例模式的添加方法
+        VOLChartController volChartController  = ChartController.INSTANCE.getVOLChartController();
         volChartController.setVolService(volServiceImpl_stub);
 
         volChartController.drawChat();

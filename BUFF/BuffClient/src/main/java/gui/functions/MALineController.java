@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.singlestock.MALineService;
 import blstub.singlestockstub.MALineServiceImpl_Stub;
+import gui.ChartController.ChartController;
 import gui.ChartController.MAChartController;
 import gui.ChartController.MALineChart;
 import io.datafx.controller.FXMLController;
@@ -29,7 +30,7 @@ public class MALineController {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 10, 12);
         MALineService maLineService = new MALineServiceImpl_Stub();
-        MAChartController maChartController = new MAChartController();
+        MAChartController maChartController = ChartController.INSTANCE.getMAChartController();
         maChartController.setMaLineService(maLineService);
         maChartController.drawChat();
         borderPane.centerProperty().setValue(maChartController.getChart());

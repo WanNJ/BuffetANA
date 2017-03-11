@@ -84,7 +84,10 @@ public class MAChartController implements Initializable {
     }
 
 
-
+    /**
+     * 添加bl服务
+     * @param maLineService
+     */
     public void setMaLineService(MALineService maLineService) {
         this.maLineService = maLineService;
     }
@@ -126,7 +129,9 @@ public class MAChartController implements Initializable {
         return dayList;
     }
 
-
+    /**
+     * 画出图形
+     */
     public void drawChat(){
         getData();
         this.Chart = MALineChart.createChart(this.dataList);

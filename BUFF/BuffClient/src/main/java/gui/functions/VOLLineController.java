@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.exception.DateIndexException;
 import blstub.singlestockstub.VolServiceImpl_Stub;
+import gui.ChartController.VOLChartController;
 import gui.ChartController.VolBarChart;
 import io.datafx.controller.FXMLController;
 import javafx.collections.FXCollections;
@@ -26,23 +27,12 @@ public class VOLLineController {
     private void initialize() {
         LocalDate first = LocalDate.of(2015, 10, 1);
         LocalDate second = LocalDate.of(2015, 11, 10);
-        VolServiceImpl_Stub volServiceImpl_stub  =  new VolServiceImpl_Stub();
+        VolServiceImpl_Stub volServiceImpl_stub  =new VolServiceImpl_Stub();
+        VOLChartController volChartController  =new VOLChartController();
+        volChartController.setVolService(volServiceImpl_stub);
 
-        List<StockVolVO> vos  = null;
-        try {
-            vos = volServiceImpl_stub.getStockVol("code",first,second);
-        } catch (DateIndexException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        ObservableList<StockVolVO> dayList=  FXCollections.observableArrayList();
-        for (StockVolVO temp : vos) {
-            dayList.add(temp);
-        }
-        System.out.println("list size:   "+dayList.size());
-        VolBarChart volBarChart = VolBarChart.createChart(dayList);
-        borderPane.centerProperty().setValue(volBarChart);
+        volChartController.drawChat();
+        borderPane.centerProperty().setValue(volChartController.getChart());
 
 
     }

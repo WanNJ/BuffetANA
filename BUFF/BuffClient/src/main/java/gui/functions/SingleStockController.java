@@ -170,7 +170,7 @@ public class SingleStockController {
             e.printStackTrace();
         }
         if(stockDetailVO == null)
-            //之后会替换成一个弹框提示用户
+            //TODO 之后会替换成一个弹框提示用户
             System.out.println("所选时间没有数据");
         else {
             openIndexLabel.setText(String.valueOf(stockDetailVO.openPrice));

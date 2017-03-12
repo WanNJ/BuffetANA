@@ -2,10 +2,7 @@ package rmi;
 
 import blservice.exception.DateIndexException;
 import blservice.singlestock.*;
-import blserviceimpl.singlestock.AllStockServiceImpl;
-import blserviceimpl.singlestock.KLineServiceImpl;
-import blserviceimpl.singlestock.StockDetailServiceImpl;
-import blserviceimpl.singlestock.VolServiceImpl;
+import blserviceimpl.singlestock.*;
 import vo.*;
 
 import java.rmi.RemoteException;
@@ -29,7 +26,8 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 		this.stockDetailService = StockDetailServiceImpl.STOCK_DETAIL_SERVICE;
 		this.volService = VolServiceImpl.VOL_SERVICE;
 		this.allStockService = AllStockServiceImpl.ALL_STOCK_SERVICE;
-	}
+        this.maLineService = MALineServiceImpl.MA_LINE_SERVICE;
+    }
 
 	@Override
 	public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
@@ -47,9 +45,9 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	}
 
 	@Override
-	public List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) {
-		return null;
-	}
+	public List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+        return maLineService.getMAInfo(code, beginDate, endDate);
+    }
 
 	@Override
 	public StockDetailVO getSingleStockDetails(String code, LocalDate date) throws RemoteException {

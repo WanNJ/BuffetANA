@@ -79,6 +79,12 @@ public class SingleStockController {
     private String code;
     private ObservableList<StockBriefInfoVO> stockBriefInfoVOs = FXCollections.observableArrayList();
 
+    /**
+     * add by wsw
+     * 用来存储子视图的控制器
+     */
+    private LinesPanelController linesPanelController;
+
 
     @PostConstruct
     public void init() throws FlowException, VetoException {
@@ -92,6 +98,8 @@ public class SingleStockController {
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
         rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
+
+
 
         //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
 //        rangeColumn.setCellFactory(column -> {
@@ -134,6 +142,8 @@ public class SingleStockController {
         context.register("LineHandler", LineHandler);
         borderPane.setCenter(LineHandler.start());
 
+        this.linesPanelController = (LinesPanelController) LineHandler.getCurrentView().getViewContext().getController();
+
 
         //为日期选择器绑定监听器
         datePicker.setOnAction(event -> {
@@ -158,6 +168,9 @@ public class SingleStockController {
             e.printStackTrace();
         }
         showStockDetails(LocalDate.of(2014, 4, 29));
+        //TODO delete
+        System.out.println("in set Code :  "+code);
+        showAllGragh();
     }
 
 
@@ -181,4 +194,19 @@ public class SingleStockController {
             adjCloseIndexLabel.setText(String.valueOf(stockDetailVO.adjCloseIndex));
         }
     }
+
+    /**
+     * add by wsw
+     * 通过加载股票的代码  调用下层界面的空一起进行画图
+     * 时间已有默认的值
+     * 监听时间变化 在子controller里 ，无需在这里设置
+     */
+    private void showAllGragh(){
+        if(this.code!=null  && !"".equals(this.code)){
+            linesPanelController.HandleCode(this.code);
+        }else{
+            System.err.println("no code information");
+        }
+    }
+
 }

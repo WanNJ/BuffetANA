@@ -68,6 +68,10 @@ public class LinesPanelController {
 
     private StackPane maPane;
 
+
+    //存储当前要显示的code
+    private String code = "";
+
 //        @FXML
 //        private void initialize() {
 //        try {
@@ -118,8 +122,10 @@ public class LinesPanelController {
         volPane = VOLHandler.start();
         klinePane = KLineHandler.start();
         gridPane.addRow(1,klinePane);
-        //gridPane.addRow(3,MaHandler.start());
-        // gridPane.addRow(2,VOLHandler.start());
+
+
+        from.setValue(LocalDate.of(2014, 3, 1));
+        to.setValue(LocalDate.of(2014, 3, 7));
 
 
         //为每个toggle button添加监听方法
@@ -227,17 +233,33 @@ public class LinesPanelController {
     private void handleTime(){
         LocalDate first = from.getValue();
         LocalDate second = to.getValue();
+
+        //TODO delete
+        System.out.println("from:  "+from);
+        System.out.println("to:  "+to);
+
+
         if(first!=null && second!=null && first.isBefore(second)){
             KlineController klineController =
                     (KlineController)KLineHandler.getCurrentView().getViewContext().getController();
-            klineController.upDateGraph("code",first,second);
+            klineController.upDateGraph(this.code,first,second);
             MALineController maLineController =
                     (MALineController)MaHandler.getCurrentView().getViewContext().getController();
-            maLineController.upDateGraph("code",first,second);
+            maLineController.upDateGraph(this.code,first,second);
             VOLLineController volLineController =
                     (VOLLineController)VOLHandler.getCurrentView().getViewContext().getController();
-            volLineController.upDateGraph("code",first,second);
+            volLineController.upDateGraph(this.code,first,second);
         }
 
     }
+
+
+
+    public void HandleCode(String code){
+        if(!this.code.equals(code)){
+            this.code = code;
+            handleTime();
+        }
+    }
+
 }

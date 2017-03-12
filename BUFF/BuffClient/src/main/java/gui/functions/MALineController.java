@@ -28,13 +28,13 @@ public class MALineController {
 
     @FXML
     private void initialize() {
-        LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 10, 12);
-        MALineService maLineService = new MALineServiceImpl_Stub();
-        MAChartController maChartController = ChartController.INSTANCE.getMAChartController();
-        maChartController.setMaLineService(maLineService);
-        maChartController.drawChat();
-        borderPane.centerProperty().setValue(maChartController.getChart());
+//        LocalDate first = LocalDate.of(2015, 10, 1);
+//        LocalDate second = LocalDate.of(2015, 10, 12);
+//        MALineService maLineService = new MALineServiceImpl_Stub();
+//        MAChartController maChartController = ChartController.INSTANCE.getMAChartController();
+//        maChartController.setMaLineService(maLineService);
+//        maChartController.drawChat();
+//        borderPane.centerProperty().setValue(maChartController.getChart());
 
 
     }
@@ -50,6 +50,7 @@ public class MALineController {
         MAChartController maChartController = ChartController.INSTANCE.getMAChartController();
         maChartController.setStartDate(first);
         maChartController.setEndDate(second);
+        maChartController.setStockCode(code);
         maChartController.drawChat();
         borderPane.centerProperty().setValue(maChartController.getChart());
     }

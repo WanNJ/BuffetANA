@@ -42,6 +42,10 @@ public enum KLineServiceImpl implements KLineService {
         if(beginDate.isAfter(endDate))
             throw new DateIndexException(beginDate, endDate);
 
+        //TODO delete
+        System.out.println("code:   "+code);
+        System.out.println("lsit Size in Kline:  "+stockPOs.size());
+
         List<KLinePieceVO> kLinePieceVOs = new ArrayList<>();
         stockPOs.forEach(stockPO -> {
             if(stockPO != null) {

@@ -31,6 +31,9 @@ public class VolBarChart extends XYChart<String,Number> {
 
     private static final int  Height=800;
     private static final int  Width=1000;
+
+
+    private static int length;
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -199,6 +202,11 @@ public class VolBarChart extends XYChart<String,Number> {
 
                     // calculate candle width
                     double candleWidth = -1;
+                    double width = getXAxis().getWidth();
+
+                    if(length !=0 ){
+                        candleWidth= width/(length*1.1)>20? 20: width/(length*1.1);
+                    }
 
                     // update volBar
                     volBar.update(high - y, candleWidth, extra.openAboveClose);
@@ -259,6 +267,8 @@ public class VolBarChart extends XYChart<String,Number> {
      * @return KLineChart  可直接在panel上加载的node
      */
     public static VolBarChart createChart(ObservableList<StockVolVO> stockVolVOs){
+
+        length = stockVolVOs.size();
         System.out.println("List of Observe:  "+stockVolVOs.size());
         //获取柱状图的最高点
         double max=getMax(stockVolVOs);

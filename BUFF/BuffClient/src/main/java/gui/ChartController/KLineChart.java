@@ -35,6 +35,8 @@ public class KLineChart extends XYChart<String, Number> {
     private static final int  Height=800;
     private static final int  Width=1000;
 
+    private static  int length = 0;
+
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -230,7 +232,8 @@ public class KLineChart extends XYChart<String, Number> {
             return;
         }
         // 根据序列数据的数量 在图上画点
-
+        int xx =  getData().size();
+        System.out.println("size:   "+xx);
         for (int seriesIndex = 0; seriesIndex < getData().size(); seriesIndex++) {
             Series<String, Number> series = getData().get(seriesIndex);
             Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);
@@ -267,7 +270,11 @@ public class KLineChart extends XYChart<String, Number> {
 
                     // calculate candle width
                     double candleWidth = -1;
+                    double width = getXAxis().getWidth();
 
+                    if(length !=0 ){
+                        candleWidth= width/(length*1.1)>20? 20: width/(length*1.1);
+                    }
                     // update candle
                     candle.update(close - y, high - y, low - y, candleWidth);
                     candle.updateTooltip(item.getYValue().doubleValue(), extra.getClosePrice(), extra.getHighPrice(),
@@ -276,6 +283,7 @@ public class KLineChart extends XYChart<String, Number> {
                     // position the candle
                     candle.setLayoutX(x);
                     candle.setLayoutY(y);
+
                 }
 
                 // 平均值的折线的点在这里添加
@@ -296,6 +304,7 @@ public class KLineChart extends XYChart<String, Number> {
      * @return KLineChart
      */
     public static KLineChart createChart(ObservableList<KLinePieceVO> kLinePieceVOs){
+        length = kLinePieceVOs.size();
         System.out.println("List of Observe:  "+kLinePieceVOs.size());
         //获取图像最大值
         double max=getMax(kLinePieceVOs);

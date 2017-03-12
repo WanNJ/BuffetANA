@@ -1,5 +1,6 @@
 package factory;
 
+import blservice.comparison.ComparisonService;
 import blservice.singlestock.*;
 
 /**
@@ -16,4 +17,6 @@ public interface BlFactoryService {
     VolService createVolService();
 
     AllStockService createAllStockService();
+
+    ComparisonService createComparisonService();
 }

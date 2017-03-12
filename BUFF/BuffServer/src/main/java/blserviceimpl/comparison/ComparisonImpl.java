@@ -96,4 +96,14 @@ public class ComparisonImpl implements ComparisonService{
 
         return statistics.getVariance();
     }
+
+    @Override
+    public LocalDate getEarliestDate() {
+        return allStockPOs.get(0).getDate();
+    }
+
+    @Override
+    public LocalDate getLatestDate() {
+        return allStockPOs.get(allStockPOs.size() - 1).getDate();
+    }
 }

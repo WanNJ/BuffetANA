@@ -55,4 +55,16 @@ public interface ComparisonService {
      * @return 获得日期范围内该只股票的对数收益率方差
      */
     double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate);
+
+    /**
+     * 获得分析数据中最早一天的日期
+     * @return
+     */
+    LocalDate getEarliestDate();
+
+    /**
+     * 获得分析数据中最晚一天的日期
+     * @return
+     */
+    LocalDate getLatestDate();
 }

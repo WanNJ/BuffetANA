@@ -22,18 +22,20 @@ public class ThemometerDriver {
     public static void main(String[] args) throws RemoteException, RangeException {
         ThermometerServiceImpl thermometerService = ThermometerServiceImpl.THERMOMETER_SERVCE;
         //thermometerService.setDao(new StockDaoImpl_stub());
-//      List<Long> list = thermometerService.getTradingVolume(new DateRange(LocalDate.of(1996,11,25),LocalDate.of(1996,11,27)));
-//      List<Long> list = thermometerService.getTradingVolume(new DateRange(LocalDate.of(1996,11,24),LocalDate.of(1996,11,28)),"code");
-        List<Long> list = thermometerService.getRiseOver5Num(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
-        System.out.println(list.size());
+//      List<Long> list = thermometerService.getTradingVolume(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
+//      List<Long> list = thermometerService.getTradingVolume(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)),"1");
+//      List<Long> list = thermometerService.getRiseOver5Num(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
+        List<Long> list = thermometerService.getRiseOver5ThanLastDayNum(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
+        //System.out.println(list.size());
         list.forEach(t->System.out.println(t));
 
-        List<Long> list2 = thermometerService.getFallOver5Num(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
-        System.out.println(list2.size());
-        list2.forEach(t->System.out.println(t));
+//        List<Long> list2 = thermometerService.getFallOver5Num(new DateRange(LocalDate.of(2010,11,24),LocalDate.of(2010,11,28)));
+//        System.out.println(list2.size());
+//        list2.forEach(t->System.out.println(t));
 
 
 
     }
 
 }
+//3 1 0

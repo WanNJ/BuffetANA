@@ -38,7 +38,11 @@ public enum StockDAOImpl implements StockDAO{
      * @return 若所给文件不存在，则返回null，该方法返回的List已经是按日期从小到大排好序的
      */
     private List<StockPO> generateStockPOs(String fileName) {
-        List<StockPO> stockPOs = null;
+        /**
+         * change bby wsw
+         * 为了更好的运用lambda表达式
+         */
+        List<StockPO> stockPOs = new ArrayList<>();
         BufferedReader br = null;
         try {
             //TODO

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<?import javafx.scene.layout.BorderPane?>
 <StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <GridPane>
      <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" maxWidth="502.0"/>
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="502.0" minWidth="10.0" prefWidth="100.0" />
        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
      </columnConstraints>
      <rowConstraints>
@@ -44,7 +44,17 @@
                </Tab>
             </tabs>
          </JFXTabPane>
-         <BorderPane fx:id="KlinePane">
+         <BorderPane GridPane.columnIndex="1">
+            <bottom>
+               <HBox spacing="30.0" alignment="BOTTOM_CENTER">
+                  <children>
+                     <Label minWidth="60.0" text="起始日期"/>
+                     <JFXDatePicker fx:id="from" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
+                     <Label minWidth="60.0" text="结束日期" />
+                     <JFXDatePicker fx:id="to" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
+                  </children>
+               </HBox>
+            </bottom>
          </BorderPane>
       </children>
    </GridPane>

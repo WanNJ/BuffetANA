@@ -1,9 +1,11 @@
 package vo;
 
+import java.io.Serializable;
+
 /**
  * Created by slow_time on 2017/3/12.
  */
-public class MarketStockDetailVO {
+public class MarketStockDetailVO implements Serializable {
 
     public String code;
     public String name;

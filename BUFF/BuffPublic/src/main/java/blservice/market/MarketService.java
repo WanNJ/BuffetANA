@@ -5,6 +5,7 @@ import vo.KLinePieceVO;
 import vo.MarketStockDetailVO;
 import vo.StockVolVO;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by slow_time on 2017/3/12.
  */
-public interface MarketService {
+public interface MarketService extends Remote {
 
     /**
      * 获得大盘的日K线图

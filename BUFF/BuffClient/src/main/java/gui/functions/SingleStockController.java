@@ -93,6 +93,7 @@ public class SingleStockController {
         closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
         rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
 
+        //TODO 暂时有些问题，加上这一段后，连数据都显示不出来，之后再解决
         //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
 //        rangeColumn.setCellFactory(column -> {
 //            return new TableCell<StockBriefInfoVO, String>() {
@@ -151,13 +152,19 @@ public class SingleStockController {
         this.code = code;
         this.stockBriefInfoVOs.removeAll();
         try {
-            stockDetailService.getStockBriefInfo(code).forEach(stockBriefInfoVO -> {
-                this.stockBriefInfoVOs.add(stockBriefInfoVO);
-            });
+            stockDetailService.getStockBriefInfo(code).forEach(stockBriefInfoVO -> this.stockBriefInfoVOs.add(stockBriefInfoVO));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        showStockDetails(LocalDate.of(2014, 4, 29));
+
+        //如果该code存在数据，则将最近一天的details显示出来，若该code对应的股票无数据，则提示用户
+        if(stockBriefInfoVOs != null && stockBriefInfoVOs.size() >= 1) {
+            showStockDetails(stockBriefInfoVOs.get(stockBriefInfoVOs.size() - 1).date);
+        }
+        //TODO 之后会替换为一个弹窗来提示用户
+        else {
+            System.out.println("该个股暂无数据");
+        }
     }
 
 

@@ -30,7 +30,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 		this.volService = VolServiceImpl.VOL_SERVICE;
 		this.allStockService = AllStockServiceImpl.ALL_STOCK_SERVICE;
         this.maLineService = MALineServiceImpl.MA_LINE_SERVICE;
-		this.comparisonService = new ComparisonImpl();
+		this.comparisonService = ComparisonImpl.COMPARISON_SERVICE;
     }
 
 	@Override

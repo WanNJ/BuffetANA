@@ -21,6 +21,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import vo.BasisAnalysisVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 
 /**
@@ -80,7 +81,7 @@ public class ComparisonController {
     }
 
     @FXML
-    private void setMainInfo() {
+    private void setMainInfo() throws RemoteException {
         mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeTextField.getText(),beginDatePicker.getValue(), endDatePicker.getValue());
         mainMinPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.lowPrice));
         mainMaxPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.highPrice));
@@ -93,7 +94,7 @@ public class ComparisonController {
     }
 
     @FXML
-    private void setDeputyBasicInfo() {
+    private void setDeputyBasicInfo() throws RemoteException {
         deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyMaxPriceLabel.getText(),beginDatePicker.getValue(), endDatePicker.getValue());
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
@@ -120,10 +121,13 @@ public class ComparisonController {
                             @Override
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
-
-                                if (item.isBefore(comparisonService.getEarliestDate()) || item.isAfter(LocalDate.now())) {
-                                    setDisable(true);
-                                    setStyle("-fx-background-color: rgb(160,160,160);");
+                                try {
+                                    if (item.isBefore(comparisonService.getEarliestDate()) || item.isAfter(LocalDate.now())) {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: rgb(160,160,160);");
+                                    }
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
                                 }
                             }
                         };

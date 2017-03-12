@@ -21,14 +21,11 @@ import java.util.stream.Collectors;
  * 两股对比服务逻辑实现代码
  */
 
-public class ComparisonImpl implements ComparisonService{
+public enum ComparisonImpl implements ComparisonService {
+    COMPARISON_SERVICE;
 
     private StockDAO stockDAO;
     private DAOFactoryService factory;
-
-    private String code;
-    private LocalDate beginDate;
-    private LocalDate endDate;
 
     private List<StockPO> allStockPOs;
     private List<StockPO> specificStockPOs;
@@ -36,33 +33,28 @@ public class ComparisonImpl implements ComparisonService{
     private List<DailyLogReturnVO> dailyLogReturnVOs;
 
 
-    public ComparisonImpl() {
-
-    }
-
-    public ComparisonImpl(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    ComparisonImpl() {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
-        code = stockCode;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-        allStockPOs = stockDAO.getStockInfoByCode(code);
-        resetDateRange(this.beginDate, this.endDate);
+    }
+
+    private void getAllStockInfo(String stockCode) throws RemoteException {
+        allStockPOs = stockDAO.getStockInfoByCode(stockCode);
     }
 
     @Override
-    public void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException{
-         specificStockPOs = allStockPOs.stream()
+    public void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException {
+        specificStockPOs = allStockPOs.stream()
                 .filter(stockPO -> stockPO.getDate().isAfter(beginDate) && stockPO.getDate().isBefore(endDate))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException{
+    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         BasisAnalysisVO result = new BasisAnalysisVO();
         result.openPrice = specificStockPOs.get(0).getOpen_Price();
         result.closePrice = specificStockPOs.get(specificStockPOs.size() - 1).getClose_Price();
-        result.changeRate = (result.closePrice - result.openPrice)/result.openPrice;
+        result.changeRate = (result.closePrice - result.openPrice) / result.openPrice;
 
         specificStockPOs.forEach(stockPO -> {
             if (stockPO.getLow_Price() < result.lowPrice)
@@ -75,7 +67,7 @@ public class ComparisonImpl implements ComparisonService{
     }
 
     @Override
-    public List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException{
+    public List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         dailyClosingPriceVOS = new ArrayList<DailyClosingPriceVO>();
         specificStockPOs.forEach(stockPO -> {
             dailyClosingPriceVOS.add(new DailyClosingPriceVO(stockPO.getDate(), stockPO.getClose_Price()));
@@ -85,10 +77,10 @@ public class ComparisonImpl implements ComparisonService{
     }
 
     @Override
-    public List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException{
+    public List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         dailyLogReturnVOs = new ArrayList<DailyLogReturnVO>();
         dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(0).getDate(), 0));
-        for(int i = 1; i < specificStockPOs.size(); i++) {
+        for (int i = 1; i < specificStockPOs.size(); i++) {
             dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(i).getDate(),
                     specificStockPOs.get(i - 1).getAdjCloseIndex() / specificStockPOs.get(i).getAdjCloseIndex()));
         }
@@ -96,7 +88,7 @@ public class ComparisonImpl implements ComparisonService{
     }
 
     @Override
-    public double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException{
+    public double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         ArrayList<Double> data = new ArrayList<Double>();
         dailyLogReturnVOs.forEach(dailyLogReturnVO -> data.add(dailyLogReturnVO.logReturnIndex));
         Statistics statistics = new Statistics(data);
@@ -105,12 +97,12 @@ public class ComparisonImpl implements ComparisonService{
     }
 
     @Override
-    public LocalDate getEarliestDate() throws RemoteException{
+    public LocalDate getEarliestDate() throws RemoteException {
         return allStockPOs.get(0).getDate();
     }
 
     @Override
-    public LocalDate getLatestDate() throws RemoteException{
+    public LocalDate getLatestDate() throws RemoteException {
         return allStockPOs.get(allStockPOs.size() - 1).getDate();
     }
 }

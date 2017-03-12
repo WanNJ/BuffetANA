@@ -7,7 +7,9 @@ import util.DateUtil;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by slow_time on 2017/3/8.
@@ -31,17 +33,11 @@ public enum StockDAOImpl implements StockDAO{
     public List<StockPO> getMarketStockInfo() {
         File root = new File("../Data/Time");
         File[] files =root.listFiles();
-        List<StockPO> stockPOs = new ArrayList<>();
-        for(File iFile : files) {
-            StockPO stockPO = generateMarketStock(iFile);
-            stockPOs.add(stockPO);
-        }
-        stockPOs.sort((stockPO1, stockPO2) -> {
+        return Arrays.asList(files).stream().map(file -> generateMarketStock(file)).sorted((stockPO1, stockPO2) -> {
             if(stockPO1.getDate().isEqual(stockPO2.getDate()))
                 return 0;
             return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
-        });
-        return stockPOs;
+        }).collect(Collectors.toList());
     }
 
 

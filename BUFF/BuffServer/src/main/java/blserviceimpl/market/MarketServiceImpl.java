@@ -2,6 +2,7 @@ package blserviceimpl.market;
 
 import blservice.exception.DateIndexException;
 import blservice.market.MarketService;
+import blserviceimpl.util.PO2VOUtil;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
@@ -13,6 +14,7 @@ import vo.StockVolVO;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by slow_time on 2017/3/12.
@@ -27,17 +29,17 @@ public enum MarketServiceImpl implements MarketService {
     MarketServiceImpl() {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
-
+        stockPOs = stockDAO.getMarketStockInfo();
     }
 
     @Override
     public List<KLinePieceVO> getMarketDailyKLine(LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
-        return null;
+        return stockPOs.stream().map(stockPO -> PO2VOUtil.stockPO2KLinePieceVO(stockPO)).collect(Collectors.toList());
     }
 
     @Override
     public List<StockVolVO> getMarketVol(LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
-        return null;
+        return stockPOs.stream().map(stockPO -> PO2VOUtil.stockPO2StockVolVO(stockPO)).collect(Collectors.toList());
     }
 
     @Override

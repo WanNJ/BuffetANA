@@ -2,6 +2,7 @@ package blserviceimpl.singlestock;
 
 import blservice.exception.DateIndexException;
 import blservice.singlestock.VolService;
+import blserviceimpl.util.PO2VOUtil;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
@@ -43,8 +44,7 @@ public enum VolServiceImpl implements VolService {
         List<StockVolVO> stockVolVOs = new ArrayList<>();
         stockPOs.forEach(stockPO -> {
             if(DateUtil.isBetween(stockPO.getDate(), beginDate, endDate))
-                stockVolVOs.add(new StockVolVO(stockPO.getDate(), stockPO.getVolume(),
-                        stockPO.getOpen_Price() > stockPO.getClose_Price()));
+                stockVolVOs.add(PO2VOUtil.stockPO2StockVolVO(stockPO));
 
         });
         stockVolVOs.sort((stockVolVO1, stockVolVO2) -> {

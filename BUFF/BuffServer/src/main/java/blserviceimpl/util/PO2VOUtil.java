@@ -4,6 +4,7 @@ import po.StockPO;
 import vo.KLinePieceVO;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
+import vo.StockVolVO;
 
 /**
  * Created by slow_time on 2017/3/7.
@@ -44,5 +45,9 @@ public class PO2VOUtil {
     public static KLinePieceVO stockPO2KLinePieceVO(StockPO stockPO) {
         return new KLinePieceVO(stockPO.getDate(), stockPO.getHigh_Price(), stockPO.getLow_Price(),
                 stockPO.getOpen_Price(), stockPO.getClose_Price());
+    }
+
+    public static StockVolVO stockPO2StockVolVO(StockPO stockPO) {
+        return new StockVolVO(stockPO.getDate(), stockPO.getVolume(), stockPO.getOpen_Price() > stockPO.getClose_Price());
     }
 }

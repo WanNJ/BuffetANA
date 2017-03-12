@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
+<?import javafx.scene.layout.BorderPane?>
 <StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <GridPane>
      <columnConstraints>
@@ -43,14 +44,8 @@
                </Tab>
             </tabs>
          </JFXTabPane>
-         <LineChart GridPane.columnIndex="1">
-            <xAxis>
-               <CategoryAxis side="BOTTOM" />
-            </xAxis>
-            <yAxis>
-               <NumberAxis side="LEFT" />
-            </yAxis>
-         </LineChart>
+         <BorderPane fx:id="KlinePane">
+         </BorderPane>
       </children>
    </GridPane>
 </StackPane>

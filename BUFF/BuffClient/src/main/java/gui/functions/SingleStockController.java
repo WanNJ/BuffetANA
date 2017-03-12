@@ -209,7 +209,7 @@ public class SingleStockController {
      */
     private void showAllGragh(){
         if(this.code!=null  && !"".equals(this.code)){
-            linesPanelController.HandleCode(this.code);
+          linesPanelController.HandleCode(this.code);
         }else{
             System.err.println("no code information");
         }

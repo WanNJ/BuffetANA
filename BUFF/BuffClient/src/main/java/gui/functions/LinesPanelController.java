@@ -125,7 +125,9 @@ public class LinesPanelController {
 
 
         from.setValue(LocalDate.of(2014, 3, 1));
-        to.setValue(LocalDate.of(2014, 3, 7));
+        to.setValue(LocalDate.of(2014, 3, 10));
+
+        System.out.println("form  1231212:   "+ from.getValue());
 
 
         //为每个toggle button添加监听方法
@@ -235,12 +237,11 @@ public class LinesPanelController {
         LocalDate second = to.getValue();
 
 
+//
+//        first =LocalDate.of(2009,12,1);
+//        second =LocalDate.of(2009,12,10);
+//        //TODO delete
 
-        first =LocalDate.of(2009,12,1);
-        second =LocalDate.of(2009,12,10);
-        //TODO delete
-        System.out.println("from:  "+from);
-        System.out.println("to:  "+to);
         if(first!=null && second!=null && first.isBefore(second)){
             KlineController klineController =
                     (KlineController)KLineHandler.getCurrentView().getViewContext().getController();

@@ -1,11 +1,13 @@
 package gui.functions;
 
 import blservice.comparison.ComparisonService;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
+import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.chart.Axis;
@@ -14,6 +16,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import vo.BasisAnalysisVO;
@@ -46,9 +49,9 @@ public class ComparisonController {
     @FXML
     private JFXTextField deputyStockCodeTextField;
     @FXML
-    private DatePicker beginDatePicker;
+    private JFXDatePicker beginDatePicker;
     @FXML
-    private DatePicker endDatePicker;
+    private JFXDatePicker endDatePicker;
     @FXML
     private LineChart<LocalDate, Number> mainLineChart;
     @FXML
@@ -57,6 +60,8 @@ public class ComparisonController {
     private JFXToggleButton dailyClosePriceToggleButton;
     @FXML
     private JFXToggleButton dailyLRToggleButton;
+    @FXML
+    private StackPane root;
 
     private BasisAnalysisVO mainBasisAnalysisVO;
     private BasisAnalysisVO deputyBasisAnalysisVO;
@@ -67,7 +72,11 @@ public class ComparisonController {
     private void initialize() {
         blFactoryService = new BlFactoryServiceImpl();
         comparisonService = blFactoryService.createComparisonService();
-        setDatePicker();
+
+        beginDatePicker.setDialogParent(root);
+        endDatePicker.setDialogParent(root);
+        DatePickerUtil.initDatePicker(beginDatePicker,endDatePicker);
+        //setDatePicker();
     }
 
     @FXML

@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.comparison.ComparisonService;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
@@ -29,7 +30,7 @@ public class ComparisonController {
     @FXML
     private Label mainChangeRateLabel;
     @FXML
-    private Label mainVarianceOfLR;
+    private Label mainVarianceOfLRLabel;
     @FXML
     private Label deputyMinPriceLabel;
     @FXML
@@ -37,7 +38,7 @@ public class ComparisonController {
     @FXML
     private Label deputyChangeRateLabel;
     @FXML
-    private Label deputyVarianceOfLR;
+    private Label deputyVarianceOfLRLabel;
     @FXML
     private JFXTextField mainStockCodeTextField;
     @FXML
@@ -50,6 +51,10 @@ public class ComparisonController {
     private LineChart<LocalDate, Number> mainLineChart;
     @FXML
     private LineChart<LocalDate, Number> deputyLineChart;
+    @FXML
+    private JFXToggleButton dailyClosePriceToggleButton;
+    @FXML
+    private JFXToggleButton dailyLRToggleButton;
 
     private BasisAnalysisVO mainBasisAnalysisVO;
     private BasisAnalysisVO deputyBasisAnalysisVO;

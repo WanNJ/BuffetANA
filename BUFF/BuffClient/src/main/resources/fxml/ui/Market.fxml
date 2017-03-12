@@ -14,7 +14,7 @@
 <StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <GridPane>
      <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" maxWidth="502.0"/>
        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
      </columnConstraints>
      <rowConstraints>
@@ -27,16 +27,7 @@
                   <content>
                      <StackPane>
                         <children>
-                           <JFXTreeTableView StackPane.alignment="CENTER_LEFT" />
-                        </children>
-                     </StackPane>
-                  </content>
-               </Tab>
-               <Tab text="自选股">
-                  <content>
-                     <StackPane prefHeight="150.0">
-                        <children>
-                           <JFXTreeTableView />
+                           <JFXTreeTableView fx:id="allSharesList" showRoot="false" StackPane.alignment="CENTER_LEFT" />
                         </children>
                      </StackPane>
                   </content>
@@ -45,49 +36,21 @@
                   <content>
                      <StackPane prefHeight="150.0">
                         <children>
-                           <JFXTreeTableView />
+                           <JFXTreeTableView fx:id="recentlySharesList" showRoot="false" />
                         </children>
                      </StackPane>
                   </content>
                </Tab>
             </tabs>
          </JFXTabPane>
-         <JFXTabPane GridPane.columnIndex="1">
-            <tabs>
-               <Tab text="分时图">
-                  <content>
-                     <StackPane>
-                        <children>
-                           <LineChart>
-                              <xAxis>
-                                 <CategoryAxis side="BOTTOM" />
-                              </xAxis>
-                              <yAxis>
-                                 <NumberAxis side="LEFT" />
-                              </yAxis>
-                           </LineChart>
-                        </children>
-                     </StackPane>
-                  </content>
-               </Tab>
-               <Tab text="K线图">
-                  <content>
-                     <StackPane prefHeight="150.0">
-                        <children>
-                           <LineChart>
-                              <xAxis>
-                                 <CategoryAxis side="BOTTOM" />
-                              </xAxis>
-                              <yAxis>
-                                 <NumberAxis side="LEFT" />
-                              </yAxis>
-                           </LineChart>
-                        </children>
-                     </StackPane>
-                  </content>
-               </Tab>
-            </tabs>
-         </JFXTabPane>
+         <LineChart GridPane.columnIndex="1">
+            <xAxis>
+               <CategoryAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+               <NumberAxis side="LEFT" />
+            </yAxis>
+         </LineChart>
       </children>
    </GridPane>
 </StackPane>

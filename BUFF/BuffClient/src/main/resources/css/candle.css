@@ -41,7 +41,7 @@
 
 .candlestick-average-line {   /**/
     -fx-stroke: rgba(205, 206, 0, 0.51);
-    -fx-stroke-width: 3px;
+    -fx-stroke-width: 1px;
 }
 
 .candlestick-candle {
@@ -50,7 +50,7 @@
 
 .candlestick-line {
     -fx-stroke: #FFFFFF;
-    -fx-stroke-width: 0.1px;
+    -fx-stroke-width: 1px;
 }
 
 

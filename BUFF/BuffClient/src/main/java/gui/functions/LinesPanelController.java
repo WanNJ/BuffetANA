@@ -234,11 +234,13 @@ public class LinesPanelController {
         LocalDate first = from.getValue();
         LocalDate second = to.getValue();
 
+
+
+        first =LocalDate.of(2009,12,1);
+        second =LocalDate.of(2009,12,10);
         //TODO delete
         System.out.println("from:  "+from);
         System.out.println("to:  "+to);
-
-
         if(first!=null && second!=null && first.isBefore(second)){
             KlineController klineController =
                     (KlineController)KLineHandler.getCurrentView().getViewContext().getController();

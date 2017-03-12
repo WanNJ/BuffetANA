@@ -14,6 +14,7 @@ import vo.StockVolVO;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,19 @@ public enum MarketServiceImpl implements MarketService {
 
     @Override
     public List<MarketStockDetailVO> getMarketStockDetailVO() throws RemoteException {
+        if(stockPOs != null && stockPOs.size() >= 1) {
+            List<MarketStockDetailVO> marketStockDetailVOs = new ArrayList<>();
+            StockPO stockPO1 = stockPOs.get(0);
+            for(StockPO stockPO2 : stockPOs) {
+                MarketStockDetailVO marketStockDetailVO = PO2VOUtil.stockPO2MarketStockDetailVO(stockPO1, stockPO2);
+                if(marketStockDetailVO != null)
+                {
+                    marketStockDetailVOs.add(marketStockDetailVO);
+                    stockPO1 = stockPO2;
+                }
+            }
+            return marketStockDetailVOs;
+        }
         return null;
     }
 }

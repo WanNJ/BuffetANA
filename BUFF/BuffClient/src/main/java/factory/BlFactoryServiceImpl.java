@@ -1,6 +1,7 @@
 package factory;
 
 import blservice.comparison.ComparisonService;
+import blservice.market.MarketService;
 import blservice.singlestock.*;
 import rmi.RemoteHelper;
 
@@ -35,4 +36,9 @@ public class BlFactoryServiceImpl implements BlFactoryService {
 
     @Override
     public ComparisonService createComparisonService() { return RemoteHelper.getInstance().getComparisonService(); }
+
+    @Override
+    public MarketService createMarketService() {
+        return RemoteHelper.getInstance().getMarketService();
+    }
 }

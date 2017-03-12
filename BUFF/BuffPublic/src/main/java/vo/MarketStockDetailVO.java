@@ -9,7 +9,7 @@ public class MarketStockDetailVO implements Serializable {
 
     public String code;
     public String name;
-    public String currentPrice;
+    public double currentPrice;
     /**
      * 涨跌价格
      */
@@ -23,7 +23,7 @@ public class MarketStockDetailVO implements Serializable {
 
     }
 
-    public MarketStockDetailVO(String code, String name, String currentPrice, double changeValue, double changeValueRange) {
+    public MarketStockDetailVO(String code, String name, double currentPrice, double changeValue, double changeValueRange) {
         this.code = code;
         this.name = name;
         this.currentPrice = currentPrice;

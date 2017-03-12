@@ -3,6 +3,7 @@ package util;
 import blservice.exception.RangeException;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 /**
  * 日期的范围的封装
@@ -27,6 +28,16 @@ public class DateRange {
             this.to = to;
         }
     }
+
+
+    /**
+     * 获取实际的天数范围
+     * @return
+     */
+    public int getRangeDays(){
+        return to.compareTo(from)+1;
+    }
+
 
     public LocalDate getFrom() {
         return from;

@@ -6,6 +6,9 @@ import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
 import javafx.fxml.FXML;
+import javafx.scene.chart.Axis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -43,6 +46,10 @@ public class ComparisonController {
     private DatePicker beginDatePicker;
     @FXML
     private DatePicker endDatePicker;
+    @FXML
+    private LineChart<LocalDate, Number> mainLineChart;
+    @FXML
+    private LineChart<LocalDate, Number> deputyLineChart;
 
     private BasisAnalysisVO mainBasisAnalysisVO;
     private BasisAnalysisVO deputyBasisAnalysisVO;
@@ -80,6 +87,9 @@ public class ComparisonController {
 
 
         //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
+    }
+
+    private void setMainLineChart() {
     }
 
     private void setDatePicker() {

@@ -15,6 +15,14 @@ import java.util.List;
 public interface ComparisonService {
 
     /**
+     * 设置基本信息
+     * @param stockCode 股票编号
+     * @param beginDate 查询起始日期
+     * @param endDate 查询结束日期
+     */
+    void setInitInfo(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+
+    /**
      * 针对同一股票重新设置日期区间（不用再次访问数据层）
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期

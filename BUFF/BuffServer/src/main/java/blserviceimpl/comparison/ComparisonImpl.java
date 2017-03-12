@@ -21,11 +21,14 @@ import java.util.stream.Collectors;
  * 两股对比服务逻辑实现代码
  */
 
-public enum ComparisonImpl implements ComparisonService {
-    COMPARISON_SERVICE;
+public class ComparisonImpl implements ComparisonService {
 
     private StockDAO stockDAO;
     private DAOFactoryService factory;
+
+    private String stockCode;
+    private LocalDate beginDate;
+    private LocalDate endDate;
 
     private List<StockPO> allStockPOs;
     private List<StockPO> specificStockPOs;
@@ -33,9 +36,16 @@ public enum ComparisonImpl implements ComparisonService {
     private List<DailyLogReturnVO> dailyLogReturnVOs;
 
 
-    ComparisonImpl() {
+    public ComparisonImpl() {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
+    }
+
+
+    @Override
+    public void setInitInfo(String stockCode, LocalDate beginDate, LocalDate endDate) throws  RemoteException{
+        this.stockCode = stockCode;
+
     }
 
     private void getAllStockInfo(String stockCode) throws RemoteException {

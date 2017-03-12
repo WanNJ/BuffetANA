@@ -89,7 +89,6 @@ public class ComparisonController {
 
         //TODO 设置主对数收益率图表
 
-
         //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
     }
 
@@ -101,7 +100,6 @@ public class ComparisonController {
         deputyChangeRateLabel.setText(String.valueOf(deputyBasisAnalysisVO.changeRate));
 
         //TODO 设置主对数收益率图表
-
 
         //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
     }

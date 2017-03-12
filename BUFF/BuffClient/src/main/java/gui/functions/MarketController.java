@@ -1,18 +1,22 @@
 package gui.functions;
 
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
 
@@ -23,18 +27,26 @@ import javax.annotation.PostConstruct;
 @FXMLController(value = "/resources/fxml/ui/Market.fxml" , title = "Material Design Example")
 public class MarketController {
 
-    @FXML
-    private JFXTreeTableView<Share> allSharesList;
-    @FXML
-    private JFXTreeTableView<Share> recentlySharesList;
+    @FXML private StackPane root;
+    @FXML private JFXTreeTableView<Share> allSharesList;
+    @FXML private JFXTreeTableView<Share> recentlySharesList;
+    @FXML private JFXDatePicker from;
+    @FXML private JFXDatePicker to;
 
-    private ObservableList<Share> allShares;//所有股票列表项的集合
-    private ObservableList<Share> recentlyShares;//最近浏览股票列表项的集合
+    private ObservableList<Share> allShares;//所有股票列表项的集合，动态绑定JFXTreeTableView的显示
+    private ObservableList<Share> recentlyShares;//最近浏览股票列表项的集合，动态绑定JFXTreeTableView的显示
     private static final String titles[]={"股票代码","股票名称","现价（元）","涨跌（元）","涨跌幅（%）"};
 
 
     @PostConstruct
     public void init(){
+        //初始化界面用到的各种控件
+        from.setDialogParent(root);
+        to.setDialogParent(root);
+        //为日期选择器加上可选范围的控制
+        DatePickerUtil.initDatePicker(from,to);
+
+        //初始化ObservableList
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
         //添加要显示的行的信息		下面是一个例子
@@ -55,6 +67,10 @@ public class MarketController {
         for(int index=0;index<titles.length;index++){
             setCustomerColumn(treeTableView,index);
         }
+
+//        treeTableView.setOnContextMenuRequested(event -> {
+//            System.out.println(treeTableView.getSelectionModel().getSelectedItem().getValue().ID);
+//        });
     }
 
     private void setCustomerColumn(JFXTreeTableView<Share> treeTableView,int index){
@@ -67,9 +83,6 @@ public class MarketController {
             if(colum.validateValue(param)) return propertys[index];
             else return colum.getComputedValue(param);
         });
-
-        colum.addEventHandler(EventType.ROOT,event -> {System.out.println(123);});
-        //colum.setOnEditCommit(event -> event.getTreeTableView().);
 
         treeTableView.getColumns().add(colum);
     }

@@ -1,6 +1,7 @@
 package rmi;
 
 import blservice.comparison.ComparisonService;
+import blservice.market.MarketService;
 import blservice.singlestock.*;
 
 import java.rmi.Remote;
@@ -45,5 +46,9 @@ public class RemoteHelper {
 	}
 
 	public ComparisonService getComparisonService() { return (ComparisonService)remote; }
+
+	public MarketService getMarketService() {
+		return (MarketService)remote;
+	}
 
 }

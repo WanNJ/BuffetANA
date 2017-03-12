@@ -2,8 +2,10 @@ package rmi;
 
 import blservice.comparison.ComparisonService;
 import blservice.exception.DateIndexException;
+import blservice.market.MarketService;
 import blservice.singlestock.*;
 import blserviceimpl.comparison.ComparisonImpl;
+import blserviceimpl.market.MarketServiceImpl;
 import blserviceimpl.singlestock.*;
 import vo.*;
 
@@ -12,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.List;
 
-public class DataRemoteObject extends UnicastRemoteObject implements KLineService, MALineService, StockDetailService, VolService, AllStockService, ComparisonService {
+public class DataRemoteObject extends UnicastRemoteObject implements KLineService, MALineService, StockDetailService, VolService, AllStockService, ComparisonService, MarketService {
 	/**
 	 *  RMI 接口
 	 */
@@ -23,6 +25,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	private VolService volService;
 	private AllStockService allStockService;
 	private ComparisonService comparisonService;
+	private MarketService marketService;
 
 	protected DataRemoteObject() throws RemoteException {
 		this.kLineService = KLineServiceImpl.K_LINE_SERVICE;
@@ -30,7 +33,12 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 		this.volService = VolServiceImpl.VOL_SERVICE;
 		this.allStockService = AllStockServiceImpl.ALL_STOCK_SERVICE;
         this.maLineService = MALineServiceImpl.MA_LINE_SERVICE;
+<<<<<<< HEAD
 		this.comparisonService = ComparisonImpl.COMPARISON_SERVICE;
+=======
+		this.comparisonService = new ComparisonImpl();
+		this.marketService = MarketServiceImpl.MARKET_SERVICE;
+>>>>>>> origin/master
     }
 
 	@Override
@@ -107,6 +115,21 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	@Override
 	public LocalDate getLatestDate() throws RemoteException {
 		return comparisonService.getLatestDate();
+	}
+
+	@Override
+	public List<KLinePieceVO> getMarketDailyKLine(LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
+		return marketService.getMarketDailyKLine(beginDate, endDate);
+	}
+
+	@Override
+	public List<StockVolVO> getMarketVol(LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
+		return marketService.getMarketVol(beginDate, endDate);
+	}
+
+	@Override
+	public List<MarketStockDetailVO> getMarketStockDetailVO() throws RemoteException {
+		return marketService.getMarketStockDetailVO();
 	}
 
 

@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+	<HBox alignment="BOTTOM_CENTER" fillHeight="false" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
+		<children>
+			<Label minWidth="60.0" text="起始日期" />
+			<JFXDatePicker fx:id="from" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
+			<Label minWidth="60.0" text="结束日期" />
+			<JFXDatePicker fx:id="to" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
+		</children>
+	</HBox>
    <JFXTabPane rotateGraphic="true" side="LEFT" stylesheets="@../../css/jfoenix-components.css">
       <tabs>
          <Tab text="总交易量">
            <content>
 			   <StackPane>
 				   <children>
-					   <BarChart StackPane.alignment="CENTER">
+					   <BarChart>
 						   <xAxis>
 							   <CategoryAxis side="BOTTOM" />
 						   </xAxis>
 						   <yAxis>
 							   <NumberAxis side="LEFT" />
 						   </yAxis>
+                        <StackPane.margin>
+                           <Insets />
+                        </StackPane.margin>
 					   </BarChart>
 				   </children>
 			   </StackPane>
@@ -74,6 +89,10 @@
 				</StackPane>
             </content>
          </Tab>
-      </tabs></JFXTabPane>
+      </tabs>
+      <StackPane.margin>
+         <Insets bottom="30.0" />
+      </StackPane.margin>
+   </JFXTabPane>
 
 </StackPane>

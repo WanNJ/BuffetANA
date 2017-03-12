@@ -4,6 +4,7 @@ import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * 两股比较接口
  * Created by Accident on 2017/3/9.
  */
-public interface ComparisonService {
+public interface ComparisonService extends Remote {
 
     /**
      * 设置基本信息

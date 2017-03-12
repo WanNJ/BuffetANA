@@ -33,14 +33,11 @@ public enum StockDAOImpl implements StockDAO{
     public List<StockPO> getMarketStockInfo() {
         File root = new File("../Data/Time");
         File[] files =root.listFiles();
-        List<StockPO> stockPOs = Arrays.asList(files).stream().map(file -> generateMarketStock(file)).collect(Collectors.toList());
-        stockPOs.sort((stockPO1, stockPO2) -> {
+        return Arrays.asList(files).stream().filter(file -> !file.isDirectory() && file.getAbsoluteFile().toString().endsWith(".csv")).map(file -> generateMarketStock(file)).sorted((stockPO1, stockPO2) -> {
             if(stockPO1.getDate().isEqual(stockPO2.getDate()))
                 return 0;
             return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
-        });
-
-        return stockPOs;
+        }).collect(Collectors.toList());
     }
 
 

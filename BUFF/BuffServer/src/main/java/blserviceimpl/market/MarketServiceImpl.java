@@ -84,4 +84,16 @@ public enum MarketServiceImpl implements MarketService {
         }
         return marketStockDetailVOs;
     }
+
+//    public static void main(String[] args) {
+//        MarketService marketService = MARKET_SERVICE;
+//        try {
+//            List<StockVolVO> kLinePieceVOs = marketService.getMarketVol(LocalDate.of(2014, 4, 10), LocalDate.of(2014, 4, 29));
+//            kLinePieceVOs.forEach(kLinePieceVO -> System.out.println(kLinePieceVO.vol));
+//        } catch (DateIndexException e) {
+//            e.printStackTrace();
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

@@ -110,6 +110,9 @@ public class MAChartController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        //TODO delete
+
+        System.out.println(dayList==null);
         dataList = getObeservableList(dayList);
 
 

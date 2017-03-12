@@ -41,6 +41,8 @@ public enum StockDAOImpl implements StockDAO{
         List<StockPO> stockPOs = null;
         BufferedReader br = null;
         try {
+            //TODO
+            System.out.println(fileName);
             br = new BufferedReader(new FileReader(fileName));
             stockPOs = new ArrayList<>();
             String line;

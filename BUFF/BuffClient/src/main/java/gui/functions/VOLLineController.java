@@ -27,16 +27,16 @@ public class VOLLineController {
 
     @FXML
     private void initialize() {
-        LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 11, 10);
-        VolServiceImpl_Stub volServiceImpl_stub  =new VolServiceImpl_Stub();
-
-        //单例模式的添加方法
-        VOLChartController volChartController  = ChartController.INSTANCE.getVOLChartController();
-        volChartController.setVolService(volServiceImpl_stub);
-
-        volChartController.drawChat();
-        borderPane.centerProperty().setValue(volChartController.getChart());
+//        LocalDate first = LocalDate.of(2015, 10, 1);
+//        LocalDate second = LocalDate.of(2015, 11, 10);
+//        VolServiceImpl_Stub volServiceImpl_stub  =new VolServiceImpl_Stub();
+//
+//        //单例模式的添加方法
+//        VOLChartController volChartController  = ChartController.INSTANCE.getVOLChartController();
+//        volChartController.setVolService(volServiceImpl_stub);
+//
+//        volChartController.drawChat();
+//        borderPane.centerProperty().setValue(volChartController.getChart());
 
 
     }
@@ -52,6 +52,7 @@ public class VOLLineController {
         VOLChartController volChartController = ChartController.INSTANCE.getVOLChartController();
         volChartController.setStartDate(first);
         volChartController.setEndDate(second);
+        volChartController.setStockCode(code);
         volChartController.drawChat();
         borderPane.centerProperty().setValue(volChartController.getChart());
     }

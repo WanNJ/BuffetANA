@@ -28,16 +28,15 @@ public class KlineController {
 
     @FXML
     private void initialize() {
-        LocalDate first = LocalDate.of(2015, 10, 1);
-        LocalDate second = LocalDate.of(2015, 10, 10);
-        KLineServiceImpl_Stub kLineServiceImpl_stub = new KLineServiceImpl_Stub();
-
-        KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
-
-
-        kLineChartController.setkLineService(kLineServiceImpl_stub);
-        kLineChartController.drawChat();
-        DayLinePane.centerProperty().setValue(kLineChartController.getChart());
+//        LocalDate first = LocalDate.of(2015, 10, 1);
+//        LocalDate second = LocalDate.of(2015, 10, 10);
+//        //KLineServiceImpl_Stub kLineServiceImpl_stub = new KLineServiceImpl_Stub();
+//        KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
+//
+//
+//        //kLineChartController.setkLineService(kLineServiceImpl_stub);
+//        kLineChartController.drawChat();
+//        DayLinePane.centerProperty().setValue(kLineChartController.getChart());
     }
 
     /**
@@ -48,6 +47,11 @@ public class KlineController {
      */
     public void upDateGraph( String code ,LocalDate first , LocalDate second ){
         KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
+        kLineChartController.setStockCode(code);
+
+        //TODO delete
+        System.out.println("first:   "+first);
+
         kLineChartController.setStartDate(first);
         kLineChartController.setEndDate(second);
         kLineChartController.drawChat();

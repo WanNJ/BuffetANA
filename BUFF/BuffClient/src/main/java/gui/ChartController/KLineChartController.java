@@ -68,6 +68,7 @@ public class KLineChartController implements Initializable {
         dataList = FXCollections.observableArrayList();
         dataList.clear();
         currentType = KLineType.Daily;
+
     }
 
 
@@ -115,6 +116,8 @@ public class KLineChartController implements Initializable {
             case Daily:
                 List<KLinePieceVO> dayList = new ArrayList<KLinePieceVO>();
                 try {
+                    //TODO  delete
+                    System.out.println(stockCode+" "+startDate+ "  "+endDate);
                     dayList = kLineService.getDailyKLine(stockCode,startDate,endDate);
                 } catch (DateIndexException e) {
                     e.printStackTrace();

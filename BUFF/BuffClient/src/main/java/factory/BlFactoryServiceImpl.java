@@ -3,6 +3,7 @@ package factory;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.thermometer.ThermometerService;
 import rmi.RemoteHelper;
 
 /**
@@ -41,4 +42,7 @@ public class BlFactoryServiceImpl implements BlFactoryService {
     public MarketService createMarketService() {
         return RemoteHelper.getInstance().getMarketService();
     }
+
+    @Override
+    public ThermometerService createThermometerService() {return RemoteHelper.getInstance().getThermometerService(); }
 }

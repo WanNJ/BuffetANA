@@ -3,6 +3,7 @@ package rmi;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.thermometer.ThermometerService;
 
 import java.rmi.Remote;
 
@@ -50,5 +51,7 @@ public class RemoteHelper {
 	public MarketService getMarketService() {
 		return (MarketService)remote;
 	}
+
+	public ThermometerService getThermometerService(){return (ThermometerService)remote;}
 
 }

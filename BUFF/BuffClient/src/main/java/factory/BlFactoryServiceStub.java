@@ -3,6 +3,7 @@ package factory;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.thermometer.ThermometerService;
 import blstub.marketstub.MarketServiceImpl_Stub;
 import blstub.singlestockstub.AllStockServiceImpl_Stub;
 import blstub.singlestockstub.KLineServiceImpl_Stub;
@@ -31,6 +32,11 @@ public class BlFactoryServiceStub implements BlFactoryService {
     @Override
     public MarketService createMarketService() {
         return new MarketServiceImpl_Stub();
+    }
+
+    @Override
+    public ThermometerService createThermometerService() {
+        return null;
     }
 
     @Override

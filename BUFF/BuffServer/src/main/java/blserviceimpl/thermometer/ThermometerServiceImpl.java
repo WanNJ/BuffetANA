@@ -6,7 +6,9 @@ import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
 import po.StockPO;
 import util.DateRange;
+import vo.LongPeiceVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的交易量
      */
     @Override
-    public List<Long> getTradingVolume(DateRange dateRange) {
+    public List<LongPeiceVO> getTradingVolume(DateRange dateRange) throws RemoteException {
         /**
          * 获取时间
          */
@@ -56,7 +58,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<Long> list = new ArrayList<>();
+        List<LongPeiceVO> list = new ArrayList<>();
 
         /**
          * 获取日期的流
@@ -68,9 +70,9 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  计算
          *  获取列表
          */
-        list =  stream.map((date)->
-                (stockDAO.getStockInfoByDate(date).stream().map(t->t.getVolume())
-                        .reduce((a,b)->a+b).orElseGet(()->Long.parseLong("0"))))
+        list =  stream.map((date)-> new LongPeiceVO(date,(stockDAO.getStockInfoByDate(date)
+                .stream().map(t->t.getVolume()).reduce((a,b)->a+b).orElseGet(()->Long.parseLong("0")))
+                ))
                 .collect(Collectors.toList());
 
 
@@ -89,7 +91,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      */
 
     @Override
-    public List<Long> getTradingVolume(DateRange dateRange, String shareID) {
+    public List<LongPeiceVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException{
         /**
          * 获取时间
          */
@@ -100,7 +102,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<Long> list = new ArrayList<>();
+        List<LongPeiceVO> list = new ArrayList<>();
 
         /**
          * 获取单个股票数据
@@ -113,7 +115,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  获取列表
          */
         list =  stockPOs.stream().filter(t->!(t.getDate().isAfter(end)||t.getDate().isBefore(begin)))
-                .map(t->t.getVolume()).collect(Collectors.toList());
+                .map(t->new LongPeiceVO(t.getDate(),t.getVolume())).collect(Collectors.toList());
 
 
         /**
@@ -131,7 +133,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * 暂时先不对 0成交量做顾虑
      */
     @Override
-    public List<Long> getLimitUpNum(DateRange dateRange) {
+    public List<LongPeiceVO> getLimitUpNum(DateRange dateRange) throws RemoteException {
         //不确定 四舍五入的误差
         return CompareWithHistory(dateRange,0.099);
     }
@@ -143,7 +145,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的量
      */
     @Override
-    public List<Long> getLimitDownNum(DateRange dateRange) {
+    public List<LongPeiceVO> getLimitDownNum(DateRange dateRange)throws RemoteException {
        return CompareWithHistory(dateRange,-0.099);
     }
 
@@ -154,7 +156,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的量
      */
     @Override
-    public List<Long> getRiseOver5Num(DateRange dateRange){
+    public List<LongPeiceVO> getRiseOver5Num(DateRange dateRange)throws RemoteException{
         return CompareWithHistory(dateRange,0.05);
 }
 
@@ -165,7 +167,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的量
      */
     @Override
-    public List<Long> getFallOver5Num(DateRange dateRange) {
+    public List<LongPeiceVO> getFallOver5Num(DateRange dateRange)throws RemoteException {
         return CompareWithHistory(dateRange,-0.05);
     }
 
@@ -175,7 +177,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的量
      */
     @Override
-    public List<Long> getRiseOver5ThanLastDayNum(DateRange dateRange) {
+    public List<LongPeiceVO> getRiseOver5ThanLastDayNum(DateRange dateRange)throws RemoteException {
         return CompareWithOpenClose(dateRange,0.05);
     }
 
@@ -187,7 +189,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的量
      */
     @Override
-    public List<Long> getFallOver5ThanLastDayNum(DateRange dateRange) {
+    public List<LongPeiceVO> getFallOver5ThanLastDayNum(DateRange dateRange)throws RemoteException {
         return CompareWithOpenClose(dateRange,-0.05);
     }
 
@@ -228,7 +230,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @param rate    要达到涨跌幅度的目标
      * @return   List<Long>
      */
-    private List<Long> CompareWithHistory(DateRange dateRange ,  double rate){
+    private List<LongPeiceVO> CompareWithHistory(DateRange dateRange ,  double rate){
         LocalDate begin =  dateRange.getFrom();
         LocalDate end =  dateRange.getTo();
 
@@ -236,7 +238,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<Long> list = new ArrayList<>();
+        List<LongPeiceVO> list = new ArrayList<>();
 
         /**
          * 获取循环个股票数据
@@ -283,7 +285,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
                     lastClosePriceTable.put(code, po.getClose_Price());
                 }
             }
-            list.add(count);
+            list.add(new LongPeiceVO(idate,count));
         }
 
         /**
@@ -299,7 +301,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @param rate
      * @return List<Long>
      */
-    private List<Long> CompareWithOpenClose(DateRange dateRange ,  double rate){
+    private List<LongPeiceVO> CompareWithOpenClose(DateRange dateRange ,  double rate){
         LocalDate begin =  dateRange.getFrom();
         LocalDate end =  dateRange.getTo();
 
@@ -307,7 +309,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<Long> list = new ArrayList<>();
+        List<LongPeiceVO> list = new ArrayList<>();
 
         /**
          * 获取循环个股票数据
@@ -356,7 +358,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
                     lastClosePriceTable.put(code, po.getClose_Price());
                 }
             }
-            list.add(count);
+            list.add(new LongPeiceVO(idate,count));
         }
 
         /**

@@ -4,9 +4,12 @@ import blservice.comparison.ComparisonService;
 import blservice.exception.DateIndexException;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.thermometer.ThermometerService;
 import blserviceimpl.comparison.ComparisonImpl;
 import blserviceimpl.market.MarketServiceImpl;
 import blserviceimpl.singlestock.*;
+import blserviceimpl.thermometer.ThermometerServiceImpl;
+import util.DateRange;
 import vo.*;
 
 import java.rmi.RemoteException;
@@ -14,7 +17,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.List;
 
-public class DataRemoteObject extends UnicastRemoteObject implements KLineService, MALineService, StockDetailService, VolService, AllStockService, ComparisonService, MarketService {
+public class DataRemoteObject extends UnicastRemoteObject implements
+		KLineService, MALineService, StockDetailService, VolService,
+		AllStockService, ComparisonService, MarketService,ThermometerService {
 	/**
 	 *  RMI 接口
 	 */
@@ -26,6 +31,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	private AllStockService allStockService;
 	private ComparisonService comparisonService;
 	private MarketService marketService;
+	private ThermometerService thermometerService;
 
 	protected DataRemoteObject() throws RemoteException {
 		this.kLineService = KLineServiceImpl.K_LINE_SERVICE;
@@ -35,6 +41,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
         this.maLineService = MALineServiceImpl.MA_LINE_SERVICE;
 		this.comparisonService = ComparisonImpl.COMPARISON_SERVICE;
 		this.marketService = MarketServiceImpl.MARKET_SERVICE;
+		this.thermometerService = ThermometerServiceImpl.THERMOMETER_SERVCE;
     }
 
 	@Override
@@ -126,6 +133,46 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	@Override
 	public List<MarketStockDetailVO> getMarketStockDetailVO() throws RemoteException {
 		return marketService.getMarketStockDetailVO();
+	}
+
+	@Override
+	public List<LongPeiceVO> getTradingVolume(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getTradingVolume(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException {
+		return this.thermometerService.getTradingVolume(dateRange,shareID);
+	}
+
+	@Override
+	public List<LongPeiceVO> getLimitUpNum(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getLimitUpNum(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getLimitDownNum(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getLimitDownNum(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getRiseOver5Num(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getRiseOver5Num(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getFallOver5Num(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getFallOver5Num(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getRiseOver5ThanLastDayNum(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getRiseOver5ThanLastDayNum(dateRange);
+	}
+
+	@Override
+	public List<LongPeiceVO> getFallOver5ThanLastDayNum(DateRange dateRange) throws RemoteException {
+		return this.thermometerService.getFallOver5ThanLastDayNum(dateRange);
 	}
 
 

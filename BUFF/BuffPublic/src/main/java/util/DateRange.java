@@ -2,6 +2,7 @@ package util;
 
 import blservice.exception.RangeException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
  * Created by zjy on 2017/3/5.
  * @author zjy
  */
-public class DateRange {
+public class DateRange implements Serializable{
     private LocalDate from;
     private LocalDate to;
 

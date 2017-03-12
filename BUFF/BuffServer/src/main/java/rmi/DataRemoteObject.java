@@ -30,7 +30,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 		this.volService = VolServiceImpl.VOL_SERVICE;
 		this.allStockService = AllStockServiceImpl.ALL_STOCK_SERVICE;
         this.maLineService = MALineServiceImpl.MA_LINE_SERVICE;
-		this.comparisonService = new ComparisonImpl();
+		this.comparisonService = ComparisonImpl.COMPARISON_SERVICE;
     }
 
 	@Override
@@ -74,13 +74,8 @@ public class DataRemoteObject extends UnicastRemoteObject implements KLineServic
 	}
 
 	@Override
-	public void setInitInfo(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		comparisonService.setInitInfo(stockCode, beginDate, endDate);
-	}
-
-	@Override
-	public void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		comparisonService.resetDateRange(beginDate, endDate);
+	public void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+		comparisonService.resetDateRange(stockCode, beginDate, endDate);
 
 	}
 

@@ -21,14 +21,11 @@ import java.util.stream.Collectors;
  * 两股对比服务逻辑实现代码
  */
 
-public class ComparisonImpl implements ComparisonService {
+public enum ComparisonImpl implements ComparisonService {
+    COMPARISON_SERVICE;
 
     private StockDAO stockDAO;
     private DAOFactoryService factory;
-
-    private String stockCode;
-    private LocalDate beginDate;
-    private LocalDate endDate;
 
     private List<StockPO> allStockPOs;
     private List<StockPO> specificStockPOs;
@@ -36,31 +33,21 @@ public class ComparisonImpl implements ComparisonService {
     private List<DailyLogReturnVO> dailyLogReturnVOs;
 
 
-    public ComparisonImpl() {
+    ComparisonImpl() {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
     }
 
-
     @Override
-    public void setInitInfo(String stockCode, LocalDate beginDate, LocalDate endDate) throws  RemoteException{
-        this.stockCode = stockCode;
-
-    }
-
-    private void getAllStockInfo(String stockCode) throws RemoteException {
+    public void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         allStockPOs = stockDAO.getStockInfoByCode(stockCode);
-    }
-
-    @Override
-    public void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException {
         specificStockPOs = allStockPOs.stream()
                 .filter(stockPO -> stockPO.getDate().isAfter(beginDate) && stockPO.getDate().isBefore(endDate))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) {
         BasisAnalysisVO result = new BasisAnalysisVO();
         result.openPrice = specificStockPOs.get(0).getOpen_Price();
         result.closePrice = specificStockPOs.get(specificStockPOs.size() - 1).getClose_Price();

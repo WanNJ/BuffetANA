@@ -16,19 +16,12 @@ import java.util.List;
 public interface ComparisonService extends Remote {
 
     /**
-     * 设置基本信息
-     * @param stockCode 股票编号
+     * 得到并设置日期区间（不用再次访问数据层）
+     * @param  stockCode 股票编号
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
      */
-    void setInitInfo(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
-
-    /**
-     * 针对同一股票重新设置日期区间（不用再次访问数据层）
-     * @param beginDate 查询起始日期
-     * @param endDate 查询结束日期
-     */
-    void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 给两股对比提供股票总体信息

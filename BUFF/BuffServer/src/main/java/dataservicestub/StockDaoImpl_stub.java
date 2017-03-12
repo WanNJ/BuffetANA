@@ -42,4 +42,9 @@ public class StockDaoImpl_stub implements StockDAO {
         };
         return stockPOs;
     }
+
+    @Override
+    public List<StockPO> getMarketStockInfo() {
+        return null;
+    }
 }

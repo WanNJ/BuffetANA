@@ -31,6 +31,10 @@ public class SideMenuController {
 	private Label SingleStock;
 
 	@FXML
+	@ActionTrigger("Comparison")
+	private Label Comparison;
+
+	@FXML
 	@ActionTrigger("thermometer")
 	private Label thermometer;
 	
@@ -44,6 +48,7 @@ public class SideMenuController {
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
 		bindNodeToController(market, MarketController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(Comparison, ComparisonController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
 	}
 

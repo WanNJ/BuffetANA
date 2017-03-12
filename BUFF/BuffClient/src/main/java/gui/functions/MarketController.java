@@ -69,6 +69,7 @@ public class MarketController {
         });
 
         colum.addEventHandler(EventType.ROOT,event -> {System.out.println(123);});
+        //colum.setOnEditCommit(event -> event.getTreeTableView().);
 
         treeTableView.getColumns().add(colum);
     }

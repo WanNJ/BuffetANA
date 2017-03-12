@@ -35,6 +35,11 @@ public class ComparisonImpl implements ComparisonService{
     private List<DailyClosingPriceVO> dailyClosingPriceVOS;
     private List<DailyLogReturnVO> dailyLogReturnVOs;
 
+
+    public ComparisonImpl() {
+
+    }
+
     public ComparisonImpl(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();

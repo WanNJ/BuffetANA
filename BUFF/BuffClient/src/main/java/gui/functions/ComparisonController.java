@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXToggleButton;
 import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
+import io.datafx.controller.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 /**
  * Created by Accident on 2017/3/5.
  */
+@FXMLController(value = "/resources/fxml/ui/Comparison.fxml" , title = "两股对比")
 public class ComparisonController {
     @FXML
     private Label mainMinPriceLabel;

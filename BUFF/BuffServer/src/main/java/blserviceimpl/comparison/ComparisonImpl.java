@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
  * Created by Accident on 2017/3/9.
  * 两股对比服务逻辑实现代码
  */
+
 public class ComparisonImpl implements ComparisonService{
 
     private StockDAO stockDAO;

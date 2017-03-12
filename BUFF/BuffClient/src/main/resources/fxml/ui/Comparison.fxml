@@ -135,7 +135,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="400.0" prefWidth="300.0" GridPane.rowIndex="2">
                             <children>
-                                <Label fx:id="deputyStockCodeTextField" layoutX="30.0" layoutY="32.0" text="副股:">
+                                <Label layoutX="30.0" layoutY="32.0" text="副股:">
                                     <font>
                                         <Font size="24.0" />
                                     </font>

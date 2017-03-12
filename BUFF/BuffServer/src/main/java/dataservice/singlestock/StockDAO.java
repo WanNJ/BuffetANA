@@ -23,4 +23,10 @@ public interface StockDAO {
      * @return 若日期不在2014年4月29日与2005年2月1日之间，或日期为null则返回null，该方法返回的List已经是按日期从小到大排好序的
      */
     List<StockPO> getStockInfoByDate(LocalDate date);
+
+    /**
+     * 获得每只股票的大盘信息
+     * @return
+     */
+    List<StockPO> getMarketStockInfo();
 }

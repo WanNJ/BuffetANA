@@ -4,10 +4,7 @@ import dataservice.singlestock.StockDAO;
 import po.StockPO;
 import util.DateUtil;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,23 @@ public enum StockDAOImpl implements StockDAO{
         return generateStockPOs(timeFile);
     }
 
+    @Override
+    public List<StockPO> getMarketStockInfo() {
+        File root = new File("../Data/Time");
+        File[] files =root.listFiles();
+        List<StockPO> stockPOs = new ArrayList<>();
+        for(File iFile : files) {
+            StockPO stockPO = generateMarketStock(iFile);
+            stockPOs.add(stockPO);
+        }
+        stockPOs.sort((stockPO1, stockPO2) -> {
+            if(stockPO1.getDate().isEqual(stockPO2.getDate()))
+                return 0;
+            return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
+        });
+        return stockPOs;
+    }
+
 
     /**
      * 执行IO操作
@@ -45,8 +59,6 @@ public enum StockDAOImpl implements StockDAO{
         List<StockPO> stockPOs = new ArrayList<>();
         BufferedReader br = null;
         try {
-            //TODO
-            System.out.println(fileName);
             br = new BufferedReader(new FileReader(fileName));
             stockPOs = new ArrayList<>();
             String line;
@@ -65,8 +77,6 @@ public enum StockDAOImpl implements StockDAO{
             });
         } catch (FileNotFoundException e) {
             System.out.println("no data found");
-            //
-            // e.printStackTrace();
         } finally {
             if(br != null) {
                 try {
@@ -76,6 +86,61 @@ public enum StockDAOImpl implements StockDAO{
                 }
             }
             return stockPOs;
+        }
+    }
+
+    private StockPO generateMarketStock(File file) {
+        StockPO stockPO = null;
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+
+            //读出第一组数据作为基准数据
+            String line = br.readLine();
+            String[] stockInfo = line.split("\t");
+            String name = stockInfo[9];
+            String market = stockInfo[10];
+            String code = stockInfo[8];
+            LocalDate date = DateUtil.parseSlash(stockInfo[1]);
+            double high_Price = Double.parseDouble(stockInfo[3]);
+            double low_Price = Double.parseDouble(stockInfo[4]);
+            double open_Price = Double.parseDouble(stockInfo[2]);
+            double close_Price = Double.parseDouble(stockInfo[5]);
+            long volume = Long.parseLong(stockInfo[6]);
+            double adjCloseIndex = Double.parseDouble(stockInfo[7]);
+
+            //计数器，用于作为计算平均值时的除数
+            int count = 1;
+
+            //读出所有数据，并根据读出的数据更新上述数据
+            while ((line = br.readLine()) != null) {
+                count++;
+                stockInfo = line.split("\t");
+                if(Double.parseDouble(stockInfo[3]) > high_Price)
+                    high_Price = Double.parseDouble(stockInfo[3]);
+                if(Double.parseDouble(stockInfo[4]) < low_Price)
+                    low_Price = Double.parseDouble(stockInfo[4]);
+                open_Price = open_Price + Double.parseDouble(stockInfo[2]);
+                close_Price = close_Price + Double.parseDouble(stockInfo[5]);
+                volume = volume + Long.parseLong(stockInfo[6]);
+                adjCloseIndex = adjCloseIndex + Double.parseDouble(stockInfo[7]);
+            }
+            open_Price /= count;
+            close_Price /= count;
+            adjCloseIndex /= count;
+            stockPO = new StockPO(name, market, code, date, high_Price, low_Price,
+                    open_Price, close_Price, volume, adjCloseIndex);
+        } catch (FileNotFoundException e) {
+            System.out.println("no data found");
+        } finally {
+            if(br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return stockPO;
         }
     }
 }

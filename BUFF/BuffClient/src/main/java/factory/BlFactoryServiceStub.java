@@ -1,5 +1,6 @@
 package factory;
 
+import blservice.comparison.ComparisonService;
 import blservice.singlestock.*;
 import blstub.singlestockstub.AllStockServiceImpl_Stub;
 import blstub.singlestockstub.KLineServiceImpl_Stub;
@@ -18,6 +19,11 @@ public class BlFactoryServiceStub implements BlFactoryService {
     @Override
     public AllStockService createAllStockService() {
         return new AllStockServiceImpl_Stub();
+    }
+
+    @Override
+    public ComparisonService createComparisonService() {
+        return null;
     }
 
     @Override

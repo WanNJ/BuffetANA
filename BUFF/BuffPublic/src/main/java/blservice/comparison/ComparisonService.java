@@ -4,6 +4,7 @@ import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ComparisonService {
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
      */
-    void resetDateRange(LocalDate beginDate, LocalDate endDate);
+    void resetDateRange(LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 给两股对比提供股票总体信息
@@ -27,7 +28,7 @@ public interface ComparisonService {
      * @param endDate 查询结束日期
      * @return BasisAnalysisVO 获得日期范围内的该支股票的基本分析数据：最低值、最高值、涨幅/跌幅
      */
-    BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate);
+    BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 给两股对比提供股票在日期范围内每日收盘价信息
@@ -36,7 +37,7 @@ public interface ComparisonService {
      * @param endDate 查询结束日期
      * @return List<DailyClosingPriceVO> 获得日期范围内该只股票每天的收盘价
      */
-    List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate);
+    List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 给两股对比提供股票在日期范围内每天的对数收益率
@@ -45,7 +46,7 @@ public interface ComparisonService {
      * @param endDate 查询结束日期
      * @return List<DailyLogReturnVO> 获得日期范围内该只股票每天的对数收益率
      */
-    List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate);
+    List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 提供对数收益率方差
@@ -54,17 +55,17 @@ public interface ComparisonService {
      * @param endDate 查询结束日期
      * @return 获得日期范围内该只股票的对数收益率方差
      */
-    double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate);
+    double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 获得分析数据中最早一天的日期
      * @return
      */
-    LocalDate getEarliestDate();
+    LocalDate getEarliestDate() throws RemoteException;
 
     /**
      * 获得分析数据中最晚一天的日期
      * @return
      */
-    LocalDate getLatestDate();
+    LocalDate getLatestDate() throws RemoteException;
 }

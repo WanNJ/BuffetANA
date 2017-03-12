@@ -67,7 +67,7 @@ public class MarketController {
             if(colum.validateValue(param)) return propertys[index];
             else return colum.getComputedValue(param);
         });
-        
+
         colum.addEventHandler(EventType.ROOT,event -> {System.out.println(123);});
 
         treeTableView.getColumns().add(colum);

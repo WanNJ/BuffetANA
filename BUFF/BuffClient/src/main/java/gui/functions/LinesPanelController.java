@@ -124,8 +124,7 @@ public class LinesPanelController {
         gridPane.addRow(1,klinePane);
 
 
-        from.setValue(LocalDate.of(2014, 3, 1));
-        to.setValue(LocalDate.of(2014, 3, 10));
+
 
         System.out.println("form  1231212:   "+ from.getValue());
 
@@ -167,6 +166,9 @@ public class LinesPanelController {
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
+
+        from.setValue(LocalDate.of(2014, 3, 1));
+        to.setValue(LocalDate.of(2014, 3, 10));
 
         /**
          *  为起始时间增加监听器

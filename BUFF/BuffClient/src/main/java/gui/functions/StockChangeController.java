@@ -8,12 +8,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import vo.StockNameAndCodeVO;
 
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +30,7 @@ public class StockChangeController {
     private JFXTreeTableView<Share> treeTableView;
     private ObservableList<Share> list;
 
-    public void initTreeTableView(JFXTreeTableView<Share> treeTableView, TextField search, Collection<StockNameAndCodeVO> collection){
+    public void initTreeTableView(JFXTreeTableView<Share> treeTableView, TextField search, Collection<StockNameAndCodeVO> collection, StockHandler stockHandler){
         this.treeTableView=treeTableView;
         //初始化ObservableList
         this.list = FXCollections.observableArrayList();
@@ -42,7 +46,8 @@ public class StockChangeController {
         //为treeTableView加上单击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
             if(null!=treeTableView.getSelectionModel().getSelectedItem()){
-                System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());//TODO:跳转界面
+                stockHandler.handle(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
+                System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
             }
         });
     }
@@ -77,6 +82,18 @@ public class StockChangeController {
             this.ID = new SimpleStringProperty(ID);
             this.name = new SimpleStringProperty(name);
         }
+    }
+
+    /**
+     * 单击某只股票时的处理器
+     * @author zjy
+     */
+    public interface StockHandler{
+        /**
+         * 单击某只股票时的处理方法
+         * @param ID 股票代码
+         */
+        void handle(String ID);
     }
 
 }

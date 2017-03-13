@@ -115,7 +115,7 @@ public class SingleStockController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        stockChangeController.initTreeTableView(stocksTable,search,list);
+        stockChangeController.initTreeTableView(stocksTable,search,list,ID -> setStockInfo(ID));
         //初始化界面用到的各种控件
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());

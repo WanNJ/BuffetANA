@@ -137,7 +137,7 @@
                                 </Label>
                             </children>
                         </AnchorPane>
-                  <JFXButton fx:id="confirmButton" onAction="#beginCompare" text="确认对比" textAlignment="CENTER" />
+                  <JFXButton fx:id="confirmButton" onAction="#beginCompare" text="确认对比" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <AnchorPane prefHeight="400.0" prefWidth="300.0" GridPane.rowIndex="2">
                             <children>
                                 <Label layoutX="30.0" layoutY="32.0" text="副股:">

@@ -22,7 +22,7 @@ public class KLinePane extends StackPane {
 
     private final AnchorPane detailsWindow;
 
-    private final KLineChart kLineChart;
+    private final  KLineChart kLineChart;
 
     private double strokWidth = 0.3;
 
@@ -110,7 +110,9 @@ public class KLinePane extends StackPane {
 //            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
-            AnchorPane.setLeftAnchor(detailsPopup, x-10-detailsPopup.getWidth());
+            double full = kLineChart.getXAxis().widthProperty().doubleValue();
+            System.out.println("full:  "+full);
+            AnchorPane.setRightAnchor(detailsPopup, full-(x-20-detailsPopup.getWidth()));
             //}
         });
     }

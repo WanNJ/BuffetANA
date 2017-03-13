@@ -45,6 +45,8 @@ public enum ChartController  {
         this.maChartController.setMaLineService(factory.createMALineService());
         this.theVOLChartController.setThermometerService(factory.createThermometerService());
         this.upDownChartController.setThermometerService(factory.createThermometerService());
+        this.kLineChartController.setMarketService(factory.createMarketService());
+        this.volChartController.setMarketService(factory.createMarketService());
     }
 
 

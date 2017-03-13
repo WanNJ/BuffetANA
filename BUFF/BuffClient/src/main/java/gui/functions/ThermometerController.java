@@ -28,6 +28,10 @@ public class ThermometerController {
 	@FXML private JFXDatePicker from;
 	@FXML private JFXDatePicker to;
 	@FXML private BorderPane leastPane;
+
+    @FXML private  BorderPane fivePane;
+    @FXML private  BorderPane lastPane;
+
 	@PostConstruct
 	public void init(){
 
@@ -105,8 +109,19 @@ public class ThermometerController {
         MutiChartPane mutiChartPane = new MutiChartPane
                 (upDownChartController.getBarChart(),upDownChartController.getLineChart(),1.0);
 
-		leastPane.centerProperty().setValue(mutiChartPane);
+        MutiChartPane mutiChartPane5 = new MutiChartPane
+                (upDownChartController.getBarChart5(),upDownChartController.getLineChart5(),1.0);
+
+        MutiChartPane mutiChartPaneLast = new MutiChartPane
+                (upDownChartController.getBarChartLast(),upDownChartController.getLineChartLast(),1.0);
+
+        leastPane.centerProperty().setValue(mutiChartPane);
+        fivePane.centerProperty().setValue(mutiChartPane5);
+        lastPane.centerProperty().setValue(mutiChartPaneLast);
 	}
+
+
+
 
 
 }

@@ -105,12 +105,9 @@ public class VolBarPane extends StackPane {
             } else {
                 AnchorPane.setTopAnchor(detailsPopup, y-5-detailsPopup.getHeight());
             }
-
-//            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
-//                AnchorPane.setLeftAnchor(detailsPopup, x+10);
-//            } else {
-            AnchorPane.setLeftAnchor(detailsPopup, x-5-detailsPopup.getWidth());
-            //}
+            double full = volBarChart.getXAxis().widthProperty().doubleValue();
+            System.out.println("full:  "+full);
+            AnchorPane.setRightAnchor(detailsPopup, full-(x-20-detailsPopup.getWidth()));
         });
     }
 

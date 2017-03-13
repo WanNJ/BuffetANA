@@ -17,6 +17,7 @@ public class UpDownChart extends BarChart<String,Number> {
 
     private static int length;
 
+
     public UpDownChart(@NamedArg("xAxis") Axis<String> stringAxis, @NamedArg("yAxis") Axis<Number> numberAxis) {
         super(stringAxis, numberAxis);
     }
@@ -117,5 +118,7 @@ public class UpDownChart extends BarChart<String,Number> {
         }
         return max;
     }
+
+
 
 }

@@ -1,6 +1,7 @@
 package gui.ChartController;
 
 import blservice.exception.DateIndexException;
+import blservice.market.MarketService;
 import blservice.singlestock.KLineService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +26,8 @@ public class KLineChartController implements Initializable {
      * 动态存储图表
      */
     public KLineChart Chart;
+
+    public MarketKLineChart mChart;
 
     /**
      * 动态存储传过来的 list
@@ -51,6 +54,11 @@ public class KLineChartController implements Initializable {
      */
     private  KLineType  currentType;
 
+    /**
+     * 获取传进来的Marketservice实现
+     */
+    private MarketService marketService;
+
 
 
     @Override
@@ -62,7 +70,7 @@ public class KLineChartController implements Initializable {
      * 隐藏的初始化方法
      */
     public  KLineChartController(){
-        stockCode = "code";
+        stockCode = "aLL";
         startDate = LocalDate.of(2014,9,1);
         endDate =   LocalDate.of(2014,9,20);
         dataList = FXCollections.observableArrayList();
@@ -96,6 +104,10 @@ public class KLineChartController implements Initializable {
         this.kLineService = kLineService;
     }
 
+    public void setMarketService(MarketService marketService){
+        this.marketService = marketService;
+    }
+
 
     public void setCurrentType(KLineType kLineType){
         this.currentType = kLineType;
@@ -106,10 +118,27 @@ public class KLineChartController implements Initializable {
      * 根据已经存储的值获取数据
      */
     private void getData(){
-        if(kLineService == null){
+        if(kLineService == null && stockCode != "ALL"){
             System.err.println("没有KLineService的实现传入");
             return ;
         }
+
+        if(stockCode == "ALL"){
+            dataList.clear();
+            List<KLinePieceVO> dayList = new ArrayList<KLinePieceVO>();
+            try {
+                //TODO  delete
+                System.out.println(stockCode+" "+startDate+ "  "+endDate);
+                dayList = marketService.getMarketDailyKLine(startDate,endDate);
+            } catch (DateIndexException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            dataList = getObeservableList(dayList);
+            return ;
+        }
+
         dataList.clear();
         switch (currentType){
 
@@ -166,10 +195,19 @@ public class KLineChartController implements Initializable {
 
     public void drawChat(){
         getData();
-        this.Chart = KLineChart.createChart(this.dataList);
+        if(stockCode == "ALL"){
+            this.mChart = MarketKLineChart.createChart(this.dataList);
+        }else{
+            this.Chart = KLineChart.createChart(this.dataList);
+        }
+
     }
 
     public KLineChart getChart(){
         return this.Chart;
+    }
+
+    public MarketKLineChart getMChart(){
+        return this.mChart;
     }
 }

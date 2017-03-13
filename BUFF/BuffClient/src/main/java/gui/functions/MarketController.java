@@ -2,6 +2,7 @@ package gui.functions;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import gui.ChartController.*;
 import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
@@ -19,9 +20,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 /**
  * 主界面的控制器
@@ -36,6 +40,9 @@ public class MarketController {
     @FXML private JFXTreeTableView<Share> recentlySharesList;
     @FXML private JFXDatePicker from;
     @FXML private JFXDatePicker to;
+
+    @FXML private BorderPane borderPane;
+    @FXML private GridPane gridPane;
 
     private ObservableList<Share> allShares;//所有股票列表项的集合，动态绑定JFXTreeTableView的显示
     private ObservableList<Share> recentlyShares;//最近浏览股票列表项的集合，动态绑定JFXTreeTableView的显示
@@ -61,6 +68,61 @@ public class MarketController {
 
         initTreeTableView(allSharesList,allShares);
         initTreeTableView(recentlySharesList,recentlyShares);
+        from.setValue(LocalDate.of(2014, 3, 1));
+        to.setValue(LocalDate.of(2014, 3, 10));
+
+        /**
+         *  为起始时间增加监听器
+         */
+        from.setOnAction(event -> {
+            handleTime();
+        });
+
+        /**
+         * 为结束时间增加监听器
+         */
+        to.setOnAction(event -> {
+            handleTime();
+        });
+        handleTime();
+    }
+
+
+    private void handleTime(){
+        LocalDate first = from.getValue();
+        LocalDate second = to.getValue();
+
+
+        if(first!=null && second!=null && first.isBefore(second)) {
+            updateGraph(first,second);
+        }
+    }
+
+
+    private void updateGraph(LocalDate first ,LocalDate second){
+        gridPane.getChildren().clear();
+        KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
+        kLineChartController.setStockCode("ALL");
+
+
+
+        kLineChartController.setStartDate(first);
+        kLineChartController.setEndDate(second);
+        kLineChartController.drawChat();
+        KLinePane kLinePane = new KLinePane(kLineChartController.getMChart(),1.0);
+
+        gridPane.addRow(0,kLinePane);
+        VOLChartController volChartController = ChartController.INSTANCE.getVOLChartController();
+        volChartController.setStockCode("ALL");
+
+
+
+        volChartController.setStartDate(first);
+        volChartController.setEndDate(second);
+        volChartController.drawChat();
+        VolBarPane volBarPane = new VolBarPane(volChartController.getChart(),1.0);
+        gridPane.addRow(1,volBarPane);
+
     }
 
     private void initTreeTableView(JFXTreeTableView<Share> treeTableView,ObservableList<Share> list){

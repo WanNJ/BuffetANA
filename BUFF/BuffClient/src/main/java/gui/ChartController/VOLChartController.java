@@ -1,10 +1,12 @@
 package gui.ChartController;
 
 import blservice.exception.DateIndexException;
+import blservice.market.MarketService;
 import blservice.singlestock.VolService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import vo.KLinePieceVO;
 import vo.StockVolVO;
 
 import java.net.URL;
@@ -50,6 +52,11 @@ public class VOLChartController implements Initializable {
      */
     private  KLineType  currentType;
 
+    /**
+     * 获取传进来的Marketservice实现
+     */
+    private MarketService marketService;
+
 
 
     @Override
@@ -61,7 +68,7 @@ public class VOLChartController implements Initializable {
      * 隐藏的初始化方法
      */
     public  VOLChartController(){
-        stockCode = "code";
+        stockCode = "ALL";
         startDate = LocalDate.of(2014,9,1);
         endDate =   LocalDate.of(2014,9,20);
         dataList = FXCollections.observableArrayList();
@@ -94,6 +101,10 @@ public class VOLChartController implements Initializable {
         this.volService = volService;
     }
 
+    public void setMarketService(MarketService marketService){
+        this.marketService = marketService;
+    }
+
 
     public void setCurrentType(KLineType kLineType){
         this.currentType = kLineType;
@@ -104,12 +115,27 @@ public class VOLChartController implements Initializable {
      * 根据已经存储的值获取数据
      */
     private void getData(){
-        if(volService == null){
+        if(volService == null && stockCode !="ALL"){
             System.err.println("没有VOLLineService的实现传入");
             return ;
         }
         dataList.clear();
 
+
+        if(stockCode == "ALL"){
+            dataList.clear();
+            List<StockVolVO> dayList = new ArrayList<StockVolVO>();
+            try {
+
+                dayList = marketService.getMarketVol(startDate,endDate);
+            } catch (DateIndexException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            dataList = getObeservableList(dayList);
+            return ;
+        }
 
         //目前不区分周和月
         //TODO  未来可能区分周和月

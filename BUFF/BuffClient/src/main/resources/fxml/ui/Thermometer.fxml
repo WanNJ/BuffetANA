@@ -55,32 +55,16 @@
          <Tab text="涨/跌幅超过5%股票数">
             <content>
 				<StackPane>
-					<children>
-						<BarChart StackPane.alignment="CENTER">
-							<xAxis>
-								<CategoryAxis side="BOTTOM" />
-							</xAxis>
-							<yAxis>
-								<NumberAxis side="LEFT" />
-							</yAxis>
-						</BarChart>
-					</children>
+					<BorderPane fx:id="fivePane">
+					</BorderPane>
 				</StackPane>
             </content>
          </Tab>
          <Tab text="当天涨/跌大于上一个交易日 5 %的股票数">
             <content>
 				<StackPane>
-					<children>
-						<BarChart StackPane.alignment="CENTER">
-							<xAxis>
-								<CategoryAxis side="BOTTOM" />
-							</xAxis>
-							<yAxis>
-								<NumberAxis side="LEFT" />
-							</yAxis>
-						</BarChart>
-					</children>
+						<BorderPane fx:id="lastPane">
+						</BorderPane>
 				</StackPane>
             </content>
          </Tab>

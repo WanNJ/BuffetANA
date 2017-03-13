@@ -46,7 +46,12 @@
                </Tab>
             </tabs>
          </JFXTabPane>
-         <BorderPane GridPane.columnIndex="1">
+         <BorderPane GridPane.columnIndex="1" fx:id="borderPane" stylesheets="@../../css/candle.css" >
+            <center>
+               <GridPane fx:id="gridPane">
+
+               </GridPane>
+            </center>
             <bottom>
                <HBox alignment="BOTTOM_CENTER" spacing="10.0">
                   <children>

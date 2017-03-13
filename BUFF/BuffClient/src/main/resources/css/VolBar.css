@@ -5,12 +5,37 @@
     -fx-padding: 2 5 2 0;
 }
 
+.XY-line {
+    -fx-stroke: #FFFFFF;
+    -fx-stroke-width: 1px;
+}
 
+.volestick-vol{
+    -fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.4) , 10, 0.0 , 2 , 4 );
+}
 
+.volstick-bar {
+    -fx-padding: 5;
+    -demo-bar-fill: red;
+    -fx-background-color: linear-gradient(derive(-demo-bar-fill,-30%), derive(-demo-bar-fill,-40%)),
+    linear-gradient(derive(-demo-bar-fill,100%), derive(-demo-bar-fill, 10%)),
+    linear-gradient(derive(-demo-bar-fill,30%), derive(-demo-bar-fill,-10%));
+    -fx-background-insets: 0,1,2;
+}
+.volstick-bar.close-above-open {
+    -demo-bar-fill: #ce2700;
+}
 
+.volstick-bar.open-above-close {
 
+    -demo-bar-fill: #95ce1b;
+}
 
-.Baseaxis {
+.label-gray {
+    -fx-background-color: rgba(25,25,25,0.70);
+}
+
+.axis {
     -fx-text-fill: #00b8d4;
     -fx-font-color: #00b8d4;
     -fx-tick-label-fill: #00b8d4;
@@ -20,34 +45,34 @@
     -fx-minor-tick-length: 10;
 }
 
-.Basechart-title {
+.chart-title {
     -fx-text-fill: #00b8d4;
     -fx-font-size: 20pt;
     -fx-font-family: "Segoe UI Light";
 }
 
-.Baseaxis-label {
+.axis-label {
     -fx-text-fill: #462300;
 }
 
-.Baseaxis-tick-mark {
+.axis-tick-mark {
     -fx-stroke: #637040;
     -fx-stroke-width: 3;
 }
-.Baseaxis-minor-tick-mark {
+.axis-minor-tick-mark {
     -fx-stroke: #859656;
 }
 
 
-.Basechart {
+.chart {
     -fx-alternative-column-fill-visible : false;
     -fx-vertical-grid-lines-visible: false;
     -fx-background-color: #000000;
 }
-.Basefx-background-color {
+.fx-background-color {
     -fx-background-color: red;
 }
-.Basebackground { /*图表的背景*/
+.chart-plot-background { /*图表的背景*/
     -fx-background-color: rgba(0, 0, 0, 0.12);
 }
 

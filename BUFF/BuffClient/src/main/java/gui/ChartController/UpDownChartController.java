@@ -32,12 +32,26 @@ public class UpDownChartController implements Initializable {
     public UpDownChart BarChart;
     public UpDownLineChart LineChart;
 
+    public UpDownChart BarChart5;
+    public UpDownLineChart LineChart5;
+
+    public UpDownChart BarChartLast;
+    public UpDownLineChart LineChartLast;
+
     /**
      * 动态存储传过来的 list
      */
     public ObservableList<LongPeiceVO> upList;
 
     public ObservableList<LongPeiceVO> downList;
+
+    public ObservableList<LongPeiceVO> upList5;
+
+    public ObservableList<LongPeiceVO> downList5;
+
+    public ObservableList<LongPeiceVO> upListLast;
+
+    public ObservableList<LongPeiceVO> downListLast;
 
 
 
@@ -50,7 +64,6 @@ public class UpDownChartController implements Initializable {
      * 获取传进来的service实现
      */
     private ThermometerService thermometerService;
-
 
 
 
@@ -67,9 +80,17 @@ public class UpDownChartController implements Initializable {
         endDate =   LocalDate.of(2014,9,20);
         upList = FXCollections.observableArrayList();
         downList = FXCollections.observableArrayList();
+        upList5 = FXCollections.observableArrayList();
+        downList5 = FXCollections.observableArrayList();
+        upListLast = FXCollections.observableArrayList();
+        downListLast = FXCollections.observableArrayList();
+
         upList.clear();
         downList.clear();
-
+        upList5.clear();
+        downList5.clear();
+        upListLast.clear();
+        downListLast.clear();
     }
 
 
@@ -102,16 +123,30 @@ public class UpDownChartController implements Initializable {
         List<LongPeiceVO> ups = new ArrayList<LongPeiceVO>();
         List<LongPeiceVO> downs = new ArrayList<LongPeiceVO>();
         try {
-            downs = thermometerService.getLimitDownNum(new DateRange(startDate,endDate));
-            ups = thermometerService.getLimitUpNum(new DateRange(startDate,endDate));
+            DateRange dateRange = new DateRange(startDate,endDate);
+            downs = thermometerService.getLimitDownNum(dateRange);
+            ups = thermometerService.getLimitUpNum(dateRange);
+
+            upList = getObeservableList(ups);
+            downList = getObeservableList(downs);
+
+            downs = thermometerService.getFallOver5Num(dateRange);
+            ups = thermometerService.getRiseOver5ThanLastDayNum(dateRange);
+
+            upList5 = getObeservableList(ups);
+            downList5 = getObeservableList(downs);
+            downs = thermometerService.getFallOver5ThanLastDayNum(dateRange);
+            ups = thermometerService.getRiseOver5ThanLastDayNum(dateRange);
+
+            upListLast = getObeservableList(ups);
+            downListLast = getObeservableList(downs);
+
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (RangeException e) {
             e.printStackTrace();
         }
 
-        upList = getObeservableList(ups);
-        downList = getObeservableList(downs);
 
     }
 
@@ -136,6 +171,12 @@ public class UpDownChartController implements Initializable {
         getData();
         this.BarChart = UpDownChart.createChart(this.upList,this.downList);
         this.LineChart =  UpDownLineChart.createChart(this.upList,this.downList);
+
+        this.BarChart5 = UpDownChart.createChart(this.upList5,this.downList5);
+        this.LineChart5 =  UpDownLineChart.createChart(this.upList5,this.downList5);
+
+        this.BarChartLast = UpDownChart.createChart(this.upListLast,this.downListLast);
+        this.LineChartLast =  UpDownLineChart.createChart(this.upListLast,this.downListLast);
     }
 
 
@@ -143,5 +184,15 @@ public class UpDownChartController implements Initializable {
         return this.BarChart;
     }
     public UpDownLineChart getLineChart() {return  this.LineChart; }
+
+    public UpDownChart getBarChart5(){
+        return this.BarChart5;
+    }
+    public UpDownLineChart getLineChart5() {return  this.LineChart5; }
+
+    public UpDownChart getBarChartLast(){
+        return this.BarChartLast;
+    }
+    public UpDownLineChart getLineChartLast() {return  this.LineChartLast; }
 
 }

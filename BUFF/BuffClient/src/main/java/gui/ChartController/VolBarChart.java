@@ -34,6 +34,8 @@ public class VolBarChart extends XYChart<String,Number> {
 
 
     private static int length;
+
+    private double candleWith;
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -207,10 +209,11 @@ public class VolBarChart extends XYChart<String,Number> {
                     if(length !=0 ){
                         candleWidth= width/(length*1.1)>20? 20: width/(length*1.1);
                     }
+                    this.candleWith = candleWidth;
 
                     // update volBar
                     volBar.update(high - y, candleWidth, extra.openAboveClose);
-                    volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
+                   // volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
                     // position the volBar
                     volBar.setLayoutX(x);
                     volBar.setLayoutY(y);
@@ -392,5 +395,9 @@ public class VolBarChart extends XYChart<String,Number> {
             item.setNode(volBar);
         }
         return volBar;
+    }
+
+    public double getCandleWith(){
+        return this.candleWith;
     }
 }

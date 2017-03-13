@@ -37,6 +37,9 @@ public class KLineChart extends XYChart<String, Number> {
 
     private static  int length = 0;
 
+
+    private double candleWith = 0;
+
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -275,6 +278,8 @@ public class KLineChart extends XYChart<String, Number> {
                     if(length !=0 ){
                         candleWidth= width/(length*1.1)>20? 20: width/(length*1.1);
                     }
+
+                    this.candleWith = candleWidth;
                     // update candle
                     candle.update(close - y, high - y, low - y, candleWidth);
                     candle.updateTooltip(item.getYValue().doubleValue(), extra.getClosePrice(), extra.getHighPrice(),
@@ -413,6 +418,7 @@ public class KLineChart extends XYChart<String, Number> {
 
 
 
-
-
+    public double getCandleWidth(){
+        return this.candleWith;
+    }
 }

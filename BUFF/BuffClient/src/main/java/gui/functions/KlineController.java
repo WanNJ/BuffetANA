@@ -5,6 +5,7 @@ import blstub.singlestockstub.KLineServiceImpl_Stub;
 import gui.ChartController.ChartController;
 import gui.ChartController.KLineChart;
 import gui.ChartController.KLineChartController;
+import gui.ChartController.KLinePane;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.action.ActionMethod;
 import javafx.collections.FXCollections;
@@ -55,7 +56,8 @@ public class KlineController {
         kLineChartController.setStartDate(first);
         kLineChartController.setEndDate(second);
         kLineChartController.drawChat();
-        DayLinePane.centerProperty().setValue(kLineChartController.getChart());
+        KLinePane kLinePane = new KLinePane(kLineChartController.getChart(),1.0);
+        DayLinePane.centerProperty().setValue(kLinePane);
     }
 
 

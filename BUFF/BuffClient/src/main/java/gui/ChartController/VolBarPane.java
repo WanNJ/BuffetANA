@@ -17,21 +17,21 @@ import java.util.List;
 /**
  * Created by wshwbluebird on 2017/3/13.
  */
-public class TheVolPane extends StackPane {
+public class VolBarPane extends StackPane {
 
     private final AnchorPane detailsWindow;
 
-    private final ThemometerVolBarChart themometerVolBarChart;
+    private final VolBarChart volBarChart;
 
     private double strokWidth = 0.3;
 
     Line xLine = new Line();
     Line yLine = new Line();
 
-    public TheVolPane(ThemometerVolBarChart themometerVolBarChart, Double strokWidth){
+    public VolBarPane(VolBarChart volBarChart, Double strokWidth){
         this.detailsWindow  = new AnchorPane();
-        this.themometerVolBarChart = themometerVolBarChart;
-        getChildren().add(themometerVolBarChart);
+        this.volBarChart = volBarChart;
+        getChildren().add(volBarChart);
 
 
         xLine.setStroke(Color.WHITE);;
@@ -42,11 +42,11 @@ public class TheVolPane extends StackPane {
             this.strokWidth = strokWidth;
         }
 
-        bindMouseEvents(themometerVolBarChart,this.strokWidth);
+        bindMouseEvents(volBarChart,this.strokWidth);
     }
 
-    private void bindMouseEvents(ThemometerVolBarChart baseChart, Double strokeWidth) {
-        final DetailsPopup detailsPopup = new DetailsPopup();
+    private void bindMouseEvents(VolBarChart baseChart, Double strokeWidth) {
+        final VolBarPane.DetailsPopup detailsPopup = new VolBarPane.DetailsPopup();
         getChildren().add(detailsWindow);
         detailsWindow.getChildren().add(detailsPopup);
         detailsWindow.prefHeightProperty().bind(heightProperty());
@@ -101,17 +101,17 @@ public class TheVolPane extends StackPane {
             detailsPopup.showChartDescrpition(event);
 
             if (y + detailsPopup.getHeight() + 10 < getHeight()) {
-                AnchorPane.setTopAnchor(detailsPopup, y+10);
+                AnchorPane.setTopAnchor(detailsPopup, y+5);
             } else {
-                AnchorPane.setTopAnchor(detailsPopup, y-10-detailsPopup.getHeight());
+                AnchorPane.setTopAnchor(detailsPopup, y-5-detailsPopup.getHeight());
             }
 
 //            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
-                AnchorPane.setLeftAnchor(detailsPopup, x-10-detailsPopup.getWidth());
+            AnchorPane.setLeftAnchor(detailsPopup, x-5-detailsPopup.getWidth());
             //}
-    });
+        });
     }
 
 
@@ -129,9 +129,9 @@ public class TheVolPane extends StackPane {
         public void showChartDescrpition(MouseEvent event) {
             getChildren().clear();
 
-            String xValueStr = themometerVolBarChart.getXAxis().getValueForDisplay(event.getX());
-            double realX = themometerVolBarChart.getXAxis().getDisplayPosition(xValueStr);
-            if(!isMouseNearLine(realX,event.getX(),themometerVolBarChart.getCandleWidth()/2)) {
+            String xValueStr = volBarChart.getXAxis().getValueForDisplay(event.getX());
+            double realX = volBarChart.getXAxis().getDisplayPosition(xValueStr);
+            if(!isMouseNearLine(realX,event.getX(), volBarChart.getCandleWith()/2)) {
                 return ;
             }
 
@@ -157,7 +157,7 @@ public class TheVolPane extends StackPane {
 
         public Object getYValueForX( String xValue) {
             List<XYChart.Data> dataList =
-                    ((List<XYChart.Data>)((XYChart.Series)themometerVolBarChart.getData().get(0)).getData());
+                    ((List<XYChart.Data>)((XYChart.Series) volBarChart.getData().get(0)).getData());
             for (XYChart.Data data : dataList) {
                 if (data.getXValue().equals(xValue)) {
                     return data.getExtraValue();

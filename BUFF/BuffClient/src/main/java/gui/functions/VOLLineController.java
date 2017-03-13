@@ -2,10 +2,7 @@ package gui.functions;
 
 import blservice.exception.DateIndexException;
 import blstub.singlestockstub.VolServiceImpl_Stub;
-import gui.ChartController.ChartController;
-import gui.ChartController.KLineChartController;
-import gui.ChartController.VOLChartController;
-import gui.ChartController.VolBarChart;
+import gui.ChartController.*;
 import io.datafx.controller.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,7 +51,8 @@ public class VOLLineController {
         volChartController.setEndDate(second);
         volChartController.setStockCode(code);
         volChartController.drawChat();
-        borderPane.centerProperty().setValue(volChartController.getChart());
+        VolBarPane volBarPane = new VolBarPane(volChartController.getChart(),1.0);
+        borderPane.centerProperty().setValue(volBarPane);
     }
 
 }

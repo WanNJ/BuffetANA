@@ -70,7 +70,7 @@ public class MarketController {
         //为treeTableView加上双击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
             if(event.getClickCount()==2 && null!=treeTableView.getSelectionModel().getSelectedItem()){
-                System.out.println("change");//TODO:跳转界面
+                System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());//TODO:跳转界面
             }
         });
     }

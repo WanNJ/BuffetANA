@@ -1,7 +1,10 @@
 package gui.functions;
 
+import blservice.singlestock.AllStockService;
 import blservice.singlestock.StockDetailService;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableView;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
 import io.datafx.controller.FXMLController;
@@ -22,10 +25,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
+import vo.StockNameAndCodeVO;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by slow_time on 2017/3/4.
@@ -67,6 +74,10 @@ public class SingleStockController {
     private TableColumn<StockBriefInfoVO, Number> closeIndexColumn;
     @FXML
     private TableColumn<StockBriefInfoVO, String> rangeColumn;
+    @FXML
+    private JFXTreeTableView stocksTable;
+    @FXML
+    private JFXTextField search;
 
 
     
@@ -75,9 +86,11 @@ public class SingleStockController {
     private FlowHandler  LineHandler;
 
     private StockDetailService stockDetailService;
+    private AllStockService allStockService;
     private BlFactoryService factory;
     private String code;
     private ObservableList<StockBriefInfoVO> stockBriefInfoVOs = FXCollections.observableArrayList();
+    private StockChangeController stockChangeController;
 
     /**
      * add by wsw
@@ -92,9 +105,18 @@ public class SingleStockController {
         //初始化所要用到的逻辑层接口
         factory = new BlFactoryServiceImpl();
         stockDetailService = factory.createStockDetailService();
+        allStockService =factory.createAllStockService();
 
+        //初始化JFXTreeTableView
+        stockChangeController=new StockChangeController();
+        List<StockNameAndCodeVO> list= null;
+        try {
+            list = allStockService.getAllStock();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        stockChangeController.initTreeTableView(stocksTable,search,list);
         //初始化界面用到的各种控件
-
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
         rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());

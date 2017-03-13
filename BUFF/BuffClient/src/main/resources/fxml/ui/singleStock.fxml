@@ -97,13 +97,16 @@
          <left>
             <StackPane minHeight="550.0" minWidth="250.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTreeTableView />
                   <HBox prefHeight="30.0" prefWidth="250.0" spacing="20.0">
                      <children>
                         <JFXButton alignment="CENTER" minWidth="100.0" prefWidth="100.0" text="自选股" wrapText="true" HBox.hgrow="ALWAYS" />
-                        <JFXTextField alignment="CENTER_RIGHT" prefWidth="100.0" promptText="搜索" />
+                        <JFXTextField fx:id="search" alignment="CENTER_RIGHT" prefWidth="100.0" promptText="搜索" />
                      </children>
                   </HBox>
+                  <JFXTreeTableView fx:id="stocksTable" showRoot="false">
+                     <StackPane.margin>
+                        <Insets top="40.0" />
+                     </StackPane.margin></JFXTreeTableView>
                </children>
             </StackPane>
          </left>

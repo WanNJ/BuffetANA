@@ -23,7 +23,7 @@ import java.time.LocalDate;
  * 市场温度计界面的控制器
  * @author zjy
  */
-@FXMLController(value = "/resources/fxml/ui/Thermometer.fxml" , title = "Material Design Example")
+@FXMLController(value = "/resources/fxml/ui/Thermometer.fxml" , title = "Thermometer")
 public class ThermometerController {
 
 	@FXML private BorderPane volPane;

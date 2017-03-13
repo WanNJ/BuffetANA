@@ -102,22 +102,22 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainMinPriceLabel" layoutX="161.0" layoutY="98.0" text="\">
+                                <Label fx:id="mainMinPriceLabel" layoutX="161.0" layoutY="98.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainMaxPriceLabel" layoutX="161.0" layoutY="165.0" text="\">
+                                <Label fx:id="mainMaxPriceLabel" layoutX="161.0" layoutY="165.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainChangeRateLabel" layoutX="161.0" layoutY="225.0" text="\">
+                                <Label fx:id="mainChangeRateLabel" layoutX="161.0" layoutY="225.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainVarianceOfLRLabel" layoutX="161.0" layoutY="277.0" text="\">
+                                <Label fx:id="mainVarianceOfLRLabel" layoutX="161.0" layoutY="277.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
@@ -136,17 +136,17 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyChangeRateLabel" layoutX="161.0" layoutY="221.0" text="\">
+                                <Label fx:id="deputyChangeRateLabel" layoutX="161.0" layoutY="221.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyMaxPriceLabel" layoutX="160.0" layoutY="163.0" text="\">
+                                <Label fx:id="deputyMaxPriceLabel" layoutX="160.0" layoutY="163.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyMinPriceLabel" layoutX="161.0" layoutY="99.0" text="\">
+                                <Label fx:id="deputyMinPriceLabel" layoutX="161.0" layoutY="99.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
@@ -172,7 +172,7 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyVarianceOfLR" layoutX="161.0" layoutY="276.0" text="\">
+                                <Label fx:id="deputyVarianceOfLR" layoutX="161.0" layoutY="276.0" text="/">
                                     <font>
                                         <Font size="24.0" />
                                     </font>

@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -28,10 +29,8 @@ import vo.StockDetailVO;
 import vo.StockNameAndCodeVO;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -175,29 +174,31 @@ public class SingleStockController {
 
 
         //初始化界面数据
-        datePicker.setValue(LocalDate.of(2014, 4, 29));
         this.setStockInfo("1");
     }
 
     public void setStockInfo(String code) {
         this.code = code;
-        this.stockBriefInfoVOs.removeAll();
+        if(stockBriefInfoVOs.size() >= 1)
+            this.stockBriefInfoVOs.remove(0, stockBriefInfoVOs.size() - 1);
         try {
-            stockDetailService.getStockBriefInfo(code).forEach(stockBriefInfoVO -> this.stockBriefInfoVOs.add(stockBriefInfoVO));
+            stockBriefInfoVOs.addAll(stockDetailService.getStockBriefInfo(code));
+            stockBriefInfoVOs.sort((stockBriefInfoVO1, stockBriefInfoVO2) -> {
+                if(stockBriefInfoVO1.date.isEqual(stockBriefInfoVO2.date))
+                    return 0;
+                else
+                    return stockBriefInfoVO1.date.isBefore(stockBriefInfoVO2.date) ? 1 : -1;
+            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         //如果该code存在数据，则将最近一天的details显示出来，若该code对应的股票无数据，则提示用户
         if(stockBriefInfoVOs != null && stockBriefInfoVOs.size() >= 1) {
-            showStockDetails(stockBriefInfoVOs.get(stockBriefInfoVOs.size() - 1).date);
+            showStockDetails(stockBriefInfoVOs.get(0).date);
         }
-        //TODO 之后会替换为一个弹窗来提示用户
         else {
-            System.out.println("该个股暂无数据");
+            Dialogs.showMessage("Error", "code为" + code + "的股票无数据");
         }
-        showStockDetails(LocalDate.of(2014, 4, 29));
-        //TODO delete
-        System.out.println("in set Code :  "+code);
         showAllGragh();
     }
 
@@ -211,8 +212,7 @@ public class SingleStockController {
             e.printStackTrace();
         }
         if(stockDetailVO == null)
-            //TODO 之后会替换成一个弹框提示用户
-            System.out.println("所选时间没有数据");
+            Dialogs.showMessage("Error", "code为 " + code + " 的股票\n在 " + date+ " 这一天无数据");
         else {
             openIndexLabel.setText(String.valueOf(stockDetailVO.openPrice));
             closeIndexLabel.setText(String.valueOf(stockDetailVO.closePrice));
@@ -220,6 +220,7 @@ public class SingleStockController {
             lowIndexLabel.setText(String.valueOf(stockDetailVO.lowPrice));
             volLabel.setText(String.valueOf(stockDetailVO.vol));
             adjCloseIndexLabel.setText(String.valueOf(stockDetailVO.adjCloseIndex));
+            datePicker.setValue(date);
         }
     }
 

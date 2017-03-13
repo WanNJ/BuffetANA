@@ -67,10 +67,12 @@ public class MarketController {
         for(int index=0;index<titles.length;index++){
             setCustomerColumn(treeTableView,index);
         }
-
-//        treeTableView.setOnContextMenuRequested(event -> {
-//            System.out.println(treeTableView.getSelectionModel().getSelectedItem().getValue().ID);
-//        });
+        //为treeTableView加上双击跳转的监听
+        treeTableView.setOnMouseClicked(event -> {
+            if(event.getClickCount()==2 && null!=treeTableView.getSelectionModel().getSelectedItem()){
+                System.out.println("change");//TODO:跳转界面
+            }
+        });
     }
 
     private void setCustomerColumn(JFXTreeTableView<Share> treeTableView,int index){

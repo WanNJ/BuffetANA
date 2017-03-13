@@ -53,7 +53,7 @@ public enum ComparisonImpl implements ComparisonService {
     }
 
     @Override
-    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) {
+    public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         if (specificStockPOs == null || specificStockPOs.size() == 0)
             return null;
         BasisAnalysisVO result = new BasisAnalysisVO();
@@ -110,20 +110,4 @@ public enum ComparisonImpl implements ComparisonService {
     public LocalDate getLatestDate() throws RemoteException {
         return allStockPOs.get(allStockPOs.size() - 1).getDate();
     }
-
-//    public static void main(String[] args) throws RemoteException {
-//        ComparisonService comparisonService = COMPARISON_SERVICE;
-//        LocalDate beginDate = LocalDate.of(2005, 2, 1);
-//        LocalDate endDate = LocalDate.of(2005, 2, 2);
-//        List<DailyLogReturnVO> basisAnalysis = null;
-//        comparisonService.setDateRange("1", beginDate, endDate);
-//        double d = 0;
-//        try {
-//            basisAnalysis = comparisonService.getDailyLogReturnAnalysis("1", beginDate, endDate);
-//            d = comparisonService.getLogReturnVariance("1", beginDate, endDate);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(d);
-//    }
 }

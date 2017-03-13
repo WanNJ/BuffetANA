@@ -77,11 +77,13 @@ public class ComparisonController {
         endDatePicker.setDialogParent(root);
         DatePickerUtil.initDatePicker(beginDatePicker,endDatePicker);
         //setDatePicker();
+        mainStockCodeBox.setValue("1");
+        deputyStockCodeBox.setValue("2");
     }
 
     @FXML
     private void search() {
-
+        //TODO 增加股票搜索功能
     }
 
     @FXML
@@ -93,28 +95,31 @@ public class ComparisonController {
     @FXML
     private void setMainInfo() throws RemoteException {
         //TODO 股票代码为空，或者数据为空时的处理代码
+        comparisonService.setDateRange(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         BasisAnalysisVO mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         mainMinPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.lowPrice));
         mainMaxPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.highPrice));
-        mainChangeRateLabel.setText(String.valueOf(mainBasisAnalysisVO.changeRate));
+        mainChangeRateLabel.setText(String.format("%.2f", mainBasisAnalysisVO.changeRate * 100) + "%");
 
         setMainLine();
 
         double varianceOfLR = comparisonService.getLogReturnVariance(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
-        mainVarianceOfLRLabel.setText(String.valueOf(varianceOfLR));
+        mainVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR * 100) + "%");
     }
 
     @FXML
     private void setDeputyInfo() throws RemoteException {
         //TODO 股票代码为空，或者数据为空时的处理代码
+        comparisonService.setDateRange(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
-        deputyChangeRateLabel.setText(String.valueOf(deputyBasisAnalysisVO.changeRate));
+        deputyChangeRateLabel.setText(String.valueOf(String.format("%.2f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
 
-        //TODO 设置副对数收益率图表
+        setDeputyLine();
 
-        //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
+        double varianceOfLR = comparisonService.getLogReturnVariance(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+        deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR * 100) + "%");
     }
 
     private void setMainLine() {
@@ -157,9 +162,10 @@ public class ComparisonController {
         });
 
         mainLineChart.getData().addAll(dailyClosePriceLine, dailyLRLine);
+        mainLineChart.setVisible(true);
     }
 
-    private void setDeputyLineChart() {
+    private void setDeputyLine() {
         //TODO 复用setMainLineChart
     }
 

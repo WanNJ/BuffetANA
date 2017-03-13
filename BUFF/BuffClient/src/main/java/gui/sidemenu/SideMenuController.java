@@ -23,8 +23,8 @@ public class SideMenuController {
 	private ViewFlowContext context;
 
 	@FXML
-	@ActionTrigger("market")
-	private Label market;
+	@ActionTrigger("Market")
+	private Label Market;
 
 	@FXML
 	@ActionTrigger("SingleStock")
@@ -35,21 +35,26 @@ public class SideMenuController {
 	private Label Comparison;
 
 	@FXML
-	@ActionTrigger("thermometer")
-	private Label thermometer;
+	@ActionTrigger("Thermometer")
+	private Label Thermometer;
 	
 	@FXML
-	private JFXListView<?> sideList;
+	private JFXListView<Label> sideList;
 
 	@PostConstruct
 	public void init() throws FlowException, VetoException {
 		sideList.propagateMouseEventsToParent();
 		FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
-		bindNodeToController(market, MarketController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(Market, MarketController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Comparison, ComparisonController.class, contentFlow, contentFlowHandler);
-		bindNodeToController(thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(Thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
+
+		//登记对象
+		context.register(this);
+		context.register("sideList",sideList);
+		context.register("SingleStock",SingleStock);
 	}
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

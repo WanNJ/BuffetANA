@@ -2,14 +2,21 @@ package gui.functions;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
+import io.datafx.controller.flow.FlowException;
+import io.datafx.controller.flow.FlowHandler;
+import io.datafx.controller.flow.context.FXMLViewFlowContext;
+import io.datafx.controller.flow.context.ViewFlowContext;
+import io.datafx.controller.util.VetoException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.StackPane;
@@ -22,6 +29,7 @@ import javax.annotation.PostConstruct;
  */
 @FXMLController(value = "/resources/fxml/ui/Market.fxml" , title = "Market")
 public class MarketController {
+    @FXMLViewFlowContext private ViewFlowContext context;
 
     @FXML private StackPane root;
     @FXML private JFXTreeTableView<Share> allSharesList;
@@ -46,10 +54,10 @@ public class MarketController {
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
         //添加要显示的行的信息		下面是一个例子
-        allShares.add(new Share("ID1","name1","price1","rise1","rise_percent1"));
-        allShares.add(new Share("ID2","name2","14.9","+0.2","+0.03"));
-        recentlyShares.add(new Share("ID3","name3","price3","rise3","rise_percent3"));
-        recentlyShares.add(new Share("ID4","name4","16.7","-0.3","-0.13"));
+        allShares.add(new Share("2035","name1","price1","rise1","rise_percent1"));
+        allShares.add(new Share("2093","name2","14.9","+0.2","+0.03"));
+        recentlyShares.add(new Share("2351","name3","price3","rise3","rise_percent3"));
+        recentlyShares.add(new Share("2205","name4","16.7","-0.3","-0.13"));
 
         initTreeTableView(allSharesList,allShares);
         initTreeTableView(recentlySharesList,recentlyShares);
@@ -66,7 +74,22 @@ public class MarketController {
         //为treeTableView加上双击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
             if(event.getClickCount()==2 && null!=treeTableView.getSelectionModel().getSelectedItem()){
-                System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());//TODO:跳转界面
+                //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
+                //跳转界面
+                FlowHandler flowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
+                Label SingleStock=((Label)context.getRegisteredObject("SingleStock"));
+                assert SingleStock!=null:"can't find registered object:SingleStock";
+                try {
+                    flowHandler.handle(SingleStock.getId());
+                } catch (Exception e) {
+                    System.err.println("can't find object:SingleStock  ID:"+SingleStock.getId());
+                }
+                //切换到对应的股票信息
+                SingleStockController singleStockController= (SingleStockController) context.getCurrentViewContext().getController();
+                singleStockController.setStockInfo(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
+                //改变SideMenu的选中项
+                JFXListView<Label> sideList=((JFXListView)context.getRegisteredObject("sideList"));
+                sideList.getSelectionModel().select(SingleStock);
             }
         });
     }

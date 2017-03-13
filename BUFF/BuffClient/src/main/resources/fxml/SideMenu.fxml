@@ -9,9 +9,9 @@
 		<String fx:value="side-menu" />
 	</styleClass>
 	<JFXListView  fx:id="sideList">
-		<Label fx:id="market"> 大盘 </Label>
+		<Label fx:id="Market"> 大盘 </Label>
 		<Label fx:id="SingleStock"> 个股 </Label>
 		<Label fx:id="Comparison"> 对比 </Label>
-		<Label fx:id="thermometer"> 市场温度计 </Label>
+		<Label fx:id="Thermometer"> 市场温度计 </Label>
 	</JFXListView>
 </StackPane>

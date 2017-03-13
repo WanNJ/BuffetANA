@@ -43,7 +43,7 @@ public class StockChangeController {
         treeTableView.setOnMouseClicked(event -> {
             if(null!=treeTableView.getSelectionModel().getSelectedItem()){
                 stockHandler.handle(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
-                System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
+                //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
             }
         });
         //为filterField增加监听方法

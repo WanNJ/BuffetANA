@@ -1,18 +1,14 @@
 package gui.functions;
 
 import blservice.comparison.ComparisonService;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.*;
 import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import javafx.fxml.FXML;
-import javafx.scene.chart.Axis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.*;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -20,9 +16,12 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import vo.BasisAnalysisVO;
+import vo.DailyClosingPriceVO;
+import vo.DailyLogReturnVO;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by Accident on 2017/3/5.
@@ -46,23 +45,25 @@ public class ComparisonController {
     @FXML
     private Label deputyVarianceOfLRLabel;
     @FXML
-    private JFXTextField mainStockCodeTextField;
+    private JFXComboBox<String> mainStockCodeBox;
     @FXML
-    private JFXTextField deputyStockCodeTextField;
+    private JFXComboBox<String> deputyStockCodeBox;
     @FXML
     private JFXDatePicker beginDatePicker;
     @FXML
     private JFXDatePicker endDatePicker;
     @FXML
-    private LineChart<LocalDate, Number> mainLineChart;
+    private LineChart<String, Number> mainLineChart;
     @FXML
-    private LineChart<LocalDate, Number> deputyLineChart;
+    private LineChart<String, Number> deputyLineChart;
     @FXML
     private JFXToggleButton dailyClosePriceToggleButton;
     @FXML
     private JFXToggleButton dailyLRToggleButton;
     @FXML
     private StackPane root;
+    @FXML
+    private JFXButton confirmButton;
 
     private BasisAnalysisVO mainBasisAnalysisVO;
     private BasisAnalysisVO deputyBasisAnalysisVO;
@@ -82,29 +83,73 @@ public class ComparisonController {
 
     @FXML
     private void setMainInfo() throws RemoteException {
-        mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeTextField.getText(),beginDatePicker.getValue(), endDatePicker.getValue());
+        mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         mainMinPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.lowPrice));
         mainMaxPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.highPrice));
         mainChangeRateLabel.setText(String.valueOf(mainBasisAnalysisVO.changeRate));
 
-        //TODO 设置主对数收益率图表
+        setMainLine();
 
-        //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
+        double varianceOfLR = comparisonService.getLogReturnVariance(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+        mainVarianceOfLRLabel.setText(String.valueOf(varianceOfLR));
     }
 
     @FXML
     private void setDeputyBasicInfo() throws RemoteException {
-        deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyMaxPriceLabel.getText(),beginDatePicker.getValue(), endDatePicker.getValue());
+        deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
         deputyChangeRateLabel.setText(String.valueOf(deputyBasisAnalysisVO.changeRate));
 
-        //TODO 设置主对数收益率图表
+        //TODO 设置副对数收益率图表
 
         //TODO 设置对数收益率方差，注意在BlImpl中防止NullPointer
     }
 
-    private void setMainLineChart() {
+    private void setMainLine() {
+        final CategoryAxis mainXAxis = new CategoryAxis();
+        final NumberAxis mainYAxis = new NumberAxis();
+        mainXAxis.setLabel("日期");
+
+        mainLineChart = new LineChart<String,Number>(mainXAxis,mainYAxis);
+
+        //创建每日收盘价Series
+        XYChart.Series dailyClosePriceLine = new XYChart.Series();
+        dailyClosePriceLine.setName("收盘价");
+        //获取每日收盘价List（调用Service）
+        List<DailyClosingPriceVO> dailyClosingPriceVOS = null;
+        try {
+            dailyClosingPriceVOS = comparisonService.getDailyClosingPrice(mainStockCodeBox.getValue(), beginDatePicker.getValue(), endDatePicker.getValue());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        //将数据加入图表
+        dailyClosingPriceVOS.forEach(closePrice -> {
+            dailyClosePriceLine.getData().add(new XYChart.Data(closePrice.date.toString(),
+                    closePrice.closePrice));
+        });
+
+        //创建每日对数收益率Series
+        XYChart.Series dailyLRLine = new XYChart.Series();
+        dailyLRLine.setName("对数收益率");
+        //获取每日对数收益率List
+        List<DailyLogReturnVO> dailyLogReturnVOS = null;
+        try {
+            dailyLogReturnVOS = comparisonService.getDailyLogReturnAnalysis(mainStockCodeBox.getValue(), beginDatePicker.getValue(), endDatePicker.getValue());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        //将数据加入图表
+        dailyLogReturnVOS.forEach(LRVo -> {
+            dailyLRLine.getData().add(new XYChart.Data(LRVo.date.toString(),
+                    LRVo.logReturnIndex));
+        });
+
+        mainLineChart.getData().addAll(dailyClosePriceLine, dailyLRLine);
+    }
+
+    private void setDeputyLineChart() {
+        //TODO 复用setMainLineChart
     }
 
     private void setDatePicker() {

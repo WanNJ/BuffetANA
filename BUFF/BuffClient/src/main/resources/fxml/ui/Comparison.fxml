@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -16,6 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../css/jfoenix-main-demo.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <GridPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0">
@@ -81,11 +81,7 @@
                     <children>
                         <AnchorPane prefHeight="400.0" prefWidth="300.0">
                             <children>
-                                <JFXTextField fx:id="mainStockCodeTextField" alignment="CENTER" layoutX="112.0" layoutY="31.0" promptText="请输入股票代号..." AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="18.0">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </JFXTextField>
+                                <JFXComboBox fx:id="mainStockCodeBox"  layoutX="112.0" layoutY="31.0" promptText="请输入股票代号..." AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="18.0"></JFXComboBox>
                                 <Label layoutX="32.0" layoutY="36.0" text="主股:" AnchorPane.leftAnchor="32.0">
                                     <font>
                                         <Font size="24.0" />
@@ -106,22 +102,22 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainMinPriceLabel" layoutX="161.0" layoutY="98.0" text="Label">
+                                <Label fx:id="mainMinPriceLabel" layoutX="161.0" layoutY="98.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainMaxPriceLabel" layoutX="161.0" layoutY="165.0" text="Label">
+                                <Label fx:id="mainMaxPriceLabel" layoutX="161.0" layoutY="165.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainChangeRateLabel" layoutX="161.0" layoutY="225.0" text="Label">
+                                <Label fx:id="mainChangeRateLabel" layoutX="161.0" layoutY="225.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="mainVarianceOfLRLabel" layoutX="161.0" layoutY="277.0" text="Label">
+                                <Label fx:id="mainVarianceOfLRLabel" layoutX="161.0" layoutY="277.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
@@ -140,17 +136,17 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyChangeRateLabel" layoutX="161.0" layoutY="221.0" text="Label">
+                                <Label fx:id="deputyChangeRateLabel" layoutX="161.0" layoutY="221.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyMaxPriceLabel" layoutX="160.0" layoutY="163.0" text="Label">
+                                <Label fx:id="deputyMaxPriceLabel" layoutX="160.0" layoutY="163.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyMinPriceLabel" layoutX="161.0" layoutY="99.0" text="Label">
+                                <Label fx:id="deputyMinPriceLabel" layoutX="161.0" layoutY="99.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
@@ -170,17 +166,13 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <JFXTextField fx:id="deputyStockCodeTextField" alignment="CENTER" layoutX="112.0" layoutY="34.0" promptText="请输入股票代号..." AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="18.0">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </JFXTextField>
+                                <JFXComboBox fx:id="deputyStockCodeBox" layoutX="112.0" layoutY="34.0" promptText="请输入股票代号..." AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="18.0"></JFXComboBox>
                                 <Label layoutX="17.0" layoutY="276.0" text="LR方差:">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="deputyVarianceOfLR" layoutX="161.0" layoutY="276.0" text="Label">
+                                <Label fx:id="deputyVarianceOfLR" layoutX="161.0" layoutY="276.0" text="\">
                                     <font>
                                         <Font size="24.0" />
                                     </font>

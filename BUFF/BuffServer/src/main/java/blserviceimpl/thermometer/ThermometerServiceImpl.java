@@ -7,6 +7,7 @@ import factroy.DAOFactoryServiceImpl;
 import po.StockPO;
 import util.DateRange;
 import vo.LongPeiceVO;
+import vo.StockVolVO;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -49,7 +50,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @return 按从早到晚，数组的每个元素代表某天的交易量，如查询2006.2.2到2006.2.4，则list.get(1)代表2006.2.3的交易量
      */
     @Override
-    public List<LongPeiceVO> getTradingVolume(DateRange dateRange) throws RemoteException {
+    public List<StockVolVO> getTradingVolume(DateRange dateRange) throws RemoteException {
         /**
          * 获取时间
          */
@@ -58,7 +59,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<LongPeiceVO> list = new ArrayList<>();
+        List<StockVolVO> list = new ArrayList<>();
 
         /**
          * 获取日期的流
@@ -70,9 +71,13 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  计算
          *  获取列表
          */
-        list =  stream.map((date)-> new LongPeiceVO(date,(stockDAO.getStockInfoByDate(date)
-                .stream().map(t->t.getVolume()).reduce((a,b)->a+b).orElseGet(()->Long.parseLong("0")))
+        list =  stream.map((date)-> new StockVolVO(date,(stockDAO.getStockInfoByDate(date)
+                .stream().map(t->t.getVolume()).reduce((a,b)->a+b).orElseGet(()->Long.parseLong("0"))),
+                stockDAO.getStockInfoByDate(date)
+                        .stream().map(t->t.getOpen_Price()-t.getClose_Price())
+                        .reduce((a,b)->a+b).orElseGet(()->Double.parseDouble("0"))>0
                 ))
+                .filter(t->t.vol!=0)
                 .collect(Collectors.toList());
 
 
@@ -91,7 +96,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      */
 
     @Override
-    public List<LongPeiceVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException{
+    public List<StockVolVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException{
         /**
          * 获取时间
          */
@@ -102,7 +107,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
         /**
          * 建立list
          */
-        List<LongPeiceVO> list = new ArrayList<>();
+        List<StockVolVO> list = new ArrayList<>();
 
         /**
          * 获取单个股票数据
@@ -115,7 +120,8 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  获取列表
          */
         list =  stockPOs.stream().filter(t->!(t.getDate().isAfter(end)||t.getDate().isBefore(begin)))
-                .map(t->new LongPeiceVO(t.getDate(),t.getVolume())).collect(Collectors.toList());
+                .map(t->new StockVolVO(t.getDate(),t.getVolume(),t.getOpen_Price()>t.getClose_Price()))
+                .collect(Collectors.toList());
 
 
         /**

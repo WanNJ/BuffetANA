@@ -136,12 +136,12 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public List<LongPeiceVO> getTradingVolume(DateRange dateRange) throws RemoteException {
+	public List<StockVolVO> getTradingVolume(DateRange dateRange) throws RemoteException {
 		return this.thermometerService.getTradingVolume(dateRange);
 	}
 
 	@Override
-	public List<LongPeiceVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException {
+	public List<StockVolVO> getTradingVolume(DateRange dateRange, String shareID) throws RemoteException {
 		return this.thermometerService.getTradingVolume(dateRange,shareID);
 	}
 

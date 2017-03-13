@@ -36,7 +36,7 @@ public class DateRange implements Serializable{
      * @return
      */
     public long getRangeDays(){
-        return to.toEpochDay()-from.toEpochDay();
+        return to.toEpochDay()-from.toEpochDay()+1;
     }
 
 

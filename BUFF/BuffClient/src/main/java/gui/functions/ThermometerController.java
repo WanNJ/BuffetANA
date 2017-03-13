@@ -3,10 +3,7 @@ package gui.functions;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.validation.ValidationFacade;
-import gui.ChartController.ChartController;
-import gui.ChartController.KLineChartController;
-import gui.ChartController.TheVOLChartController;
-import gui.ChartController.ThemometerVolBarChart;
+import gui.ChartController.*;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
@@ -89,7 +86,8 @@ public class ThermometerController {
 		themometerVolBarChart.setStartDate(first);
 		themometerVolBarChart.setEndDate(second);
 		themometerVolBarChart.drawChat();
-		volPane.centerProperty().setValue(themometerVolBarChart.getChart());
+		TheVolPane theVolPane = new TheVolPane(themometerVolBarChart.getChart(),1.0);
+		volPane.centerProperty().setValue(theVolPane);
 	}
 
 

@@ -5,6 +5,11 @@
     -fx-padding: 2 5 2 0;
 }
 
+.XY-line {
+    -fx-stroke: #FFFFFF;
+    -fx-stroke-width: 1px;
+}
+
 .volestick-vol{
     -fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.4) , 10, 0.0 , 2 , 4 );
 }
@@ -70,3 +75,4 @@
 .chart-plot-background { /*图表的背景*/
     -fx-background-color: rgba(0, 0, 0, 0.12);
 }
+

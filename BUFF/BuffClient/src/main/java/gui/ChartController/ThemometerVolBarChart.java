@@ -5,11 +5,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.chart.Axis;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import vo.StockVolVO;
 import vo.VolExtraVO;
@@ -32,7 +41,9 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
     private static final int  Width=1000;
 
 
+
     private static int length;
+    private double candleWith = 0;
     /**
      * Constructs a XYChart given the two axes. The initial content for the chart
      * plot background and plot area that includes vertical and horizontal grid
@@ -140,6 +151,11 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
                 getPlotChildren().add(volbar);
             }
         }
+
+        Path seriesPath = new Path();
+        seriesPath.getStyleClass().setAll("Volline", "series" + seriesIndex);
+        series.setNode(seriesPath);
+        getPlotChildren().add(seriesPath);
     }
 
     @Override
@@ -177,6 +193,14 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
             Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);
 
 
+            //作这线图
+            Path seriesPath = null;
+            if (series.getNode() instanceof Path) {
+                // System.out.println("clear path");
+                seriesPath = (Path) series.getNode();
+                seriesPath.getElements().clear();
+            }
+
             //迭代  获取每一个要画的node
             while (iter.hasNext()) {
                 Data<String, Number> item = iter.next();
@@ -188,7 +212,6 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
 
                 Node itemNode = item.getNode();
                 VolExtraVO extra = (VolExtraVO) item.getExtraValue();
-
 
                 //  实体化 自定义的组件图像
                 if (itemNode instanceof VolBar && extra != null) {
@@ -206,13 +229,22 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
                     if(length !=0 ){
                         candleWidth= width/(length*1.1)>20? 20: width/(length*1.1);
                     }
-
+                    this.candleWith = candleWidth;
                     // update volBar
                     volBar.update(high - y, candleWidth, extra.openAboveClose);
-                    volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
+                    //volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
                     // position the volBar
                     volBar.setLayoutX(x);
                     volBar.setLayoutY(y);
+                }
+
+                System.out.println(extra.volume);
+                if (seriesPath != null) {
+                    if (seriesPath.getElements().isEmpty()) {
+                        seriesPath.getElements().add(new MoveTo(x, getYAxis().getDisplayPosition(extra.volume)));
+                    } else {
+                        seriesPath.getElements().add(new LineTo(x, getYAxis().getDisplayPosition(extra.volume)));
+                    }
                 }
 
             }
@@ -298,6 +330,7 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
             //计算额外附加值
             VolExtraVO volExtraVO =  new VolExtraVO();
             volExtraVO.date = vo.date;
+            volExtraVO.volume = vo.vol;
 
             if(i!=0){
                 StockVolVO last =  stockVolVOs.get(i-1);
@@ -392,4 +425,10 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
         }
         return volBar;
     }
+
+    public double getCandleWidth(){
+        return this.candleWith;
+    }
+
+
 }

@@ -8,16 +8,29 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.BorderPane?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-	<HBox alignment="BOTTOM_CENTER" fillHeight="false" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
+	<HBox alignment="BOTTOM_CENTER" fillHeight="false" spacing="30.0">
 		<children>
-			<Label minWidth="60.0" text="起始日期" />
+			<Label minWidth="60.0" text="起始日期">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" />
+            </padding></Label>
 			<JFXDatePicker fx:id="from" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
-			<Label minWidth="60.0" text="结束日期" />
+			<Label minWidth="60.0" text="结束日期">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" />
+            </padding></Label>
 			<JFXDatePicker fx:id="to" defaultColor="#a87d08" maxWidth="240.0" overLay="true" />
 		</children>
 	</HBox>
@@ -81,7 +94,7 @@
          </Tab>
       </tabs>
       <StackPane.margin>
-         <Insets bottom="30.0" />
+         <Insets bottom="50.0" />
       </StackPane.margin>
    </JFXTabPane>
 

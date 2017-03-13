@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
+<?import javafx.scene.layout.BorderPane?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
 	<HBox alignment="BOTTOM_CENTER" fillHeight="false" spacing="30.0" StackPane.alignment="BOTTOM_CENTER">
 		<children>
@@ -25,19 +26,8 @@
          <Tab text="总交易量">
            <content>
 			   <StackPane>
-				   <children>
-					   <BarChart>
-						   <xAxis>
-							   <CategoryAxis side="BOTTOM" />
-						   </xAxis>
-						   <yAxis>
-							   <NumberAxis side="LEFT" />
-						   </yAxis>
-                        <StackPane.margin>
-                           <Insets />
-                        </StackPane.margin>
-					   </BarChart>
-				   </children>
+				   <BorderPane fx:id="volPane" stylesheets="@../../css/TheVolbar.css">
+				   </BorderPane>
 			   </StackPane>
            </content>
          </Tab>

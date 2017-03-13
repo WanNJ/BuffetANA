@@ -35,8 +35,8 @@ public class DateRange implements Serializable{
      * 获取实际的天数范围
      * @return
      */
-    public int getRangeDays(){
-        return to.compareTo(from)+1;
+    public long getRangeDays(){
+        return to.toEpochDay()-from.toEpochDay();
     }
 
 

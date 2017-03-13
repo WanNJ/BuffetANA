@@ -1,6 +1,7 @@
 package blserviceimpl.thermometer;
 
 import blservice.thermometer.ThermometerService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
@@ -66,7 +67,10 @@ public enum ThermometerServiceImpl implements ThermometerService{
          */
         Stream<LocalDate> stream = Stream.iterate(begin,date ->date.plusDays(1))
                 .limit(dateRange.getRangeDays());
-
+//
+//        Stream<LocalDate> stream1 =Stream.iterate(begin,date ->date.plusDays(1))
+//                .limit(dateRange.getRangeDays());
+//        stream1.forEach(t-> System.out.println(t));
         /**
          *  计算
          *  获取列表

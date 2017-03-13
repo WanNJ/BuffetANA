@@ -2,10 +2,7 @@ package gui.functions;
 
 import blservice.singlestock.MALineService;
 import blstub.singlestockstub.MALineServiceImpl_Stub;
-import gui.ChartController.ChartController;
-import gui.ChartController.KLineChartController;
-import gui.ChartController.MAChartController;
-import gui.ChartController.MALineChart;
+import gui.ChartController.*;
 import io.datafx.controller.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,6 +49,7 @@ public class MALineController {
         maChartController.setEndDate(second);
         maChartController.setStockCode(code);
         maChartController.drawChat();
-        borderPane.centerProperty().setValue(maChartController.getChart());
+        MALinePane maLinePane = new MALinePane(maChartController.getChart(),1.0);
+        borderPane.centerProperty().setValue(maLinePane);
     }
 }

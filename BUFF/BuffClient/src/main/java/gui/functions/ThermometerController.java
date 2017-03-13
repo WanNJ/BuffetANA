@@ -27,7 +27,7 @@ public class ThermometerController {
 	@FXML private StackPane root;
 	@FXML private JFXDatePicker from;
 	@FXML private JFXDatePicker to;
-	
+	@FXML private BorderPane leastPane;
 	@PostConstruct
 	public void init(){
 
@@ -70,6 +70,7 @@ public class ThermometerController {
 
 		if(first!=null && second!=null && first.isBefore(second)){
 			upDateGraphVol(first,second);
+			upDateGraphLeast(first,second);
 		}
 
 	}
@@ -88,6 +89,23 @@ public class ThermometerController {
 		themometerVolBarChart.drawChat();
 		TheVolPane theVolPane = new TheVolPane(themometerVolBarChart.getChart(),1.0);
 		volPane.centerProperty().setValue(theVolPane);
+	}
+
+	/**
+	 * 监听器改图
+	 * @param first
+	 * @param second
+	 */
+	public void upDateGraphLeast(LocalDate first , LocalDate second ){
+		UpDownChartController upDownChartController = ChartController.INSTANCE.getUpDownChartController();
+
+		upDownChartController.setStartDate(first);
+		upDownChartController.setEndDate(second);
+		upDownChartController.drawChat();
+        MutiChartPane mutiChartPane = new MutiChartPane
+                (upDownChartController.getBarChart(),upDownChartController.getLineChart(),1.0);
+
+		leastPane.centerProperty().setValue(mutiChartPane);
 	}
 
 

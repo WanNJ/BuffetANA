@@ -1,0 +1,60 @@
+
+/*!* ====== CANDLE STICK CHART =========================================================== *!*/
+.candlestick-tooltip-label {
+    -fx-font-size: 0.75em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #666666;
+    -fx-padding: 2 5 2 0;
+}
+
+
+.label-gray {
+    -fx-background-color: rgba(25,25,25,0.70);
+}
+
+.axis {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-color: #FFFFFF;
+    -fx-tick-label-fill: #FFFFFF;
+    -fx-font-size: 18pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-tick-length: 20;
+    -fx-minor-tick-length: 10;
+}
+
+.chart-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20pt;
+    -fx-font-family: "Segoe UI Light";
+}
+
+.axis-label {
+    -fx-text-fill: #462300;
+}
+
+.axis-tick-mark {
+    -fx-stroke: #637040;
+    -fx-stroke-width: 3;
+}
+.axis-minor-tick-mark {
+    -fx-stroke: #859656;
+}
+
+/*{
+
+}
+*/
+.chart {
+    -fx-alternative-column-fill-visible : false;
+    -fx-vertical-grid-lines-visible: false;
+    -fx-background-color: #000000;
+}
+.fx-background-color {
+    -fx-background-color: red;
+}
+.chart-plot-background { /*图表的背景*/
+    -fx-background-color: rgba(0, 0, 0, 0.77);
+}
+
+.default-color0.chart-bar { -fx-bar-fill: red; }
+.default-color1.chart-bar { -fx-bar-fill: green; }

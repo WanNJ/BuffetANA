@@ -146,7 +146,7 @@ public class MALineChart extends LineChart<String, Number> {
 
     private static  Series getSeries(String name , ObservableList<MAPieceVO> maPieceVOs ){
         XYChart.Series<String,Number> series = new XYChart.Series<String,Number>();
-        series.setName("name");
+        series.setName(name);
 
         for (int i=0; i< maPieceVOs.size(); i++) {
             MAPieceVO vo = maPieceVOs.get(i);

@@ -282,8 +282,8 @@ public class KLineChart extends XYChart<String, Number> {
                     this.candleWith = candleWidth;
                     // update candle
                     candle.update(close - y, high - y, low - y, candleWidth);
-                    candle.updateTooltip(item.getYValue().doubleValue(), extra.getClosePrice(), extra.getHighPrice(),
-                            extra.getLowPrice());
+//                    candle.updateTooltip(item.getYValue().doubleValue(), extra.getClosePrice(), extra.getHighPrice(),
+//                            extra.getLowPrice());
 
                     // position the candle
                     candle.setLayoutX(x);

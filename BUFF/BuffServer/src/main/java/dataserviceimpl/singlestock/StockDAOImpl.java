@@ -72,7 +72,7 @@ public enum StockDAOImpl implements StockDAO{
                 return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
             });
         } catch (FileNotFoundException e) {
-            System.out.println("no data found");
+            System.out.println(fileName + " is not found");
         } finally {
             if(br != null) {
                 try {

@@ -8,16 +8,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import vo.StockNameAndCodeVO;
 
 import java.util.Collection;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +26,7 @@ public class StockChangeController {
     private JFXTreeTableView<Share> treeTableView;
     private ObservableList<Share> list;
 
-    public void initTreeTableView(JFXTreeTableView<Share> treeTableView, TextField search, Collection<StockNameAndCodeVO> collection, StockHandler stockHandler){
+    public void initTreeTableView(JFXTreeTableView<Share> treeTableView, TextField filterField, Collection<StockNameAndCodeVO> collection, StockHandler stockHandler){
         this.treeTableView=treeTableView;
         //初始化ObservableList
         this.list = FXCollections.observableArrayList();
@@ -41,7 +37,7 @@ public class StockChangeController {
 
         //创建TreeTableView的列
         for(int index=0;index<titles.length;index++){
-            setCustomerColumn(treeTableView,index);
+            setColumn(treeTableView,index);
         }
         //为treeTableView加上单击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
@@ -50,9 +46,14 @@ public class StockChangeController {
                 System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
             }
         });
+        //为filterField增加监听方法
+        filterField.textProperty().addListener((o,oldVal,newVal)->{
+            treeTableView.setPredicate(share -> share.getValue().ID.get().contains(newVal) ||
+                    share.getValue().name.get().contains(newVal));
+        });
     }
 
-    private void setCustomerColumn(JFXTreeTableView<Share> treeTableView,int index){
+    private void setColumn(JFXTreeTableView<Share> treeTableView, int index){
         JFXTreeTableColumn<Share, String> colum=new JFXTreeTableColumn<>(titles[index]);
         colum.setPrefWidth(100);
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Share, String> param) ->{

@@ -11,8 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -65,7 +63,7 @@ public class MarketController {
 
         //创建TreeTableView的列
         for(int index=0;index<titles.length;index++){
-            setCustomerColumn(treeTableView,index);
+            setColumn(treeTableView,index);
         }
         //为treeTableView加上双击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
@@ -75,7 +73,7 @@ public class MarketController {
         });
     }
 
-    private void setCustomerColumn(JFXTreeTableView<Share> treeTableView,int index){
+    private void setColumn(JFXTreeTableView<Share> treeTableView, int index){
         JFXTreeTableColumn<Share, String> colum=new JFXTreeTableColumn<>(titles[index]);
         colum.setPrefWidth(100);
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Share, String> param) ->{

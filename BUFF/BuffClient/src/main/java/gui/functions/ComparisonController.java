@@ -65,8 +65,6 @@ public class ComparisonController {
     @FXML
     private JFXButton confirmButton;
 
-    private BasisAnalysisVO mainBasisAnalysisVO;
-    private BasisAnalysisVO deputyBasisAnalysisVO;
     private ComparisonService comparisonService;
     private BlFactoryService blFactoryService;
 
@@ -82,8 +80,20 @@ public class ComparisonController {
     }
 
     @FXML
+    private void search() {
+
+    }
+
+    @FXML
+    private void beginCompare() throws RemoteException {
+        setMainInfo();
+        setDeputyInfo();
+    }
+
+    @FXML
     private void setMainInfo() throws RemoteException {
-        mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+        //TODO 股票代码为空，或者数据为空时的处理代码
+        BasisAnalysisVO mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         mainMinPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.lowPrice));
         mainMaxPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.highPrice));
         mainChangeRateLabel.setText(String.valueOf(mainBasisAnalysisVO.changeRate));
@@ -95,8 +105,9 @@ public class ComparisonController {
     }
 
     @FXML
-    private void setDeputyBasicInfo() throws RemoteException {
-        deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+    private void setDeputyInfo() throws RemoteException {
+        //TODO 股票代码为空，或者数据为空时的处理代码
+        BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
         deputyChangeRateLabel.setText(String.valueOf(deputyBasisAnalysisVO.changeRate));

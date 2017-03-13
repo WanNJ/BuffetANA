@@ -185,7 +185,7 @@
                                     <children>
                                         <HBox>
                                             <children>
-                                                <Label text="结束日:">
+                                                <Label text="起始日:">
                                                     <font>
                                                         <Font size="24.0" />
                                                     </font>
@@ -195,7 +195,7 @@
                                         </HBox>
                                         <HBox>
                                             <children>
-                                                <Label text="起始日:">
+                                                <Label text="结束日:">
                                                     <font>
                                                         <Font size="24.0" />
                                                     </font>

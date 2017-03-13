@@ -1,11 +1,9 @@
 package gui.functions;
 
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import gui.utils.DatePickerUtil;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

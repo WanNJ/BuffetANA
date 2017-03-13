@@ -1,14 +1,12 @@
 package gui.main;
 
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXPopup.PopupHPosition;
 import com.jfoenix.controls.JFXPopup.PopupVPosition;
-import com.jfoenix.controls.JFXRippler;
 import datafx.AnimatedFlowContainer;
 import gui.functions.MarketController;
 import gui.sidemenu.SideMenuController;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -42,6 +40,8 @@ public class MainController {
 	@FXML private JFXDrawer drawer;
 	@FXML private JFXPopup toolbarPopup;
 	@FXML private Label exit;
+
+	@FXML private JFXDialog dialog;
 
 	private FlowHandler flowHandler;
 	private FlowHandler sideMenuFlowHandler;
@@ -92,5 +92,8 @@ public class MainController {
 		Flow sideMenuFlow = new Flow(SideMenuController.class);
 		sideMenuFlowHandler = sideMenuFlow.createHandler(context);
 		drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
+
+		//初始化对话框
+		Dialogs.init(root,dialog);
 	}
 }

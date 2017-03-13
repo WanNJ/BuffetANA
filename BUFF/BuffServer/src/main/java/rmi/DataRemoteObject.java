@@ -85,8 +85,8 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		comparisonService.resetDateRange(stockCode, beginDate, endDate);
+	public void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+		comparisonService.setDateRange(stockCode, beginDate, endDate);
 
 	}
 

@@ -10,8 +10,10 @@ import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +29,10 @@ public enum ComparisonImpl implements ComparisonService {
     private StockDAO stockDAO;
     private DAOFactoryService factory;
 
+    //TODO 关于界面设置可选日期的代码
+    private LocalDate earliestDate;
+    private LocalDate latestDate;
+
     private List<StockPO> allStockPOs;
     private List<StockPO> specificStockPOs;
     private List<DailyClosingPriceVO> dailyClosingPriceVOS;
@@ -39,15 +45,17 @@ public enum ComparisonImpl implements ComparisonService {
     }
 
     @Override
-    public void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    public void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
         allStockPOs = stockDAO.getStockInfoByCode(stockCode);
-        specificStockPOs = allStockPOs.stream()
-                .filter(stockPO -> stockPO.getDate().isAfter(beginDate) && stockPO.getDate().isBefore(endDate))
+        specificStockPOs = allStockPOs.stream().filter((StockPO stockPO) -> stockPO.getDate().isAfter(beginDate.minusDays(1))
+                && stockPO.getDate().isBefore(endDate.plusDays(1)))
                 .collect(Collectors.toList());
     }
 
     @Override
     public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) {
+        if (specificStockPOs == null || specificStockPOs.size() == 0)
+            return null;
         BasisAnalysisVO result = new BasisAnalysisVO();
         result.openPrice = specificStockPOs.get(0).getOpen_Price();
         result.closePrice = specificStockPOs.get(specificStockPOs.size() - 1).getClose_Price();
@@ -101,5 +109,21 @@ public enum ComparisonImpl implements ComparisonService {
     @Override
     public LocalDate getLatestDate() throws RemoteException {
         return allStockPOs.get(allStockPOs.size() - 1).getDate();
+    }
+
+    public static void main(String[] args) throws RemoteException {
+        ComparisonService comparisonService = COMPARISON_SERVICE;
+        LocalDate beginDate = LocalDate.of(2005, 2, 1);
+        LocalDate endDate = LocalDate.of(2005, 2, 2);
+        List<DailyLogReturnVO> basisAnalysis = null;
+        comparisonService.setDateRange("1", beginDate, endDate);
+        double d = 0;
+        try {
+            basisAnalysis = comparisonService.getDailyLogReturnAnalysis("1", beginDate, endDate);
+            d = comparisonService.getLogReturnVariance("1", beginDate, endDate);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        System.out.println(d);
     }
 }

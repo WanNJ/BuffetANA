@@ -21,14 +21,14 @@ public interface ComparisonService extends Remote {
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
      */
-    void resetDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
      * 给两股对比提供股票总体信息
      * @param stockCode 股票编号
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
-     * @return BasisAnalysisVO 获得日期范围内的该支股票的基本分析数据：最低值、最高值、涨幅/跌幅
+     * @return BasisAnalysisVO 获得日期范围内的该支股票的基本分析数据：最低值、最高值、涨幅/跌幅，若返回值为null，则此区间无数据
      */
     BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
@@ -51,7 +51,7 @@ public interface ComparisonService extends Remote {
     List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
-     * 提供对数收益率方差
+     * 提供对数收益率方差, 此方法一定要在getDailyLogReturnAnalysis调用后调用
      * @param stockCode 股票编号
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期

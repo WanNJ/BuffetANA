@@ -107,27 +107,6 @@ public class ComparisonController {
         setDeputyInfo();
         setClosePriceChart();
         setLogReturnChart();
-
-
-        /**
-         * 尝试将图片加在界面上 add by wsw
-         */
-
-        closeBorderPane.getChildren().clear();
-        rlBorderPane.getChildren().clear();
-
-
-        ClosePriceChart closePriceChart = ClosePriceChart.createChart(
-                getCloseObserable(comparisonService.getMainDailyClosingPrice()),
-                getCloseObserable(comparisonService.getDeputyDailyClosingPrice()));
-
-        closeBorderPane.centerProperty().setValue(closePriceChart);
-
-        LRChart lrChart = LRChart.createChart(
-                getrlObserable(comparisonService.getMainDailyLogReturnAnalysis()),
-                getrlObserable(comparisonService.getDeputyDailyLogReturnAnalysis()));
-
-        rlBorderPane.centerProperty().setValue(lrChart);
     }
 
     @FXML
@@ -152,29 +131,23 @@ public class ComparisonController {
         deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));
     }
 
-    private void setClosePriceChart() {
-        List<DailyClosingPriceVO> mainClosePriceVOS = null;
-        List<DailyClosingPriceVO> deputyClosePriceVOs = null;
-        try {
-            //获取主每日收盘价List
-            mainClosePriceVOS = comparisonService.getMainDailyClosingPrice();
-            //获取副每日收盘价List
-            deputyClosePriceVOs = comparisonService.getDeputyDailyClosingPrice();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        ObservableList<DailyClosingPriceVO> mainList =  FXCollections.observableArrayList(mainClosePriceVOS);
-        ObservableList<DailyClosingPriceVO> deputyList =  FXCollections.observableArrayList(deputyClosePriceVOs);
-
-
-        //TODO 将数据加入图表
-
-        //TODO 创建每日对数收益率Series
+    private void setClosePriceChart() throws RemoteException {
+        closeBorderPane.getChildren().clear();
+        ClosePriceChart closePriceChart = ClosePriceChart.createChart(
+                getCloseObserable(comparisonService.getMainDailyClosingPrice()),
+                getCloseObserable(comparisonService.getDeputyDailyClosingPrice()));
+        closeBorderPane.centerProperty().setValue(closePriceChart);
     }
 
-    private void setLogReturnChart() {
-        //TODO 与之前类似
+    private void setLogReturnChart() throws RemoteException {
+        rlBorderPane.getChildren().clear();
+        LRChart lrChart = LRChart.createChart(
+                getrlObserable(comparisonService.getMainDailyLogReturnAnalysis()),
+                getrlObserable(comparisonService.getDeputyDailyLogReturnAnalysis()));
+        comparisonService.getMainDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
+        comparisonService.getDeputyDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
+
+        rlBorderPane.centerProperty().setValue(lrChart);
     }
 
     private void setDatePicker() {
@@ -247,7 +220,6 @@ public class ComparisonController {
         return observableList;
 
     }
-
 
     /**
      *

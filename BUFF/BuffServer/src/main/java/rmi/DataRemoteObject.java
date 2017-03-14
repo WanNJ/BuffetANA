@@ -101,7 +101,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 
 	@Override
 	public List<DailyLogReturnVO> getMainDailyLogReturnAnalysis() throws RemoteException {
-		return comparisonService.getDeputyDailyLogReturnAnalysis();
+		return comparisonService.getMainDailyLogReturnAnalysis();
 	}
 
 	@Override

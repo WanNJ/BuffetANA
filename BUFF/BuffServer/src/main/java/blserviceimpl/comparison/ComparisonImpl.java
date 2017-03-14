@@ -1,22 +1,12 @@
 package blserviceimpl.comparison;
 
 import blservice.comparison.ComparisonService;
-import dataservice.singlestock.StockDAO;
-import factroy.DAOFactoryService;
-import factroy.DAOFactoryServiceImpl;
-import po.StockPO;
-import util.Statistics;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
-
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Accident on 2017/3/9.

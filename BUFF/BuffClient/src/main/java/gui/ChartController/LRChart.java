@@ -61,13 +61,13 @@ public class LRChart extends LineChart<String, Number> {
         final LRChart closePriceChart= new LRChart(xAxis,yAxis);
 
         xAxis.setLabel("日期");
-        yAxis.setLabel("收盘价");
+        yAxis.setLabel("对数收益率");
 
         // 加载传过来的数据序列
         Series<String,Number> series = new Series<String,Number>();
 
-        Series mainSeries = closePriceChart.getSeries("主股收盘价", mainDailyLogReturnVOS);
-        Series deputySeries = closePriceChart.getSeries("副股收盘价", deputyDailyLogReturnVOS);
+        Series mainSeries = closePriceChart.getSeries("主股对数收益率", mainDailyLogReturnVOS);
+        Series deputySeries = closePriceChart.getSeries("副股对数收益率", deputyDailyLogReturnVOS);
 
         closePriceChart.getData().addAll(mainSeries, deputySeries);
         closePriceChart.setCreateSymbols(false);

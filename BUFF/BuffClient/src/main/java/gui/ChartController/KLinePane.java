@@ -111,8 +111,8 @@ public class KLinePane extends StackPane {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
             double full = kLineChart.getXAxis().widthProperty().doubleValue();
-            System.out.println("full:  "+full);
-            AnchorPane.setRightAnchor(detailsPopup, full-(x-20-detailsPopup.getWidth()));
+            //System.out.println("full:  "+full);
+            AnchorPane.setRightAnchor(detailsPopup, full-(x-detailsPopup.getWidth()));
             //}
         });
     }
@@ -133,11 +133,13 @@ public class KLinePane extends StackPane {
             getChildren().clear();
 
             String xValueStr = kLineChart.getXAxis().getValueForDisplay(event.getX());
+
             double realX = kLineChart.getXAxis().getDisplayPosition(xValueStr);
+
+
             if(!isMouseNearLine(realX,event.getX(),kLineChart.getCandleWidth()/2)) {
                 return ;
             }
-
             Object yValue = getYValueForX(xValueStr);
             TooltipContentCandleStick tooltipContentCandleStick = new TooltipContentCandleStick();
             try {
@@ -148,7 +150,7 @@ public class KLinePane extends StackPane {
 
                 getChildren().add(tooltipContentCandleStick);
             }catch (Exception e){
-
+                System.err.println(e.fillInStackTrace());
             }
 
 

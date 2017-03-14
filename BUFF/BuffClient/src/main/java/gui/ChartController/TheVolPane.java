@@ -109,7 +109,10 @@ public class TheVolPane extends StackPane {
 //            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
-                AnchorPane.setLeftAnchor(detailsPopup, x-10-detailsPopup.getWidth());
+            double full = themometerVolBarChart.getXAxis().widthProperty().doubleValue();
+            System.out.println("full:  "+full);
+            AnchorPane.setRightAnchor(detailsPopup, full-(x-40-detailsPopup.getWidth()));
+            //}
             //}
     });
     }

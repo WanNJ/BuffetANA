@@ -62,6 +62,7 @@ public enum StockDetailServiceImpl implements StockDetailService {
         if(stockPOs != null && stockPOs.size() > 0) {
             List<StockBriefInfoVO> stockBriefInfoVOs = new ArrayList<>();
             StockPO stockPO1 = stockPOs.get(0);
+            stockPOs.remove(0);
             for(StockPO stockPO2 : stockPOs) {
                 StockBriefInfoVO stockBriefInfoVO = PO2VOUtil.stockPO2StockBriefInfoVO(stockPO1, stockPO2);
                 if(stockBriefInfoVO != null)

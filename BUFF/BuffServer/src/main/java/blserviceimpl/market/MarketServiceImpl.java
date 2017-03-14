@@ -71,6 +71,7 @@ public enum MarketServiceImpl implements MarketService {
                 });
                 if(singleStockPOS != null && singleStockPOS.size() >= 1) {
                     StockPO stockPO1 = singleStockPOS.get(0);
+                    singleStockPOS.remove(0);
                     for(StockPO stockPO2 : singleStockPOS) {
                         MarketStockDetailVO marketStockDetailVO = PO2VOUtil.stockPO2MarketStockDetailVO(stockPO1, stockPO2);
                         if(marketStockDetailVO != null)
@@ -82,6 +83,26 @@ public enum MarketServiceImpl implements MarketService {
                 }
             });
         }
+        System.out.println("处理过后的总数：" + marketStockDetailVOs.size());
         return marketStockDetailVOs;
     }
+
+//    public static void main(String[] args) {
+//        MarketService marketService = MARKET_SERVICE;
+//        try {
+//            List<MarketStockDetailVO> marketStockDetailVOs = marketService.getMarketStockDetailVO();
+//            int count = 0;
+//            int count1 = 0;
+//            for (MarketStockDetailVO marketStockDetailVO : marketStockDetailVOs) {
+//                if(marketStockDetailVO.changeValueRange >= 0.05)
+//                    count++;
+//                if(marketStockDetailVO.changeValueRange <= -0.05)
+//                    count1++;
+//            }
+//            System.out.println(count);
+//            System.out.println(count1);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

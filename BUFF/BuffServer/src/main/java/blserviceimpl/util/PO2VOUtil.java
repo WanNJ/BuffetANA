@@ -31,7 +31,7 @@ public class PO2VOUtil {
     public static StockBriefInfoVO stockPO2StockBriefInfoVO(StockPO stockPO1, StockPO stockPO2) {
         if(stockPO1 == null || stockPO2 == null)
             return null;
-        if(stockPO1.getVolume() == 0 || stockPO2.getVolume() == 0)
+        if(stockPO2.getVolume() == 0)
             return null;
         StockBriefInfoVO stockBriefInfoVO = new StockBriefInfoVO(stockPO2.getName(), stockPO2.getDate(), stockPO2.getCode(),
                 stockPO2.getClose_Price(), (stockPO2.getAdjCloseIndex() - stockPO1.getAdjCloseIndex()) / stockPO1.getAdjCloseIndex());
@@ -41,11 +41,11 @@ public class PO2VOUtil {
     public static MarketStockDetailVO stockPO2MarketStockDetailVO(StockPO stockPO1, StockPO stockPO2) {
         if(stockPO1 == null || stockPO2 == null)
             return null;
-        if(stockPO1.getVolume() == 0 || stockPO2.getVolume() == 0)
+        if(stockPO2.getVolume() == 0)
             return null;
-        MarketStockDetailVO marketStockDetailVO = new MarketStockDetailVO(stockPO2.getCode(), stockPO2.getName(),
-                stockPO2.getClose_Price(), stockPO2.getAdjCloseIndex() - stockPO1.getAdjCloseIndex(),
-                (stockPO2.getAdjCloseIndex() - stockPO1.getAdjCloseIndex()) / stockPO1.getAdjCloseIndex());
+        MarketStockDetailVO marketStockDetailVO = new MarketStockDetailVO(stockPO1.getCode(), stockPO1.getName(),
+                stockPO1.getClose_Price(), stockPO1.getAdjCloseIndex() - stockPO2.getAdjCloseIndex(),
+                (stockPO1.getAdjCloseIndex() - stockPO2.getAdjCloseIndex()) / stockPO2.getAdjCloseIndex());
         return marketStockDetailVO;
     }
 

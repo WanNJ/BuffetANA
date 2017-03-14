@@ -106,7 +106,7 @@ public class VolBarPane extends StackPane {
                 AnchorPane.setTopAnchor(detailsPopup, y-5-detailsPopup.getHeight());
             }
             double full = volBarChart.getXAxis().widthProperty().doubleValue();
-            System.out.println("full:  "+full);
+            //System.out.println("full:  "+full);
             AnchorPane.setRightAnchor(detailsPopup, full-(x-20-detailsPopup.getWidth()));
         });
     }

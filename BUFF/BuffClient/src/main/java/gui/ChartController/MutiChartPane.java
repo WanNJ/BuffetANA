@@ -140,7 +140,7 @@ public class MutiChartPane extends StackPane {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
             double full = upDownLineChart.getXAxis().widthProperty().doubleValue();
-            System.out.println("full:  "+full);
+            //System.out.println("full:  "+full);
             AnchorPane.setRightAnchor(detailsPopup, full-(x+10-detailsPopup.getWidth()));
             //}
             //}

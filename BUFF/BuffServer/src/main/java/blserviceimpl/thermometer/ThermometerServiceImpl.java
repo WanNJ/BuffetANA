@@ -284,6 +284,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
             dayList = stockDAO.getStockInfoByDate(idate);
             if(dayList!=null && dayList.size()!=0) {
                 for (StockPO po : dayList) {
+                    if(po.getVolume()==0) continue;
                     String code = po.getCode();
                     if (lastClosePriceTable.containsKey(code)) {
 
@@ -358,6 +359,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
             if(dayList!=null && dayList.size()!=0) {
                 for (StockPO po : dayList) {
                     String code = po.getCode();
+                    if(po.getVolume()==0) continue;
                     if (lastClosePriceTable.containsKey(code)) {
 
                         if (getChangeRatioLast(po.getOpen_Price(),po.getAdjCloseIndex(),lastClosePriceTable.get(code))<=rate
@@ -371,6 +373,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
                     lastClosePriceTable.put(code, po.getAdjCloseIndex());
                 }
             }
+
             list.add(new LongPeiceVO(idate,count));
         }
 

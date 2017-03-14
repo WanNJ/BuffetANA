@@ -43,6 +43,11 @@ public class SideMenuController {
 
 	@PostConstruct
 	public void init() throws FlowException, VetoException {
+		//登记对象
+		context.register(this);
+		context.register("sideList",sideList);
+		context.register("SingleStock",SingleStock);
+
 		sideList.propagateMouseEventsToParent();
 		FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
@@ -50,11 +55,6 @@ public class SideMenuController {
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Comparison, ComparisonController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
-
-		//登记对象
-		context.register(this);
-		context.register("sideList",sideList);
-		context.register("SingleStock",SingleStock);
 	}
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

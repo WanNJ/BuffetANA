@@ -42,7 +42,8 @@ public class StockChangeController {
         //为treeTableView加上单击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
             if(null!=treeTableView.getSelectionModel().getSelectedItem()){
-                stockHandler.handle(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
+                String ID=treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get();
+                stockHandler.handle(ID);
                 //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
             }
         });
@@ -51,6 +52,16 @@ public class StockChangeController {
             treeTableView.setPredicate(share -> share.getValue().ID.get().contains(newVal) ||
                     share.getValue().name.get().contains(newVal));
         });
+    }
+
+    /**
+     * 将TreeTableView中的目标行选中
+     * @param ID 股票代码
+     */
+    public void select(String ID){
+        treeTableView.getSelectionModel().select(
+                treeTableView.getRoot().getChildren().filtered(shareTreeItem -> shareTreeItem.getValue().ID.get().equals(ID)).get(0)
+        );
     }
 
     private void setColumn(JFXTreeTableView<Share> treeTableView, int index){

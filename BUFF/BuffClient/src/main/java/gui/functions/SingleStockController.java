@@ -99,6 +99,7 @@ public class SingleStockController {
 
     @PostConstruct
     public void init() throws FlowException, VetoException {
+        context.register(this);
 
         //初始化所要用到的逻辑层接口
         factory = new BlFactoryServiceImpl();
@@ -177,6 +178,8 @@ public class SingleStockController {
     }
 
     public void setStockInfo(String code) {
+        stockChangeController.select(code);
+
         this.code = code;
         if(stockBriefInfoVOs.size() >= 1)
             this.stockBriefInfoVOs.remove(0, stockBriefInfoVOs.size() - 1);

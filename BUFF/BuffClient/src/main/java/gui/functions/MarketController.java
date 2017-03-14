@@ -1,7 +1,10 @@
 package gui.functions;
 
+import blservice.market.MarketService;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import factory.BlFactoryService;
+import factory.BlFactoryServiceImpl;
 import gui.ChartController.*;
 import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
@@ -23,9 +26,13 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import vo.MarketStockDetailVO;
 
 import javax.annotation.PostConstruct;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 主界面的控制器
@@ -40,17 +47,22 @@ public class MarketController {
     @FXML private JFXTreeTableView<Share> recentlySharesList;
     @FXML private JFXDatePicker from;
     @FXML private JFXDatePicker to;
-
     @FXML private BorderPane borderPane;
     @FXML private GridPane gridPane;
 
     private ObservableList<Share> allShares;//所有股票列表项的集合，动态绑定JFXTreeTableView的显示
     private ObservableList<Share> recentlyShares;//最近浏览股票列表项的集合，动态绑定JFXTreeTableView的显示
+    private BlFactoryService factory;
+    private MarketService marketService;
     private static final String titles[]={"股票代码","股票名称","现价（元）","涨跌（元）","涨跌幅（%）"};
 
 
     @PostConstruct
     public void init(){
+        //初始化所要用到的逻辑层接口
+        factory = new BlFactoryServiceImpl();
+        marketService=factory.createMarketService();
+
         //初始化界面用到的各种控件
         from.setDialogParent(root);
         to.setDialogParent(root);
@@ -61,11 +73,18 @@ public class MarketController {
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
         //添加要显示的行的信息		下面是一个例子
-        allShares.add(new Share("2035","name1","price1","rise1","rise_percent1"));
-        allShares.add(new Share("2093","name2","14.9","+0.2","+0.03"));
-        recentlyShares.add(new Share("2351","name3","price3","rise3","rise_percent3"));
-        recentlyShares.add(new Share("2205","name4","16.7","-0.3","-0.13"));
-
+        List<MarketStockDetailVO> marketStockDetailVOS=null;
+        try {
+            marketStockDetailVOS=marketService.getMarketStockDetailVO();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        allShares.addAll(marketStockDetailVOS.stream().map(
+                share->new Share(share.code,share.name,share.currentPrice,share.changeValue,share.changeValueRange*100)
+        ).collect(Collectors.toList()));
+        recentlyShares.add(new Share("2351","name3",19.7,+0.5,+3.3));
+        recentlyShares.add(new Share("2205","name4",16.7,-0.3,-2.13));
+        //初始化TreeTableView
         initTreeTableView(allSharesList,allShares);
         initTreeTableView(recentlySharesList,recentlyShares);
         from.setValue(LocalDate.of(2014, 3, 1));
@@ -92,7 +111,6 @@ public class MarketController {
         LocalDate first = from.getValue();
         LocalDate second = to.getValue();
 
-
         if(first!=null && second!=null && first.isBefore(second)) {
             updateGraph(first,second);
         }
@@ -104,8 +122,6 @@ public class MarketController {
         KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
         kLineChartController.setStockCode("ALL");
 
-
-
         kLineChartController.setStartDate(first);
         kLineChartController.setEndDate(second);
         kLineChartController.drawChat();
@@ -114,8 +130,6 @@ public class MarketController {
         gridPane.addRow(0,kLinePane);
         VOLChartController volChartController = ChartController.INSTANCE.getVOLChartController();
         volChartController.setStockCode("ALL");
-
-
 
         volChartController.setStartDate(first);
         volChartController.setEndDate(second);
@@ -144,10 +158,11 @@ public class MarketController {
                 try {
                     flowHandler.handle(SingleStock.getId());
                 } catch (Exception e) {
-                    System.err.println("can't find object:SingleStock  ID:"+SingleStock.getId());
+                    e.printStackTrace();
+                    System.err.println("can't handle object:SingleStock  ID:"+SingleStock.getId());
                 }
                 //切换到对应的股票信息
-                SingleStockController singleStockController= (SingleStockController) context.getCurrentViewContext().getController();
+                SingleStockController singleStockController= context.getRegisteredObject(SingleStockController.class);
                 singleStockController.setStockInfo(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
                 //改变SideMenu的选中项
                 JFXListView<Label> sideList=((JFXListView)context.getRegisteredObject("sideList"));
@@ -163,6 +178,11 @@ public class MarketController {
             StringProperty propertys[]={param.getValue().getValue().ID,param.getValue().getValue().name,
                     param.getValue().getValue().price,param.getValue().getValue().rise,
                     param.getValue().getValue().rise_percent};
+            if(Double.parseDouble(param.getValue().getValue().rise.get())>0){
+                //System.out.println("Node: "+param.);
+            }else {
+
+            }
             if(colum.validateValue(param)) return propertys[index];
             else return colum.getComputedValue(param);
         });
@@ -191,12 +211,15 @@ public class MarketController {
          * @param rise 涨跌（价格）
          * @param rise_percent 涨跌幅（百分比）
          */
-        public Share(String ID, String name, String price, String rise, String rise_percent) {
+        public Share(String ID, String name, double price, double rise, double rise_percent) {
             this.ID = new SimpleStringProperty(ID);
             this.name = new SimpleStringProperty(name);
-            this.price = new SimpleStringProperty(price);
-            this.rise = new SimpleStringProperty(rise);
-            this.rise_percent = new SimpleStringProperty(rise_percent);
+            //设置两位小数
+            this.price = new SimpleStringProperty(String.format("%.2f",price));
+            //设置两位小数，如果是正的，前面加上'+'
+            this.rise = new SimpleStringProperty((rise>0? "+": "")+String.format("%.2f",rise));
+            //设置两位小数，如果是正的，前面加上'+'
+            this.rise_percent = new SimpleStringProperty((rise_percent>0? "+": "")+String.format("%.2f",rise_percent));
         }
     }
 }

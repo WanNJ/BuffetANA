@@ -7,16 +7,16 @@ import java.time.LocalDate;
  */
 public class StockPO {
 
-    private String name;
-    private String market;
-    private String code;
-    private LocalDate date;
-    private double high_Price;
-    private double low_Price;
-    private double open_Price;
-    private double close_Price;
-    private long volume;
-    private double adjCloseIndex;
+    private String name; //股票名字
+    private String market; //市场
+    private String code;  //股票代码
+    private LocalDate date; //日期
+    private double high_Price; //日期最高价
+    private double low_Price;  //日期最低价
+    private double open_Price; //日期开盘价
+    private double close_Price; //日期收盘价
+    private long volume; //日期成交量
+    private double adjCloseIndex; //日期复盘收益指数
 
 
     public StockPO() {

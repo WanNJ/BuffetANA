@@ -17,47 +17,60 @@ public interface ComparisonService extends Remote {
 
     /**
      * 得到并设置日期区间（不用再次访问数据层）
-     * @param  stockCode 股票编号
+     * @param mainStockCode 主股票编号
+     * @param deputyStockCode 副股编号
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
      */
-    void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
 
     /**
-     * 给两股对比提供股票总体信息
-     * @param stockCode 股票编号
-     * @param beginDate 查询起始日期
-     * @param endDate 查询结束日期
+     * 得到主股总体信息
      * @return BasisAnalysisVO 获得日期范围内的该支股票的基本分析数据：最低值、最高值、涨幅/跌幅，若返回值为null，则此区间无数据
      */
-    BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    BasisAnalysisVO getMainBasisAnalysis() throws RemoteException;
 
     /**
-     * 给两股对比提供股票在日期范围内每日收盘价信息
-     * @param stockCode 股票编号
-     * @param beginDate 查询起始日期
-     * @param endDate 查询结束日期
-     * @return List<DailyClosingPriceVO> 获得日期范围内该只股票每天的收盘价
+     * 得主股每日收盘价信息
+     * @return List<DailyClosingPriceVO> 获得日期范围内该主股票每天的收盘价
      */
-    List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    List<DailyClosingPriceVO> getMainDailyClosingPrice() throws RemoteException;
 
     /**
-     * 给两股对比提供股票在日期范围内每天的对数收益率
-     * @param stockCode 股票编号
-     * @param beginDate 查询起始日期
-     * @param endDate 查询结束日期
-     * @return List<DailyLogReturnVO> 获得日期范围内该只股票每天的对数收益率
+     * 得到主股每日对数收益率
+     * @return List<DailyLogReturnVO> 获得日期范围内主股每天的对数收益率
      */
-    List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    List<DailyLogReturnVO> getMainDailyLogReturnAnalysis() throws RemoteException;
 
     /**
-     * 提供对数收益率方差, 此方法一定要在getDailyLogReturnAnalysis调用后调用
-     * @param stockCode 股票编号
-     * @param beginDate 查询起始日期
-     * @param endDate 查询结束日期
-     * @return 获得日期范围内该只股票的对数收益率方差
+     * 提供主股对数收益率方差
+     * @return 获得日期范围内主股的对数收益率方差
      */
-    double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    double getMainLogReturnVariance() throws RemoteException;
+
+    /**
+     * 得到副股总体信息
+     * @return BasisAnalysisVO 获得日期范围内副股的基本分析数据：最低值、最高值、涨幅/跌幅，若返回值为null，则此区间无数据
+     */
+    BasisAnalysisVO getDeputyBasisAnalysis() throws RemoteException;
+
+    /**
+     * 得副股每日收盘价信息
+     * @return List<DailyClosingPriceVO> 获得日期范围内副股票每天的收盘价
+     */
+    List<DailyClosingPriceVO> getDeputyDailyClosingPrice() throws RemoteException;
+
+    /**
+     * 得到副股每日对数收益率
+     * @return List<DailyLogReturnVO> 获得日期范围内副股每天的对数收益率
+     */
+    List<DailyLogReturnVO> getDeputyDailyLogReturnAnalysis() throws RemoteException;
+
+    /**
+     * 提供副股对数收益率方差
+     * @return 获得日期范围内副股的对数收益率方差
+     */
+    double getDeputyLogReturnVariance() throws RemoteException;
 
     /**
      * 获得分析数据中最早一天的日期

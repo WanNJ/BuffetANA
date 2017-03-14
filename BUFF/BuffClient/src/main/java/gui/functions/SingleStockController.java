@@ -78,7 +78,6 @@ public class SingleStockController {
     @FXML
     private JFXTextField search;
 
-
     
     private  Parent lineContent; // 包含所欲的画线内容
 

@@ -85,29 +85,48 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		comparisonService.setDateRange(stockCode, beginDate, endDate);
-
+	public void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+		comparisonService.init(mainStockCode, deputyStockCode, beginDate, endDate);
 	}
 
 	@Override
-	public BasisAnalysisVO getBasisAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		return comparisonService.getBasisAnalysis(stockCode, beginDate, endDate);
+	public BasisAnalysisVO getMainBasisAnalysis() throws RemoteException {
+		return comparisonService.getMainBasisAnalysis();
 	}
 
 	@Override
-	public List<DailyClosingPriceVO> getDailyClosingPrice(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		return comparisonService.getDailyClosingPrice(stockCode, beginDate, endDate);
+	public List<DailyClosingPriceVO> getMainDailyClosingPrice() throws RemoteException {
+		return comparisonService.getMainDailyClosingPrice();
 	}
 
 	@Override
-	public List<DailyLogReturnVO> getDailyLogReturnAnalysis(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		return comparisonService.getDailyLogReturnAnalysis(stockCode, beginDate, endDate);
+	public List<DailyLogReturnVO> getMainDailyLogReturnAnalysis() throws RemoteException {
+		return comparisonService.getDeputyDailyLogReturnAnalysis();
 	}
 
 	@Override
-	public double getLogReturnVariance(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
-		return comparisonService.getLogReturnVariance(stockCode, beginDate, endDate);
+	public double getMainLogReturnVariance() throws RemoteException {
+		return comparisonService.getMainLogReturnVariance();
+	}
+
+	@Override
+	public BasisAnalysisVO getDeputyBasisAnalysis() throws RemoteException {
+		return comparisonService.getDeputyBasisAnalysis();
+	}
+
+	@Override
+	public List<DailyClosingPriceVO> getDeputyDailyClosingPrice() throws RemoteException {
+		return comparisonService.getDeputyDailyClosingPrice();
+	}
+
+	@Override
+	public List<DailyLogReturnVO> getDeputyDailyLogReturnAnalysis() throws RemoteException {
+		return comparisonService.getDeputyDailyLogReturnAnalysis();
+	}
+
+	@Override
+	public double getDeputyLogReturnVariance() throws RemoteException {
+		return comparisonService.getDeputyLogReturnVariance();
 	}
 
 	@Override
@@ -184,6 +203,4 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	/**
 	 * LoginCheckService的接口方法
 	 */
-
-
 }

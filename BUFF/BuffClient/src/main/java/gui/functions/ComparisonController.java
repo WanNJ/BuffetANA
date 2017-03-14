@@ -5,8 +5,12 @@ import com.jfoenix.controls.*;
 import com.sun.xml.internal.bind.v2.TODO;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
+import gui.ChartController.ClosePriceChart;
+import gui.ChartController.LRChart;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.DateCell;
@@ -53,9 +57,9 @@ public class ComparisonController {
     @FXML
     private JFXDatePicker endDatePicker;
     @FXML
-    private LineChart<String, Number> mainLineChart;
+    private ClosePriceChart closePriceChart;
     @FXML
-    private LineChart<String, Number> deputyLineChart;
+    private LRChart logReturnChart;
     @FXML
     private JFXToggleButton dailyClosePriceToggleButton;
     @FXML
@@ -73,10 +77,12 @@ public class ComparisonController {
         blFactoryService = new BlFactoryServiceImpl();
         comparisonService = blFactoryService.createComparisonService();
 
+        //设置DatePicker
         beginDatePicker.setDialogParent(root);
         endDatePicker.setDialogParent(root);
         DatePickerUtil.initDatePicker(beginDatePicker,endDatePicker);
-        //setDatePicker();
+
+        //TODO ComboBox 获取值获取不到，待解决
         mainStockCodeBox.setValue("1");
         deputyStockCodeBox.setValue("2");
     }
@@ -88,85 +94,59 @@ public class ComparisonController {
 
     @FXML
     private void beginCompare() throws RemoteException {
+        //TODO 股票代码为空或无效，或者数据为空时的处理代码
+        comparisonService.init(mainStockCodeBox.getValue(), deputyStockCodeBox.getValue(), beginDatePicker.getValue(), endDatePicker.getValue());
         setMainInfo();
         setDeputyInfo();
+        setClosePriceChart();
+        setLogReturnChart();
     }
 
     @FXML
     private void setMainInfo() throws RemoteException {
-        //TODO 股票代码为空，或者数据为空时的处理代码
-        comparisonService.setDateRange(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
-        BasisAnalysisVO mainBasisAnalysisVO = comparisonService.getBasisAnalysis(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+        BasisAnalysisVO mainBasisAnalysisVO = comparisonService.getMainBasisAnalysis();
         mainMinPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.lowPrice));
         mainMaxPriceLabel.setText(String.valueOf(mainBasisAnalysisVO.highPrice));
         mainChangeRateLabel.setText(String.format("%.2f", mainBasisAnalysisVO.changeRate * 100) + "%");
 
-        setMainLine();
-
-        double varianceOfLR = comparisonService.getLogReturnVariance(mainStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
-        mainVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR * 100) + "%");
+        double varianceOfLR = comparisonService.getMainLogReturnVariance();
+        mainVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));
     }
 
     @FXML
     private void setDeputyInfo() throws RemoteException {
-        //TODO 股票代码为空，或者数据为空时的处理代码
-        comparisonService.setDateRange(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
-        BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getBasisAnalysis(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
+        BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getDeputyBasisAnalysis();
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
         deputyChangeRateLabel.setText(String.valueOf(String.format("%.2f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
 
-        setDeputyLine();
-
-        double varianceOfLR = comparisonService.getLogReturnVariance(deputyStockCodeBox.getValue(),beginDatePicker.getValue(), endDatePicker.getValue());
-        deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR * 100) + "%");
+        double varianceOfLR = comparisonService.getDeputyLogReturnVariance();
+        deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));
     }
 
-    private void setMainLine() {
-        final CategoryAxis mainXAxis = new CategoryAxis();
-        final NumberAxis mainYAxis = new NumberAxis();
-        mainXAxis.setLabel("日期");
-
-        mainLineChart = new LineChart<String,Number>(mainXAxis,mainYAxis);
-
-        //创建每日收盘价Series
-        XYChart.Series dailyClosePriceLine = new XYChart.Series();
-        dailyClosePriceLine.setName("收盘价");
-        //获取每日收盘价List（调用Service）
-        List<DailyClosingPriceVO> dailyClosingPriceVOS = null;
+    private void setClosePriceChart() {
+        List<DailyClosingPriceVO> mainClosePriceVOS = null;
+        List<DailyClosingPriceVO> deputyClosePriceVOs = null;
         try {
-            dailyClosingPriceVOS = comparisonService.getDailyClosingPrice(mainStockCodeBox.getValue(), beginDatePicker.getValue(), endDatePicker.getValue());
+            //获取主每日收盘价List
+            mainClosePriceVOS = comparisonService.getMainDailyClosingPrice();
+            //获取副每日收盘价List
+            deputyClosePriceVOs = comparisonService.getDeputyDailyClosingPrice();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        //将数据加入图表
-        dailyClosingPriceVOS.forEach(closePrice -> {
-            dailyClosePriceLine.getData().add(new XYChart.Data(closePrice.date.toString(),
-                    closePrice.closePrice));
-        });
 
-        //创建每日对数收益率Series
-        XYChart.Series dailyLRLine = new XYChart.Series();
-        dailyLRLine.setName("对数收益率");
-        //获取每日对数收益率List
-        List<DailyLogReturnVO> dailyLogReturnVOS = null;
-        try {
-            dailyLogReturnVOS = comparisonService.getDailyLogReturnAnalysis(mainStockCodeBox.getValue(), beginDatePicker.getValue(), endDatePicker.getValue());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        //将数据加入图表
-        dailyLogReturnVOS.forEach(LRVo -> {
-            dailyLRLine.getData().add(new XYChart.Data(LRVo.date.toString(),
-                    LRVo.logReturnIndex));
-        });
+        ObservableList<DailyClosingPriceVO> mainList =  FXCollections.observableArrayList(mainClosePriceVOS);
+        ObservableList<DailyClosingPriceVO> deputyList =  FXCollections.observableArrayList(deputyClosePriceVOs);
 
-        mainLineChart.getData().addAll(dailyClosePriceLine, dailyLRLine);
-        mainLineChart.setVisible(true);
+
+        //TODO 将数据加入图表
+
+        //TODO 创建每日对数收益率Series
     }
 
-    private void setDeputyLine() {
-        //TODO 复用setMainLineChart
+    private void setLogReturnChart() {
+        //TODO 与之前类似
     }
 
     private void setDatePicker() {

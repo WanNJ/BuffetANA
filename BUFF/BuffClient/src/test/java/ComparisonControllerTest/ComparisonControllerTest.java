@@ -28,22 +28,4 @@ public class ComparisonControllerTest {
         factoryService = new BlFactoryServiceImpl();
         comparisonService = factoryService.createComparisonService();
     }
-
-    @Test
-    public void testBasisData() throws RemoteException {
-        LocalDate beginDate = LocalDate.of(2014, 5, 1);
-        LocalDate endDate = LocalDate.of(2014, 5, 10);
-        BasisAnalysisVO basisAnalysis = null;
-        comparisonService.setDateRange("1", beginDate, endDate);
-        try {
-            basisAnalysis = comparisonService.getBasisAnalysis("1", beginDate, endDate);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        System.out.println(basisAnalysis.lowPrice);
-        System.out.println(basisAnalysis.highPrice);
-        System.out.println(basisAnalysis.openPrice);
-        System.out.println(basisAnalysis.closePrice);
-        System.out.println(basisAnalysis.changeRate);
-    }
 }

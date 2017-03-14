@@ -173,9 +173,4 @@ public class MALineChart extends LineChart<String, Number> {
         return series;
 
     }
-
-
-
-
-
 }

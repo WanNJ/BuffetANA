@@ -44,7 +44,7 @@ public enum MarketServiceImpl implements MarketService {
             stockPOs = stockDAO.getMarketStockInfo();
         if(beginDate.isAfter(endDate))
             throw new DateIndexException(beginDate, endDate);
-        return stockPOs.stream().filter(stockPO -> DateUtil.isBetween(stockPO.getDate(), beginDate, endDate)).map(stockPO -> PO2VOUtil.stockPO2KLinePieceVO(stockPO)).collect(Collectors.toList());
+        return stockPOs.stream().filter(stockPO -> DateUtil.isBetween(stockPO.getDate(), beginDate, endDate) && stockPO.getVolume() != 0).map(stockPO -> PO2VOUtil.stockPO2KLinePieceVO(stockPO)).collect(Collectors.toList());
     }
 
     @Override
@@ -53,7 +53,7 @@ public enum MarketServiceImpl implements MarketService {
             stockPOs = stockDAO.getMarketStockInfo();
         if(beginDate.isAfter(endDate))
             throw new DateIndexException(beginDate, endDate);
-        return stockPOs.stream().filter(stockPO -> DateUtil.isBetween(stockPO.getDate(), beginDate, endDate)).map(stockPO -> PO2VOUtil.stockPO2StockVolVO(stockPO)).collect(Collectors.toList());
+        return stockPOs.stream().filter(stockPO -> DateUtil.isBetween(stockPO.getDate(), beginDate, endDate) && stockPO.getVolume() != 0).map(stockPO -> PO2VOUtil.stockPO2StockVolVO(stockPO)).collect(Collectors.toList());
     }
 
     @Override
@@ -83,26 +83,18 @@ public enum MarketServiceImpl implements MarketService {
                 }
             });
         }
-        System.out.println("处理过后的总数：" + marketStockDetailVOs.size());
         return marketStockDetailVOs;
     }
 
-//    public static void main(String[] args) {
-//        MarketService marketService = MARKET_SERVICE;
-//        try {
-//            List<MarketStockDetailVO> marketStockDetailVOs = marketService.getMarketStockDetailVO();
-//            int count = 0;
-//            int count1 = 0;
-//            for (MarketStockDetailVO marketStockDetailVO : marketStockDetailVOs) {
-//                if(marketStockDetailVO.changeValueRange >= 0.05)
-//                    count++;
-//                if(marketStockDetailVO.changeValueRange <= -0.05)
-//                    count1++;
-//            }
-//            System.out.println(count);
-//            System.out.println(count1);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void main(String[] args) {
+        MarketService marketService = MARKET_SERVICE;
+        try {
+            List<StockVolVO> stockVolVOS = marketService.getMarketVol(LocalDate.of(2014, 2, 3), LocalDate.of(2014, 2, 6));
+            System.out.println(stockVolVOS.size());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (DateIndexException e) {
+            e.printStackTrace();
+        }
+    }
 }

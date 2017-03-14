@@ -75,7 +75,8 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  计算
          *  获取列表
          */
-        list =  stream.map((date)-> new StockVolVO(date,(stockDAO.getStockInfoByDate(date)
+        list =  stream.filter(t->stockDAO.getStockInfoByDate(t).size()>0)
+                .map((date)-> new StockVolVO(date,(stockDAO.getStockInfoByDate(date)
                 .stream().map(t->t.getVolume()).reduce((a,b)->a+b).orElseGet(()->Long.parseLong("0"))),
                 stockDAO.getStockInfoByDate(date)
                         .stream().map(t->t.getOpen_Price()-t.getClose_Price())
@@ -145,7 +146,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
     @Override
     public List<LongPeiceVO> getLimitUpNum(DateRange dateRange) throws RemoteException {
         //不确定 四舍五入的误差
-        return CompareWithHistory(dateRange,0.099);
+        return CompareWithHistory(dateRange,0.09999);
     }
 
 
@@ -156,7 +157,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
      */
     @Override
     public List<LongPeiceVO> getLimitDownNum(DateRange dateRange)throws RemoteException {
-       return CompareWithHistory(dateRange,-0.099);
+       return CompareWithHistory(dateRange,-0.09999);
     }
 
 
@@ -255,21 +256,21 @@ public enum ThermometerServiceImpl implements ThermometerService{
          */
         Map<String,Double> lastClosePriceTable =new HashMap<>();
 
-        List<StockPO>  dayList = stockDAO.getStockInfoByDate(begin.minusDays(5));
+        List<StockPO>  dayList = stockDAO.getStockInfoByDate(begin.minusDays(6));
         lastClosePriceTable = dayList.stream().collect(Collectors.toMap
-                (StockPO::getCode, StockPO::getClose_Price));
+                (StockPO::getCode, StockPO::getAdjCloseIndex));
 
 
         /**
          *  为防止当天股票的值不存在于原来的数据中
          */
 
-        for(LocalDate idate = begin.minusDays(4);idate.isBefore(begin);idate = idate.plusDays(1)){
+        for(LocalDate idate = begin.minusDays(5);idate.isBefore(begin);idate = idate.plusDays(1)){
             dayList = stockDAO.getStockInfoByDate(idate);
             if(dayList!=null && dayList.size()!=0) {
                 for (StockPO po : dayList) {
                     String code = po.getCode();
-                    lastClosePriceTable.put(code, po.getClose_Price());
+                    lastClosePriceTable.put(code, po.getAdjCloseIndex());
                 }
             }
         }
@@ -286,13 +287,13 @@ public enum ThermometerServiceImpl implements ThermometerService{
                     String code = po.getCode();
                     if (lastClosePriceTable.containsKey(code)) {
 
-                        if (getChangeRatio(lastClosePriceTable.get(code),po.getClose_Price())<=rate  && rate<0) {
+                        if (getChangeRatio(lastClosePriceTable.get(code),po.getAdjCloseIndex())<=rate  && rate<0) {
                             count++;
-                        }else if (getChangeRatio(lastClosePriceTable.get(code),po.getClose_Price())>=rate  && rate>0) {
+                        }else if (getChangeRatio(lastClosePriceTable.get(code),po.getAdjCloseIndex())>=rate  && rate>0) {
                             count++;
                         }
                     }
-                    lastClosePriceTable.put(code, po.getClose_Price());
+                    lastClosePriceTable.put(code, po.getAdjCloseIndex());
                 }
             }
             list.add(new LongPeiceVO(idate,count));
@@ -311,6 +312,8 @@ public enum ThermometerServiceImpl implements ThermometerService{
      * @param rate
      * @return List<Long>
      */
+
+
     private List<LongPeiceVO> CompareWithOpenClose(DateRange dateRange ,  double rate){
         LocalDate begin =  dateRange.getFrom();
         LocalDate end =  dateRange.getTo();
@@ -326,7 +329,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
          */
         Map<String,Double> lastClosePriceTable =new HashMap<>();
 
-        List<StockPO>  dayList = stockDAO.getStockInfoByDate(begin.minusDays(5));
+        List<StockPO>  dayList = stockDAO.getStockInfoByDate(begin.minusDays(6));
         lastClosePriceTable = dayList.stream().collect(Collectors.toMap
                 (StockPO::getCode, StockPO::getClose_Price));
 
@@ -335,12 +338,12 @@ public enum ThermometerServiceImpl implements ThermometerService{
          *  为防止当天股票的值不存在于原来的数据中
          */
 
-        for(LocalDate idate = begin.minusDays(4);idate.isBefore(begin);idate = idate.plusDays(1)){
+        for(LocalDate idate = begin.minusDays(5);idate.isBefore(begin);idate = idate.plusDays(1)){
             dayList = stockDAO.getStockInfoByDate(idate);
             if(dayList!=null && dayList.size()!=0) {
                 for (StockPO po : dayList) {
                     String code = po.getCode();
-                    lastClosePriceTable.put(code, po.getClose_Price());
+                    lastClosePriceTable.put(code, po.getAdjCloseIndex());
                 }
             }
         }
@@ -357,15 +360,15 @@ public enum ThermometerServiceImpl implements ThermometerService{
                     String code = po.getCode();
                     if (lastClosePriceTable.containsKey(code)) {
 
-                        if (getChangeRatioLast(po.getOpen_Price(),po.getClose_Price(),lastClosePriceTable.get(code))<=rate
+                        if (getChangeRatioLast(po.getOpen_Price(),po.getAdjCloseIndex(),lastClosePriceTable.get(code))<=rate
                                 && rate<0) {
                             count++;
-                        }else if (getChangeRatioLast(po.getOpen_Price(),po.getClose_Price(),lastClosePriceTable.get(code))>=rate
+                        }else if (getChangeRatioLast(po.getOpen_Price(),po.getAdjCloseIndex(),lastClosePriceTable.get(code))>=rate
                                 && rate>0) {
                             count++;
                         }
                     }
-                    lastClosePriceTable.put(code, po.getClose_Price());
+                    lastClosePriceTable.put(code, po.getAdjCloseIndex());
                 }
             }
             list.add(new LongPeiceVO(idate,count));

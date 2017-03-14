@@ -24,8 +24,8 @@ public class TooltipContentMutiStick extends GridPane {
         high.getStyleClass().add("volstick-tooltip-label");
 
 
-        setConstraints(open, 0, 0);  //参数：Node  column row
-        setConstraints(dateValue, 1, 0);
+       //setConstraints(open, 0, 0);  //参数：Node  column row
+        setConstraints(dateValue, 0, 0);
         setConstraints(close, 0, 1);
         setConstraints(volValue, 1, 1);
         setConstraints(high, 0, 2);
@@ -33,7 +33,7 @@ public class TooltipContentMutiStick extends GridPane {
 
 
 
-        getChildren().addAll(open, dateValue, close, volValue, high, changeVolValue);
+        getChildren().addAll(dateValue, close, volValue, high, changeVolValue);
     }
 
 

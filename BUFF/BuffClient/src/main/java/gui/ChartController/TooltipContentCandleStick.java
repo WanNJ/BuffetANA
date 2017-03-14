@@ -38,8 +38,12 @@ class TooltipContentCandleStick extends GridPane {
     }
 
     public void update(double open, double close, double high, double low) {
-        openValue.setText(Double.toString(open).substring(0,5));
-        closeValue.setText(Double.toString(close).substring(0,5));
+        String str = Double.toString(open);
+        str = str.length()>5?  str.substring(0,5):str;
+        openValue.setText(str);
+        str = Double.toString(close);
+        str = str.length()>5?  str.substring(0,5):str;
+        closeValue.setText(str);
         highValue.setText(Double.toString(high));
         lowValue.setText(Double.toString(low));
     }

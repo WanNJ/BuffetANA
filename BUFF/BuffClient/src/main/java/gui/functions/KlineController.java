@@ -47,6 +47,7 @@ public class KlineController {
      * @param second
      */
     public void upDateGraph( String code ,LocalDate first , LocalDate second ){
+        DayLinePane.getChildren().clear();
         KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
         kLineChartController.setStockCode(code);
 

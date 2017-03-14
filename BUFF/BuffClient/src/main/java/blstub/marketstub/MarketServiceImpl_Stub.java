@@ -28,4 +28,9 @@ public class MarketServiceImpl_Stub implements MarketService {
     public List<MarketStockDetailVO> getMarketStockDetailVO() throws RemoteException {
         return null;
     }
+
+    @Override
+    public MarketStockDetailVO getHistoryStockDetailVO(String code) throws RemoteException {
+        return null;
+    }
 }

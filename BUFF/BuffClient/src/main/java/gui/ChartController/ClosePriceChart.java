@@ -43,7 +43,7 @@ public class ClosePriceChart extends LineChart<String, Number> {
      * @param deputyDailyClosingPriceVOS 副股
      * @return ClosePriceChart
      */
-    public ClosePriceChart createChart(ObservableList<DailyClosingPriceVO> mainDailyClosingPriceVOS,
+    public static  ClosePriceChart createChart(ObservableList<DailyClosingPriceVO> mainDailyClosingPriceVOS,
                                        ObservableList<DailyClosingPriceVO> deputyDailyClosingPriceVOS){
         //X轴
         final CategoryAxis xAxis = new CategoryAxis ();
@@ -58,8 +58,8 @@ public class ClosePriceChart extends LineChart<String, Number> {
         // 加载传过来的数据序列
         XYChart.Series<String,Number> series = new XYChart.Series<String,Number>();
 
-        XYChart.Series mainSeries = getSeries("主股收盘价", mainDailyClosingPriceVOS);
-        XYChart.Series deputySeries = getSeries("副股收盘价", deputyDailyClosingPriceVOS);
+        XYChart.Series mainSeries = closePriceChart.getSeries("主股收盘价", mainDailyClosingPriceVOS);
+        XYChart.Series deputySeries = closePriceChart.getSeries("副股收盘价", deputyDailyClosingPriceVOS);
 
         closePriceChart.getData().addAll(mainSeries, deputySeries);
         closePriceChart.setCreateSymbols(false);

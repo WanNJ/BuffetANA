@@ -41,7 +41,7 @@ public class SingleForComparison {
         dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(0).getDate(), 0));
         for (int i = 1; i < specificStockPOs.size(); i++) {
             dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(i).getDate(),
-                    specificStockPOs.get(i - 1).getAdjCloseIndex() / specificStockPOs.get(i).getAdjCloseIndex()));
+                    Math.log(specificStockPOs.get(i - 1).getAdjCloseIndex() / specificStockPOs.get(i).getAdjCloseIndex())));
         }
     }
 

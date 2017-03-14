@@ -16,6 +16,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -68,6 +69,10 @@ public class ComparisonController {
     private StackPane root;
     @FXML
     private JFXButton confirmButton;
+    @FXML
+    private BorderPane closeBorderPane;
+    @FXML
+    private BorderPane rlBorderPane;
 
     private ComparisonService comparisonService;
     private BlFactoryService blFactoryService;

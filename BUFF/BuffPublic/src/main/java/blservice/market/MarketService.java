@@ -41,4 +41,12 @@ public interface MarketService extends Remote {
      * @throws RemoteException
      */
     List<MarketStockDetailVO> getMarketStockDetailVO() throws RemoteException;
+
+    /**
+     * 历史查询中根据股票编号获得股票详细信息
+     * @param code 股票的编号
+     * @return
+     * @throws RemoteException
+     */
+    MarketStockDetailVO  getHistoryStockDetailVO(String code) throws RemoteException;
 }

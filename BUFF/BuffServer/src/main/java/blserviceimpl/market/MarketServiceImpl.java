@@ -86,15 +86,47 @@ public enum MarketServiceImpl implements MarketService {
         return marketStockDetailVOs;
     }
 
-    public static void main(String[] args) {
-        MarketService marketService = MARKET_SERVICE;
-        try {
-            List<StockVolVO> stockVolVOS = marketService.getMarketVol(LocalDate.of(2014, 2, 3), LocalDate.of(2014, 2, 6));
-            System.out.println(stockVolVOS.size());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (DateIndexException e) {
-            e.printStackTrace();
+    @Override
+    public MarketStockDetailVO getHistoryStockDetailVO(String code) throws RemoteException {
+        if(marketStockDetailVOs != null) {
+            for(MarketStockDetailVO marketStockDetailVO : marketStockDetailVOs) {
+                if(marketStockDetailVO.code.equals(code))
+                    //copy一份数据上去，以防界面层对原数据进行一些不恰当的操作
+                    return new MarketStockDetailVO(marketStockDetailVO.code, marketStockDetailVO.name,
+                            marketStockDetailVO.currentPrice, marketStockDetailVO.changeValue, marketStockDetailVO.changeValueRange);
+            }
         }
+        else {
+            List<StockPO> singleStockPOS = stockDAO.getStockInfoByCode(code);
+            //按日期从大到小排序
+            singleStockPOS.sort((stockPO1, stockPO2) -> {
+                if(stockPO1.getDate().isEqual(stockPO2.getDate()))
+                    return 0;
+                return stockPO1.getDate().isBefore(stockPO2.getDate()) ? 1 : -1;
+            });
+            if(singleStockPOS != null && singleStockPOS.size() >= 1) {
+                StockPO stockPO1 = singleStockPOS.get(0);
+                singleStockPOS.remove(0);
+                for(StockPO stockPO2 : singleStockPOS) {
+                    MarketStockDetailVO marketStockDetailVO = PO2VOUtil.stockPO2MarketStockDetailVO(stockPO1, stockPO2);
+                    if(marketStockDetailVO != null)
+                    {
+                        return marketStockDetailVO;
+                    }
+                }
+            }
+        }
+        return null;
     }
+
+
+//    public static void main(String[] args) {
+//        MarketService marketService = MARKET_SERVICE;
+//        try {
+//            MarketStockDetailVO marketStockDetailVO = marketService.getHistoryStockDetailVO("1");
+//            System.out.println(marketStockDetailVO.name + " " + marketStockDetailVO.changeValueRange);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

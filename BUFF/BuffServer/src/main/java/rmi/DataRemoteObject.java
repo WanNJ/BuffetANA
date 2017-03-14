@@ -136,6 +136,11 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	}
 
 	@Override
+	public MarketStockDetailVO getHistoryStockDetailVO(String code) throws RemoteException {
+		return marketService.getHistoryStockDetailVO(code);
+	}
+
+	@Override
 	public List<StockVolVO> getTradingVolume(DateRange dateRange) throws RemoteException {
 		return this.thermometerService.getTradingVolume(dateRange);
 	}

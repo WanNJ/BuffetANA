@@ -47,8 +47,12 @@ public class LRChart extends LineChart<String, Number> {
      * @param deputyDailyLogReturnVOS 副股
      * @return ClosePriceChart
      */
-    public LRChart createChart(ObservableList<DailyLogReturnVO> mainDailyLogReturnVOS,
+    public static LRChart createChart(ObservableList<DailyLogReturnVO> mainDailyLogReturnVOS,
                                ObservableList<DailyLogReturnVO> deputyDailyLogReturnVOS){
+
+//        mainDailyLogReturnVOS.forEach(t-> System.out.println(t.logReturnIndex));
+//        deputyDailyLogReturnVOS.forEach(t-> System.out.println(t.logReturnIndex));
+
         //X轴
         final CategoryAxis xAxis = new CategoryAxis ();
         //Y轴
@@ -62,8 +66,8 @@ public class LRChart extends LineChart<String, Number> {
         // 加载传过来的数据序列
         Series<String,Number> series = new Series<String,Number>();
 
-        Series mainSeries = getSeries("主股收盘价", mainDailyLogReturnVOS);
-        Series deputySeries = getSeries("副股收盘价", deputyDailyLogReturnVOS);
+        Series mainSeries = closePriceChart.getSeries("主股收盘价", mainDailyLogReturnVOS);
+        Series deputySeries = closePriceChart.getSeries("副股收盘价", deputyDailyLogReturnVOS);
 
         closePriceChart.getData().addAll(mainSeries, deputySeries);
         closePriceChart.setCreateSymbols(false);

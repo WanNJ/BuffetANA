@@ -23,10 +23,12 @@ import javafx.util.StringConverter;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
+import vo.KLinePieceVO;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Accident on 2017/3/5.
@@ -105,6 +107,27 @@ public class ComparisonController {
         setDeputyInfo();
         setClosePriceChart();
         setLogReturnChart();
+
+
+        /**
+         * 尝试将图片加在界面上 add by wsw
+         */
+
+        closeBorderPane.getChildren().clear();
+        rlBorderPane.getChildren().clear();
+
+
+        ClosePriceChart closePriceChart = ClosePriceChart.createChart(
+                getCloseObserable(comparisonService.getMainDailyClosingPrice()),
+                getCloseObserable(comparisonService.getDeputyDailyClosingPrice()));
+
+        closeBorderPane.centerProperty().setValue(closePriceChart);
+
+        LRChart lrChart = LRChart.createChart(
+                getrlObserable(comparisonService.getMainDailyLogReturnAnalysis()),
+                getrlObserable(comparisonService.getDeputyDailyLogReturnAnalysis()));
+
+        rlBorderPane.centerProperty().setValue(lrChart);
     }
 
     @FXML
@@ -208,5 +231,35 @@ public class ComparisonController {
                     }
                 };
         return dayCellFactory;
+    }
+
+
+    /**
+     *
+     * @param list
+     * @return ObservableList
+     */
+    private ObservableList<DailyClosingPriceVO> getCloseObserable(List<DailyClosingPriceVO> list){
+        ObservableList<DailyClosingPriceVO> observableList = FXCollections.observableArrayList();
+        for (DailyClosingPriceVO temp : list) {
+            observableList.add(temp);
+        }
+        return observableList;
+
+    }
+
+
+    /**
+     *
+     * @param list
+     * @return ObservableList
+     */
+    private ObservableList<DailyLogReturnVO> getrlObserable(List<DailyLogReturnVO> list){
+        ObservableList<DailyLogReturnVO> observableList = FXCollections.observableArrayList();
+        for (DailyLogReturnVO temp : list) {
+            observableList.add(temp);
+        }
+        return observableList;
+
     }
 }

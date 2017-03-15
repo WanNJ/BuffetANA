@@ -9,6 +9,7 @@ import gui.ChartController.*;
 import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
+import gui.utils.LocalHistoryService;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.FlowHandler;
@@ -80,10 +81,30 @@ public class MarketController {
             e.printStackTrace();
         }
         allShares.addAll(marketStockDetailVOS.stream().map(
-                share->new Share(share.code,share.name,share.currentPrice,share.changeValue,share.changeValueRange*100)
+                share->new Share(share.code,share.name,share.currentPrice,
+                        share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
-        recentlyShares.add(new Share("2351","name3",19.7,+0.5,+3.3));
-        recentlyShares.add(new Share("2205","name4",16.7,-0.3,-2.13));
+
+        
+        /**
+         * 我这个lambda表达式 是不是写的有点过分
+         */
+        recentlyShares.addAll(LocalHistoryService.LOCAL_HISTORY_SERVICE.getList().stream()
+                .map(t -> {
+                    try {
+                        return marketService.getHistoryStockDetailVO(t);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }).map(share->new Share(share.code,share.name,share.currentPrice,
+                        share.changeValue,share.changeValueRange*100)
+        ).collect(Collectors.toList()));
+
+
+
+
+
         //初始化TreeTableView
         initTreeTableView(allSharesList,allShares);
         initTreeTableView(recentlySharesList,recentlyShares);
@@ -155,6 +176,10 @@ public class MarketController {
                 SideMenuController sideMenuController = (SideMenuController) context.getRegisteredObject(SideMenuController.class);
                 Label SingleStock=((Label)context.getRegisteredObject("SingleStock"));
                 assert SingleStock!=null:"can't find registered object:SingleStock";
+                LocalHistoryService.LOCAL_HISTORY_SERVICE
+                        .addHistoryPiece(treeTableView.getSelectionModel().getSelectedItem()
+                                .getValue().ID.get());
+
                 sideMenuController.changeView(SingleStock);
                 //切换到对应的股票信息
                 SingleStockController singleStockController= context.getRegisteredObject(SingleStockController.class);

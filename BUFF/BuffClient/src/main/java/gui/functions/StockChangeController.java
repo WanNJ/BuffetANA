@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import gui.utils.LocalHistoryService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -44,6 +45,7 @@ public class StockChangeController {
             if(null!=treeTableView.getSelectionModel().getSelectedItem()){
                 String ID=treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get();
                 stockHandler.handle(ID);
+                LocalHistoryService.LOCAL_HISTORY_SERVICE.addHistoryPiece(ID);
                 //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
             }
         });

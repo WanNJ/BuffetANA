@@ -6,16 +6,23 @@ import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
 import gui.ChartController.ClosePriceChart;
 import gui.ChartController.LRChart;
+import gui.utils.CodeComplementUtil;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
@@ -80,6 +87,10 @@ public class ComparisonController {
     private ComparisonService comparisonService;
     private BlFactoryService blFactoryService;
 
+    private VBox compBoxMain;
+    private VBox compBoxDup;
+
+
     @FXML
     private void initialize() {
         blFactoryService = new BlFactoryServiceImpl();
@@ -91,14 +102,119 @@ public class ComparisonController {
         DatePickerUtil.initDatePicker(beginDatePicker,endDatePicker);
 
         //TODO ComboBox 获取值获取不到，待解决
-        mainStockCode.setText("1");
-        deputyStockCode.setText("2");
+        //解决  add by wsw
+
+        compBoxMain = new VBox();
+        compBoxDup = new VBox();
+        compBoxMain.setVisible(false);
+        compBoxDup.setVisible(false);
+        StackPane.setMargin(compBoxMain,new Insets(47,-1,-1,-1));
+        StackPane.setMargin(compBoxDup,new Insets(370+47,-1,-1,-1));
+
+
+        compBoxMain.setStyle("-fx-padding: 0 10 20 10");
+        compBoxDup.setStyle("-fx-padding: 0 10 20 10");
+
+        messagePane.getChildren().add(compBoxMain);
+        messagePane.getChildren().add(compBoxDup);
+
+
+        mainStockCode.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                compBoxMain.getChildren().clear();
+               if(newValue.equals("")){
+                   compBoxMain.setVisible(false);
+               }else{
+                   compBoxMain.setVisible(true);
+                   List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
+                   for (String str:list) {
+                       Button button = new Button(str);
+                       button.setPrefWidth(270);
+                       button.setOnAction(t->handleTextMain(str));
+                       compBoxMain.getChildren().add(button);
+                   }
+
+               }
+            }
+        });
+
+        deputyStockCode.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                compBoxDup.getChildren().clear();
+                if(newValue.equals("")){
+                    compBoxDup.setVisible(false);
+                }else{
+                    compBoxDup.setVisible(true);
+                    List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
+                    for (String str:list) {
+                        Button button = new Button(str);
+                        button.setPrefWidth(270);
+                        button.setOnAction(t->handleTextDup(str));
+                        compBoxDup.getChildren().add(button);
+                    }
+
+                }
+            }
+        });
+
+
+        mainStockCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue) {
+                    compBoxMain.getChildren().clear();
+                    compBoxMain.setVisible(false);
+                }
+            }
+        });
+
+
+        deputyStockCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue){
+                    compBoxDup.getChildren().clear();
+                    compBoxDup.setVisible(false);
+                }
+            }
+        });
+
+
+
+
     }
+
+
+    private void handleTextMain(String str){
+        String[] sep = str.split("\\(");
+        mainStockCode.setText(sep[0]);
+        int len = sep[1].length()-1;
+        mainStockNameLabel.setText(sep[1].substring(0,len));
+        compBoxMain.getChildren().clear();
+        compBoxMain.setVisible(false);
+    }
+
+
+    private void handleTextDup(String str){
+        String[] sep = str.split("\\(");
+        deputyStockCode.setText(sep[0]);
+        int len = sep[1].length()-1;
+        deputyStockNameLabel1.setText(sep[1].substring(0,len));
+        compBoxDup.getChildren().clear();
+        compBoxDup.setVisible(false);
+    }
+
 
     @FXML
     private void search() {
         //TODO 增加股票搜索功能
+
+
     }
+
+
 
     @FXML
     private void beginCompare() throws RemoteException {

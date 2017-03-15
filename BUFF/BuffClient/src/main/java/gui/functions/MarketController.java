@@ -152,21 +152,13 @@ public class MarketController {
             if(event.getClickCount()==2 && null!=treeTableView.getSelectionModel().getSelectedItem()){
                 //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
                 //跳转界面
-                FlowHandler flowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
+                SideMenuController sideMenuController = (SideMenuController) context.getRegisteredObject(SideMenuController.class);
                 Label SingleStock=((Label)context.getRegisteredObject("SingleStock"));
                 assert SingleStock!=null:"can't find registered object:SingleStock";
-                try {
-                    flowHandler.handle(SingleStock.getId());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println("can't handle object:SingleStock  ID:"+SingleStock.getId());
-                }
+                sideMenuController.changeView(SingleStock);
                 //切换到对应的股票信息
                 SingleStockController singleStockController= context.getRegisteredObject(SingleStockController.class);
                 singleStockController.setStockInfo(treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
-                //改变SideMenu的选中项
-                JFXListView<Label> sideList=((JFXListView)context.getRegisteredObject("sideList"));
-                sideList.getSelectionModel().select(SingleStock);
             }
         });
     }

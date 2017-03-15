@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 
 @FXMLController(value = "/resources/fxml/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {
@@ -41,6 +42,8 @@ public class SideMenuController {
 	@FXML
 	private JFXListView<Label> sideList;
 
+	private FlowHandler contentFlowHandler;
+
 	@PostConstruct
 	public void init() throws FlowException, VetoException {
 		//登记对象
@@ -49,7 +52,7 @@ public class SideMenuController {
 		context.register("SingleStock",SingleStock);
 
 		sideList.propagateMouseEventsToParent();
-		FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
+		contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
 		Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
 		bindNodeToController(Market, MarketController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
@@ -59,13 +62,26 @@ public class SideMenuController {
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {
 		flow.withGlobalLink(node.getId(), controllerClass);
-		node.setOnMouseClicked((e) -> {
-			try {				
-				flowHandler.handle(node.getId());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		});
+		node.setOnMouseClicked((e) -> changeView((Label) node));
+	}
+
+	/**
+	 * 跳转界面
+	 * @param view 目标界面对应的SideMenu中的Label对象
+	 */
+	public void changeView(Label view){
+		try {
+			contentFlowHandler.handle(view.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("can't handle object.  ID:"+view.getId());
+		}
+		//改变SideMenu的选中项
+		sideList.getSelectionModel().select(view);
+		//设置导航栏标题
+		Label viewName= (Label) context.getRegisteredObject("viewName");
+		assert viewName!=null:"can't find registered object:viewName";
+		viewName.setText(view.getText());
 	}
 
 }

@@ -33,6 +33,7 @@ public class MainController {
 	
 	@FXML private StackPane titleBurgerContainer;
 	@FXML private JFXHamburger titleBurger;
+	@FXML private Label viewName;
 	
 	@FXML private StackPane optionsBurger;	
 	@FXML private JFXRippler optionsRippler;
@@ -87,6 +88,7 @@ public class MainController {
 		context.register("ContentFlow", innerFlow);
 		drawer.setContent(flowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
 		context.register("ContentPane", drawer.getContent().get(0));
+		context.register("viewName",viewName);
 
 		// side controller will add links to the content flow
 		Flow sideMenuFlow = new Flow(SideMenuController.class);

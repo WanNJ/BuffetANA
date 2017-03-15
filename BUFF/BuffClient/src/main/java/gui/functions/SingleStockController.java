@@ -182,7 +182,7 @@ public class SingleStockController {
 
         this.code = code;
         if(stockBriefInfoVOs.size() >= 1)
-            this.stockBriefInfoVOs.remove(0, stockBriefInfoVOs.size() - 1);
+            this.stockBriefInfoVOs.remove(0, stockBriefInfoVOs.size());
         try {
             stockBriefInfoVOs.addAll(stockDetailService.getStockBriefInfo(code));
             stockBriefInfoVOs.sort((stockBriefInfoVO1, stockBriefInfoVO2) -> {

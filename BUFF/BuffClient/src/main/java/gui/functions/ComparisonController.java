@@ -256,14 +256,12 @@ public class ComparisonController {
         closeBorderPane.centerProperty().setValue(closePriceChart);
     }
 
+
     private void setLogReturnChart() throws RemoteException {
         rlBorderPane.getChildren().clear();
         LRChart lrChart = LRChart.createChart(
                 getrlObserable(comparisonService.getMainDailyLogReturnAnalysis()),
                 getrlObserable(comparisonService.getDeputyDailyLogReturnAnalysis()));
-        comparisonService.getMainDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
-        comparisonService.getDeputyDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
-
         rlBorderPane.centerProperty().setValue(lrChart);
     }
 

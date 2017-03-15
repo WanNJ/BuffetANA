@@ -54,6 +54,10 @@ public class SingleStockController {
     @FXML
     private JFXDatePicker datePicker;
     @FXML
+    private Label stockNameLabel;
+    @FXML
+    private Label stockCodeLabel;
+    @FXML
     private Label openIndexLabel;
     @FXML
     private Label closeIndexLabel;
@@ -196,6 +200,8 @@ public class SingleStockController {
         }
         //如果该code存在数据，则将最近一天的details显示出来，若该code对应的股票无数据，则提示用户
         if(stockBriefInfoVOs != null && stockBriefInfoVOs.size() >= 1) {
+            stockNameLabel.setText(stockBriefInfoVOs.get(0).name);
+            stockCodeLabel.setText(code);
             showStockDetails(stockBriefInfoVOs.get(0).date);
         }
         else {

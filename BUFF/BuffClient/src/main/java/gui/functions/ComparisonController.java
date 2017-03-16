@@ -79,9 +79,6 @@ public class ComparisonController {
     private ComparisonService comparisonService;
     private BlFactoryService blFactoryService;
 
-    private VBox compBoxMain;
-    private VBox compBoxDup;
-
 
     @FXML
     private void initialize() {
@@ -109,19 +106,6 @@ public class ComparisonController {
         //TODO ComboBox 获取值获取不到，待解决
         //解决  add by wsw
 
-        compBoxMain = new VBox();
-        compBoxDup = new VBox();
-        compBoxMain.setVisible(false);
-        compBoxDup.setVisible(false);
-        StackPane.setMargin(compBoxMain,new Insets(47,-1,-1,-1));
-        StackPane.setMargin(compBoxDup,new Insets(370+47,-1,-1,-1));
-
-
-        compBoxMain.setStyle("-fx-padding: 0 10 20 10");
-        compBoxDup.setStyle("-fx-padding: 0 10 20 10");
-
-        messagePane.getChildren().add(compBoxMain);
-        messagePane.getChildren().add(compBoxDup);
 
 
         mainStockCode.textProperty().addListener(new ChangeListener<String>() {
@@ -166,6 +150,7 @@ public class ComparisonController {
 
                 for (String str:list) {
                     Label label = new Label(str);
+
                     label.setOnMouseClicked(e->{
 
                         if(!str.equals("No Suggestion"))
@@ -217,8 +202,7 @@ public class ComparisonController {
         deputyStockCode.setText(sep[0]);
         int len = sep[1].length()-1;
         deputyStockNameLabel1.setText(sep[1].substring(0,len));
-        compBoxDup.getChildren().clear();
-        compBoxDup.setVisible(false);
+
 
         root.getChildren().remove(popup);
     }

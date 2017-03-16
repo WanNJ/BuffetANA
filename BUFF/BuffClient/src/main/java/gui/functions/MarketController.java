@@ -9,14 +9,10 @@ import factory.BlFactoryServiceImpl;
 import gui.ChartController.*;
 import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
-import gui.utils.Dialogs;
 import gui.utils.LocalHistoryService;
 import io.datafx.controller.FXMLController;
-import io.datafx.controller.flow.FlowException;
-import io.datafx.controller.flow.FlowHandler;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
-import io.datafx.controller.util.VetoException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -25,10 +21,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import vo.MarketStockDetailVO;
@@ -52,7 +47,6 @@ public class MarketController {
     @FXML private JFXTreeTableView<Share> recentlySharesList;
     @FXML private JFXDatePicker from;
     @FXML private JFXDatePicker to;
-    @FXML private BorderPane borderPane;
     @FXML private GridPane gridPane;
 
     private ObservableList<Share> allShares;//所有股票列表项的集合，动态绑定JFXTreeTableView的显示
@@ -77,7 +71,7 @@ public class MarketController {
         //初始化ObservableList
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
-        //添加要显示的行的信息		下面是一个例子
+        //添加要显示的行的信息
         List<MarketStockDetailVO> marketStockDetailVOS=null;
         try {
             marketStockDetailVOS=marketService.getMarketStockDetailVO();
@@ -88,7 +82,6 @@ public class MarketController {
                 share->new Share(share.code,share.name,share.currentPrice,
                         share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
-
 
         /**
          * 我这个lambda表达式 是不是写的有点过分
@@ -104,10 +97,6 @@ public class MarketController {
                 }).map(share->new Share(share.code,share.name,share.currentPrice,
                         share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
-
-
-
-
 
         //初始化TreeTableView
         initTreeTableView(allSharesList,allShares);
@@ -131,7 +120,6 @@ public class MarketController {
         handleTime();
     }
 
-
     private void handleTime(){
         LocalDate first = from.getValue();
         LocalDate second = to.getValue();
@@ -140,7 +128,6 @@ public class MarketController {
             updateGraph(first,second);
         }
     }
-
 
     private void updateGraph(LocalDate first ,LocalDate second){
         gridPane.getChildren().clear();
@@ -151,8 +138,9 @@ public class MarketController {
         kLineChartController.setEndDate(second);
         kLineChartController.drawChat();
         KLinePane kLinePane = new KLinePane(kLineChartController.getMChart(),1.0);
-
         gridPane.addRow(0,kLinePane);
+        gridPane.setHgrow(kLinePane, Priority.ALWAYS);
+
         VOLChartController volChartController = ChartController.INSTANCE.getVOLChartController();
         volChartController.setStockCode("ALL");
 
@@ -161,6 +149,7 @@ public class MarketController {
         volChartController.drawChat();
         VolBarPane volBarPane = new VolBarPane(volChartController.getChart(),1.0);
         gridPane.addRow(1,volBarPane);
+        gridPane.setHgrow(volBarPane, Priority.ALWAYS);
 
     }
 

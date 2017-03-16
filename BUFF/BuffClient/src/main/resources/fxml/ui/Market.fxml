@@ -4,9 +4,11 @@
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -46,37 +48,35 @@
                </Tab>
             </tabs>
          </JFXTabPane>
-         <BorderPane GridPane.columnIndex="1" fx:id="borderPane" stylesheets="@../../css/candle.css" >
-            <center>
-               <GridPane fx:id="gridPane">
-
-               </GridPane>
-            </center>
-            <bottom>
-               <HBox alignment="BOTTOM_CENTER" spacing="10.0">
-                  <children>
-                     <Label minWidth="60.0" text="起始日期">
-                        <font>
-                           <Font size="20.0" />
-                        </font>
-                        <padding>
-                           <Insets bottom="8.0" />
-                        </padding>
-                     </Label>
-                     <JFXDatePicker fx:id="from" defaultColor="#a87d08" maxWidth="180.0" overLay="true" />
-                     <Label minWidth="60.0" text="结束日期">
-                        <font>
-                           <Font size="20.0" />
-                        </font>
-                        <padding>
-                           <Insets bottom="8.0" />
-                        </padding>
-                     </Label>
-                     <JFXDatePicker fx:id="to" defaultColor="#a87d08" maxWidth="180.0" overLay="true" />
-                  </children>
-               </HBox>
-            </bottom>
-         </BorderPane>
+         <StackPane style="-fx-background-color: WHITE;" stylesheets="@../../css/candle.css" GridPane.columnIndex="1">
+            <GridPane fx:id="gridPane">
+               <StackPane.margin>
+                  <Insets bottom="50.0" />
+               </StackPane.margin>
+            </GridPane>
+            <HBox alignment="BOTTOM_CENTER" spacing="10.0">
+               <children>
+                  <Label minWidth="60.0" text="起始日期">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" />
+                     </padding>
+                  </Label>
+                  <JFXDatePicker fx:id="from" defaultColor="#a87d08" maxWidth="180.0" overLay="true" />
+                  <Label minWidth="60.0" text="结束日期">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" />
+                     </padding>
+                  </Label>
+                  <JFXDatePicker fx:id="to" defaultColor="#a87d08" maxWidth="180.0" overLay="true" />
+               </children>
+            </HBox>
+         </StackPane>
       </children>
    </GridPane>
 </StackPane>

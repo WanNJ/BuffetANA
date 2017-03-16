@@ -181,6 +181,10 @@ public class SingleStockController {
         this.setStockInfo("1");
     }
 
+    /**
+     * 设置当前显示的股票
+     * @param code 股票代码
+     */
     public void setStockInfo(String code) {
         stockChangeController.select(code);
 

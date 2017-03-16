@@ -32,7 +32,7 @@ public enum LocalHistoryService {
     public List<String> getList(){
         List<String>  list =  readListFromFile();
         Collections.reverse(list);
-        return list.stream().distinct().limit(10).collect(Collectors.toList());
+        return list.stream().distinct().limit(40).collect(Collectors.toList());
     }
 
 

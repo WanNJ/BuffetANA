@@ -40,52 +40,31 @@ import java.util.List;
  */
 @FXMLController(value = "/resources/fxml/ui/Comparison.fxml" , title = "两股对比")
 public class ComparisonController {
-    @FXML
-    private Label mainStockNameLabel;
-    @FXML
-    private Label mainMinPriceLabel;
-    @FXML
-    private Label mainMaxPriceLabel;
-    @FXML
-    private Label mainChangeRateLabel;
-    @FXML
-    private Label mainVarianceOfLRLabel;
-    @FXML
-    private Label deputyStockNameLabel1;
-    @FXML
-    private Label deputyMinPriceLabel;
-    @FXML
-    private Label deputyMaxPriceLabel;
-    @FXML
-    private Label deputyChangeRateLabel;
-    @FXML
-    private Label deputyVarianceOfLRLabel;
-    @FXML
-    private JFXTextField mainStockCode;
-    @FXML
-    private JFXTextField deputyStockCode;
-    @FXML
-    private JFXDatePicker beginDatePicker;
-    @FXML
-    private JFXDatePicker endDatePicker;
-    @FXML
-    private ClosePriceChart closePriceChart;
-    @FXML
-    private LRChart logReturnChart;
-    @FXML
-    private JFXToggleButton dailyClosePriceToggleButton;
-    @FXML
-    private JFXToggleButton dailyLRToggleButton;
-    @FXML
-    private StackPane root;
-    @FXML
-    private JFXButton confirmButton;
-    @FXML
-    private BorderPane closeBorderPane;
-    @FXML
-    private BorderPane rlBorderPane;
-    @FXML
-    private StackPane messagePane;
+    @FXML private Label mainStockNameLabel;
+    @FXML private Label mainMinPriceLabel;
+    @FXML private Label mainMaxPriceLabel;
+    @FXML private Label mainChangeRateLabel;
+    @FXML private Label mainVarianceOfLRLabel;
+    @FXML private Label deputyStockNameLabel1;
+    @FXML private Label deputyMinPriceLabel;
+    @FXML private Label deputyMaxPriceLabel;
+    @FXML private Label deputyChangeRateLabel;
+    @FXML private Label deputyVarianceOfLRLabel;
+    @FXML private JFXTextField mainStockCode;
+    @FXML private JFXTextField deputyStockCode;
+    @FXML private JFXDatePicker beginDatePicker;
+    @FXML private JFXDatePicker endDatePicker;
+    @FXML private ClosePriceChart closePriceChart;
+    @FXML private LRChart logReturnChart;
+    @FXML private JFXToggleButton dailyClosePriceToggleButton;
+    @FXML private JFXToggleButton dailyLRToggleButton;
+    @FXML private StackPane root;
+    @FXML private JFXButton confirmButton;
+    @FXML private BorderPane closeBorderPane;
+    @FXML private BorderPane rlBorderPane;
+    @FXML private StackPane messagePane;
+    @FXML private JFXPopup popup;
+    @FXML private JFXListView stockList;
 
     private ComparisonService comparisonService;
     private BlFactoryService blFactoryService;
@@ -103,6 +82,19 @@ public class ComparisonController {
         beginDatePicker.setDialogParent(root);
         endDatePicker.setDialogParent(root);
         DatePickerUtil.initDatePicker(beginDatePicker,endDatePicker);
+
+        // init Popup
+        popup.setPopupContainer(root);
+        root.getChildren().remove(popup);
+        mainStockCode.setOnMouseClicked((e) -> {
+            popup.setSource(mainStockCode);
+            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
+        });
+        deputyStockCode.setOnMouseClicked((e) -> {
+            popup.setSource(deputyStockCode);
+            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
+        });
+        stockList.getItems().addAll(new Label("Item1"),new Label("Item2"));
 
         //TODO ComboBox 获取值获取不到，待解决
         //解决  add by wsw

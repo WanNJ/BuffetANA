@@ -220,11 +220,6 @@ public class MarketController {
             StringProperty propertys[]={param.getValue().getValue().ID,param.getValue().getValue().name,
                     param.getValue().getValue().price,param.getValue().getValue().rise,
                     param.getValue().getValue().rise_percent};
-            if(Double.parseDouble(param.getValue().getValue().rise.get())>0){
-                //System.out.println("Node: "+param.);
-            }else {
-
-            }
             if(colum.validateValue(param)) return propertys[index];
             else return colum.getComputedValue(param);
         });

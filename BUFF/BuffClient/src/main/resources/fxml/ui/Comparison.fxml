@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXPopup?>
 <StackPane fx:id="root" stylesheets="@../../css/jfoenix-main-demo.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <GridPane>
@@ -232,5 +234,10 @@
             </StackPane>
             </children>
         </GridPane>
+
+        <JFXPopup fx:id="popup" styleClass="tool-bar-popup">
+            <JFXListView fx:id="stockList" styleClass="option-list-view">
+            </JFXListView>
+        </JFXPopup>
     </children>
 </StackPane>

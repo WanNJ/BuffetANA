@@ -43,9 +43,11 @@ public enum VolServiceImpl implements VolService {
 
         List<StockVolVO> stockVolVOs = new ArrayList<>();
         stockPOs.forEach(stockPO -> {
-            if(DateUtil.isBetween(stockPO.getDate(), beginDate, endDate))
-                stockVolVOs.add(PO2VOUtil.stockPO2StockVolVO(stockPO));
-
+            if(stockPO != null) {
+                if(stockPO.getVolume() != 0 && DateUtil.isBetween(stockPO.getDate(), beginDate, endDate)) {
+                    stockVolVOs.add(PO2VOUtil.stockPO2StockVolVO(stockPO));
+                }
+            }
         });
         stockVolVOs.sort((stockVolVO1, stockVolVO2) -> {
             if(stockVolVO1.date.isEqual(stockVolVO2.date))

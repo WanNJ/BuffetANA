@@ -8,11 +8,14 @@ import gui.ChartController.ClosePriceChart;
 import gui.ChartController.LRChart;
 import gui.utils.CodeComplementUtil;
 import gui.utils.DatePickerUtil;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -181,9 +184,21 @@ public class ComparisonController {
             }
         });
 
+        beginDatePicker.setOnAction(event -> {
+            try {
+                beginCompare();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
 
-
-
+        endDatePicker.setOnAction(event -> {
+            try {
+                beginCompare();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -208,17 +223,16 @@ public class ComparisonController {
 
 
     @FXML
-    private void search() {
-        //TODO 增加股票搜索功能
-
-
-    }
-
-
-
-    @FXML
     private void beginCompare() throws RemoteException {
-        //TODO 股票代码为空或无效，或者数据为空时的处理代码
+        if (mainStockCode.getText().trim().equals("")) {
+            Dialogs.showMessage("信息不完善", "请填入主股代号！");
+            return;
+        } else {
+            if (deputyStockCode.getText().trim().equals("")) {
+                Dialogs.showMessage("信息不完善", "请填入主股代号！");
+                return;
+            }
+        }
         comparisonService.init(mainStockCode.getText(), deputyStockCode.getText(), beginDatePicker.getValue(), endDatePicker.getValue());
         setMainInfo();
         setDeputyInfo();
@@ -234,7 +248,7 @@ public class ComparisonController {
         mainChangeRateLabel.setText(String.format("%.2f", mainBasisAnalysisVO.changeRate * 100) + "%");
 
         double varianceOfLR = comparisonService.getMainLogReturnVariance();
-        mainVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));
+        mainVarianceOfLRLabel.setText(String.format("%.9f", varianceOfLR));
     }
 
     @FXML
@@ -242,7 +256,7 @@ public class ComparisonController {
         BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getDeputyBasisAnalysis();
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
-        deputyChangeRateLabel.setText(String.valueOf(String.format("%.2f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
+        deputyChangeRateLabel.setText(String.valueOf(String.format("%.9f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
 
         double varianceOfLR = comparisonService.getDeputyLogReturnVariance();
         deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));

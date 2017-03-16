@@ -110,16 +110,18 @@ public enum StockDAOImpl implements StockDAO{
 
             //读出所有数据，并根据读出的数据更新上述数据
             while ((line = br.readLine()) != null) {
-                count++;
                 stockInfo = line.split("\t");
-                if(Double.parseDouble(stockInfo[3]) > high_Price)
-                    high_Price = Double.parseDouble(stockInfo[3]);
-                if(Double.parseDouble(stockInfo[4]) < low_Price)
-                    low_Price = Double.parseDouble(stockInfo[4]);
-                open_Price = open_Price + Double.parseDouble(stockInfo[2]);
-                close_Price = close_Price + Double.parseDouble(stockInfo[5]);
-                volume = volume + Long.parseLong(stockInfo[6]);
-                adjCloseIndex = adjCloseIndex + Double.parseDouble(stockInfo[7]);
+                if(Long.parseLong(stockInfo[6]) != 0) {
+                    count++;
+                    if(Double.parseDouble(stockInfo[3]) > high_Price)
+                        high_Price = Double.parseDouble(stockInfo[3]);
+                    if(Double.parseDouble(stockInfo[4]) < low_Price)
+                        low_Price = Double.parseDouble(stockInfo[4]);
+                    open_Price = open_Price + Double.parseDouble(stockInfo[2]);
+                    close_Price = close_Price + Double.parseDouble(stockInfo[5]);
+                    volume = volume + Long.parseLong(stockInfo[6]);
+                    adjCloseIndex = adjCloseIndex + Double.parseDouble(stockInfo[7]);
+                }
             }
             open_Price /= count;
             close_Price /= count;

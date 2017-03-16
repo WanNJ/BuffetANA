@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.market.MarketService;
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.cells.editors.base.JFXTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
@@ -21,12 +22,15 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import vo.MarketStockDetailVO;
 
 import javax.annotation.PostConstruct;
@@ -85,7 +89,7 @@ public class MarketController {
                         share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
 
-        
+
         /**
          * 我这个lambda表达式 是不是写的有点过分
          */
@@ -191,6 +195,27 @@ public class MarketController {
     private void setColumn(JFXTreeTableView<Share> treeTableView, int index){
         JFXTreeTableColumn<Share, String> colum=new JFXTreeTableColumn<>(titles[index]);
         colum.setPrefWidth(100);
+        colum.setCellFactory(treeTableColum->{
+            return new JFXTreeTableCell<Share, String>() {
+                protected void updateItem(String var1, boolean var2) {
+                    if(var1 != this.getItem()) {
+                        super.updateItem(var1, var2);
+                        if(var1 == null) {
+                            super.setText((String)null);
+                            super.setGraphic((Node)null);
+                        } else {
+                            super.setText(var1.toString());
+                            super.setGraphic((Node)null);
+                            if(getTreeTableRow().getItem().rise.get().startsWith("+")){
+                                setTextFill(Color.RED);
+                            }else {
+                                setTextFill(Color.GREEN);
+                            }
+                        }
+                    }
+                }
+            };
+        });
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Share, String> param) ->{
             StringProperty propertys[]={param.getValue().getValue().ID,param.getValue().getValue().name,
                     param.getValue().getValue().price,param.getValue().getValue().rise,

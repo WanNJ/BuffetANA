@@ -99,10 +99,7 @@ public class ComparisonController {
 //            popup.setSource(mainStockCode);
 //            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
 //        });
-        deputyStockCode.setOnMouseClicked((e) -> {
-            popup.setSource(deputyStockCode);
-            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
-        });
+
         //stockList.getItems().addAll(new Label("Item1"),new Label("Item2"));
 
         //TODO ComboBox 获取值获取不到，待解决

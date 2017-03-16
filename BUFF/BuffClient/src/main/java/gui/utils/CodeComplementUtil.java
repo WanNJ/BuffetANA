@@ -18,8 +18,12 @@ public enum CodeComplementUtil {
 
     private List<String> CodeList;
 
+    /**
+     * 单例是初始化
+     */
     CodeComplementUtil(){
         System.out.println("Construct CodeComp");
+
         initCodeList(codeFile);
     }
 

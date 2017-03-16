@@ -85,7 +85,7 @@ public enum ComparisonImpl implements ComparisonService {
     public static void main(String[] args) throws RemoteException {
         ComparisonImpl impl = COMPARISON_SERVICE;
         impl.init("1", "2", LocalDate.of(2014,1,6), LocalDate.of(2014,1,8));
-        impl.getMainDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
-        impl.getDeputyDailyLogReturnAnalysis().forEach(vo -> System.out.println(vo.logReturnIndex));
+        BasisAnalysisVO vo = impl.getMainBasisAnalysis();
+        System.out.println(vo.changeRate);
     }
 }

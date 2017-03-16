@@ -1,6 +1,8 @@
 package blserviceimpl.comparison;
 
 import blservice.comparison.ComparisonService;
+import blservice.exception.InvalidDateException;
+import blservice.exception.InvalidStockCodeException;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
@@ -21,7 +23,7 @@ public enum ComparisonImpl implements ComparisonService {
 
 
     @Override
-    public void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    public void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException, InvalidStockCodeException, InvalidDateException {
         mainStockService = new SingleForComparison(mainStockCode, beginDate, endDate);
         deputyStockService = new SingleForComparison(deputyStockCode, beginDate, endDate);
     }
@@ -82,10 +84,18 @@ public enum ComparisonImpl implements ComparisonService {
             return mainStockService.getLatestDate();
     }
 
-    public static void main(String[] args) throws RemoteException {
-        ComparisonImpl impl = COMPARISON_SERVICE;
-        impl.init("1", "2", LocalDate.of(2014,1,6), LocalDate.of(2014,1,8));
-        BasisAnalysisVO vo = impl.getMainBasisAnalysis();
-        System.out.println(vo.changeRate);
-    }
+//    public static void main(String[] args) throws RemoteException {
+//        ComparisonImpl impl = COMPARISON_SERVICE;
+//        try {
+//            impl.init("2932890380", "2", LocalDate.of(2014,1,6), LocalDate.of(2014,1,8));
+//        } catch (InvalidStockCodeException e) {
+//            e.printReason();
+//            return;
+//        } catch (InvalidDateException e) {
+//            e.printReason();
+//            return;
+//        }
+//        BasisAnalysisVO vo = impl.getMainBasisAnalysis();
+//        System.out.println(vo.changeRate);
+//    }
 }

@@ -5,20 +5,23 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
 import javafx.util.Callback;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
  * Created by zjy on 2017/3/9.
+ *
  * @author zjy
  */
 public class DatePickerUtil {
-    private static final LocalDate lastDate=LocalDate.of(2014, 4, 29);
+    private static final LocalDate lastDate = LocalDate.of(2014, 4, 29);
 
     /**
      * 初始化日期选择器，使得结束日期一定在开始日期之后，且提示时间段的天数
+     *
      * @param from 开始日期的日期选择器
-     * @param to 结束日期的日期选择器
+     * @param to   结束日期的日期选择器
      */
     public static void initDatePicker(DatePicker from, DatePicker to) {
         to.setValue(lastDate);
@@ -34,7 +37,7 @@ public class DatePickerUtil {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
-                        long p = ChronoUnit.DAYS.between(from.getValue(), item)+1;
+                        long p = ChronoUnit.DAYS.between(from.getValue(), item) + 1;
                         setTooltip(new Tooltip(p + "天内")
                         );
                     }
@@ -53,7 +56,7 @@ public class DatePickerUtil {
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
                         long p = ChronoUnit.DAYS.between(to.getValue(), item);
-                        setTooltip(new Tooltip(p<=0? -p+1 + "天内":"该日")
+                        setTooltip(new Tooltip(p <= 0 ? -p + 1 + "天内" : "该日")
                         );
                     }
                 };
@@ -61,8 +64,8 @@ public class DatePickerUtil {
         });
         from.setValue(to.getValue().minusDays(1));
 
-        from.addEventHandler(EventType.ROOT,event -> {
-            if(from.getValue().isAfter(to.getValue())){
+        from.addEventHandler(EventType.ROOT, event -> {
+            if (from.getValue().isAfter(to.getValue())) {
                 to.setValue(from.getValue());
             }
         });

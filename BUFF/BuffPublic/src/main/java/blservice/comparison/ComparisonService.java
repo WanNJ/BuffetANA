@@ -1,5 +1,7 @@
 package blservice.comparison;
 
+import blservice.exception.InvalidDateException;
+import blservice.exception.InvalidStockCodeException;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
@@ -22,7 +24,7 @@ public interface ComparisonService extends Remote {
      * @param beginDate 查询起始日期
      * @param endDate 查询结束日期
      */
-    void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException;
+    void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException, InvalidStockCodeException, InvalidDateException;
 
     /**
      * 得到主股总体信息

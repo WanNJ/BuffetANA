@@ -1,6 +1,8 @@
 package gui.functions;
 
 import blservice.comparison.ComparisonService;
+import blservice.exception.InvalidDateException;
+import blservice.exception.InvalidStockCodeException;
 import com.jfoenix.controls.*;
 import factory.BlFactoryService;
 import factory.BlFactoryServiceImpl;
@@ -129,8 +131,6 @@ public class ComparisonController {
                     });
                     stockList.getItems().add(label);
                 }
-
-
             }
         });
 
@@ -165,6 +165,11 @@ public class ComparisonController {
 
 
         beginDatePicker.setOnAction(event -> {
+            if (beginDatePicker.getValue().isAfter(endDatePicker.getValue())) {
+                Dialogs.showMessage("起始日期不应早于结束日期", "请重新填写");
+                return;
+            }
+
             try {
                 beginCompare();
             } catch (RemoteException e) {
@@ -209,17 +214,44 @@ public class ComparisonController {
 
 
     @FXML
-    private void beginCompare() throws RemoteException {
+    private void beginCompare() throws RemoteException{
+        //判断是否存在空信息
         if (mainStockCode.getText().trim().equals("")) {
             Dialogs.showMessage("信息不完善", "请填入主股代号！");
             return;
         } else {
             if (deputyStockCode.getText().trim().equals("")) {
-                Dialogs.showMessage("信息不完善", "请填入主股代号！");
+                Dialogs.showMessage("信息不完善", "请填入副股代号！");
                 return;
             }
         }
-        comparisonService.init(mainStockCode.getText(), deputyStockCode.getText(), beginDatePicker.getValue(), endDatePicker.getValue());
+        if (beginDatePicker.getValue().isAfter(endDatePicker.getValue())) {
+            Dialogs.showMessage("起始日期不应早于结束日期", "请重新填写");
+            return;
+        }
+        //判断数据格式是否合法
+        if(!mainStockCode.getText().trim().matches("^[1-9]\\d*|0$")) {
+            Dialogs.showMessage("股票代号格式不正确", "请输入有效的主股代号！(以数字构成)");
+            return;
+        } else {
+            if (!deputyStockCode.getText().trim().matches("^[1-9]\\d*|0$")) {
+                Dialogs.showMessage("股票代号格式不正确", "请输入格式正确的副股代号！(以数字构成)");
+                return;
+            }
+        }
+
+        try {
+            comparisonService.init(mainStockCode.getText().trim(), deputyStockCode.getText().trim(), beginDatePicker.getValue(), endDatePicker.getValue());
+        } catch (InvalidStockCodeException e) {
+            e.printReason();
+            Dialogs.showMessage("股票代码不存在", "请核对后重新输入！");
+            return;
+        } catch (InvalidDateException e) {
+            e.printReason();
+            Dialogs.showMessage("该日期范围内无数据", "请更换日期范围！");
+            return;
+        }
+
         setMainInfo();
         setDeputyInfo();
         setClosePriceChart();
@@ -242,7 +274,7 @@ public class ComparisonController {
         BasisAnalysisVO deputyBasisAnalysisVO = comparisonService.getDeputyBasisAnalysis();
         deputyMinPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.lowPrice));
         deputyMaxPriceLabel.setText(String.valueOf(deputyBasisAnalysisVO.highPrice));
-        deputyChangeRateLabel.setText(String.valueOf(String.format("%.9f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
+        deputyChangeRateLabel.setText(String.valueOf(String.format("%.2f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
 
         double varianceOfLR = comparisonService.getDeputyLogReturnVariance();
         deputyVarianceOfLRLabel.setText(String.format("%.9f", varianceOfLR));
@@ -383,5 +415,4 @@ public class ComparisonController {
             this.end = end;
         }
     }
-
 }

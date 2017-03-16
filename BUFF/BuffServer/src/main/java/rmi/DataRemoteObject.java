@@ -2,6 +2,8 @@ package rmi;
 
 import blservice.comparison.ComparisonService;
 import blservice.exception.DateIndexException;
+import blservice.exception.InvalidDateException;
+import blservice.exception.InvalidStockCodeException;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
 import blservice.thermometer.ThermometerService;
@@ -85,7 +87,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+	public void init(String mainStockCode, String deputyStockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException, InvalidStockCodeException, InvalidDateException {
 		comparisonService.init(mainStockCode, deputyStockCode, beginDate, endDate);
 	}
 

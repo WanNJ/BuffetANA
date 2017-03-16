@@ -1,5 +1,7 @@
 package blserviceimpl.comparison;
 
+import blservice.exception.InvalidDateException;
+import blservice.exception.InvalidStockCodeException;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
@@ -29,15 +31,22 @@ public class SingleForComparison {
     private List<DailyLogReturnVO> dailyLogReturnVOs;
 
 
-    public SingleForComparison(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    public SingleForComparison(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException, InvalidDateException, InvalidStockCodeException {
         factory = new DAOFactoryServiceImpl();
         stockDAO = factory.createStockDAO();
+
         setDateRange(stockCode, beginDate, endDate);
+        //防止该阶段无数据
+        if (specificStockPOs.size() == 0) {
+            throw new InvalidDateException();
+        }
+
         dailyClosingPriceVOS = new ArrayList<DailyClosingPriceVO>();
         specificStockPOs.forEach(stockPO -> {
             dailyClosingPriceVOS.add(new DailyClosingPriceVO(stockPO.getDate(), stockPO.getClose_Price()));
         });
         dailyLogReturnVOs = new ArrayList<DailyLogReturnVO>();
+
         dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(0).getDate(), 0));
         for (int i = 1; i < specificStockPOs.size(); i++) {
             dailyLogReturnVOs.add(new DailyLogReturnVO(specificStockPOs.get(i).getDate(),
@@ -101,8 +110,14 @@ public class SingleForComparison {
      * @param endDate
      * @throws RemoteException
      */
-    private void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException {
+    private void setDateRange(String stockCode, LocalDate beginDate, LocalDate endDate) throws RemoteException, InvalidStockCodeException {
         allStockPOs = stockDAO.getStockInfoByCode(stockCode);
+
+        //防止无效的stockCode
+        if (allStockPOs == null || allStockPOs.size() == 0) {
+            throw new InvalidStockCodeException();
+        }
+
         specificStockPOs = allStockPOs.stream().filter((StockPO stockPO) -> stockPO.getDate().isAfter(beginDate.minusDays(1))
                 && stockPO.getDate().isBefore(endDate.plusDays(1)))
                 .collect(Collectors.toList());

@@ -20,10 +20,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import vo.StockBriefInfoVO;
 import vo.StockDetailVO;
 import vo.StockNameAndCodeVO;
@@ -105,6 +107,7 @@ public class SingleStockController {
     public void init() throws FlowException, VetoException {
         context.register(this);
 
+
         //初始化所要用到的逻辑层接口
         factory = new BlFactoryServiceImpl();
         stockDetailService = factory.createStockDetailService();
@@ -118,44 +121,10 @@ public class SingleStockController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
         stockChangeController.initTreeTableView(stocksTable,search,list,ID -> setStockInfo(ID));
-        //初始化界面用到的各种控件
-        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-        closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
-        rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
 
 
-        //TODO 暂时有些问题，加上这一段后，连数据都显示不出来，之后再解决
-        //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
-//        rangeColumn.setCellFactory(column -> {
-//            return new TableCell<StockBriefInfoVO, String>() {
-//                @Override
-//                protected void updateItem(String item, boolean empty) {
-//                    super.updateItem(item, empty);
-//
-//                    if (item == null || empty) {
-//                        System.out.println("hhh");
-//                        setText(null);
-//                        setStyle("");
-//                    } else {
-//                        setItem(item);
-//                        if (item.startsWith("-"))
-//                            this.setTextFill(Color.GREEN);
-//                        else
-//                            this.setTextFill(Color.RED);
-//                    }
-//                }
-//            };
-//        });
-        stockDetailsTable.setItems(this.stockBriefInfoVOs);
-
-        //为股票简要信息列表绑定监听器
-        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    showStockDetails(newValue.dateProperty().get());
-                    datePicker.setValue(newValue.dateProperty().get());
-                }
-        );
 
         datePicker.setDialogParent(root);
 
@@ -170,15 +139,52 @@ public class SingleStockController {
         this.linesPanelController = (LinesPanelController) LineHandler.getCurrentView().getViewContext().getController();
 
 
+        //初始化界面数据
+        this.setStockInfo("1");
+
+        //初始化界面用到的各种控件
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        closeIndexColumn.setCellValueFactory(cellData -> cellData.getValue().closePriceProperty());
+        rangeColumn.setCellValueFactory(cellData -> cellData.getValue().rangeProperty());
+
+        //将涨跌幅用颜色区分开来，涨幅用红色表示，跌幅用绿色表示
+        rangeColumn.setCellFactory(column -> {
+            return new TableCell<StockBriefInfoVO, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        System.out.println("hhh");
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setItem(item);
+                        if (item.startsWith("-"))
+                            this.setTextFill(Color.GREEN);
+                        else
+                            this.setTextFill(Color.RED);
+                    }
+                }
+            };
+        });
+
+
+        stockDetailsTable.setItems(this.stockBriefInfoVOs);
+
+        //为股票简要信息列表绑定监听器
+        stockDetailsTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    showStockDetails(newValue.dateProperty().get());
+                    datePicker.setValue(newValue.dateProperty().get());
+                }
+        );
+
         //为日期选择器绑定监听器
         datePicker.setOnAction(event -> {
             LocalDate date = datePicker.getValue();
             showStockDetails(date);
         });
-
-
-        //初始化界面数据
-        this.setStockInfo("1");
     }
 
     /**

@@ -259,7 +259,7 @@ public class ComparisonController {
         deputyChangeRateLabel.setText(String.valueOf(String.format("%.9f", deputyBasisAnalysisVO.changeRate * 100) + "%"));
 
         double varianceOfLR = comparisonService.getDeputyLogReturnVariance();
-        deputyVarianceOfLRLabel.setText(String.format("%.2f", varianceOfLR));
+        deputyVarianceOfLRLabel.setText(String.format("%.9f", varianceOfLR));
     }
 
     private void setClosePriceChart() throws RemoteException {

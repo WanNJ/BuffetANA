@@ -1,8 +1,9 @@
 package gui.utils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public enum LocalHistoryService {
 
     final String fileName  = "../Data/SearchHistory.txt";
 
+    /**
+     * 单例初始化!!!
+     */
     LocalHistoryService(){
         File file =  new File(fileName);
         if(!file.exists()){

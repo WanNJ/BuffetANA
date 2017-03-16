@@ -89,7 +89,7 @@ public class MarketController {
                         share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
 
-        
+
         /**
          * 我这个lambda表达式 是不是写的有点过分
          */

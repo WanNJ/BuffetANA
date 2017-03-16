@@ -1,9 +1,6 @@
 package gui.utils;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
@@ -22,7 +19,14 @@ public enum LocalHistoryService {
     final String fileName  = "../Data/SearchHistory.txt";
 
     LocalHistoryService(){
-
+        File file =  new File(fileName);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

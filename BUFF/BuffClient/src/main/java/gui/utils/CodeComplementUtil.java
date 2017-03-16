@@ -20,6 +20,7 @@ public enum CodeComplementUtil {
 
     CodeComplementUtil(){
         System.out.println("Construct CodeComp");
+
         initCodeList(codeFile);
     }
 

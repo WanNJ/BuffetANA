@@ -14,15 +14,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -31,6 +27,8 @@ import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
 import vo.DailyLogReturnVO;
 
+import javax.swing.*;
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
@@ -63,7 +61,19 @@ public class ComparisonController {
     @FXML private BorderPane closeBorderPane;
     @FXML private BorderPane rlBorderPane;
     @FXML private StackPane messagePane;
+
+
+
+
+    /**
+     * 自动补全提示框
+     */
     @FXML private JFXPopup popup;
+
+
+    /**
+     * 返回的提示列表
+     */
     @FXML private JFXListView stockList;
 
     private ComparisonService comparisonService;
@@ -86,15 +96,15 @@ public class ComparisonController {
         // init Popup
         popup.setPopupContainer(root);
         root.getChildren().remove(popup);
-        mainStockCode.setOnMouseClicked((e) -> {
-            popup.setSource(mainStockCode);
-            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
-        });
+//        mainStockCode.setOnMouseClicked((e) -> {
+//            popup.setSource(mainStockCode);
+//            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
+//        });
         deputyStockCode.setOnMouseClicked((e) -> {
             popup.setSource(deputyStockCode);
             popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
         });
-        stockList.getItems().addAll(new Label("Item1"),new Label("Item2"));
+        //stockList.getItems().addAll(new Label("Item1"),new Label("Item2"));
 
         //TODO ComboBox 获取值获取不到，待解决
         //解决  add by wsw
@@ -117,64 +127,57 @@ public class ComparisonController {
         mainStockCode.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                compBoxMain.getChildren().clear();
-               if(newValue.equals("")){
-                   compBoxMain.setVisible(false);
-               }else{
-                   compBoxMain.setVisible(true);
-                   List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
-                   for (String str:list) {
-                       Button button = new Button(str);
-                       button.setPrefWidth(270);
-                       button.setOnAction(t->handleTextMain(str));
-                       compBoxMain.getChildren().add(button);
-                   }
+                stockList.getItems().clear();
+                List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
 
-               }
+                if(list==null || list.size()==0)
+                    list.add("No Suggestion");
+
+
+                popup.setSource(mainStockCode)  ;
+                popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
+
+                for (String str:list) {
+                    Label label = new Label(str);
+                    label.setOnMouseClicked(e->{
+                        if(!str.equals("No Suggestion"))
+                        handleTextMain(str);
+                    });
+                    stockList.getItems().add(label);
+                }
+
+
             }
         });
 
         deputyStockCode.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                compBoxDup.getChildren().clear();
-                if(newValue.equals("")){
-                    compBoxDup.setVisible(false);
-                }else{
-                    compBoxDup.setVisible(true);
-                    List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
-                    for (String str:list) {
-                        Button button = new Button(str);
-                        button.setPrefWidth(270);
-                        button.setOnAction(t->handleTextDup(str));
-                        compBoxDup.getChildren().add(button);
-                    }
+                stockList.getItems().clear();
+                List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
 
+                if(list==null || list.size()==0)
+                    list.add("No Suggestion");
+
+
+                popup.setSource(deputyStockCode);
+                popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
+
+
+                for (String str:list) {
+                    Label label = new Label(str);
+                    label.setOnMouseClicked(e->{
+
+                        if(!str.equals("No Suggestion"))
+                        handleTextDup(str);
+                    });
+                    stockList.getItems().add(label);
                 }
+
             }
         });
 
 
-        mainStockCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue) {
-                    compBoxMain.getChildren().clear();
-                    compBoxMain.setVisible(false);
-                }
-            }
-        });
-
-
-        deputyStockCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue){
-                    compBoxDup.getChildren().clear();
-                    compBoxDup.setVisible(false);
-                }
-            }
-        });
 
         beginDatePicker.setOnAction(event -> {
             try {
@@ -196,11 +199,16 @@ public class ComparisonController {
 
     private void handleTextMain(String str){
         String[] sep = str.split("\\(");
+        String temp = sep[0];
         mainStockCode.setText(sep[0]);
         int len = sep[1].length()-1;
         mainStockNameLabel.setText(sep[1].substring(0,len));
-        compBoxMain.getChildren().clear();
-        compBoxMain.setVisible(false);
+
+
+        /**
+         * not sure work
+         */
+        root.getChildren().remove(popup);
     }
 
 
@@ -211,6 +219,8 @@ public class ComparisonController {
         deputyStockNameLabel1.setText(sep[1].substring(0,len));
         compBoxDup.getChildren().clear();
         compBoxDup.setVisible(false);
+
+        root.getChildren().remove(popup);
     }
 
 
@@ -355,4 +365,39 @@ public class ComparisonController {
         return observableList;
 
     }
+
+
+    class HLabel extends JLabel
+    {
+        private static final long serialVersionUID = 1L;
+        private int start;
+        private int end;
+
+        @Override
+        public void paint(Graphics g)
+        {
+            FontMetrics fontMetrics = g.getFontMetrics();
+
+            String startString = getText().substring(0, start);
+            String text = getText().substring(start, end);
+
+            int startX = fontMetrics.stringWidth(startString);
+            int startY = 0;
+
+            int length = fontMetrics.stringWidth(text);
+            int height = fontMetrics.getHeight();
+
+            g.setColor(java.awt.Color.red);
+            g.fillRect(startX, startY, length, height);
+
+            super.paint(g);
+        }
+
+        public void highlightRegion(int start, int end)
+        {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
 }

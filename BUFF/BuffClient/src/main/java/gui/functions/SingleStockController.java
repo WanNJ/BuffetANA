@@ -151,19 +151,20 @@ public class SingleStockController {
         rangeColumn.setCellFactory(column -> {
             return new TableCell<StockBriefInfoVO, String>() {
                 @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (item == null || empty) {
-                        System.out.println("hhh");
-                        setText(null);
-                        setStyle("");
-                    } else {
-                        setItem(item);
-                        if (item.startsWith("-"))
-                            this.setTextFill(Color.GREEN);
-                        else
-                            this.setTextFill(Color.RED);
+                protected void updateItem(String var1, boolean empty) {
+                    if(var1 != this.getItem()) {
+                        super.updateItem(var1, empty);
+                        if (var1 == null || empty) {
+                            System.out.println("hhh");
+                            setText(null);
+                            setStyle("");
+                        } else {
+                            super.setText(var1);
+                            if (var1.startsWith("-"))
+                                this.setTextFill(Color.GREEN);
+                            else
+                                this.setTextFill(Color.RED);
+                        }
                     }
                 }
             };

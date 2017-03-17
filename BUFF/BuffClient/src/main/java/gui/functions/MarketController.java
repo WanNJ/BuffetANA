@@ -184,6 +184,7 @@ public class MarketController {
     private void setColumn(JFXTreeTableView<Share> treeTableView, int index){
         JFXTreeTableColumn<Share, String> colum=new JFXTreeTableColumn<>(titles[index]);
         colum.setPrefWidth(100);
+        //涨的用红色表示，跌的绿色表示
         colum.setCellFactory(treeTableColum->{
             return new JFXTreeTableCell<Share, String>() {
                 protected void updateItem(String var1, boolean var2) {
@@ -205,6 +206,7 @@ public class MarketController {
                 }
             };
         });
+        //设置要显示的值
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Share, String> param) ->{
             StringProperty propertys[]={param.getValue().getValue().ID,param.getValue().getValue().name,
                     param.getValue().getValue().price,param.getValue().getValue().rise,

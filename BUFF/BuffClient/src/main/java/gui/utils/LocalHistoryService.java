@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public enum LocalHistoryService {
     LOCAL_HISTORY_SERVICE;
 
-    final String fileName  = "../Data/SearchHistory.txt";
+    final String fileName  = "SearchHistory.txt";
 
     /**
      * 单例初始化!!!
@@ -28,7 +28,7 @@ public enum LocalHistoryService {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("不能创建文件："+file.getPath());
             }
         }
     }

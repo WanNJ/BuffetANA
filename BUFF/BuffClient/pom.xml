@@ -46,15 +46,10 @@
             <artifactId>BuffPublic</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>Warren_Buffett</groupId>
-            <artifactId>BuffServer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!--<dependency>-->
-            <!--<groupId>io.datafx</groupId>-->
-            <!--<artifactId>core</artifactId>-->
-            <!--<version>8.0b8</version>-->
+            <!--<groupId>Warren_Buffett</groupId>-->
+            <!--<artifactId>BuffServer</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
         <!--</dependency>-->
     </dependencies>
 
@@ -144,7 +139,7 @@
                    -->
 
                 <!-- maven default生命周期，process-resources阶段执行maven-resources-plugin插件的resources目标处理主资源目下的资源文件时，是否对主资源目录开启资源过滤 -->
-                <targetPath>${build.outputDirectory}/resources</targetPath>
+                <targetPath>${project.build.outputDirectory}/resources</targetPath>
                 <filtering>true</filtering>
 
             </resource>

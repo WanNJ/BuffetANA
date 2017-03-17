@@ -17,16 +17,12 @@ public class AnotherEntrance extends Task<Integer> {
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
 	private Stage stage;
-	private Flow flow;
 
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
-	public Stage getStage() {
-		return stage;
-	}
 
 	@Override
 	protected Integer call() throws Exception {
@@ -62,60 +58,7 @@ public class AnotherEntrance extends Task<Integer> {
                 e.printStackTrace();
             }
         });
-//		new Thread(()->{
-//			try {
-//				SVGGlyphLoader.loadGlyphsFont(AnotherEntrance.class.getResourceAsStream("/resources/fonts/icomoon.svg"),"icomoon.svg");
-//				Flow flow = new Flow(MainController.class);//这个地方不要动，好不容易才搞好的
-//				DefaultFlowContainer container = new DefaultFlowContainer();
-//				flowContext = new ViewFlowContext();
-//				flowContext.register("Stage", stage);
-//				flow.createHandler(flowContext).start(container);
-//				JFXDecorator decorator = new JFXDecorator(stage, container.getView());
-//				decorator.setCustomMaximize(true);
-//				Scene scene = new Scene(decorator, 1200, 800);
-//				scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-fonts.css").toExternalForm());
-//				scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-design.css").toExternalForm());
-//				scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
-//				//		stage.initStyle(StageStyle.UNDECORATED);
-//				//		stage.setFullScreen(true);
-//				stage.setMinWidth(700);
-//				stage.setMinHeight(800);
-//
-//
-//				stage.setScene(scene);
-//
-//				System.out.println("haha");
-//				stage.show();
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}).start();
 
 		return 1;
 	}
-//
-//	public void showContent() throws FlowException, InterruptedException {
-//		Thread.sleep(5000);
-//		DefaultFlowContainer container = new DefaultFlowContainer();
-//		flowContext = new ViewFlowContext();
-//		flowContext.register("Stage", stage);
-//		flow.createHandler(flowContext).start(container);
-//		JFXDecorator decorator = new JFXDecorator(stage, container.getView());
-//		decorator.setCustomMaximize(true);
-//		Scene scene = new Scene(decorator, 1200, 800);
-//		scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-fonts.css").toExternalForm());
-//		scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-design.css").toExternalForm());
-//		scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
-//		//		stage.initStyle(StageStyle.UNDECORATED);
-//		//		stage.setFullScreen(true);
-//		stage.setMinWidth(700);
-//		stage.setMinHeight(800);
-//
-//
-//		stage.setScene(scene);
-//
-//		System.out.println("haha");
-//		stage.show();
-//	}
 }

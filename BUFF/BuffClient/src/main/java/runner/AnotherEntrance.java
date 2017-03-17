@@ -50,8 +50,6 @@ public class AnotherEntrance extends Task<Integer> {
 
 
                 stage.setScene(scene);
-
-                System.out.println("haha");
                 stage.show();
             } catch (Exception e) {
                 // TODO Auto-generated catch block

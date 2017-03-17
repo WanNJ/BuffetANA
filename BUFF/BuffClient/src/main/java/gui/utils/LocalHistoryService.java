@@ -3,6 +3,7 @@ package gui.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -52,7 +53,7 @@ public enum LocalHistoryService {
         List<String> stringList = new ArrayList<>();
         List<String> list = new ArrayList<>();
 
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName),Charset.forName("UTF-8"))) {
             list = br.lines().collect(Collectors.toList());
 
         } catch (IOException e) {

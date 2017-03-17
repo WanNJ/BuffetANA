@@ -1,0 +1,1 @@
+Windows下运行 开始.bat ，MaxOS和Linux下运行 开始.sh 即可开始程序

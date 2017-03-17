@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public enum CodeComplementUtil {
     CODE_COMPLEMENT_UTIL;
 
-    final  String codeFile = "../Data/StockMap.csv";
+    final  String codeFile = "text/StockMap.csv";
 
     private List<String> CodeList;
 

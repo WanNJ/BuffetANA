@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public enum LocalHistoryService {
     LOCAL_HISTORY_SERVICE;
 
-    final String fileName  = "SearchHistory.txt";
+    final String fileName  = "text/SearchHistory.txt";
 
     /**
      * 单例初始化!!!

@@ -143,6 +143,11 @@
                 <filtering>true</filtering>
 
             </resource>
+            <resource>
+                <directory>${project.basedir}/../text</directory>
+                <targetPath>${project.build.directory}/text</targetPath>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 

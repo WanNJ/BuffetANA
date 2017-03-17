@@ -1,9 +1,6 @@
 package gui.utils;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +39,8 @@ public enum CodeComplementUtil {
         BufferedReader br = null;
         List<String> stringList = new ArrayList<>();
         try {
-            br = new BufferedReader(new FileReader(fileName));
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
+            br = new BufferedReader(reader);
             String line;
 
             while ((line = br.readLine()) != null) {

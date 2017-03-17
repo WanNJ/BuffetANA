@@ -87,7 +87,7 @@ public enum ComparisonImpl implements ComparisonService {
 //    public static void main(String[] args) throws RemoteException {
 //        ComparisonImpl impl = COMPARISON_SERVICE;
 //        try {
-//            impl.init("2932890380", "2", LocalDate.of(2014,1,6), LocalDate.of(2014,1,8));
+//            impl.init("128989", "2", LocalDate.of(2014,4,26), LocalDate.of(2014,4,26));
 //        } catch (InvalidStockCodeException e) {
 //            e.printReason();
 //            return;

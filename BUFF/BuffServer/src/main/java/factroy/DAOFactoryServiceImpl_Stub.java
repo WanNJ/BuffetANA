@@ -2,6 +2,8 @@ package factroy;
 
 import dataservice.singlestock.StockDAO;
 import dataservice.stockmap.StockNameToCodeDAO;
+import dataservicestub.StockDaoImpl_stub;
+import dataservicestub.StockNameToCodeDAOImpl_stub;
 
 /**
  * Created by Accident on 2017/3/14.
@@ -9,11 +11,11 @@ import dataservice.stockmap.StockNameToCodeDAO;
 public class DAOFactoryServiceImpl_Stub implements DAOFactoryService {
     @Override
     public StockDAO createStockDAO() {
-        return null;
+        return new StockDaoImpl_stub();
     }
 
     @Override
     public StockNameToCodeDAO createStockNameToCodeDAO() {
-        return null;
+        return new StockNameToCodeDAOImpl_stub();
     }
 }

@@ -34,16 +34,10 @@ public enum ThermometerServiceImpl implements ThermometerService{
         stockDAO = factory.createStockDAO();
     }
 
-
-    /**
-     * 用于传递stub
-     * @param stockDAO
-     */
-    public void setDao(StockDAO stockDAO){
-        this.stockDAO = stockDAO;
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factoryService.createStockDAO();
     }
-
-
 
     /**
      * 获得日期范围内的整个股市的每日交易量
@@ -169,7 +163,7 @@ public enum ThermometerServiceImpl implements ThermometerService{
     @Override
     public List<LongPeiceVO> getRiseOver5Num(DateRange dateRange)throws RemoteException{
         return CompareWithHistory(dateRange,0.05);
-}
+    }
 
 
     /**

@@ -33,6 +33,10 @@ public enum StockDetailServiceImpl implements StockDetailService {
         code = "";
     }
 
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factoryService.createStockDAO();
+    }
     @Override
     public StockDetailVO getSingleStockDetails(String code, LocalDate date)  throws RemoteException {
         if(!code.equals(this.code)) {

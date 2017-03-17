@@ -29,7 +29,10 @@ public enum MALineServiceImpl implements MALineService {
         stockDAO = factory.createStockDAO();
         code = "";
     }
-
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factoryService.createStockDAO();
+    }
     /**
      * 用于传递stub
      * @param stockDAO

@@ -38,6 +38,12 @@ public enum MarketServiceImpl implements MarketService {
         stockNameToCodeDAO = factory.createStockNameToCodeDAO();
     }
 
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factory.createStockDAO();
+        stockNameToCodeDAO = factory.createStockNameToCodeDAO();
+    }
+
     @Override
     public List<KLinePieceVO> getMarketDailyKLine(LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(stockPOs == null)

@@ -32,6 +32,11 @@ public enum KLineServiceImpl implements KLineService {
         code = "";
     }
 
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factoryService.createStockDAO();
+    }
+
     @Override
     public List<KLinePieceVO> getDailyKLine(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(!code.equals(this.code)) {

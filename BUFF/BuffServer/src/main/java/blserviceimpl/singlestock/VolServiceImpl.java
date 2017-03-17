@@ -32,6 +32,11 @@ public enum VolServiceImpl implements VolService {
         code = "";
     }
 
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockDAO = factoryService.createStockDAO();
+    }
+
     @Override
     public List<StockVolVO> getStockVol(String code, LocalDate beginDate, LocalDate endDate) throws DateIndexException, RemoteException {
         if(!code.equals(this.code)) {

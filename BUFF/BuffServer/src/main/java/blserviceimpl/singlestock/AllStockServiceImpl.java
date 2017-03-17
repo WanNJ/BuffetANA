@@ -27,6 +27,12 @@ public enum AllStockServiceImpl implements AllStockService {
         stockNameAndCodePOs = stockNameToCodeDAO.getNameToCodeMap();
     }
 
+    public void setTest(DAOFactoryService factoryService) {
+        factory = factoryService;
+        stockNameToCodeDAO = factory.createStockNameToCodeDAO();
+        stockNameAndCodePOs = stockNameToCodeDAO.getNameToCodeMap();
+    }
+
     @Override
     public List<StockNameAndCodeVO> getAllStock() throws RemoteException {
         List<StockNameAndCodeVO> stockNameAndCodeVOs = new ArrayList<>();

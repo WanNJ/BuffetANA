@@ -326,7 +326,7 @@ public class MarketKLineChart extends KLineChart {
         final MarketKLineChart kLineChart= new MarketKLineChart(xAxis,yAxis);
 
         xAxis.setLabel("Day");
-        yAxis.setLabel("Price");
+        yAxis.setLabel("大盘K值");
 
         // 加载传过来的数据序列
         Series<String,Number> series = new Series<String,Number>();

@@ -55,7 +55,8 @@ public enum StockDAOImpl implements StockDAO{
         List<StockPO> stockPOs = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(fileName));
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
+            br = new BufferedReader(reader);
             stockPOs = new ArrayList<>();
             String line;
 
@@ -89,7 +90,8 @@ public enum StockDAOImpl implements StockDAO{
         StockPO stockPO = null;
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(file));
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+            br = new BufferedReader(reader);
 
             //读出第一组数据作为基准数据
             String line = br.readLine();

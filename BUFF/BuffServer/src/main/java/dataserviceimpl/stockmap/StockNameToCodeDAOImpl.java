@@ -3,10 +3,7 @@ package dataserviceimpl.stockmap;
 import dataservice.stockmap.StockNameToCodeDAO;
 import po.StockNameAndCodePO;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,8 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
         BufferedReader br = null;
 
         try {
-            br = new BufferedReader(new FileReader(MAP_FILENAME));
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(MAP_FILENAME), "UTF-8");
+            br = new BufferedReader(reader);
             nameToCode = new ArrayList<>();
             String line;
 

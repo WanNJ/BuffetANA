@@ -14,12 +14,12 @@ import javafx.stage.StageStyle;
 /**
  * Created by slow_time on 2017/3/17.
  */
-class ProgressFrom {
+public class ProgressForm {
 
     private Stage dialogStage;
     private ProgressIndicator progressIndicator;
 
-    public ProgressFrom(final Task<?> task, Stage primaryStage) {
+    public ProgressForm(final Task<?> task, Stage primaryStage) {
 
         dialogStage = new Stage();
         progressIndicator = new ProgressIndicator();

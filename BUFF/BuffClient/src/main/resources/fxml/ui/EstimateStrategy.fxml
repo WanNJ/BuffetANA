@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="策略评估" />
+            <Label text="策略优化" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <Label text="评估参数" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
+                  <BarChart prefHeight="150.0" prefWidth="547.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </HBox>
+            <Label text="策略优化" />
+            <HBox prefHeight="203.0" prefWidth="600.0">
+               <children>
+                  <BorderPane prefHeight="199.0" prefWidth="147.0">
+                     <top>
+                        <Label text="优化说明" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
+                  <BorderPane fx:id="winRateCalBorder" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

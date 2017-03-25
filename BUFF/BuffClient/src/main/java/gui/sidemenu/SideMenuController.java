@@ -26,19 +26,19 @@ public class SideMenuController {
 	@FXML
 	@ActionTrigger("Market")
 	private Label Market;
-
 	@FXML
 	@ActionTrigger("SingleStock")
 	private Label SingleStock;
-
 	@FXML
 	@ActionTrigger("Comparison")
 	private Label Comparison;
-
 	@FXML
 	@ActionTrigger("Thermometer")
 	private Label Thermometer;
-	
+	@FXML
+	@ActionTrigger("StrategyBackTesting")
+	private Label StrategyBackTesting;
+
 	@FXML
 	private JFXListView<Label> sideList;
 
@@ -58,6 +58,7 @@ public class SideMenuController {
 		bindNodeToController(SingleStock, SingleStockController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Comparison, ComparisonController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(StrategyBackTesting, StrategyBackTestingController.class, contentFlow, contentFlowHandler);
 	}
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

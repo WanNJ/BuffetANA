@@ -13,5 +13,6 @@
 		<Label fx:id="SingleStock"> 个股 </Label>
 		<Label fx:id="Comparison"> 对比 </Label>
 		<Label fx:id="Thermometer"> 市场温度计 </Label>
+		<Label fx:id="StrategyBackTesting"> 量化回测 </Label>
 	</JFXListView>
 </StackPane>

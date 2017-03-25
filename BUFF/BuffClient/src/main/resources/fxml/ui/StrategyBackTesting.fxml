@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.StackPane?>
-
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" />
+<?import java.lang.String?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition?>
+<?import com.jfoenix.controls.JFXRippler?>
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="400" direction="TOP">
+        <styleClass>
+            <String fx:value="body" />
+        </styleClass>
+    </JFXDrawer>
+    <JFXRippler maskType="CIRCLE" style="-fx-ripple-color:BLACK;">
+        <StackPane fx:id="titleBurgerContainer">
+            <JFXHamburger fx:id="titleBurger">
+                <HamburgerBackArrowBasicTransition />
+            </JFXHamburger>
+        </StackPane>
+    </JFXRippler>
+</StackPane>

@@ -48,7 +48,7 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Label text="排序方式">
+                  <Label text="排名条件">
                      <font>
                         <Font size="24.0" />
                      </font>

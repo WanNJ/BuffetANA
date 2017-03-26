@@ -23,7 +23,7 @@ public interface StrategyDAO {
 
 
     /**
-     * 初始化加载好已经需要的数据    非常重要的哦!!!!
+     * 初始化加载好已经需要的数据    非常重要的哦!!!!  选择好要购买的股票
      * @param strategyConditionVO
      * @param stockPoolConditionVO
      * @param stockPickIndexVOs

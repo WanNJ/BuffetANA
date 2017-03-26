@@ -65,8 +65,8 @@ public enum  StrategyDAOImpl implements StrategyDAO {
         final boolean  excludeST = stockPoolConditionPO.isExcludeST();
         //usernode
         List<String>  codeList  = new ArrayList<>();
-        List<String>  blockList  = new ArrayList<>();
-        List<String>  industryList  = new ArrayList<>();
+        List<String>  blockList  ;
+        List<String>  industryList ;
         HashSet<String>  block = (HashSet<String>) stockPoolConditionPO.getBlock();
         HashSet<String>  industry = (HashSet<String>) stockPoolConditionPO.getIndustry();
 

@@ -1,7 +1,8 @@
 package pick;
 
-import blserviceimpl.strategy.PickleData;
+import po.StockPO;
 import util.DayMA;
+import blserviceimpl.strategy.PickleData;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,14 +23,23 @@ public interface PickStockService {
 
 
     /**
-     * huode
+     * 获得特定天内的 均线信息
      * @param code
      * @param begin
      * @param end
-     * @param days
-     * @return
+     * @param days   //几日均线
+     * @return  返回的是日期均线的组合列表
      */
     List<DayMA>  getSingleCodeMAInfo(String code , LocalDate begin , LocalDate end , int days);
+
+    /**
+     * 已经在stockDAO 中实现了  只是为了消除循环依赖
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<StockPO>  getSingleCodeInfo(String code , LocalDate begin , LocalDate end);
 
 
 

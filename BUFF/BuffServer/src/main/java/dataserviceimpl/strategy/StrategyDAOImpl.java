@@ -197,10 +197,10 @@ public enum  StrategyDAOImpl implements StrategyDAO {
             List<String> list = br.lines().collect(Collectors.toList());
             codelist = list.parallelStream().map(t->{
                 String[] codeAndName = t.split(",");
-                if(excludeST&&(codeAndName[1].startsWith("*ST") || codeAndName[1].startsWith("ST")))
+                if(excludeST&&(codeAndName[0].startsWith("*ST") || codeAndName[0].startsWith("ST")))
                     return "ST";
                 else
-                    return codeAndName[0];
+                    return codeAndName[1];
             }).filter(t->!t.equals("ST")).map(t->{
                 while (t.startsWith("0")){
                     t = t.substring(1,t.length());

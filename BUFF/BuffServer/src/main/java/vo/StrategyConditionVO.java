@@ -34,9 +34,7 @@ public class StrategyConditionVO {
     public int holdingNum;
 
 
-    public StrategyConditionVO() {
 
-    }
 
     public StrategyConditionVO(StrategyType strategyType, int formationPeriod,
                                int holdingPeriod, LocalDate beginDate, LocalDate endDate,
@@ -49,4 +47,8 @@ public class StrategyConditionVO {
         this.holdingNum = holdingNum;
         this.asd =asd;
     }
+
+//    public StrategyConditionVO() {
+//
+//    }
 }

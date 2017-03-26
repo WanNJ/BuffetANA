@@ -65,6 +65,7 @@ public enum MALineServiceImpl implements MALineService {
         //TODO delete
         System.out.println("stockPOs.size() : "+stockPOs.size());
         double sum5 = 0 , sum10 = 0, sum30 = 0,sum60 = 0;
+        int none = 0;
         List<MAPieceVO> maPieceVOs = new ArrayList<>();
         for(int i = 0; i<stockPOs.size() && !stockPOs.get(i).getDate().isAfter(endDate);i++){
             StockPO stockPO  = stockPOs.get(i);
@@ -76,10 +77,10 @@ public enum MALineServiceImpl implements MALineService {
                 sum30+= stockPO.getClose_Price();
                 sum60+= stockPO.getClose_Price();
 
-                if(i>=5)  sum5-= stockPOs.get(i-5).getClose_Price();
-                if(i>=10)  sum10-= stockPOs.get(i-10).getClose_Price();
-                if(i>=30)  sum30-= stockPOs.get(i-30).getClose_Price();
-                if(i>=60)  sum60-= stockPOs.get(i-60).getClose_Price();
+                if(i>=5)  sum5-= stockPOs.get(i-5-none).getClose_Price();
+                if(i>=10)  sum10-= stockPOs.get(i-10-none).getClose_Price();
+                if(i>=30)  sum30-= stockPOs.get(i-30-none).getClose_Price();
+                if(i>=60)  sum60-= stockPOs.get(i-60-none).getClose_Price();
 
                 if(!stockPO.getDate().isBefore(beginDate)){
                     MAPieceVO maPieceVO = new MAPieceVO();
@@ -90,6 +91,8 @@ public enum MALineServiceImpl implements MALineService {
                     maPieceVO.MA60 =  i>=60-1 ? sum60/60 : 0;
                     maPieceVOs.add(maPieceVO);
                 }
+            }else{
+                none++;
             }
         }
 

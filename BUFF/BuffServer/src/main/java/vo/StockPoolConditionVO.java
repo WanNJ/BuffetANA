@@ -26,9 +26,9 @@ public class StockPoolConditionVO {
      */
     public boolean excludeST;
 
-    public StockPoolConditionVO() {
-
-    }
+//    public StockPoolConditionVO() {
+//
+//    }
 
     public StockPoolConditionVO(StockPool stockPool, Set<String> block, Set<String> industry, boolean excludeST) {
         this.stockPool = stockPool;

@@ -1,7 +1,6 @@
 package blserviceimpl.thermometer;
 
 import blservice.thermometer.ThermometerService;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dataservice.singlestock.StockDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;

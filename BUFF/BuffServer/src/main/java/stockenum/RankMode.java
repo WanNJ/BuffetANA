@@ -11,7 +11,7 @@ public interface RankMode {
      * 获取排名的比较器
      * @param begin
      * @param end
-     * @param asd   是否按升序排列
+     * @param asd   是否按升序排列  即从小到大
      * @param formPeriod   持有期  或  均线的日数
      * @return
      */

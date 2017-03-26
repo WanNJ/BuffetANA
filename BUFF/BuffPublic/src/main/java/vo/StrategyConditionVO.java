@@ -25,6 +25,10 @@ public class StrategyConditionVO {
     public LocalDate beginDate;
     public LocalDate endDate;
     /**
+     * 是否升序排列
+     */
+    public boolean asd;
+    /**
      * 持有股票数
      */
     public int holdingNum;
@@ -34,12 +38,15 @@ public class StrategyConditionVO {
 
     }
 
-    public StrategyConditionVO(StrategyType strategyType, int formationPeriod, int holdingPeriod, LocalDate beginDate, LocalDate endDate, int holdingNum) {
+    public StrategyConditionVO(StrategyType strategyType, int formationPeriod,
+                               int holdingPeriod, LocalDate beginDate, LocalDate endDate,
+                               int holdingNum ,boolean asd) {
         this.strategyType = strategyType;
         this.formationPeriod = formationPeriod;
         this.holdingPeriod = holdingPeriod;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.holdingNum = holdingNum;
+        this.asd =asd;
     }
 }

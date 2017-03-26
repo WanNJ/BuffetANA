@@ -15,7 +15,17 @@ import java.util.stream.Collectors;
  * Created by slow_time on 2017/3/8.
  */
 public enum StockDAOImpl implements StockDAO{
-    STOCK_DAO_IMPL;
+    STOCK_DAO_IMPL ;
+
+    @Override
+    public List<StockPO> getStockInFoInRangeDate(String code, LocalDate begin, LocalDate end) {
+        List<StockPO> list = getStockInfoByCode(code);
+        return list.stream()
+                .filter(t->!(t.getDate().isBefore(begin) || t.getDate().isAfter(end)))
+                .collect(Collectors.toList());
+
+    }
+
 
     @Override
     public List<StockPO> getStockInfoByCode(String code) {

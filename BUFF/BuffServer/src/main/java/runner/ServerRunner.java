@@ -1,17 +1,22 @@
 package runner;
 
-import rmi.RemoteHelper;
+import dataserviceimpl.singlestock.StockDAOImpl;
+import po.StockPO;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class ServerRunner {
 	
 	public ServerRunner() {
-		new RemoteHelper();
+		//new RemoteHelper();
 	}
 	
 	public static void main(String[] args)  {
-		System.out.println("Ready.....");
-		new ServerRunner();
-		System.out.println("Ready Well");
+		List<StockPO> list =
+				StockDAOImpl.STOCK_DAO_IMPL.getStockInFoInRangeDate("1",
+						LocalDate.of(2012,11,15),LocalDate.of(2012,11,15));
+		list.forEach(t-> System.out.println(t.getDate()+"  "+t.getVolume()));
 
 	}
 	

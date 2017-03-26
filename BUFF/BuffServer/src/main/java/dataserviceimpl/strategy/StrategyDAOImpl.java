@@ -2,6 +2,8 @@ package dataserviceimpl.strategy;
 
 import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
+import pick.PickStockService;
+import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import vo.StockPickIndexVO;
@@ -13,10 +15,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +28,22 @@ import java.util.stream.Collectors;
  */
 public enum  StrategyDAOImpl implements StrategyDAO {
     STRATEGY_DAO ;
+
+
+    private PickStockService pickStockService;
+
+    StrategyDAOImpl(){
+        this.pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+    }
+
+
+    /**
+     * 外部注入 pickStockService
+     * @param pickStockService
+     */
+    public void setPickStockService(PickStockService pickStockService) {
+        this.pickStockService = pickStockService;
+    }
 
     /**
      * 说一个严重的问题    股票代码没有统一格式        000001 和 1不一样
@@ -64,10 +84,44 @@ public enum  StrategyDAOImpl implements StrategyDAO {
         return  codeList;
     }
 
+    /**
+     *
+     * @param strategyConditionVO
+     * @param stockPoolConditionVO
+     * @param stockPickIndexVOs
+     * @return
+     */
     @Override
-    public List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
-        return null;
+    public List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO,
+                                          StockPoolConditionVO stockPoolConditionVO,
+                                          List<StockPickIndexVO> stockPickIndexVOs) {
+        //首先分割天数
+        List<PickleData> pickleDatas =
+                pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
+                        ,strategyConditionVO.endDate , strategyConditionVO.holdingPeriod);
+        List<String> codePool =  getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+
+
+
+        //在每个区间内 确定有效的股票
+        for (int i  = 0 ; i < pickleDatas.size() ; i++){
+            PickleData pickleData = pickleDatas.get(i);
+            LocalDate begin = pickleData.beginDate;
+            LocalDate end = pickleData.endDate;
+            pickleData.stockCodes = codePool.stream()
+                    .filter(getPredictAll(stockPickIndexVOs,begin,end)) //根据所有条件过滤
+                    .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
+                            .getCompareRank(begin,end,strategyConditionVO.asd,
+                                    strategyConditionVO.formationPeriod))
+                    .limit(strategyConditionVO.holdingNum)
+                    .collect(Collectors.toList());
+        }
+
+
+        //返回已经排好序 决定后的要买的股票代码
+        return pickleDatas;
     }
+
 
 
     /**
@@ -160,6 +214,38 @@ public enum  StrategyDAOImpl implements StrategyDAO {
             return codelist;
         }
     }
+
+
+    /**
+     * 获取全部的过滤器
+     * @param stockPickIndexVOs
+     * @param begindate
+     * @param endDate
+     * @return
+     */
+    private  Predicate<String> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
+            , LocalDate begindate ,LocalDate endDate){
+        Predicate<String> predicateAll = new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                Iterator<StockPickIndexVO> iter = stockPickIndexVOs.iterator();
+                while(iter.hasNext()){
+                    StockPickIndexVO stockPickIndexVO = iter.next();
+                    Predicate<String> p = stockPickIndexVO.stockPickIndex.getFilter(begindate,endDate,s
+                            ,stockPickIndexVO.lowerBound,stockPickIndexVO.upBound);
+
+                    if (!p.test(s))  return false;
+                }
+
+
+                return true;
+            }
+        };
+
+        return predicateAll;
+    }
+
+
 
     /**
      * 偷偷用来做测试的东西 233333

@@ -1,6 +1,7 @@
 package po;
 
 import stockenum.StockPool;
+import vo.StockPoolConditionVO;
 
 import java.util.Set;
 
@@ -35,6 +36,19 @@ public class StockPoolConditionPO {
         this.block = block;
         this.industry = industry;
         this.excludeST = excludeST;
+    }
+
+
+    /**
+     * 快速的po转vo  我不太清楚  是不是应该接口就定VO??
+     * add by wsw
+     * @param stockPoolConditionVO
+     */
+    public StockPoolConditionPO(StockPoolConditionVO stockPoolConditionVO){
+        this.stockPool = stockPoolConditionVO.stockPool;
+        this.block = stockPoolConditionVO.block;
+        this.industry = stockPoolConditionVO.industry;
+        this.excludeST = stockPoolConditionVO.excludeST;
     }
 
     public StockPool getStockPool() {

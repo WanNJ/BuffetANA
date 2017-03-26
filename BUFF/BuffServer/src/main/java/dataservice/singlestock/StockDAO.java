@@ -29,4 +29,16 @@ public interface StockDAO {
      * @return
      */
     List<StockPO> getMarketStockInfo();
+
+
+    /**
+     * 获得日期区间范围内的  股票信息
+     * 如果没有   则尽可能给
+     * 包涵两端
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<StockPO>  getStockInFoInRangeDate(String code , LocalDate begin , LocalDate end);
 }

@@ -52,4 +52,9 @@ public class StockDaoImpl_stub implements StockDAO {
         list.add(stockOne);
         return list;
     }
+
+    @Override
+    public List<StockPO> getStockInFoInRangeDate(String code, LocalDate begin, LocalDate end) {
+        return null;
+    }
 }

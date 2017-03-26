@@ -12,5 +12,11 @@ public enum StockPool {
     /**
      * 沪深300
      */
-    HS300
+    HS300,
+
+    /**
+     * 用户自定义
+     */
+    UserMode
+
 }

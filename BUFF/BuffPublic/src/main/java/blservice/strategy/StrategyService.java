@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface StrategyService {
 
-    void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
+     void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
               List<StockPickIndexVO> stockPickIndexVOs);
 
     void setStrategyConditionVO(StrategyConditionVO strategyConditionVO);

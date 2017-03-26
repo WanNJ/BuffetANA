@@ -1,11 +1,14 @@
 package gui.functions;
 
 import blservice.market.MarketService;
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.cells.editors.base.JFXTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
 import gui.ChartController.*;
 import gui.sidemenu.SideMenuController;
 import gui.utils.DatePickerUtil;
@@ -59,7 +62,7 @@ public class MarketController {
     @PostConstruct
     public void init(){
         //初始化所要用到的逻辑层接口
-        factory = new BlFactoryServiceImpl();
+        factory = new BLFactorySeviceOnlyImpl();
         marketService=factory.createMarketService();
 
         //初始化界面用到的各种控件

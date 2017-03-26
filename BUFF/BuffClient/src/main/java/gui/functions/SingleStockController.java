@@ -5,8 +5,8 @@ import blservice.singlestock.StockDetailService;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
+import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
 import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -109,7 +109,7 @@ public class SingleStockController {
 
 
         //初始化所要用到的逻辑层接口
-        factory = new BlFactoryServiceImpl();
+        factory = new BLFactorySeviceOnlyImpl();
         stockDetailService = factory.createStockDetailService();
         allStockService =factory.createAllStockService();
 

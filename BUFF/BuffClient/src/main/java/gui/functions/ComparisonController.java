@@ -4,8 +4,8 @@ import blservice.comparison.ComparisonService;
 import blservice.exception.InvalidDateException;
 import blservice.exception.InvalidStockCodeException;
 import com.jfoenix.controls.*;
+import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
 import gui.ChartController.ClosePriceChart;
 import gui.ChartController.LRChart;
 import gui.utils.CodeComplementUtil;
@@ -17,13 +17,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import vo.BasisAnalysisVO;
 import vo.DailyClosingPriceVO;
@@ -84,7 +82,7 @@ public class ComparisonController {
 
     @FXML
     private void initialize() {
-        blFactoryService = new BlFactoryServiceImpl();
+        blFactoryService = new BLFactorySeviceOnlyImpl();
         comparisonService = blFactoryService.createComparisonService();
 
         //设置DatePicker

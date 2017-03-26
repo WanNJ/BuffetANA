@@ -46,6 +46,11 @@
             <artifactId>BuffPublic</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>Warren_Buffett</groupId>
+            <artifactId>BuffServer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>Warren_Buffett</groupId>-->
             <!--<artifactId>BuffServer</artifactId>-->

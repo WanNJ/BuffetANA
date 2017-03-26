@@ -1,19 +1,12 @@
 package driver;
 
 import blservice.exception.RangeException;
-import blservice.singlestock.MALineService;
 import blservice.thermometer.ThermometerService;
+import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
 import runner.ClientRunner;
-import util.DateRange;
-import vo.LongPeiceVO;
-import vo.MAPieceVO;
-import vo.StockVolVO;
 
 import java.rmi.RemoteException;
-import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/12.
@@ -22,7 +15,7 @@ public class testRmi {
     public static void main(String[] args) throws RemoteException, RangeException {
         ClientRunner cr = new ClientRunner();
 
-        BlFactoryService factory  =new BlFactoryServiceImpl();
+        BlFactoryService factory  =new BLFactorySeviceOnlyImpl();
 
 
 

@@ -1,7 +1,7 @@
 package gui.ChartController;
 
+import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
-import factory.BlFactoryServiceImpl;
 
 /**
  * Created by wshwbluebird on 2017/3/11.
@@ -21,7 +21,7 @@ public enum ChartController  {
     private BlFactoryService factory;
 
      ChartController(){
-        factory =  new BlFactoryServiceImpl();
+        factory =  new BLFactorySeviceOnlyImpl();
         this.kLineChartController = new KLineChartController();
         this.maChartController = new MAChartController();
         this.volChartController = new VOLChartController();

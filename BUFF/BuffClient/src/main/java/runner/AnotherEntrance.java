@@ -27,7 +27,7 @@ public class AnotherEntrance extends Task<Integer> {
 	@Override
 	protected Integer call() throws Exception {
 		//启动RMI
-		ClientRunner cr = new ClientRunner();
+		//ClientRunner cr = new ClientRunner();
 
 		Platform.runLater(() -> {
             try {

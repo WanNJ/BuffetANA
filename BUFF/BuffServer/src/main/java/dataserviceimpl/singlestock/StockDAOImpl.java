@@ -72,8 +72,9 @@ public enum StockDAOImpl implements StockDAO{
 
             while ((line = br.readLine()) != null) {
                 String[] stockInfo = line.split("\t");
-                StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], stockInfo[8], DateUtil.parseSlash(stockInfo[1]),
-                        Double.parseDouble(stockInfo[3]), Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
+                StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], String.format("%6s", stockInfo[8]).replace(" ", "0"),
+                        DateUtil.parseSlash(stockInfo[1]), Double.parseDouble(stockInfo[3]),
+                        Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
                         Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
                 stockPOs.add(stockPO);
             }
@@ -108,7 +109,7 @@ public enum StockDAOImpl implements StockDAO{
             String[] stockInfo = line.split("\t");
             String name = stockInfo[9];
             String market = stockInfo[10];
-            String code = stockInfo[8];
+            String code = String.format("%6s", stockInfo[8]).replace(" ", "0");
             LocalDate date = DateUtil.parseSlash(stockInfo[1]);
             double high_Price = Double.parseDouble(stockInfo[3]);
             double low_Price = Double.parseDouble(stockInfo[4]);

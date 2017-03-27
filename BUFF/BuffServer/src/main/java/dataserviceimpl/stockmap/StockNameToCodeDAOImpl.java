@@ -28,7 +28,7 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
 
             while ((line = br.readLine()) != null) {
                 String[] nameAndCode = line.split(",");
-                nameToCode.add(new StockNameAndCodePO(nameAndCode[0], nameAndCode[1]));
+                nameToCode.add(new StockNameAndCodePO(nameAndCode[0], String.format("%6s", nameAndCode[1]).replace(" ", "0")));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

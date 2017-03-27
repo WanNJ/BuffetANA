@@ -21,21 +21,24 @@ public class MAMStrategyServiceImpl implements StrategyService {
 
     @Override
     public void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
-
+        this.strategyConditionVO = strategyConditionVO;
+        this.stockPoolConditionVO = stockPoolConditionVO;
+        this.stockPickIndexVOs = stockPickIndexVOs;
     }
 
     @Override
     public void setStrategyConditionVO(StrategyConditionVO strategyConditionVO) {
+        this.strategyConditionVO = strategyConditionVO;
     }
 
     @Override
     public void setStockPoolConditionVO(StockPoolConditionVO stockPoolConditionVO) {
-
+        this.stockPoolConditionVO = stockPoolConditionVO;
     }
 
     @Override
     public void setStockPickIndexVOList(List<StockPickIndexVO> stockPickIndexVOs) {
-
+        this.stockPickIndexVOs = stockPickIndexVOs;
     }
 
     @Override

@@ -118,7 +118,7 @@ public enum  StrategyDAOImpl implements StrategyDAO {
             PickleData pickleData = pickleDatas.get(i);
             LocalDate begin = pickleData.beginDate;
             LocalDate end = pickleData.endDate;
-            
+
             pickleData.stockCodes = pickleData.stockCodes.stream()
                     .filter(getPredictAll(stockPickIndexVOs,begin,end)) //根据所有条件过滤
                     .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序

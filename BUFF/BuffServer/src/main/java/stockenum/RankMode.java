@@ -1,9 +1,11 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.PickleData;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/26.
@@ -11,11 +13,17 @@ import java.util.Comparator;
 public interface RankMode {
     /**
      * 获取排名的比较器
-     * @param begin
-     * @param end
      * @param asd   是否按升序排列  即从小到大
-     * @param formPeriod   持有期  或  均线的日数
      * @return
      */
-    Comparator<BackData> getCompareRank(LocalDate begin, LocalDate end , boolean asd , int formPeriod);
+    Comparator<BackData> getCompareRank( boolean asd);
+
+    /**
+     * 注入 要比较的数据
+     * @param pickleDatas
+     * @param codeList
+     * @return   List<PickleData>
+     */
+    List<PickleData>  setRankValue(List<PickleData> pickleDatas , List<String>  codeList
+            ,LocalDate begin , LocalDate end , int holdPeriod);
 }

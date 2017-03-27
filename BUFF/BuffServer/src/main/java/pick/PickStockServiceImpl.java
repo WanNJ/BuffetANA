@@ -1,5 +1,6 @@
 package pick;
 
+import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
 import dataservice.singlestock.StockDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
@@ -47,9 +48,14 @@ public enum PickStockServiceImpl implements PickStockService {
                     || begin.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
                 begin = begin.plusDays(1);
             } else {
-                pickleDatas.add(new PickleData(begin,begin.plusDays(sep),null)) ;
+                pickleDatas.add(new PickleData(begin,begin.plusDays(sep),new ArrayList<BackData>())) ;
                 begin = begin.plusDays(sep);
             }
+        }
+
+        if(!begin.isAfter(end)  && !(begin.getDayOfWeek().equals(DayOfWeek.SATURDAY)
+                || begin.getDayOfWeek().equals(DayOfWeek.SUNDAY))){
+            pickleDatas.add(new PickleData(begin,begin.plusDays(sep),new ArrayList<BackData>())) ;
         }
 
         return pickleDatas;
@@ -58,7 +64,7 @@ public enum PickStockServiceImpl implements PickStockService {
 
     @Override
     public List<DayMA> getSingleCodeMAInfo(String code, LocalDate begin, LocalDate end, int days) {
-        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(days+120) , end);
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(days+180) , end);
         Collections.reverse(list);
 
         List<DayMA> ans = new ArrayList<>();
@@ -77,6 +83,7 @@ public enum PickStockServiceImpl implements PickStockService {
 
         double ma = 0;
         for (int i = 0 ; js < betweendays ;i++){
+            //System.out.println("i:  "+i);
             double adj = list.get(i).getAdjCloseIndex();
             if(ma!=0  && (end.minusDays(js).getDayOfWeek().equals(DayOfWeek.SATURDAY)
                             || end.minusDays(js).getDayOfWeek().equals(DayOfWeek.FRIDAY))){
@@ -101,7 +108,7 @@ public enum PickStockServiceImpl implements PickStockService {
             }
 
         }
-
+        Collections.reverse(ans);
         return ans;
     }
 }

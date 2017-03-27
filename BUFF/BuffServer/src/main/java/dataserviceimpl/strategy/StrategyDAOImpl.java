@@ -67,6 +67,7 @@ public enum  StrategyDAOImpl implements StrategyDAO {
         List<String>  codeList  = new ArrayList<>();
         List<String>  blockList  ;
         List<String>  industryList ;
+
         HashSet<String>  block = (HashSet<String>) stockPoolConditionPO.getBlock();
         HashSet<String>  industry = (HashSet<String>) stockPoolConditionPO.getIndustry();
 
@@ -95,31 +96,40 @@ public enum  StrategyDAOImpl implements StrategyDAO {
     public List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO,
                                           StockPoolConditionVO stockPoolConditionVO,
                                           List<StockPickIndexVO> stockPickIndexVOs) {
+
+
+        List<String> codePool =  getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
         //首先分割天数
         List<PickleData> pickleDatas =
                 pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
                         ,strategyConditionVO.endDate , strategyConditionVO.holdingPeriod);
-        List<String> codePool =  getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
-        //List<BackData>  rawPickle = new ArrayList<>();
+        /**
+         * 已经注入好了要比较的信息
+         */
+        List<PickleData> pickleDataList =
+                strategyConditionVO.strategyType.setRankValue(pickleDatas,codePool
+                        ,strategyConditionVO.beginDate, strategyConditionVO.endDate
+                        ,strategyConditionVO.holdingPeriod);
+
 
 
         //在每个区间内 确定有效的股票
-        for (int i  = 0 ; i < pickleDatas.size() ; i++){
+        for (int i  = 0 ; i < pickleDataList.size() ; i++){
             PickleData pickleData = pickleDatas.get(i);
             LocalDate begin = pickleData.beginDate;
             LocalDate end = pickleData.endDate;
+            
             pickleData.stockCodes = pickleData.stockCodes.stream()
                     .filter(getPredictAll(stockPickIndexVOs,begin,end)) //根据所有条件过滤
-            //        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
-           //                 .getCompareRank(begin,end,strategyConditionVO.asd,
-             //                       strategyConditionVO.formationPeriod))
+                    .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
+                            .getCompareRank(strategyConditionVO.asd))
                     .limit(strategyConditionVO.holdingNum)
                     .collect(Collectors.toList());
         }
 
 
         //返回已经排好序 决定后的要买的股票代码
-        return pickleDatas;
+        return pickleDataList;
     }
 
 

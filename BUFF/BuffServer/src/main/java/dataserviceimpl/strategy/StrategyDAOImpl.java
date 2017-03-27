@@ -31,6 +31,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
 
     private PickStockService pickStockService;
+    private List<String> stocksInPool;
 
     StrategyDAOImpl() {
         this.pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
@@ -91,10 +92,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
         codeList.addAll(industryList);
         codeList = codeList.parallelStream().distinct().collect(Collectors.toList());
 
+        this.stocksInPool = codeList;
         return codeList;
     }
 
     /**
+     * 这个方法必须在getStocksInPool之后调用！！！Attention！！！！！
      * @param strategyConditionVO
      * @param stockPoolConditionVO
      * @param stockPickIndexVOs
@@ -106,7 +109,14 @@ public enum StrategyDAOImpl implements StrategyDAO {
                                           List<StockPickIndexVO> stockPickIndexVOs) {
 
 
-        List<String> codePool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+        /*
+        修改 BY TY
+        避免重复调用getStocksInPool方法，减少一次读文件的次数
+        这样就必须保证该方法必须在getStocksInPool方法之后调用
+        本来腌制数据也必须应该在股票池数据确定下来后才能进行腌制，所以从逻辑上讲，也应该是这么个顺序
+        调用时，切记要在getStocksInPool之后调用，测试该方法时尤其要注意！！！！！
+         */
+        List<String> codePool = stocksInPool;
         //首先分割天数
         List<PickleData> pickleDatas =
                 pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate

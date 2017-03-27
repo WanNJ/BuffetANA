@@ -108,7 +108,15 @@ public enum StrategyType  implements RankMode{
     MOM {
         @Override
         public Comparator<BackData> getCompareRank(boolean asd) {
-            return null;
+            return (o1, o2) -> {
+                if(asd){
+                    if((double)o1.rankValue > (double)o2.rankValue)  return 1;
+                    else return -1;
+                }else{
+                    if((double)o1.rankValue > (double)o2.rankValue)  return -1;
+                    else return 1;
+                }
+            };
         }
 
         @Override

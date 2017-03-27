@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by slow_time on 2017/3/24.
  */
-public class MAMStrategyServiceImpl implements StrategyService {
+public class StrategyServiceImpl implements StrategyService {
 
     private StrategyConditionVO strategyConditionVO;
     private StockPoolConditionVO stockPoolConditionVO;
@@ -19,11 +19,6 @@ public class MAMStrategyServiceImpl implements StrategyService {
     private DAOFactoryService daoFactoryService;
     private StrategyDAO strategyDAO;
     private List<PickleData> pickleDatas;
-
-
-    private  List<PickleData> getData() {
-        return null;
-    }
 
 
     /**

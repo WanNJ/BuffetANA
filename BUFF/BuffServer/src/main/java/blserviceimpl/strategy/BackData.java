@@ -26,5 +26,4 @@ public class BackData {
         filterData  =new Number[StockPickIndex.values().length];
     }
 
-
 }

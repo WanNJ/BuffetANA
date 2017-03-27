@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/3/26.
@@ -24,7 +23,7 @@ public enum PickStockServiceImpl implements PickStockService {
 
     private StockDAO stockDAO;
 
-     PickStockServiceImpl(){
+    PickStockServiceImpl(){
         this.stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
     }
 

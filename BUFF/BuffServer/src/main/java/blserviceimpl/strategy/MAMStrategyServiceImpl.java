@@ -1,6 +1,9 @@
 package blserviceimpl.strategy;
 
 import blservice.strategy.StrategyService;
+import dataservice.strategy.StrategyDAO;
+import factroy.DAOFactoryService;
+import factroy.DAOFactoryServiceImpl;
 import vo.*;
 
 import java.util.List;
@@ -13,10 +16,24 @@ public class MAMStrategyServiceImpl implements StrategyService {
     private StrategyConditionVO strategyConditionVO;
     private StockPoolConditionVO stockPoolConditionVO;
     private List<StockPickIndexVO> stockPickIndexVOs;
+    private DAOFactoryService daoFactoryService;
+    private StrategyDAO strategyDAO;
+    private List<PickleData> pickleDatas;
 
 
     private  List<PickleData> getData() {
         return null;
+    }
+
+
+    /**
+     * 可以用于后期test时将工厂替换成stub
+     * @param daoFactoryService
+     */
+    public void setFactory(DAOFactoryService daoFactoryService) {
+        this.daoFactoryService = daoFactoryService;
+        this.strategyDAO = daoFactoryService.createStrategyDAO();
+        this.pickleDatas = strategyDAO.getPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
     }
 
     @Override
@@ -24,6 +41,7 @@ public class MAMStrategyServiceImpl implements StrategyService {
         this.strategyConditionVO = strategyConditionVO;
         this.stockPoolConditionVO = stockPoolConditionVO;
         this.stockPickIndexVOs = stockPickIndexVOs;
+        setFactory(new DAOFactoryServiceImpl());
     }
 
     @Override
@@ -42,47 +60,47 @@ public class MAMStrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public BackDetailVO getBackDetailVO(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public BackDetailVO getBackDetailVO() {
         return null;
     }
 
     @Override
-    public List<DayRatePieceVO> getDayRatePieceVO(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<DayRatePieceVO> getDayRatePieceVO() {
         return null;
     }
 
     @Override
-    public List<BetterTableVO> getBetterTableVO(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<BetterTableVO> getBetterTableVO() {
         return null;
     }
 
     @Override
-    public List<BetterPieceVO> getOverProfitRateByFormation(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<BetterPieceVO> getOverProfitRateByFormation() {
         return null;
     }
 
     @Override
-    public List<BetterPieceVO> getOverProfitRateByHolding(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<BetterPieceVO> getOverProfitRateByHolding() {
         return null;
     }
 
     @Override
-    public List<BetterPieceVO> getWinRateByFormation(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<BetterPieceVO> getWinRateByFormation() {
         return null;
     }
 
     @Override
-    public List<BetterPieceVO> getWinProfitRateByHolding(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<BetterPieceVO> getWinProfitRateByHolding() {
         return null;
     }
 
     @Override
-    public List<Double> getProfitDistributeBar(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<Double> getProfitDistributeBar() {
         return null;
     }
 
     @Override
-    public ProfitDistributionPieVO getProfitDistributePie(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+    public ProfitDistributionPieVO getProfitDistributePie() {
         return null;
     }
 }

@@ -32,7 +32,7 @@ public class MAMStrategyServiceImpl implements StrategyService {
      */
     public void setFactory(DAOFactoryService daoFactoryService) {
         this.daoFactoryService = daoFactoryService;
-        this.strategyDAO = daoFactoryService.createStrategyDAO();
+        this.strategyDAO = this.daoFactoryService.createStrategyDAO();
         this.pickleDatas = strategyDAO.getPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
     }
 

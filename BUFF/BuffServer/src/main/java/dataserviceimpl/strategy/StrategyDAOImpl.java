@@ -1,5 +1,6 @@
 package dataserviceimpl.strategy;
 
+import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
 import pick.PickStockService;
@@ -18,7 +19,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -100,7 +100,7 @@ public enum  StrategyDAOImpl implements StrategyDAO {
                 pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
                         ,strategyConditionVO.endDate , strategyConditionVO.holdingPeriod);
         List<String> codePool =  getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
-
+        //List<BackData>  rawPickle = new ArrayList<>();
 
 
         //在每个区间内 确定有效的股票
@@ -108,11 +108,11 @@ public enum  StrategyDAOImpl implements StrategyDAO {
             PickleData pickleData = pickleDatas.get(i);
             LocalDate begin = pickleData.beginDate;
             LocalDate end = pickleData.endDate;
-            pickleData.stockCodes = codePool.stream()
+            pickleData.stockCodes = pickleData.stockCodes.stream()
                     .filter(getPredictAll(stockPickIndexVOs,begin,end)) //根据所有条件过滤
-                    .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
-                            .getCompareRank(begin,end,strategyConditionVO.asd,
-                                    strategyConditionVO.formationPeriod))
+            //        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
+           //                 .getCompareRank(begin,end,strategyConditionVO.asd,
+             //                       strategyConditionVO.formationPeriod))
                     .limit(strategyConditionVO.holdingNum)
                     .collect(Collectors.toList());
         }
@@ -223,19 +223,19 @@ public enum  StrategyDAOImpl implements StrategyDAO {
      * @param endDate
      * @return
      */
-    private  Predicate<String> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
-            , LocalDate begindate ,LocalDate endDate){
-        Predicate<String> predicateAll = new Predicate<String>() {
+    private  Predicate<BackData> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
+            , LocalDate begindate , LocalDate endDate){
+        Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
-            public boolean test(String s) {
-                Iterator<StockPickIndexVO> iter = stockPickIndexVOs.iterator();
-                while(iter.hasNext()){
-                    StockPickIndexVO stockPickIndexVO = iter.next();
-                    Predicate<String> p = stockPickIndexVO.stockPickIndex.getFilter(begindate,endDate,s
-                            ,stockPickIndexVO.lowerBound,stockPickIndexVO.upBound);
-
-                    if (!p.test(s))  return false;
-                }
+            public boolean test(BackData s) {
+//                Iterator<StockPickIndexVO> iter = stockPickIndexVOs.iterator();
+//                while(iter.hasNext()){
+//                    StockPickIndexVO stockPickIndexVO = iter.next();
+//                    Predicate<BackData> p = stockPickIndexVO.stockPickIndex.getFilter(begindate,endDate,s
+//                            ,stockPickIndexVO.lowerBound,stockPickIndexVO.upBound);
+//
+//                    if (!p.test(s))  return false;
+//                }
 
 
                 return true;

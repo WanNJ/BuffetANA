@@ -1,5 +1,7 @@
 package stockenum;
 
+import blserviceimpl.strategy.BackData;
+
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
@@ -17,6 +19,6 @@ public interface FilterMode {
      * @param upBound  上限
      * @return     predict
      */
-    Predicate<String>
+    Predicate<BackData>
     getFilter(LocalDate begin , LocalDate end , String code ,Double lowerBound , Double upBound);
 }

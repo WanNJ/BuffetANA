@@ -35,20 +35,39 @@ public class ServerRunner {
 //		list.stream().forEach(t-> System.out.println(t.date+"  "+t.MAValue));
 
 
-        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-                .MA,3,10,LocalDate.of(2013,1,1),LocalDate.of(2013,1,21),10,false);
+//        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
+//                .MA,3,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+//
+//        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
+//        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
+//        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
+//                stockPoolConditionVO,stockPickIndexVOs);
+//
+//
+//        for(PickleData  p: list){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            p.stockCodes.stream().forEach(t-> System.out.println(t));
+//            System.out.println();
+//        }
+//        double d  = 0;
+//       // Number i  = d;
+//        int r = 123;
+//        //System.out.println(i);
+//        //i = r;
+//
+//
+//        Number[] ss = new Number[5];
+//        ss[0] = d;
+//        ss[1] = r;
+//
+//        System.out.println(ss[0]+"  "+ss[1]);
 
-        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
-        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
-        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
-                stockPoolConditionVO,stockPickIndexVOs);
+//		int x = StockPickIndex.values().length;
+//		Number[] ss  = new Number[x+1];
+//		System.out.println(StockPool.All.ordinal());
+//		System.out.println(StockPool.UserMode.ordinal());
+//		//ss[StockPickIndex.PREVIOUS_DAY_UPRATE.ordinal()]
 
-
-        for(PickleData  p: list){
-            System.out.println(p.beginDate+"    "+p.endDate);
-            p.stockCodes.stream().forEach(t-> System.out.println(t));
-            System.out.println();
-        }
 
 
 	}

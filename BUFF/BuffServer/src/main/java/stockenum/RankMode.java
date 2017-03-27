@@ -1,5 +1,7 @@
 package stockenum;
 
+import blserviceimpl.strategy.BackData;
+
 import java.time.LocalDate;
 import java.util.Comparator;
 
@@ -15,5 +17,5 @@ public interface RankMode {
      * @param formPeriod   持有期  或  均线的日数
      * @return
      */
-    Comparator<String> getCompareRank(LocalDate begin, LocalDate end , boolean asd , int formPeriod);
+    Comparator<BackData> getCompareRank(LocalDate begin, LocalDate end , boolean asd , int formPeriod);
 }

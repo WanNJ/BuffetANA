@@ -9,14 +9,14 @@ import java.util.List;
 public class PickleData {
     public LocalDate beginDate;
     public  LocalDate endDate;
-    public  List<String> stockCodes;
+    public  List<BackData> stockCodes;
 
 
     public PickleData(){
 
     }
 
-    public PickleData(LocalDate beginDate , LocalDate endDate , List<String> stockCodes){
+    public PickleData(LocalDate beginDate , LocalDate endDate , List<BackData> stockCodes){
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.stockCodes = stockCodes;
@@ -40,11 +40,11 @@ public class PickleData {
         this.endDate = endDate;
     }
 
-    public List<String> getStockCodes() {
+    public List<BackData> getStockCodes() {
         return stockCodes;
     }
 
-    public void setStockCodes(List<String> stockCodes) {
+    public void setStockCodes(List<BackData> stockCodes) {
         this.stockCodes = stockCodes;
     }
 }

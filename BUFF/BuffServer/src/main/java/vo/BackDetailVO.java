@@ -19,7 +19,7 @@ public class BackDetailVO {
 
     public double beta;
 
-    public double fluctuaionRate ; //波动率  可以暂时先不算
+    public double fluctuationRate ; //波动率  可以暂时先不算
 
 
     /**
@@ -58,11 +58,11 @@ public class BackDetailVO {
      * @param largestBackRate
      * @param alpha
      * @param beta
-     * @param fluctuaionRate
+     * @param fluctuationRate
      */
     public BackDetailVO(double yearProfitRate , double baseYearProfitRate, double  totalProfitRate ,
                         double sharpRate,double largestBackRate , double alpha ,double beta,
-                        double fluctuaionRate){
+                        double fluctuationRate){
         this.alpha = alpha;
         this.beta = beta;
         this.largestBackRate = largestBackRate;
@@ -70,7 +70,7 @@ public class BackDetailVO {
         this.yearProfitRate = yearProfitRate;
         this.baseYearProfitRate = baseYearProfitRate;
         this.totalProfitRate = totalProfitRate;
-        this.fluctuaionRate = fluctuaionRate;
+        this.fluctuationRate = fluctuationRate;
     }
 
 

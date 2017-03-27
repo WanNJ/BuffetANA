@@ -26,19 +26,20 @@ import java.util.stream.Collectors;
 /**
  * Created by wshwbluebird on 2017/3/26.
  */
-public enum  StrategyDAOImpl implements StrategyDAO {
-    STRATEGY_DAO ;
+public enum StrategyDAOImpl implements StrategyDAO {
+    STRATEGY_DAO;
 
 
     private PickStockService pickStockService;
 
-    StrategyDAOImpl(){
+    StrategyDAOImpl() {
         this.pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
     }
 
 
     /**
      * 外部注入 pickStockService
+     *
      * @param pickStockService
      */
     public void setPickStockService(PickStockService pickStockService) {
@@ -48,45 +49,52 @@ public enum  StrategyDAOImpl implements StrategyDAO {
     /**
      * 说一个严重的问题    股票代码没有统一格式        000001 和 1不一样
      * 我暂时在这里初步解决一下
+     * 沪深300的股票池方法暂时不能调用，我已经将其修改为就是沪深300那300支实际的股票，不再是所有股票，一旦调用会报错（切记！！！！）
+     * 等后期我们加进去了沪深300的其他股票，调用该方法的沪深300股票池时才不会报错！！！！
      * @param stockPoolConditionPO 筛选股票池的条件参数
      * @return
      */
     @Override
     public List<String> getStocksInPool(StockPoolConditionPO stockPoolConditionPO) {
         //是否为全部股票
-        if(stockPoolConditionPO.getStockPool().equals(StockPool.All)){
+        if (stockPoolConditionPO.getStockPool().equals(StockPool.All)) {
             return readAllList(stockPoolConditionPO.isExcludeST());
         }
 
         //是否为沪深300  暂时把沪深300 也当作全部股票
-        if(stockPoolConditionPO.getStockPool().equals(StockPool.HS300)){
-            return readAllList(stockPoolConditionPO.isExcludeST());
+        /*
+        修改 by TY
+        增加了获取沪深300的股票的代码，沪深300中的股票没有ST类型的所以这个isExcludeST参数被我删除了
+        不过由于老师给的数据没有涵盖沪深300所有的数据，所以这个方法暂时用不到
+         */
+        //TODO 在界面层记得当用户选择了沪深300时，要将是否排除ST那个选项置为不排除，且设为不可编辑
+        if (stockPoolConditionPO.getStockPool().equals(StockPool.HS300)) {
+            return readHS300List();
         }
-        final boolean  excludeST = stockPoolConditionPO.isExcludeST();
+        final boolean excludeST = stockPoolConditionPO.isExcludeST();
         //usernode
-        List<String>  codeList  = new ArrayList<>();
-        List<String>  blockList  ;
-        List<String>  industryList ;
+        List<String> codeList = new ArrayList<>();
+        List<String> blockList;
+        List<String> industryList;
 
-        HashSet<String>  block = (HashSet<String>) stockPoolConditionPO.getBlock();
-        HashSet<String>  industry = (HashSet<String>) stockPoolConditionPO.getIndustry();
+        HashSet<String> block = (HashSet<String>) stockPoolConditionPO.getBlock();
+        HashSet<String> industry = (HashSet<String>) stockPoolConditionPO.getIndustry();
 
-        blockList = block.parallelStream().map(t->readFromBlock(t,excludeST)).
-                flatMap(t->t.stream()).collect(Collectors.toList());
+        blockList = block.parallelStream().map(t -> readFromBlock(t, excludeST)).
+                flatMap(t -> t.stream()).collect(Collectors.toList());
 
 
-        industryList = industry.parallelStream().map(t->readFromIndustry(t,excludeST)).
-                flatMap(t->t.stream()).collect(Collectors.toList());
+        industryList = industry.parallelStream().map(t -> readFromIndustry(t, excludeST)).
+                flatMap(t -> t.stream()).collect(Collectors.toList());
 
         codeList.addAll(blockList);
         codeList.addAll(industryList);
         codeList = codeList.parallelStream().distinct().collect(Collectors.toList());
 
-        return  codeList;
+        return codeList;
     }
 
     /**
-     *
      * @param strategyConditionVO
      * @param stockPoolConditionVO
      * @param stockPickIndexVOs
@@ -98,29 +106,28 @@ public enum  StrategyDAOImpl implements StrategyDAO {
                                           List<StockPickIndexVO> stockPickIndexVOs) {
 
 
-        List<String> codePool =  getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+        List<String> codePool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
         //首先分割天数
         List<PickleData> pickleDatas =
                 pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
-                        ,strategyConditionVO.endDate , strategyConditionVO.holdingPeriod);
+                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
         /**
          * 已经注入好了要比较的信息
          */
         List<PickleData> pickleDataList =
-                strategyConditionVO.strategyType.setRankValue(pickleDatas,codePool
-                        ,strategyConditionVO.beginDate, strategyConditionVO.endDate
-                        ,strategyConditionVO.holdingPeriod);
-
+                strategyConditionVO.strategyType.setRankValue(pickleDatas, codePool
+                        , strategyConditionVO.beginDate, strategyConditionVO.endDate
+                        , strategyConditionVO.holdingPeriod);
 
 
         //在每个区间内 确定有效的股票
-        for (int i  = 0 ; i < pickleDataList.size() ; i++){
+        for (int i = 0; i < pickleDataList.size(); i++) {
             PickleData pickleData = pickleDatas.get(i);
             LocalDate begin = pickleData.beginDate;
             LocalDate end = pickleData.endDate;
 
             pickleData.stockCodes = pickleData.stockCodes.stream()
-                    .filter(getPredictAll(stockPickIndexVOs,begin,end)) //根据所有条件过滤
+                    .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
                     .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
                             .getCompareRank(strategyConditionVO.asd))
                     .limit(strategyConditionVO.holdingNum)
@@ -133,108 +140,136 @@ public enum  StrategyDAOImpl implements StrategyDAO {
     }
 
 
-
     /**
      * 读取该板块所有符合条件的股票代码
+     *
      * @param blockName
      * @return 该文件内部所有的 stock code
      */
-    private static List<String> readFromBlock(String blockName, boolean excludeST){
-        final  String pref = "../Data/Block/";
-        String pathOfFile = pref+blockName+".csv";
+    private static List<String> readFromBlock(String blockName, boolean excludeST) {
+        final String pref = "../Data/Block/";
+        String pathOfFile = pref + blockName + ".csv";
 
         List<String> codelist = new ArrayList<>();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(pathOfFile), Charset.forName("UTF-8"))) {
             List<String> list = br.lines().collect(Collectors.toList());
-            codelist = list.parallelStream().map(t->{
+            codelist = list.parallelStream().map(t -> {
                 String[] codeAndName = t.split(",");
-                if(excludeST&&(codeAndName[1].startsWith("*ST") || codeAndName[1].startsWith("ST")))
+                if (excludeST && (codeAndName[1].startsWith("*ST") || codeAndName[1].startsWith("ST")))
                     return "ST";
                 else
                     return codeAndName[0];
-            }).filter(t->!t.equals("ST")).map(t->{
-                while (t.startsWith("0")){
-                    t = t.substring(1,t.length());
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
                 }
                 return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {
-            System.err.println(pathOfFile +" is not exits");
-        }finally {
+            System.err.println(pathOfFile + " is not exits");
+        } finally {
             return codelist;
         }
     }
 
     /**
      * 读取该行业所有符合条件的股票代码
+     *
      * @param industryName
      * @return 该文件内部所有的 stock code
      */
-    private   static   List<String> readFromIndustry(String industryName ,boolean excludeST){
-        final  String pref = "../Data/Industry/";
-        String pathOfFile = pref+industryName+".csv";
+    private static List<String> readFromIndustry(String industryName, boolean excludeST) {
+        final String pref = "../Data/Industry/";
+        String pathOfFile = pref + industryName + ".csv";
 
         List<String> codelist = new ArrayList<>();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(pathOfFile), Charset.forName("UTF-8"))) {
             List<String> list = br.lines().collect(Collectors.toList());
-            codelist = list.parallelStream().map(t->{
+            codelist = list.parallelStream().map(t -> {
                 String[] codeAndName = t.split(",");
-                if(excludeST&&(codeAndName[1].startsWith("*ST") || codeAndName[1].startsWith("ST")))
+                if (excludeST && (codeAndName[1].startsWith("*ST") || codeAndName[1].startsWith("ST")))
                     return "ST";
                 else
                     return codeAndName[0];
-            }).filter(t->!t.equals("ST")).map(t->{
-                while (t.startsWith("0")){
-                    t = t.substring(1,t.length());
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
                 }
                 return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {
-            System.err.println(pathOfFile +" is not exits");
-        }finally {
+            System.err.println(pathOfFile + " is not exits");
+        } finally {
             return codelist;
         }
     }
 
-    private   static   List<String> readAllList(boolean excludeST){
-        final  String pref = "../Data/StockMap";
-        String pathOfFile = pref+".csv";
+    private static List<String> readAllList(boolean excludeST) {
+        final String pref = "../Data/StockMap";
+        String pathOfFile = pref + ".csv";
 
-        List<String> codelist = new ArrayList<>();
+        List<String> codeList = new ArrayList<>();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(pathOfFile), Charset.forName("UTF-8"))) {
             List<String> list = br.lines().collect(Collectors.toList());
-            codelist = list.parallelStream().map(t->{
+            codeList = list.parallelStream().map(t -> {
                 String[] codeAndName = t.split(",");
-                if(excludeST&&(codeAndName[0].startsWith("*ST") || codeAndName[0].startsWith("ST")))
+                if (excludeST && (codeAndName[0].startsWith("*ST") || codeAndName[0].startsWith("ST")))
                     return "ST";
                 else
                     return codeAndName[1];
-            }).filter(t->!t.equals("ST")).map(t->{
-                while (t.startsWith("0")){
-                    t = t.substring(1,t.length());
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                //TODO 这一步没看懂是干嘛的，名字为什么会以0开头？
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
                 }
                 return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {
-            System.err.println(pathOfFile +" is not exits");
-        }finally {
-            return codelist;
+            System.err.println(pathOfFile + " is not exits");
+        } finally {
+            return codeList;
+        }
+    }
+
+    private static List<String> readHS300List() {
+        final String pref = "../Data/HS300";
+        String pathOfFile = pref + ".csv";
+
+        List<String> codeList = new ArrayList<>();
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(pathOfFile), Charset.forName("UTF-8"))) {
+            List<String> list = br.lines().collect(Collectors.toList());
+            codeList = list.parallelStream().map(t -> {
+                String[] codeAndName = t.split(",");
+                return codeAndName[1];
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                //TODO 这一步没看懂是干嘛的，名字为什么会以0开头？
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
+                }
+                return t;
+            }).collect(Collectors.toList());
+
+        } catch (IOException e) {
+            System.err.println(pathOfFile + " is not exits");
+        } finally {
+            return codeList;
         }
     }
 
 
     /**
      * 获取全部的过滤器
+     *
      * @param stockPickIndexVOs
      * @param begindate
      * @param endDate
      * @return
      */
-    private  Predicate<BackData> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
-            , LocalDate begindate , LocalDate endDate){
+    private Predicate<BackData> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
+            , LocalDate begindate, LocalDate endDate) {
         Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
             public boolean test(BackData s) {
@@ -254,7 +289,6 @@ public enum  StrategyDAOImpl implements StrategyDAO {
 
         return predicateAll;
     }
-
 
 
     /**

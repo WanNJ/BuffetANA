@@ -67,15 +67,13 @@ public enum StrategyType  implements RankMode{
                     while(stockPOs.get(Adjcount).getDate().isBefore(pickleData.beginDate.minusDays(1))){
                         Adjcount++;
                     }
-                    //if(code.equals("300052"))
-                    //System.out.println(dayMAs.get(MAcount).date);
+//                    if(code.equals("300052"))
+//                    System.out.println(dayMAs.get(MAcount).date);
                     double MA = dayMAs.get(MAcount).MAValue;
-                    //if(code.equals("300052"))
-                    //System.out.println(MA);
+//                    if(code.equals("300052"))
+//                    System.out.println(MA);
                     double Adj = stockPOs.get(Adjcount).getAdjCloseIndex();
 
-                    if(code.equals("300052"))
-                        System.out.println(Adj);
                     double rank =  (MA-Adj)/MA;
 
                     /**

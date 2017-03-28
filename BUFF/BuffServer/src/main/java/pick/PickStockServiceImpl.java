@@ -105,7 +105,7 @@ public enum PickStockServiceImpl implements PickStockService {
                 js++;
             }
         }
-        
+        Collections.reverse(ans);
         return ans;
     }
 }

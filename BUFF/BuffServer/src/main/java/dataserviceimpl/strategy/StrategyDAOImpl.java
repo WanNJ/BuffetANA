@@ -3,6 +3,7 @@ package dataserviceimpl.strategy;
 import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
+import exception.NoStockInPoolException;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
@@ -108,6 +109,15 @@ public enum StrategyDAOImpl implements StrategyDAO {
                                           StockPoolConditionVO stockPoolConditionVO,
                                           List<StockPickIndexVO> stockPickIndexVOs) {
 
+        /**
+         * TODO
+         * add by wsw
+         * 我觉得可以 加一个提醒 比如stocksInPool 为空时 抛出异常 或者直接调用
+         */
+        if(this.stocksInPool==null){
+            //throw new NoStockInPoolException();
+            stocksInPool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+        }
 
         /*
         修改 BY TY
@@ -117,6 +127,10 @@ public enum StrategyDAOImpl implements StrategyDAO {
         调用时，切记要在getStocksInPool之后调用，测试该方法时尤其要注意！！！！！
          */
         List<String> codePool = stocksInPool;
+
+
+
+
         //首先分割天数
         List<PickleData> pickleDatas =
                 pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate

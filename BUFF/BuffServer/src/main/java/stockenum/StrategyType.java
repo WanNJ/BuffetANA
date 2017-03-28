@@ -6,6 +6,7 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPO;
 import util.DayMA;
+import util.RunTimeSt;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -46,10 +47,17 @@ public enum StrategyType  implements RankMode{
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
                 ,LocalDate begin , LocalDate end, int holdPeriod) {
             for (String code: codeList) {
+
+                RunTimeSt.getRunTime("开始读取 "+code+"股票");
+
                 List<DayMA> dayMAs =  pickStockService.getSingleCodeMAInfo
                         (code ,begin.minusDays(1),end,holdPeriod);
                 List<StockPO>  stockPOs = pickStockService
                         .getSingleCodeInfo(code , begin.minusDays(1) , end);
+
+
+
+                RunTimeSt.getRunTime("结束读取 "+code+"股票");
 
                 int MAcount = 0;
                 int Adjcount = 0;
@@ -94,6 +102,8 @@ public enum StrategyType  implements RankMode{
                     }
                 }
 
+
+                RunTimeSt.getRunTime("结束计算 "+code+"股票");
             }
 
             return pickleDatas;

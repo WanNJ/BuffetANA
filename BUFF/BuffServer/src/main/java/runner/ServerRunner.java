@@ -7,12 +7,14 @@ import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.DayMA;
+import util.RunTimeSt;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ServerRunner {
@@ -32,9 +34,11 @@ public class ServerRunner {
 //
 //		list2.stream().forEach(t-> System.out.println(t.date+"  "+t.MAValue));
 
+        RunTimeSt.Start();
+
 
         StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+                .MA,10,1,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
 
         StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
@@ -45,12 +49,13 @@ public class ServerRunner {
                 stockPoolConditionVO,stockPickIndexVOs);
 //
         System.out.println("finish");
-        for(PickleData  p: list){
-            System.out.println(p.beginDate+"    "+p.endDate);
-            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
-            System.out.println();
-        }
+//        for(PickleData  p: list){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
+//            System.out.println();
+//        }
 
+        RunTimeSt.getRunTime("结束");
 
 	}
 	

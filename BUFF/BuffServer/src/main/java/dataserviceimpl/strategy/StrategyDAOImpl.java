@@ -8,6 +8,7 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
+import util.RunTimeSt;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
@@ -119,7 +120,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
             stocksInPool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
         }
 
-        /*
+        /**
         修改 BY TY
         避免重复调用getStocksInPool方法，减少一次读文件的次数
         这样就必须保证该方法必须在getStocksInPool方法之后调用
@@ -143,6 +144,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
                         , strategyConditionVO.beginDate, strategyConditionVO.endDate
                         , strategyConditionVO.holdingPeriod);
 
+        RunTimeSt.getRunTime("注入完成");
 
         //在每个区间内 确定有效的股票
         for (int i = 0; i < pickleDataList.size(); i++) {

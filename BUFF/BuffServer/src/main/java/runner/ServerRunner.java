@@ -1,21 +1,9 @@
 package runner;
 
-import blserviceimpl.strategy.PickleData;
-import dataserviceimpl.singlestock.StockDAOImpl;
-import dataserviceimpl.strategy.StrategyDAOImpl;
 import pick.PickStockServiceImpl;
-import po.StockPO;
-import po.StockPoolConditionPO;
-import stockenum.StockPickIndex;
-import stockenum.StockPool;
-import stockenum.StrategyType;
 import util.DayMA;
-import vo.StockPickIndexVO;
-import vo.StockPoolConditionVO;
-import vo.StrategyConditionVO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServerRunner {
@@ -29,58 +17,29 @@ public class ServerRunner {
 //				StockDAOImpl.STOCK_DAO_IMPL.getStockInFoInRangeDate("1",
 //						LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
 //		list.forEach(t-> System.out.println(t.getDate()+"  "+t.getVolume()));
+
+		List<DayMA>  list2 = PickStockServiceImpl.PICK_STOCK_SERVICE
+				.getSingleCodeMAInfo("300187",LocalDate.of(2013,12,1),LocalDate.of(2014,1,1),2);
+
+		list2.stream().forEach(t-> System.out.println(t.date+"  "+t.MAValue));
+
 //
-//		List<DayMA>  list2 = PickStockServiceImpl.PICK_STOCK_SERVICE
-//				.getSingleCodeMAInfo("300187",LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),5);
+//        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
+//                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
 //
-//		list2.stream().forEach(t-> System.out.println(t.date+"  "+t.MAValue));
+//        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
+//        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
+//        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
+//                stockPoolConditionVO,stockPickIndexVOs);
+//
+//
+//        for(PickleData  p: list){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
+//            System.out.println();
+//        }
 
 
-        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
-
-        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
-        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
-        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
-                stockPoolConditionVO,stockPickIndexVOs);
-
-
-        for(PickleData  p: list){
-            System.out.println(p.beginDate+"    "+p.endDate);
-            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
-            System.out.println();
-        }
-//        double d  = 0;
-//       // Number i  = d;
-//        int r = 123;
-//        //System.out.println(i);
-//        //i = r;
-//
-//
-//        Number[] ss = new Number[5];
-//        ss[0] = d;
-//        ss[1] = r;
-//
-//        System.out.println(ss[0]+"  "+ss[1]);
-
-//		int x = StockPickIndex.values().length;
-//		Number[] ss  = new Number[x+1];
-//		System.out.println(StockPool.All.ordinal());
-//		System.out.println(StockPool.UserMode.ordinal());
-//		//ss[StockPickIndex.PREVIOUS_DAY_UPRATE.ordinal()]
-
-//            for (int i = 0 ; i < 10 ; i ++ ){
-//                while(true){
-//                    i++;
-//                    System.out.println(i);
-//                    if(i==2) break;
-//
-//                }
-//
-//
-//                System.out.println(i+"213123");
-//            }
-//
 	}
 	
 }

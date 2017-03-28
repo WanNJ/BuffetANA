@@ -80,34 +80,32 @@ public enum PickStockServiceImpl implements PickStockService {
         //用于计算要计算几天的均线
         long betweendays = end.toEpochDay() - begin.toEpochDay()+1;
 
+        LocalDate temp = end;
+
         double ma = 0;
-        for (int i = 0 ; js < betweendays ;i++){
-            //System.out.println("i:  "+i);
-            double adj = list.get(i).getAdjCloseIndex();
-            if(ma!=0  && (end.minusDays(js).getDayOfWeek().equals(DayOfWeek.SATURDAY)
-                            || end.minusDays(js).getDayOfWeek().equals(DayOfWeek.FRIDAY))){
-                DayMA dayMA = new DayMA(end.minusDays(js),ma);
-                ans.add(dayMA);
-                js++;
-                continue;
-            }
-            if(adj!=0) {
-                sum+= adj;
-                if(i+1>= days){
-
-
-                    ma = sum/days;
-                    DayMA dayMA = new DayMA(end.minusDays(js),ma);
-                    ans.add(dayMA);
-                    sum -= list.get(i-days+1-none).getAdjCloseIndex();
-                    js++;
-                }
-            }else {
-                none++;
-            }
-
+        int i;
+        for ( i = 0 ; js < days  ;i++){
+           if(list.get(i).getAdjCloseIndex()!=0){
+               js++;
+               sum+= list.get(i).getAdjCloseIndex();
+           }
         }
-        Collections.reverse(ans);
+
+        js = 0;
+        for(;!temp.isBefore(begin);i++){
+            if(list.get(i).getAdjCloseIndex()!=0){
+                ma = sum/days;
+                while(list.get(js).getDate().isBefore(temp)){
+                    ans.add(new DayMA(temp,ma));
+                    temp = temp.minusDays(1);
+                }
+                ans.add(new DayMA(temp,ma));
+                temp = temp.minusDays(1);
+                sum+=list.get(i).getAdjCloseIndex()-list.get(js).getAdjCloseIndex();
+                js++;
+            }
+        }
+        
         return ans;
     }
 }

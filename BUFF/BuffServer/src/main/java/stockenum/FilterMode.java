@@ -1,8 +1,10 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.PickleData;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -12,13 +14,19 @@ public interface FilterMode {
 
     /**
      * 返回过滤器
-     * @param begin   开始时间
-     * @param end     结束时间
-     * @param code     股票代码
      * @param lowerBound 下线  若为空则没有下限
      * @param upBound  上限
      * @return     predict
      */
-    Predicate<BackData>
-    getFilter(LocalDate begin , LocalDate end , String code ,Double lowerBound , Double upBound);
+    Predicate<BackData>  getFilter(Double lowerBound , Double upBound);
+
+
+    /**
+     * 对特定的股票  注入过滤的参数
+     * @param current
+     * @param code
+     * @return
+     */
+    List<PickleData>  setFilterValue(List<PickleData>  current , String code);
+
 }

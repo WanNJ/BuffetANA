@@ -1,8 +1,10 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.PickleData;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -18,8 +20,13 @@ public enum StockPickIndex implements FilterMode {
      */
     PREVIOUS_DAY_VOL {
         @Override
-        public Predicate<BackData> getFilter(LocalDate begin, LocalDate end, String code, Double lowerBound, Double upBound) {
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
             return null;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            return current;
         }
     },
     /**
@@ -27,8 +34,13 @@ public enum StockPickIndex implements FilterMode {
      */
     PREVIOUS_DAY_UPRATE {
         @Override
-        public Predicate<BackData> getFilter(LocalDate begin, LocalDate end, String code, Double lowerBound, Double upBound) {
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
             return null;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            return current;
         }
     }
 

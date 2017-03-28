@@ -103,6 +103,13 @@ public enum StrategyType  implements RankMode{
                 }
 
 
+
+
+                // TODO
+                // !!!!!!!!!!!在此处加入  过滤参数的注入
+
+
+
                 RunTimeSt.getRunTime("结束计算 "+code+"股票");
             }
 

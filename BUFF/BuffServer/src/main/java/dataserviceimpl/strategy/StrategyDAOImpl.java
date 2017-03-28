@@ -300,7 +300,14 @@ public enum StrategyDAOImpl implements StrategyDAO {
         Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
             public boolean test(BackData s) {
-//              s
+                for (StockPickIndexVO vo:stockPickIndexVOs) {
+
+                    boolean cur =
+                            vo.stockPickIndex.getFilter(vo.lowerBound,vo.upBound).test(s);
+
+                    //如果检测结果不符合要求  直接 返回false
+                    if(!cur)  return false;
+                }
 
 
                 return true;

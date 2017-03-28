@@ -5,9 +5,13 @@ import po.StockPO;
 import util.DateUtil;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +53,7 @@ public enum StockDAOImpl implements StockDAO{
     public List<StockPO> getStockInfoByCode(String code) {
         String codeFile = "../Data/Code/" + code + ".csv";
         return generateStockPOs(codeFile);
+        //return generateStockPOsInJSE8(codeFile);
     }
 
     @Override
@@ -170,6 +175,46 @@ public enum StockDAOImpl implements StockDAO{
                 }
             }
             return stockPO;
+        }
+    }
+
+
+
+
+    /**
+     * add by wsw  新的读取文件的方法
+     * 执行IO操作
+     * 根据所给的文件名，读取出里面所有的股票数据，并转换成PO列表的形式传出去
+     * @param fileName 所要查询的文件名
+     * @return 若所给文件不存在，则返回null，该方法返回的List已经是按日期从小到大排好序的
+     */
+    private List<StockPO> generateStockPOsInJSE8(String fileName) {
+
+        List<StockPO> stockPOs = new ArrayList<>();
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("UTF-8"))) {
+            stockPOs = br.lines().map(t->{
+                    String[] stockInfo = t.split("\t");
+            StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], String.format("%6s", stockInfo[8]).replace(" ", "0"),
+                    DateUtil.parseSlash(stockInfo[1]), Double.parseDouble(stockInfo[3]),
+                    Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
+                    Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
+                    return stockPO;
+            }).collect(Collectors.toList());
+            br.close();
+
+//            stockPOs.sort((stockPO1, stockPO2) -> {
+//                if(stockPO1.getDate().isEqual(stockPO2.getDate()))
+//                    return 0;
+//                return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
+//            });
+
+            Collections.reverse(stockPOs);
+
+        } catch (IOException e) {
+            System.out.println(fileName + " is not found");
+        }finally {
+            return stockPOs;
         }
     }
 }

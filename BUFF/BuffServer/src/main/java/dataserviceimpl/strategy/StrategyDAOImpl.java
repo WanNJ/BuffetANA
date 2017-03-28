@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -299,14 +300,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
         Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
             public boolean test(BackData s) {
-//                Iterator<StockPickIndexVO> iter = stockPickIndexVOs.iterator();
-//                while(iter.hasNext()){
-//                    StockPickIndexVO stockPickIndexVO = iter.next();
-//                    Predicate<BackData> p = stockPickIndexVO.stockPickIndex.getFilter(begindate,endDate,s
-//                            ,stockPickIndexVO.lowerBound,stockPickIndexVO.upBound);
-//
-//                    if (!p.test(s))  return false;
-//                }
+//              s
 
 
                 return true;

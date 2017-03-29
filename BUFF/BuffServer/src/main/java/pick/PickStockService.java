@@ -3,6 +3,7 @@ package pick;
 import po.StockPO;
 import util.DayMA;
 import blserviceimpl.strategy.PickleData;
+import util.FormationMOM;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +32,18 @@ public interface PickStockService {
      * @return  返回的是日期均线的组合列表
      */
     List<DayMA>  getSingleCodeMAInfo(String code , LocalDate begin , LocalDate end , int days);
+
+
+    /**
+     * 获得特定天内的股票的收益率信息
+     * @param code
+     * @param begin
+     * @param end
+     * @param formationPeriod
+     * @return
+     */
+    List<FormationMOM> getSingleCodeMOMInfo(String code, LocalDate begin, LocalDate end, int formationPeriod);
+
 
     /**
      * 已经在stockDAO 中实现了  只是为了消除循环依赖

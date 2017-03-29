@@ -6,6 +6,7 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPO;
 import util.DayMA;
+import util.FormationMOM;
 import util.RunTimeSt;
 
 import java.time.LocalDate;
@@ -121,6 +122,8 @@ public enum StrategyType  implements RankMode{
      * 动量策略
      */
     MOM {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+
         @Override
         public Comparator<BackData> getCompareRank(boolean asd) {
             return (o1, o2) -> {
@@ -136,8 +139,19 @@ public enum StrategyType  implements RankMode{
 
         @Override
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
-                ,LocalDate begin , LocalDate end , int holdPeriod) {
-            return null;
+                ,LocalDate begin , LocalDate end , int formationPeriod) {
+
+            for(String code: codeList) {
+                List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
+
+                int j = 0;
+                for(int i = 0; i < pickleDatas.size(); i++) {
+                    while(!formationMOMs.get(j).date.isEqual(pickleDatas.get(i).beginDate))
+                        j++;
+                    pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate));
+                }
+            }
+            return pickleDatas;
         }
     }
 

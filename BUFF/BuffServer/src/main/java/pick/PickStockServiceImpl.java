@@ -7,20 +7,20 @@ import dataserviceimpl.singlestock.StockDAOImpl;
 import po.StockPO;
 import util.DayMA;
 import util.FormationMOM;
+import vo.LongPeiceVO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/3/26.
  */
 public enum PickStockServiceImpl implements PickStockService {
-    PICK_STOCK_SERVICE;
-
-
+    PICK_STOCK_SERVICE ;
 
     private StockDAO stockDAO;
 
@@ -164,4 +164,30 @@ public enum PickStockServiceImpl implements PickStockService {
         Collections.reverse(codeYields);
         return codeYields;
     }
+
+
+
+
+
+    @Override
+    public List<LongPeiceVO> getLastVol(String code, LocalDate begin, LocalDate end) {
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
+        Collections.reverse(list);
+
+        list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
+        List<LongPeiceVO> ans = new ArrayList<>();
+        LocalDate temp = end;
+        for (int i = 0 ; !temp.isBefore(begin);i++){
+            while(temp.isAfter(list.get(i).getDate())){
+                ans.add(new LongPeiceVO(temp,list.get(i).getVolume()));
+                temp = temp.minusDays(1);
+            }
+            ans.add(new LongPeiceVO(temp,list.get(i+1).getVolume()));
+            temp = temp.minusDays(1);
+        }
+
+        Collections.reverse(ans);
+        return ans;
+    }
+
 }

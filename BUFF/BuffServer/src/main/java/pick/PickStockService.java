@@ -4,6 +4,7 @@ import po.StockPO;
 import util.DayMA;
 import blserviceimpl.strategy.PickleData;
 import util.FormationMOM;
+import vo.LongPeiceVO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,6 +54,16 @@ public interface PickStockService {
      * @return
      */
     List<StockPO>  getSingleCodeInfo(String code , LocalDate begin , LocalDate end);
+
+
+    /**
+     * 获得上一日的交易量
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<LongPeiceVO>  getLastVol(String code , LocalDate begin ,LocalDate end);
 
 
 

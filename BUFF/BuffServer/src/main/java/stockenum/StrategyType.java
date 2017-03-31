@@ -173,19 +173,19 @@ public enum StrategyType  implements RankMode{
                         j++;
                     double firstDayOpen;
                     double lastDayClose;
-                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).beginDate)
+                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).beginDate))
                         k++;
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
-                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).endDate)
+                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).endDate))
                         k++;
                     lastDayClose = stockPOs.get(k).getClose_Price();
                     pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
                 }
-//
-//                for (StockPickIndexVO s : stockPickIndexVOs) {
-//                    pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
-//                }
-//
+
+                for (StockPickIndexVO s : stockPickIndexVOs) {
+                    pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
+                }
+
 
             }
             return pickleDatas;

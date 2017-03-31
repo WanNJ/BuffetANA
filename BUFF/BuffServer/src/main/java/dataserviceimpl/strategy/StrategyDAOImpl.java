@@ -3,7 +3,6 @@ package dataserviceimpl.strategy;
 import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
-import exception.NoStockInPoolException;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
@@ -21,7 +20,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -186,11 +184,6 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[0];
-            }).filter(t -> !t.equals("ST")).map(t -> {
-                while (t.startsWith("0")) {
-                    t = t.substring(1, t.length());
-                }
-                return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {

@@ -45,7 +45,7 @@ public class ServerRunner {
 
         StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
-        stockPickIndexVOs.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,10.0,100.0));
+        stockPickIndexVOs.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100.0));
 
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
 
@@ -59,9 +59,9 @@ public class ServerRunner {
             System.out.println();
         }
 
-
+//
 //        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
-//        List<LongPeiceVO> longPeiceVOs = pickStockService.getLastVol("000001",LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
+//        List<LongPeiceVO> longPeiceVOs = pickStockService.getLastVol("000017",LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
 //        longPeiceVOs.stream().forEach(t-> System.out.println(t.localDate+"   "+t.amount));
 
         RunTimeSt.getRunTime("结束");

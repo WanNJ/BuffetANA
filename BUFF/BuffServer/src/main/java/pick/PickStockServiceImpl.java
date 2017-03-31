@@ -177,13 +177,39 @@ public enum PickStockServiceImpl implements PickStockService {
         list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
         List<LongPeiceVO> ans = new ArrayList<>();
         LocalDate temp = end;
+
+        //list.stream().forEach(t-> System.out.println(t.getDate()+"   "+t.getVolume()));
+       // System.out.println(list.size());
+        //if(list.size()<0)
         for (int i = 0 ; !temp.isBefore(begin);i++){
+            if(i>list.size()-1){
+                //System.out.println(i);
+                while(!temp.isBefore(begin)){
+                    ans.add(new LongPeiceVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+
+                Collections.reverse(ans);
+                return ans;
+            }
+
+
             while(temp.isAfter(list.get(i).getDate())){
                 ans.add(new LongPeiceVO(temp,list.get(i).getVolume()));
                 temp = temp.minusDays(1);
             }
-            ans.add(new LongPeiceVO(temp,list.get(i+1).getVolume()));
-            temp = temp.minusDays(1);
+            try {
+                ans.add(new LongPeiceVO(temp,list.get(i+1).getVolume()));
+                temp = temp.minusDays(1);
+            }catch (Exception e){
+                while(!temp.isBefore(begin)){
+                    ans.add(new LongPeiceVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+                Collections.reverse(ans);
+                return ans;
+            }
+
         }
 
         Collections.reverse(ans);

@@ -105,9 +105,9 @@ public enum StrategyType  implements RankMode{
                     //Added By TY
                     double firstDayOpen = 0 ;
                     double lastDayClose = 0;
-                    System.out.println("STRATEGY  input KKKKK:::    ");
+                    //System.out.println("STRATEGY  input KKKKK:::    ");
                     while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).beginDate)) {
-                        System.out.println(k);
+                        //System.out.println(k);
                         k++;
                     }
                     firstDayOpen = stockPOs.get(k).getOpen_Price();

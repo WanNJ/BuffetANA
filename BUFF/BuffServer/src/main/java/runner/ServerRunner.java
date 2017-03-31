@@ -5,6 +5,7 @@ import dataserviceimpl.strategy.StrategyDAOImpl;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
+import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.DayMA;
@@ -38,27 +39,30 @@ public class ServerRunner {
 
         RunTimeSt.Start();
 
+
+        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
+                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+
+        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
+        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
+        stockPickIndexVOs.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,10.0,100.0));
+
+        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+
+        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
+                stockPoolConditionVO,stockPickIndexVOs);
 //
-//        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-//                .MA,10,1,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
-//
-//        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
-//        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
-//
-//        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
-//
-//        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
-//                stockPoolConditionVO,stockPickIndexVOs);
-////
-//        System.out.println("finish");
-//        for(PickleData  p: list){
-//            System.out.println(p.beginDate+"    "+p.endDate);
-//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
-//            System.out.println();
-//        }
-        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
-        List<LongPeiceVO> longPeiceVOs = pickStockService.getLastVol("000001",LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
-        longPeiceVOs.stream().forEach(t-> System.out.println(t.localDate+"   "+t.amount));
+        System.out.println("finish");
+        for(PickleData  p: list){
+            System.out.println(p.beginDate+"    "+p.endDate);
+            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
+            System.out.println();
+        }
+
+
+//        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+//        List<LongPeiceVO> longPeiceVOs = pickStockService.getLastVol("000001",LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
+//        longPeiceVOs.stream().forEach(t-> System.out.println(t.localDate+"   "+t.amount));
 
         RunTimeSt.getRunTime("结束");
 

@@ -8,6 +8,7 @@ import po.StockPO;
 import util.DayMA;
 import util.FormationMOM;
 import util.RunTimeSt;
+import vo.StockPickIndexVO;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -46,7 +47,7 @@ public enum StrategyType  implements RankMode{
 
         @Override
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
-                ,LocalDate begin , LocalDate end, int holdPeriod) {
+                ,LocalDate begin , LocalDate end, int holdPeriod ,List<StockPickIndexVO> stockPickIndexVOs) {
             for (String code: codeList) {
 
                 RunTimeSt.getRunTime("开始读取 "+code+"股票");
@@ -102,12 +103,15 @@ public enum StrategyType  implements RankMode{
                     Adjcount--;
 
                     //Added By TY
-                    double firstDayOpen;
-                    double lastDayClose;
-                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).beginDate)
+                    double firstDayOpen = 0 ;
+                    double lastDayClose = 0;
+                    System.out.println("STRATEGY  input KKKKK:::    ");
+                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).beginDate)) {
+                        System.out.println(k);
                         k++;
+                    }
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
-                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).endDate)
+                    while(stockPOs.get(k).getDate().isEqual( pickleDatas.get(i).endDate))
                         k++;
                     lastDayClose = stockPOs.get(k).getClose_Price();
 
@@ -122,7 +126,9 @@ public enum StrategyType  implements RankMode{
 
                 // TODO
                 // !!!!!!!!!!!在此处加入  过滤参数的注入
-
+                for (StockPickIndexVO s : stockPickIndexVOs) {
+                   pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
+                }
 
 
                 RunTimeSt.getRunTime("结束计算 "+code+"股票");
@@ -153,7 +159,7 @@ public enum StrategyType  implements RankMode{
 
         @Override
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
-                ,LocalDate begin , LocalDate end , int formationPeriod) {
+                ,LocalDate begin , LocalDate end , int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
 
             for(String code: codeList) {
 
@@ -175,6 +181,12 @@ public enum StrategyType  implements RankMode{
                     lastDayClose = stockPOs.get(k).getClose_Price();
                     pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
                 }
+//
+//                for (StockPickIndexVO s : stockPickIndexVOs) {
+//                    pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
+//                }
+//
+
             }
             return pickleDatas;
         }

@@ -143,7 +143,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
         List<PickleData> pickleDataList =
                 strategyConditionVO.strategyType.setRankValue(pickleDatas, codePool
                         , strategyConditionVO.beginDate, strategyConditionVO.endDate
-                        , strategyConditionVO.holdingPeriod);
+                        , strategyConditionVO.formationPeriod,stockPickIndexVOs);
 
         RunTimeSt.getRunTime("注入完成");
 

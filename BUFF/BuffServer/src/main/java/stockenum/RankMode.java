@@ -2,6 +2,7 @@ package stockenum;
 
 import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
+import vo.StockPickIndexVO;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -25,5 +26,5 @@ public interface RankMode {
      * @return   List<PickleData>
      */
     List<PickleData>  setRankValue(List<PickleData> pickleDatas , List<String>  codeList
-            ,LocalDate begin , LocalDate end , int holdPeriod);
+            ,LocalDate begin , LocalDate end , int holdPeriod, List<StockPickIndexVO> stockPickIndexVOs );
 }

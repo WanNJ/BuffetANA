@@ -63,6 +63,9 @@ public enum StrategyType  implements RankMode{
                 int MAcount = 0;
                 int Adjcount = 0;
 
+                //Added By TY
+                int k = 0;
+
 
                 /**
                  * 暂时先算前一天的 因为begin就要买了!!!!!
@@ -97,9 +100,20 @@ public enum StrategyType  implements RankMode{
                         Adjcount++;
                     }
                     Adjcount--;
+
+                    //Added By TY
+                    double firstDayOpen;
+                    double lastDayClose;
+                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).beginDate)
+                        k++;
+                    firstDayOpen = stockPOs.get(k).getOpen_Price();
+                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).endDate)
+                        k++;
+                    lastDayClose = stockPOs.get(k).getClose_Price();
+
                     //如果没有停牌 则加入可以进行进一步筛选和排序的队列
                     if(!isStop){
-                        pickleData.stockCodes.add(new BackData(code,rank));
+                        pickleData.stockCodes.add(new BackData(code,rank,firstDayOpen,lastDayClose));
                     }
                 }
 
@@ -142,13 +156,24 @@ public enum StrategyType  implements RankMode{
                 ,LocalDate begin , LocalDate end , int formationPeriod) {
 
             for(String code: codeList) {
+
                 List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
+                List<StockPO>  stockPOs = pickStockService.getSingleCodeInfo(code, begin, end);
 
                 int j = 0;
+                int k = 0;
                 for(int i = 0; i < pickleDatas.size(); i++) {
                     while(!formationMOMs.get(j).date.isEqual(pickleDatas.get(i).beginDate))
                         j++;
-                    pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate));
+                    double firstDayOpen;
+                    double lastDayClose;
+                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).beginDate)
+                        k++;
+                    firstDayOpen = stockPOs.get(k).getOpen_Price();
+                    while(stockPOs.get(k).getDate() != pickleDatas.get(i).endDate)
+                        k++;
+                    lastDayClose = stockPOs.get(k).getClose_Price();
+                    pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
                 }
             }
             return pickleDatas;

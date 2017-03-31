@@ -140,7 +140,7 @@ public class SingleStockController {
 
 
         //初始化界面数据
-        this.setStockInfo("1");
+        this.setStockInfo("000001");
 
         //初始化界面用到的各种控件
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
@@ -155,7 +155,6 @@ public class SingleStockController {
                     super.updateItem(item, empty);
 
                     if (item == null || empty) {
-                        System.out.println("hhh");
                         setText(null);
                         setStyle("");
                     } else {

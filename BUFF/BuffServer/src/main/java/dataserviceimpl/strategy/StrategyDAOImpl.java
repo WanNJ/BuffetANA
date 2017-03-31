@@ -212,6 +212,11 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[0];
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
+                }
+                return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {
@@ -234,6 +239,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[1];
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                //TODO 这一步没看懂是干嘛的，名字为什么会以0开头？
+                while (t.length()<6) {
+                    t = "0"+t;
+                }
+                return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {
@@ -253,6 +264,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
             codeList = list.parallelStream().map(t -> {
                 String[] codeAndName = t.split(",");
                 return codeAndName[1];
+            }).filter(t -> !t.equals("ST")).map(t -> {
+                //TODO 这一步没看懂是干嘛的，名字为什么会以0开头？
+                while (t.startsWith("0")) {
+                    t = t.substring(1, t.length());
+                }
+                return t;
             }).collect(Collectors.toList());
 
         } catch (IOException e) {

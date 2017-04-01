@@ -2,22 +2,17 @@ package runner;
 
 import blserviceimpl.strategy.PickleData;
 import dataserviceimpl.strategy.StrategyDAOImpl;
-import pick.PickStockService;
-import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
-import util.DayMA;
 import util.RunTimeSt;
-import vo.LongPeiceVO;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ServerRunner {
@@ -40,20 +35,35 @@ public class ServerRunner {
         RunTimeSt.Start();
 
 
-        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
-
-        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
-        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
-        stockPickIndexVOs.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100.0));
-
-        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
-
-        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
-                stockPoolConditionVO,stockPickIndexVOs);
+//        StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
+//                .MA,10,10,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
 //
+//        StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
+//        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
+//        stockPickIndexVOs.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100.0));
+//
+//        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+//
+//        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
+//                stockPoolConditionVO,stockPickIndexVOs);
+//        System.out.println("finish");
+//        for(PickleData  p: list){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
+//            System.out.println();
+//        }
+
+        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
+                .MOM,20,5,LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+        strategyConditionVO1.holdingRate = 0.2;
+        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
+        List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
+        stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100.0));
+        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
+        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
+                stockPoolConditionVO1,stockPickIndexVOs1);
         System.out.println("finish");
-        for(PickleData  p: list){
+        for(PickleData  p: list1){
             System.out.println(p.beginDate+"    "+p.endDate);
             p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
             System.out.println();

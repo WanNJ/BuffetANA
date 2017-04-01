@@ -162,8 +162,10 @@ public enum StrategyType  implements RankMode{
                 ,LocalDate begin , LocalDate end , int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
 
             for(String code: codeList) {
-
+                System.out.println(code);
                 List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
+                if(formationMOMs == null)
+                    continue;
                 List<StockPO>  stockPOs = pickStockService.getSingleCodeInfo(code, begin, end);
 
                 int j = 0;

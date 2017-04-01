@@ -118,11 +118,13 @@ public enum PickStockServiceImpl implements PickStockService {
         //找到第一个不是停盘日的日期
         while(list.get(jsBegin).getVolume() == 0) {
             jsBegin++;
+            if(jsBegin == list.size())
+                return null;
             jsEnd++;
         }
 
         //将jsBegin往前推一个形成期的交易日
-        int days = 0;    //用于计数，已经过了几个交易日
+        int days = 1;    //用于计数，已经过了几个交易日
         while(days < formationPeriod) {
             jsBegin++;
             if(list.get(jsBegin).getVolume() != 0)
@@ -138,7 +140,11 @@ public enum PickStockServiceImpl implements PickStockService {
         //用于保存当前日期在list中的位置
         days = 1;
 
-        while(temp.isAfter(begin)) {
+        while(!temp.isBefore(begin)) {
+            while(!temp.isEqual(list.get(days).getDate())) {
+                codeYields.add(new FormationMOM(codeYields.get(codeYields.size() - 1)));
+                temp = temp.minusDays(1);
+            }
             //若果这一天停盘，那么他的收益率应该与后一天一样
             if(list.get(days).getAdjCloseIndex() == 0) {
                 codeYields.add(new FormationMOM(codeYields.get(days - 1)));
@@ -146,6 +152,8 @@ public enum PickStockServiceImpl implements PickStockService {
             else {
                 while(true) {
                     jsBegin++;
+                    if(jsBegin == list.size())
+                        return null;
                     if(list.get(jsBegin).getVolume() != 0)
                         break;
                 }
@@ -158,7 +166,8 @@ public enum PickStockServiceImpl implements PickStockService {
                 FormationMOM formation = new FormationMOM(temp, yield);
                 codeYields.add(formation);
             }
-            temp.minusDays(1);
+            temp = temp.minusDays(1);
+            days++;
         }
 
         Collections.reverse(codeYields);

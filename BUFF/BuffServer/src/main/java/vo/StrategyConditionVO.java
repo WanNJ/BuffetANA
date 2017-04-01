@@ -33,6 +33,12 @@ public class StrategyConditionVO {
      */
     public int holdingNum;
 
+    /**
+     * 注意！！！！！必须手动注入！！！！！！
+     * 动量策略中的取前百分之多少的股票
+     */
+    public double holdingRate;
+
 
 
 
@@ -46,9 +52,7 @@ public class StrategyConditionVO {
         this.endDate = endDate;
         this.holdingNum = holdingNum;
         this.asd =asd;
+//        若是动量策略需要手动注入
+        this.holdingRate = 0.0;
     }
-
-//    public StrategyConditionVO() {
-//
-//    }
 }

@@ -55,7 +55,7 @@ public enum StrategyType  implements RankMode{
                 List<DayMA> dayMAs =  pickStockService.getSingleCodeMAInfo
                         (code ,begin.minusDays(1),end,holdPeriod);
                 List<StockPO>  stockPOs = pickStockService
-                        .getSingleCodeInfo(code , begin.minusDays(1) , end);
+                        .getSingleCodeInfo(code , begin.minusDays(10) , end.plusDays(10));
 
 
 
@@ -106,19 +106,25 @@ public enum StrategyType  implements RankMode{
                     double firstDayOpen = 0 ;
                     double lastDayClose = 0;
                     //System.out.println("STRATEGY  input KKKKK:::    ");
-                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).beginDate)) {
+                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate)) {
                         //System.out.println(k);
                         k++;
                     }
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
-                    while(stockPOs.get(k).getDate().isEqual( pickleDatas.get(i).endDate))
+                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate))
                         k++;
+
+                    if(stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
+                        k--;
+
                     lastDayClose = stockPOs.get(k).getClose_Price();
 
                     //如果没有停牌 则加入可以进行进一步筛选和排序的队列
                     if(!isStop){
                         pickleData.stockCodes.add(new BackData(code,rank,firstDayOpen,lastDayClose));
                     }
+
+
                 }
 
 
@@ -130,8 +136,24 @@ public enum StrategyType  implements RankMode{
                    pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
                 }
 
+                // add by wsw
+                /**
+                 * 在底层计算相对的收益情况 (基准的收益情况）
+                 */
+
 
                 RunTimeSt.getRunTime("结束计算 "+code+"股票");
+            }
+
+            for(int i = 0 ; i < pickleDatas.size() ;i++){
+                PickleData pickleData = pickleDatas.get(i);
+                double open =  pickleData.stockCodes.stream().mapToDouble(t->t.firstDayOpen).sum();
+                double close =  pickleData.stockCodes.stream().mapToDouble(t->t.lastDayClose).sum();
+//                System.out.println("open:  "+open);
+//                System.out.println("close:  "+close);
+                if(open!=0)
+                    pickleDatas.get(i).baseProfitRate = (close-open)/open;
+
             }
 
             return pickleDatas;

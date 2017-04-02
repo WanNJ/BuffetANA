@@ -9,7 +9,7 @@ public class BackDetailVO {
 
     public double baseYearProfitRate;  //基准年化收益率
 
-    public double totalProfitRate;  //总收益
+    public double totalProfitRate;  //总收益   暂时不考虑
 
     public double sharpRate ;  // 夏普率
 
@@ -27,6 +27,24 @@ public class BackDetailVO {
      */
     public BackDetailVO(){
 
+    }
+
+    /**
+     * 老师最基本的要求
+     * @param yearProfitRate
+     * @param baseYearProfitRate
+     * @param sharpRate
+     * @param largestBackRate
+     * @param alpha
+     * @param beta
+     */
+    public BackDetailVO(double yearProfitRate, double baseYearProfitRate, double sharpRate, double largestBackRate, double alpha, double beta) {
+        this.yearProfitRate = yearProfitRate;
+        this.baseYearProfitRate = baseYearProfitRate;
+        this.sharpRate = sharpRate;
+        this.largestBackRate = largestBackRate;
+        this.alpha = alpha;
+        this.beta = beta;
     }
 
     /**

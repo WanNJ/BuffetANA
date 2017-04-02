@@ -11,6 +11,11 @@ public class PickleData {
     public  LocalDate endDate;
     public  List<BackData> stockCodes;
 
+    /**
+     * 持仓期内的基准收益率，待计算
+     */
+    public double baseProfitRate;
+
 
     public PickleData(){
 

@@ -2,7 +2,9 @@
 
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -48,12 +50,50 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Label text="排名条件">
+                  <Label text="选股条件">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <FlowPane prefHeight="200.0" prefWidth="200.0" />
+                  <JFXTabPane>
+                     <tabs>
+                        <Tab text="筛选条件">
+                           <content>
+                              <StackPane>
+                                 <children>
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="指标" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Label text="比较符" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Label text="范围" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Label text="值" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Label text="操作" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </StackPane>
+                           </content>
+                        </Tab>
+                        <Tab text="排名条件">
+                           <content>
+                              <FlowPane />
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </JFXTabPane>
                </children>
             </VBox>
          </children>

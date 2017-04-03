@@ -218,6 +218,14 @@ public enum StrategyType  implements RankMode{
 
 
             }
+
+            for(PickleData pickleData : pickleDatas) {
+                double sum = 0.0;
+                for(BackData backData : pickleData.stockCodes) {
+                    sum += backData.rankValue.doubleValue();
+                }
+                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
+            }
             return pickleDatas;
         }
     }

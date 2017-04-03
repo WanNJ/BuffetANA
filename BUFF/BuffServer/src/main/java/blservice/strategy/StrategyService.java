@@ -24,10 +24,16 @@ public interface StrategyService {
     BackDetailVO getBackDetailVO();
 
     /**
-     * 获得回测累计收益比较图
+     * 获得回测累计收益比较图中的策略收益率累积折线图
      * @return
      */
-    List<DayRatePieceVO> getDayRatePieceVO();
+    List<DayRatePieceVO> getStrategyDayRatePieceVO();
+
+    /**
+     * 获得回测累计收益比较图中的基准收益率累积折线图
+     * @return
+     */
+    List<DayRatePieceVO> getBaseDayRatePieceVO();
 
     /**
      * 获得回测的形成期与持有期的TableView

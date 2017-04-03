@@ -30,4 +30,12 @@ public class ProfitDistributionPieVO {
      */
     public int red75;
 
+    public ProfitDistributionPieVO(int green0, int green35, int green75, int red0, int red35, int red75) {
+        this.green0 = green0;
+        this.green35 = green35;
+        this.green75 = green75;
+        this.red0 = red0;
+        this.red35 = red35;
+        this.red75 = red75;
+    }
 }

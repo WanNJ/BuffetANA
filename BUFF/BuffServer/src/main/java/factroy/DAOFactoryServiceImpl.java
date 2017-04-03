@@ -5,6 +5,7 @@ import dataservice.stockmap.StockNameToCodeDAO;
 import dataservice.strategy.StrategyDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
 import dataserviceimpl.stockmap.StockNameToCodeDAOImpl;
+import dataserviceimpl.strategy.StrategyDAOImpl;
 
 /**
  * Created by slow_time on 2017/3/7.
@@ -22,6 +23,6 @@ public class DAOFactoryServiceImpl implements DAOFactoryService {
 
     @Override
     public StrategyDAO createStrategyDAO() {
-        return null;
+        return StrategyDAOImpl.STRATEGY_DAO;
     }
 }

@@ -1,12 +1,12 @@
 package runner;
 
-import blserviceimpl.strategy.PickleData;
-import dataserviceimpl.strategy.StrategyDAOImpl;
-import po.StockPoolConditionPO;
+import blservice.strategy.StrategyService;
+import blserviceimpl.strategy.StrategyServiceImpl;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.RunTimeSt;
+import vo.BackDetailVO;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
@@ -58,16 +58,26 @@ public class ServerRunner {
         strategyConditionVO1.holdingRate = 0.2;
         StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
-        stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100.0));
-        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
-        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
-                stockPoolConditionVO1,stockPickIndexVOs1);
-        System.out.println("finish");
-        for(PickleData  p: list1){
-            System.out.println(p.beginDate+"    "+p.endDate);
-            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
-            System.out.println();
-        }
+        stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100000000000.0));
+//        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
+//        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
+//                stockPoolConditionVO1,stockPickIndexVOs1);
+//        System.out.println("finish");
+//        for(PickleData  p: list1){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
+//            System.out.println();
+//        }
+
+        StrategyService strategyService = new StrategyServiceImpl();
+        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
+        BackDetailVO backDetailVO = strategyService.getBackDetailVO();
+        System.out.println("alpha: " + backDetailVO.alpha);
+        System.out.println("beta: " + backDetailVO.beta);
+        System.out.println("yearProfitRate: " + backDetailVO.yearProfitRate);
+        System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
+        System.out.println("sharpRate: " + backDetailVO.sharpRate);
+        System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
 
 //
 //        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;

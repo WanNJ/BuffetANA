@@ -11,6 +11,11 @@ public class BackDetailVO {
 
     public double totalProfitRate;  //总收益   暂时不考虑
 
+    /**
+     * ！！！！！！需要注意的是！！！！！！
+     * 夏普比率算出来的就是百分比形式
+     * 比如，夏普比率为20，那么代表20%
+     */
     public double sharpRate ;  // 夏普率
 
     public double  largestBackRate;  // 最大回撤率

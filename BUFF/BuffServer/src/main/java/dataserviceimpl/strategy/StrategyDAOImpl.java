@@ -146,6 +146,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
         RunTimeSt.getRunTime("注入完成");
 
         if(strategyConditionVO.holdingRate != 0) {
+            System.out.println((int)Math.ceil(strategyConditionVO.holdingRate * stocksInPool.size()));
             strategyConditionVO.holdingNum = (int)Math.ceil(strategyConditionVO.holdingRate * stocksInPool.size());
         }
         //在每个区间内 确定有效的股票

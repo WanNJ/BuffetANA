@@ -66,6 +66,12 @@ public class StrategyServiceImpl implements StrategyService {
             baseRates.add(pickleData.baseProfitRate);
             baseYearProfitRate += pickleData.baseProfitRate;
             for(BackData backData : pickleData.stockCodes) {
+//                System.out.println(backData.code);
+//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+//                System.out.println(backData.lastDayClose);
+//                System.out.println(backData.firstDayOpen);
+//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
+//                System.out.println();
                 tempRate += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
@@ -262,6 +268,6 @@ public class StrategyServiceImpl implements StrategyService {
             else if(thisSum > 0)
                 thisSum = 0;
         }
-        return minSum;
+        return -minSum;
     }
 }

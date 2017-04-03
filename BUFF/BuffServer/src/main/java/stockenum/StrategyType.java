@@ -184,7 +184,6 @@ public enum StrategyType  implements RankMode{
                 ,LocalDate begin , LocalDate end , int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
 
             for(String code: codeList) {
-                System.out.println(code);
                 List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
                 if(formationMOMs == null)
                     continue;
@@ -199,17 +198,18 @@ public enum StrategyType  implements RankMode{
                     double lastDayClose;
 
                     boolean isStop = false;
-                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).beginDate))
+                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate))
                         k++;
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
-                    while(stockPOs.get(k).getDate().isEqual(pickleDatas.get(i).endDate)) {
-                        if(stockPOs.get(k).getVolume() == 0)
-                            isStop = true;
+                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
+//                        if(stockPOs.get(k).getVolume() == 0)
+//                            isStop = true;
                         k++;
                     }
                     lastDayClose = stockPOs.get(k).getClose_Price();
-                    if(!isStop)
+                    if(!isStop) {
                         pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
+                    }
                 }
 
                 for (StockPickIndexVO s : stockPickIndexVOs) {
@@ -222,7 +222,7 @@ public enum StrategyType  implements RankMode{
             for(PickleData pickleData : pickleDatas) {
                 double sum = 0.0;
                 for(BackData backData : pickleData.stockCodes) {
-                    sum += backData.rankValue.doubleValue();
+                    sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
                 }
                 pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
             }

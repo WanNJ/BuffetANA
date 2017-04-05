@@ -38,6 +38,8 @@ public enum PickStockServiceImpl implements PickStockService {
         return stockDAO.getStockInFoInRangeDate(code,begin,end);
     }
 
+
+
     @Override
     public List<PickleData> seprateDaysinCommon(LocalDate begin, LocalDate end, int sep) {
         List<PickleData>  pickleDatas = new ArrayList<>();

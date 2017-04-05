@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by slow_time on 2017/3/8.
@@ -21,6 +22,10 @@ import java.util.stream.Collectors;
 public enum StockDAOImpl implements StockDAO{
     STOCK_DAO_IMPL ;
 
+    StockDAOImpl(){
+        if (noneDate == null)
+            noneDate = getNoneTradeDates();
+    }
     /**
      * 提前缓存  减少一次读文件的次数
      * add by wsw
@@ -30,9 +35,15 @@ public enum StockDAOImpl implements StockDAO{
 
     List<StockPO> codeList = null;  //存取上一次的股票列表
 
+    List<LocalDate>  noneDate = null; //存储非交易日
+
     @Override
     public List<StockPO> getStockInFoInRangeDate(String code, LocalDate begin, LocalDate end) {
         List<StockPO> list;
+
+
+
+
         if(code.equals(this.code))
             list = this.codeList;
         else{
@@ -40,12 +51,20 @@ public enum StockDAOImpl implements StockDAO{
             this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(40));
             this.code  =code;
         }
+
+
         list = this.codeList;
-        System.out.println(code+"  "+codeList.size());
+       //System.out.println(code+"  "+codeList.size());
+
+        List<StockPO> stockPOs = noneDate.stream().map(t->new StockPO(code,t)).collect(Collectors.toList());
+        list.removeAll(stockPOs);
+//        list.removeAll()
         //list = getStockInfoByCode(code);
         return list.stream()
                 .filter(t->!(t.getDate().isBefore(begin) || t.getDate().isAfter(end)))
                 .collect(Collectors.toList());
+
+
 
     }
 
@@ -153,9 +172,6 @@ public enum StockDAOImpl implements StockDAO{
                  * 就不读剩下的东西了
                  */
                 if(stockPO.getDate().isBefore(start)){
-                    System.out.println("jump");
-                    System.out.println(stockPO.getDate());
-                    System.out.println(start);
                     break;
                 }
 
@@ -277,6 +293,35 @@ public enum StockDAOImpl implements StockDAO{
             System.out.println(fileName + " is not found");
         }finally {
             return stockPOs;
+        }
+    }
+
+
+
+    /**
+     * add by wsw
+     * 执行IO操作
+     * 获取非交易日的日期信息
+     * @return 若所给文件不存在，则返回null，该方法返回的List已经是按日期从小到大排好序的
+     */
+    private List<LocalDate> getNoneTradeDates() {
+
+        String fileName ="../Data/NoneDate.txt";
+        List<LocalDate> dateList = new ArrayList<>();
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("UTF-8"))) {
+            System.out.println("here");
+            dateList = br.lines().map(t->DateUtil.parseLine(t)).collect(Collectors.toList());
+            br.close();
+
+        } catch (IOException e) {
+            System.out.println(fileName + " is not found");
+        }finally {
+//            System.out.println(DateUtil.parseLine("1-23-12"));
+//            System.out.println("begin   ");
+//            dateList.stream().forEach(t-> System.out.println(t));
+//            System.out.println("end");
+            return dateList;
         }
     }
 }

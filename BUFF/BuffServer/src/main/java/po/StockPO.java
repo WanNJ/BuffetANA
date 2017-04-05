@@ -23,6 +23,16 @@ public class StockPO {
 
     }
 
+    /**
+     * add by wsw 用于剔除
+     * @param code
+     * @param date
+     */
+    public StockPO(String code , LocalDate date) {
+        this.code = code;
+        this.date = date;
+    }
+
     public StockPO(String name, String market, String code, LocalDate date, double high_Price, double low_Price,
                    double open_Price, double close_Price, long volume, double adjCloseIndex) {
         this.name = name;
@@ -94,4 +104,13 @@ public class StockPO {
     }
     public double getAdjCloseIndex() { return adjCloseIndex; }
     public void setAdjCloseIndex(double adjCloseIndex) { this.adjCloseIndex = adjCloseIndex; }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        StockPO po1 = this;
+        StockPO po2 = (StockPO)obj;
+        return po1.date.isEqual(po2.getDate()) && po1.code.equals(po2.code);
+    }
 }

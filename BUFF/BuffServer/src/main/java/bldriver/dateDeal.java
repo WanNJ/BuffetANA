@@ -19,22 +19,22 @@ import java.util.stream.Stream;
  */
 public class dateDeal {
     public static void main(String[] args) {
-//        RunTimeSt.Start();
-//        LocalDate start = LocalDate.of(2012,1,1);
-//        LocalDate end = LocalDate.of(2015,1,1);
-//
-//        List<LocalDate>  dateList =  new ArrayList<>();
-//
-//        for(LocalDate date = start ; !date.isAfter(end) ; date  =date.plusDays(1)){
-//            if(isthere(date))
-//            dateList.add(date);
-//        }
-//
-//        dateList.stream().forEach(t-> System.out.println(DateUtil.formatLine(t)));
-//        RunTimeSt.getRunTime("end");
-        StockDAOImpl stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
-        List<StockPO> list = stockDAO.getStockInFoInRangeDate("002539",LocalDate.of(2013,1,1),LocalDate.of(2014,3,3));
-        list.stream().forEach(t-> System.out.println(t.getDate()));
+        RunTimeSt.Start();
+        LocalDate start = LocalDate.of(2007,1,1);
+        LocalDate end = LocalDate.of(2015,1,1);
+
+        List<LocalDate>  dateList =  new ArrayList<>();
+
+        for(LocalDate date = start ; !date.isAfter(end) ; date  =date.plusDays(1)){
+            if(isthere(date))
+            dateList.add(date);
+        }
+
+        dateList.stream().forEach(t-> System.out.println(DateUtil.formatLine(t)));
+            RunTimeSt.getRunTime("end");
+//        StockDAOImpl stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
+//        List<StockPO> list = stockDAO.getStockInFoInRangeDate("002539",LocalDate.of(2013,1,1),LocalDate.of(2014,3,3));
+//        list.stream().forEach(t-> System.out.println(t.getDate()));
     }
 
 
@@ -46,7 +46,7 @@ public class dateDeal {
         StockDAOImpl stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
         List<StockPO> list=  stockDAO.getStockInfoByDate(date);
         list = list.stream().filter(t->t.getVolume()!=0).collect(Collectors.toList());
-        return list.size()!=0;
+        return list.size()==0;
 
 
     }

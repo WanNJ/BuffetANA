@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by slow_time on 2017/3/8.
@@ -48,16 +47,19 @@ public enum StockDAOImpl implements StockDAO{
             list = this.codeList;
         else{
             String codeFile = "../Data/Code/" + code + ".csv";
-            this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(40));
+           // this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(40));
+            this.codeList =getStockInfoByCode(code);
             this.code  =code;
         }
 
 
         list = this.codeList;
        //System.out.println(code+"  "+codeList.size());
-
+//
         List<StockPO> stockPOs = noneDate.stream().map(t->new StockPO(code,t)).collect(Collectors.toList());
         list.removeAll(stockPOs);
+
+
 //        list.removeAll()
         //list = getStockInfoByCode(code);
         return list.stream()

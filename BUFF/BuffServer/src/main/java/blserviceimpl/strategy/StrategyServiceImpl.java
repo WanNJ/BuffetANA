@@ -9,6 +9,7 @@ import vo.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by slow_time on 2017/3/24.
@@ -61,21 +62,24 @@ public class StrategyServiceImpl implements StrategyService {
         yearProfitRate = 0.0;
         baseRates = new ArrayList<>();
         strategyRates = new ArrayList<>();
+        pickleDatas= pickleDatas.stream().filter(t->t.stockCodes.size()>0).collect(Collectors.toList());
         for(PickleData pickleData : pickleDatas) {
             double tempRate = 0.0;
             baseRates.add(pickleData.baseProfitRate);
             baseYearProfitRate += pickleData.baseProfitRate;
             for(BackData backData : pickleData.stockCodes) {
-//                System.out.println(backData.code);
-//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-//                System.out.println(backData.lastDayClose);
-//                System.out.println(backData.firstDayOpen);
-//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
-//                System.out.println();
+                System.out.println(backData.code);
+                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+                System.out.println(backData.lastDayClose);
+                System.out.println(backData.firstDayOpen);
+                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
+                System.out.println();
+
                 tempRate += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
             yearProfitRate += tempRate / pickleData.stockCodes.size();
+//            System.out.println(pickleData.stockCodes.size());
         }
         baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
         yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;

@@ -7,7 +7,6 @@ import pick.PickStockServiceImpl;
 import po.StockPO;
 import util.DayMA;
 import util.FormationMOM;
-import util.RunTimeSt;
 import vo.StockPickIndexVO;
 
 import java.time.LocalDate;
@@ -50,7 +49,7 @@ public enum StrategyType  implements RankMode{
                 ,LocalDate begin , LocalDate end, int holdPeriod ,List<StockPickIndexVO> stockPickIndexVOs) {
             for (String code: codeList) {
 
-                RunTimeSt.getRunTime("开始读取 "+code+"股票");
+//                RunTimeSt.getRunTime("开始读取 "+code+"股票");
 
                 List<DayMA> dayMAs =  pickStockService.getSingleCodeMAInfo
                         (code ,begin.minusDays(1),end,holdPeriod);
@@ -59,7 +58,7 @@ public enum StrategyType  implements RankMode{
 
 
 
-                RunTimeSt.getRunTime("结束读取 "+code+"股票");
+//                RunTimeSt.getRunTime("结束读取 "+code+"股票");
 
                 int MAcount = 0;
                 int Adjcount = 0;
@@ -93,14 +92,14 @@ public enum StrategyType  implements RankMode{
                      * 查看在持有期是否   出现停牌
                      */
                     boolean isStop = false; //是否停牌
-                    while(!isStop && !stockPOs.get(Adjcount).getDate().isAfter(pickleData.endDate)){
-                        if(stockPOs.get(Adjcount).getVolume()==0) {
-                            isStop = true;
-
-                        }
-                        Adjcount++;
-                    }
-                    Adjcount--;
+//                    while(!isStop && !stockPOs.get(Adjcount).getDate().isAfter(pickleData.endDate)){
+//                        if(stockPOs.get(Adjcount).getVolume()==0) {
+//                            isStop = true;
+//
+//                        }
+//                        Adjcount++;
+//                    }
+//                    Adjcount--;
 
                     //Added By TY
                     double firstDayOpen = 0 ;
@@ -111,11 +110,14 @@ public enum StrategyType  implements RankMode{
                         k++;
                     }
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
-                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate))
+                    while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
+                        if(stockPOs.get(k).getVolume() == 0)
+                            isStop = true;
                         k++;
+                    }
 
-                    if(stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
-                        k--;
+//                    if(stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
+//                        k--;
 
                     lastDayClose = stockPOs.get(k).getClose_Price();
 
@@ -142,18 +144,15 @@ public enum StrategyType  implements RankMode{
                  */
 
 
-                RunTimeSt.getRunTime("结束计算 "+code+"股票");
+//                RunTimeSt.getRunTime("结束计算 "+code+"股票");
             }
-
-            for(int i = 0 ; i < pickleDatas.size() ;i++){
-                PickleData pickleData = pickleDatas.get(i);
-                double open =  pickleData.stockCodes.stream().mapToDouble(t->t.firstDayOpen).sum();
-                double close =  pickleData.stockCodes.stream().mapToDouble(t->t.lastDayClose).sum();
-//                System.out.println("open:  "+open);
-//                System.out.println("close:  "+close);
-                if(open!=0)
-                    pickleDatas.get(i).baseProfitRate = (close-open)/open;
-
+            for(PickleData pickleData : pickleDatas) {
+                double sum = 0.0;
+                if(pickleData.stockCodes.size()==0) continue;
+                for(BackData backData : pickleData.stockCodes) {
+                    sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+                }
+                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
             }
 
             return pickleDatas;
@@ -192,7 +191,7 @@ public enum StrategyType  implements RankMode{
                 int j = 0;
                 int k = 0;
                 for(int i = 0; i < pickleDatas.size(); i++) {
-                    while(!formationMOMs.get(j).date.isEqual(pickleDatas.get(i).beginDate))
+                    while(formationMOMs.get(j).date.isBefore(pickleDatas.get(i).beginDate))
                         j++;
                     double firstDayOpen;
                     double lastDayClose;
@@ -202,8 +201,8 @@ public enum StrategyType  implements RankMode{
                         k++;
                     firstDayOpen = stockPOs.get(k).getOpen_Price();
                     while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
-//                        if(stockPOs.get(k).getVolume() == 0)
-//                            isStop = true;
+                        if(stockPOs.get(k).getVolume() == 0)
+                            isStop = true;
                         k++;
                     }
                     lastDayClose = stockPOs.get(k).getClose_Price();

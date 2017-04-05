@@ -169,6 +169,8 @@ public enum PickStockServiceImpl implements PickStockService {
         int days = 1;    //用于计数，已经过了几个交易日
         while(days < formationPeriod) {
             jsBegin++;
+            if(jsBegin == list.size())
+                return null;
             if(list.get(jsBegin).getVolume() != 0)
                 days++;
         }

@@ -81,7 +81,7 @@ public enum PickStockServiceImpl implements PickStockService {
         // cut date by begin and end
         final LocalDate localDateBegin = begin;
         final LocalDate localDateEnd = end;
-        dateList.stream().filter(t->!(t.isAfter(localDateEnd) ||t.isBefore(localDateBegin))).collect(Collectors.toList());
+        dateList = dateList.stream().filter(t->!(t.isAfter(localDateEnd) ||t.isBefore(localDateBegin))).collect(Collectors.toList());
 
         int i ;
         for(i= 0 ; i <dateList.size() ;i++){

@@ -132,12 +132,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
 
         //首先分割天数
-        List<PickleData> pickleDatas =
-                pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
-                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
-//            List<PickleData> pickleDatas =
-//                pickStockService.seprateDaysByTrade(strategyConditionVO.beginDate
+//        List<PickleData> pickleDatas =
+//                pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
 //                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
+            List<PickleData> pickleDatas =
+                pickStockService.seprateDaysByTrade(strategyConditionVO.beginDate
+                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
         /**
          * 已经注入好了要比较的信息
          */

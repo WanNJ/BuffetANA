@@ -70,8 +70,14 @@ public enum StrategyType  implements RankMode{
                 /**
                  * 暂时先算前一天的 因为begin就要买了!!!!!
                  */
+
+
+                //pickleDatas.stream().forEach(t-> System.out.println(t.beginDate+"   "+t.endDate));
+
                 for(int i = 0 ; i < pickleDatas.size() ; i++){
                     PickleData pickleData = pickleDatas.get(i);
+//                    System.out.println(pickleData.beginDate.minusDays(1));
+//                    System.out.println(dayMAs.get(MAcount).date);
                     while(dayMAs.get(MAcount).date.isBefore(pickleData.beginDate.minusDays(1))){
                         MAcount++;
                     }

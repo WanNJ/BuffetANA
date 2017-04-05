@@ -47,7 +47,7 @@ public enum StockDAOImpl implements StockDAO{
             list = this.codeList;
         else{
             String codeFile = "../Data/Code/" + code + ".csv";
-           // this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(40));
+            //this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(5));
             this.codeList =getStockInfoByCode(code);
             this.code  =code;
         }

@@ -30,4 +30,7 @@ public interface StrategyDAO {
      */
     List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
                                    List<StockPickIndexVO> stockPickIndexVOs);
+
+
+
 }

@@ -1,7 +1,9 @@
 package bldriver;
 
 import blserviceimpl.singlestock.MALineServiceImpl;
+import blserviceimpl.strategy.PickleData;
 import dataservicestub.StockDaoImpl_stub;
+import pick.PickStockServiceImpl;
 import po.StockPO;
 import util.DateUtil;
 import vo.MAPieceVO;
@@ -18,8 +20,15 @@ import java.util.stream.Collectors;
  */
 public class DataDRiver {
     public static void main(String[] args) throws RemoteException {
-        String codeFile = "../Data/StockMap.csv";
-        generateStockPOs(codeFile);
+//        String codeFile = "../Data/StockMap.csv";
+//        generateStockPOs(codeFile);
+
+
+        PickStockServiceImpl pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+
+        List<PickleData> list = pickStockService.seprateDaysByTrade(LocalDate.of(2013,1,1),LocalDate.of(2014,1,5),10);
+        list.stream().forEach(t-> System.out.println(t.beginDate+" "+t.endDate));
+
     }
 
 

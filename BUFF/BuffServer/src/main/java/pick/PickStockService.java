@@ -25,6 +25,17 @@ public interface PickStockService {
 
 
     /**
+     * add by wsw 0404
+     * 按照易日分割天数
+     * @param begin
+     * @param end
+     * @param sep
+     * @return  分割好的 信息   PickkeData 内部字符串为空
+     */
+    List<PickleData>  seprateDaysByTrade(LocalDate begin , LocalDate end , int sep);
+
+
+    /**
      * 获得特定天内的 均线信息
      * @param code
      * @param begin

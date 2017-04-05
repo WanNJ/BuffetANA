@@ -5,10 +5,16 @@ import blserviceimpl.strategy.PickleData;
 import dataservice.singlestock.StockDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
 import po.StockPO;
+import util.DateUtil;
 import util.DayMA;
 import util.FormationMOM;
 import vo.LongPeiceVO;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +27,8 @@ import java.util.stream.Collectors;
  */
 public enum PickStockServiceImpl implements PickStockService {
     PICK_STOCK_SERVICE ;
+
+
 
     private StockDAO stockDAO;
 
@@ -63,6 +71,38 @@ public enum PickStockServiceImpl implements PickStockService {
         return pickleDatas;
 
     }
+
+
+    @Override
+    public List<PickleData> seprateDaysByTrade(LocalDate begin, LocalDate end, int sep) {
+        List<PickleData>  pickleDatas = new ArrayList<>();
+        List<LocalDate> dateList = getTradeDates();
+
+        // cut date by begin and end
+        final LocalDate localDateBegin = begin;
+        final LocalDate localDateEnd = end;
+        dateList.stream().filter(t->!(t.isAfter(localDateEnd) ||t.isBefore(localDateBegin))).collect(Collectors.toList());
+
+        int i ;
+        for(i= 0 ; i <dateList.size() ;i++){
+            int nextIndex = i+sep-1;
+            if(nextIndex >= dateList.size() ) break;
+
+            pickleDatas.add(new PickleData
+                    (dateList.get(i), dateList.get(nextIndex),
+                            new ArrayList<BackData>())) ;
+            i = nextIndex;
+
+        }
+
+        if(i<dateList.size()){
+            pickleDatas.add(new PickleData(dateList.get(i),dateList.get(dateList.size()-1),new ArrayList<BackData>())) ;
+        }
+        return pickleDatas;
+
+    }
+
+
 
     @Override
     public List<DayMA> getSingleCodeMAInfo(String code, LocalDate begin, LocalDate end, int days) {
@@ -225,6 +265,34 @@ public enum PickStockServiceImpl implements PickStockService {
 
         Collections.reverse(ans);
         return ans;
+    }
+
+
+
+
+
+    /**
+     * add by wsw
+     * 执行IO操作
+     * 获取交易日的日期信息
+     * @return 若所给文件不存在，则返回null，该方法返回的List已经是按日期从小到大排好序的
+     */
+    private List<LocalDate> getTradeDates() {
+
+        String fileName ="../Data/businessDate.txt";
+        List<LocalDate> dateList = new ArrayList<>();
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("UTF-8"))) {
+            System.out.println("here");
+            dateList = br.lines().map(t-> DateUtil.parseLine(t)).collect(Collectors.toList());
+            br.close();
+
+        } catch (IOException e) {
+            System.out.println(fileName + " is not found");
+        }finally {
+
+            return dateList;
+        }
     }
 
 }

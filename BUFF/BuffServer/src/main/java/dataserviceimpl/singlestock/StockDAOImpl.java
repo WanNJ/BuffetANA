@@ -36,11 +36,12 @@ public enum StockDAOImpl implements StockDAO{
         if(code.equals(this.code))
             list = this.codeList;
         else{
-            this.codeList = getStockInfoByCode(code);
+            String codeFile = "../Data/Code/" + code + ".csv";
+            this.codeList = generateStockPOsAfterStart(codeFile,begin.minusDays(40));
             this.code  =code;
         }
         list = this.codeList;
-
+        System.out.println(code+"  "+codeList.size());
         //list = getStockInfoByCode(code);
         return list.stream()
                 .filter(t->!(t.getDate().isBefore(begin) || t.getDate().isAfter(end)))
@@ -119,6 +120,67 @@ public enum StockDAOImpl implements StockDAO{
             return stockPOs;
         }
     }
+
+
+    /**
+     * 给定股票的名字和开始的日期
+     * 读取从开始日期之后的所有股票数据
+     * @param code
+     * @param start
+     * @return
+     */
+    private List<StockPO> generateStockPOsAfterStart(String code ,LocalDate start) {
+        /**
+         * change bby wsw
+         * 为了更好的运用lambda表达式
+         */
+        List<StockPO> stockPOs = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(code), "UTF-8");
+            br = new BufferedReader(reader);
+            stockPOs = new ArrayList<>();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] stockInfo = line.split("\t");
+                StockPO stockPO = new StockPO(stockInfo[9], stockInfo[10], String.format("%6s", stockInfo[8]).replace(" ", "0"),
+                        DateUtil.parseSlash(stockInfo[1]), Double.parseDouble(stockInfo[3]),
+                        Double.parseDouble(stockInfo[4]), Double.parseDouble(stockInfo[2]),
+                        Double.parseDouble(stockInfo[5]), Long.parseLong(stockInfo[6]), Double.parseDouble(stockInfo[7]));
+
+                /**
+                 * 就不读剩下的东西了
+                 */
+                if(stockPO.getDate().isBefore(start)){
+                    System.out.println("jump");
+                    System.out.println(stockPO.getDate());
+                    System.out.println(start);
+                    break;
+                }
+
+                stockPOs.add(stockPO);
+            }
+            stockPOs.sort((stockPO1, stockPO2) -> {
+                if(stockPO1.getDate().isEqual(stockPO2.getDate()))
+                    return 0;
+                return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
+            });
+        } catch (FileNotFoundException e) {
+            System.out.println(code + " is not found");
+        } finally {
+            if(br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return stockPOs;
+        }
+    }
+
+
 
     private StockPO generateMarketStock(File file) {
         StockPO stockPO = null;

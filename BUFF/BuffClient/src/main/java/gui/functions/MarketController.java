@@ -94,10 +94,10 @@ public class MarketController {
                     try {
                         return marketService.getHistoryStockDetailVO(t);
                     } catch (RemoteException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         return null;
                     }
-                }).map(share->new Share(share.code,share.name,share.currentPrice,
+                }).filter(t->t!=null).map(share->new Share(share.code,share.name,share.currentPrice,
                         share.changeValue,share.changeValueRange*100)
         ).collect(Collectors.toList()));
 

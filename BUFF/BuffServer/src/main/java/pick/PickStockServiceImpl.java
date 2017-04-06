@@ -119,18 +119,27 @@ public enum PickStockServiceImpl implements PickStockService {
 
         LocalDate temp = end;
 
+        int none = 0;
+
         double ma = 0;
         int i;
         for ( i = 0 ; js < days  ;i++){
-           if(list.get(i).getAdjCloseIndex()!=0){
+           if(list.get(i).getVolume()!=0){
                js++;
                sum+= list.get(i).getAdjCloseIndex();
+           }else{
+               none++;
+           }
+
+           if(i==list.size()-2*days){
+               return null;
            }
         }
 
         js = 0;
         for(;!temp.isBefore(begin);i++){
-            if(list.get(i).getAdjCloseIndex()!=0){
+            if(i==list.size()-1)  return null;
+            if(list.get(i).getVolume()!=0){
                 ma = sum/days;
                 while(list.get(js).getDate().isBefore(temp)){
                     ans.add(new DayMA(temp,ma));

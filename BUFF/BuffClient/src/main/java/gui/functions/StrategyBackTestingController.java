@@ -1,7 +1,9 @@
 package gui.functions;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXRippler;
 import datafx.AnimatedFlowContainer;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -23,6 +25,7 @@ import javax.annotation.PostConstruct;
 public class StrategyBackTestingController {
     @FXMLViewFlowContext private ViewFlowContext context;
 
+    @FXML private JFXRippler rippler;
     @FXML private StackPane titleBurgerContainer;
     @FXML private JFXHamburger titleBurger;
     @FXML private JFXDrawer drawer;
@@ -30,22 +33,35 @@ public class StrategyBackTestingController {
     @PostConstruct
     public void init() throws FlowException {
         // init the title hamburger icon
+        drawer.setOnDrawerClosed((e) -> {
+            rippler.setVisible(true);
+        });
+        drawer.setOnDrawerOpened((e) -> {
+            rippler.setVisible(false);
+        });
         drawer.setOnDrawerOpening((e) -> {
             titleBurger.getAnimation().setRate(1);
             titleBurger.getAnimation().play();
+            rippler.setVisible(false);
         });
         drawer.setOnDrawerClosing((e) -> {
             titleBurger.getAnimation().setRate(-1);
             titleBurger.getAnimation().play();
+            rippler.setVisible(false);
         });
         titleBurgerContainer.setOnMouseClicked((e)->{
-            if (drawer.isHidden() || drawer.isHidding()) drawer.open();
-            else drawer.close();
+            if (drawer.isHidden() || drawer.isHidding()) {
+                drawer.open();
+            }
+            else {
+                drawer.close();
+            }
         });
 
         // side controller will add links to the content flow
         Flow sideMenuFlow = new Flow(StockChooseController.class);
         FlowHandler sideMenuFlowHandler = sideMenuFlow.createHandler(context);
+        drawer.setContent(new JFXButton());
         drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
     }
 }

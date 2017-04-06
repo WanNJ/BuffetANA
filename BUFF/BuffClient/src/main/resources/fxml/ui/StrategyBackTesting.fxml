@@ -12,7 +12,7 @@
             <String fx:value="body" />
         </styleClass>
     </JFXDrawer>
-    <JFXRippler maskType="CIRCLE" style="-fx-ripple-color:BLACK;">
+    <JFXRippler fx:id="rippler" maskType="CIRCLE" style="-fx-ripple-color:BLACK;">
         <StackPane fx:id="titleBurgerContainer">
             <JFXHamburger fx:id="titleBurger">
                 <HamburgerBackArrowBasicTransition />

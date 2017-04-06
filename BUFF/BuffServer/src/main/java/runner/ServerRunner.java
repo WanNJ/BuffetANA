@@ -54,7 +54,7 @@ public class ServerRunner {
 //        }
 
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
-                .MOM,20,1, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+                .MOM,20,10, LocalDate.of(2011,1,1),LocalDate.of(2014,1,1),10,true);
         strategyConditionVO1.holdingRate = 0.2;
         StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();

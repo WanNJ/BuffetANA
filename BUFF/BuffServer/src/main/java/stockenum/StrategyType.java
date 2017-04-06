@@ -115,6 +115,9 @@ public enum StrategyType  implements RankMode{
                         //System.out.println(k);
                         k++;
                     }
+                    if(k == 0) {
+                        continue;
+                    }
                     firstDayOpen = stockPOs.get(k-1).getAdjCloseIndex();
                     while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
                         if(stockPOs.get(k).getVolume() == 0) {
@@ -189,13 +192,13 @@ public enum StrategyType  implements RankMode{
         @Override
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
                 ,LocalDate begin , LocalDate end , int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
-
             for(String code: codeList) {
                 List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
-                if(formationMOMs == null)
+                if(formationMOMs == null) {
+//                    System.out.println(code);
                     continue;
+                }
                 List<StockPO>  stockPOs = pickStockService.getSingleCodeInfo(code, begin.minusDays(10), end.plusDays(10));
-
                 int j = 0;
                 int k = 0;
                 for(int i = 0; i < pickleDatas.size(); i++) {
@@ -207,7 +210,12 @@ public enum StrategyType  implements RankMode{
                     boolean isStop = false;
                     while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate))
                         k++;
+                    if(k == 0) {
+                        continue;
+                    }
                     firstDayOpen = stockPOs.get(k - 1).getAdjCloseIndex();
+                    if(stockPOs.get(k).getVolume() == 0)
+                        isStop = true;
                     while(stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
                         if(stockPOs.get(k).getVolume() == 0) {
                             isStop = true;
@@ -217,12 +225,13 @@ public enum StrategyType  implements RankMode{
                     }
                     if(stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
                         k--;
+                    if(stockPOs.get(k).getVolume() == 0)
+                        isStop = true;
                     lastDayClose = stockPOs.get(k).getAdjCloseIndex();
                     if(!isStop) {
                         pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
                     }
                 }
-
                 for (StockPickIndexVO s : stockPickIndexVOs) {
                     pickleDatas =  s.stockPickIndex.setFilterValue(pickleDatas,code);
                 }

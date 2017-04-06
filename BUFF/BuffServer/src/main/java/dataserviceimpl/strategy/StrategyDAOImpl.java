@@ -149,21 +149,49 @@ public enum StrategyDAOImpl implements StrategyDAO {
         RunTimeSt.getRunTime("注入完成");
 
         if(strategyConditionVO.holdingRate != 0) {
-            System.out.println((int)Math.ceil(strategyConditionVO.holdingRate * stocksInPool.size()));
-            strategyConditionVO.holdingNum = (int)Math.ceil(strategyConditionVO.holdingRate * stocksInPool.size());
-        }
-        //在每个区间内 确定有效的股票
-        for (int i = 0; i < pickleDataList.size(); i++) {
-            PickleData pickleData = pickleDatas.get(i);
-            LocalDate begin = pickleData.beginDate;
-            LocalDate end = pickleData.endDate;
+            //在每个区间内 确定有效的股票
+            for (int i = 0; i < pickleDataList.size(); i++) {
+                PickleData pickleData = pickleDatas.get(i);
+                LocalDate begin = pickleData.beginDate;
+                LocalDate end = pickleData.endDate;
+                strategyConditionVO.holdingNum = (int)Math.ceil(strategyConditionVO.holdingRate * pickleData.stockCodes.size());
+                if(i == 0) {
+                    System.out.println(pickleData.stockCodes.size());
+                    for(BackData backData : pickleData.stockCodes) {
+                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+                        System.out.println(backData.code + "   " + backData.rankValue);
+                    }
+                }
+                pickleData.stockCodes = pickleData.stockCodes.stream()
+                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
+                        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
+                                .getCompareRank(strategyConditionVO.asd))
+                        .limit(strategyConditionVO.holdingNum)
+                        .collect(Collectors.toList());
+                if(i == 0) {
+                    System.out.println(pickleData.stockCodes.size());
+                    for(BackData backData : pickleData.stockCodes) {
+                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+                        System.out.println(backData.code + "   " + backData.rankValue);
+                    }
+                }
+            }
 
-            pickleData.stockCodes = pickleData.stockCodes.stream()
-                    .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
-                    .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
-                            .getCompareRank(strategyConditionVO.asd))
-                    .limit(strategyConditionVO.holdingNum)
-                    .collect(Collectors.toList());
+        }
+        else {
+            //在每个区间内 确定有效的股票
+            for (int i = 0; i < pickleDataList.size(); i++) {
+                PickleData pickleData = pickleDatas.get(i);
+                LocalDate begin = pickleData.beginDate;
+                LocalDate end = pickleData.endDate;
+
+                pickleData.stockCodes = pickleData.stockCodes.stream()
+                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
+                        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
+                                .getCompareRank(strategyConditionVO.asd))
+                        .limit(strategyConditionVO.holdingNum)
+                        .collect(Collectors.toList());
+            }
         }
 
 

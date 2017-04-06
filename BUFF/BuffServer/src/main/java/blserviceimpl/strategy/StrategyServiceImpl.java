@@ -68,18 +68,17 @@ public class StrategyServiceImpl implements StrategyService {
             baseRates.add(pickleData.baseProfitRate);
             baseYearProfitRate += pickleData.baseProfitRate;
             for(BackData backData : pickleData.stockCodes) {
-                System.out.println(backData.code);
-                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-                System.out.println(backData.lastDayClose);
-                System.out.println(backData.firstDayOpen);
-                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
-                System.out.println();
+//                System.out.println(backData.code);
+//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+//                System.out.println(backData.lastDayClose);
+//                System.out.println(backData.firstDayOpen);
+//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
+//                System.out.println();
 
                 tempRate += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
             yearProfitRate += tempRate / pickleData.stockCodes.size();
-//            System.out.println(pickleData.stockCodes.size());
         }
         baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
         yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;

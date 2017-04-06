@@ -186,12 +186,12 @@ public enum PickStockServiceImpl implements PickStockService {
 
         while(!temp.isBefore(begin)) {
             while(!temp.isEqual(list.get(days).getDate())) {
-                codeYields.add(new FormationMOM(codeYields.get(codeYields.size() - 1)));
+                codeYields.add(new FormationMOM(temp, codeYields.get(codeYields.size() - 1).yeildRate));
                 temp = temp.minusDays(1);
             }
             //若果这一天停盘，那么他的收益率应该与后一天一样
             if(list.get(days).getAdjCloseIndex() == 0) {
-                codeYields.add(new FormationMOM(codeYields.get(days - 1)));
+                codeYields.add(new FormationMOM(temp, codeYields.get(days - 1).yeildRate));
             }
             else {
                 while(true) {

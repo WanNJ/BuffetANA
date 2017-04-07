@@ -285,26 +285,29 @@ public class StrategyServiceImpl implements StrategyService {
         return -minSum;
     }
 
-
+    /**
+     *
+     * @param holdingNum 如果没有就传到0
+     * @param holdingPeriod
+     * @param formationPeriod
+     * @param holdingRate 如果没有就传0
+     * @return
+     */
     private List<PickleData>  getOldPickleData(int holdingNum , int holdingPeriod , int formationPeriod , double holdingRate){
 
+        //seprate day
         List<PickleData> sepPickle = pickStockService.seprateDaysByTrade
-                (strategyConditionVO.beginDate,strategyConditionVO.endDate,holdingNum);
+                (strategyConditionVO.beginDate,strategyConditionVO.endDate,holdingPeriod);
 
+        // chaneg new pickle to old
         sepPickle = pickleDataNewToOld(sepPickle,formationPeriod);
 
-        //TODO计算基本收益率
-
-
-
         //rank and filter
-
         sepPickle = strategyDAO.rankAndFilterPickleData
                         (sepPickle,stockPickIndexVOs,strategyConditionVO.strategyType
                                 ,holdingNum,holdingRate,strategyConditionVO.asd);
 
 
-        //
 
         return sepPickle;
     }
@@ -349,6 +352,10 @@ public class StrategyServiceImpl implements StrategyService {
                     pickleData.stockCodes.add(new BackData(code,rank,buy,sell,filters));
                 }
             }
+
+
+            //TODO计算基本收益率
+
         }
 
 

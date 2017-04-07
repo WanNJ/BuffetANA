@@ -1,5 +1,6 @@
 package dataservice.strategy;
 
+import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
 import po.StockPoolConditionPO;
 import stockenum.StrategyType;
@@ -46,6 +47,14 @@ public interface StrategyDAO {
                                                  List<StockPickIndexVO> stockPickIndexVOs , StrategyType strategyType ,
                                                  int holdingNum , double holdingRate, boolean asd);
 
-
+    /**
+     * 获取新的pickledata
+     * @param strategyConditionVO
+     * @param stockPoolConditionVO
+     * @param stockPickIndexVOs
+     * @return
+     */
+    List<NewPickleData> getNewPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
+                                         List<StockPickIndexVO> stockPickIndexVOs);
 
 }

@@ -1,6 +1,7 @@
 package dataserviceimpl.strategy;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
 import pick.PickStockService;
@@ -98,6 +99,26 @@ public enum StrategyDAOImpl implements StrategyDAO {
         this.stocksInPool = codeList;
         return codeList;
     }
+
+
+
+    @Override
+    public List<NewPickleData> getNewPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
+        if(this.stocksInPool==null){
+            //throw new NoStockInPoolException();
+            stocksInPool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+        }
+
+    
+        List<String> codePool = stocksInPool;
+
+
+        return strategyConditionVO.strategyType.setAllValue
+                (codePool,strategyConditionVO.beginDate,strategyConditionVO.endDate,stockPickIndexVOs);
+    }
+
+
+
 
     /**
      * 这个方法必须在getStocksInPool之后调用！！！Attention！！！！！

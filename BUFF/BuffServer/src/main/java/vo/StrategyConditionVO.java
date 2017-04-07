@@ -23,9 +23,9 @@ public class StrategyConditionVO {
 
 
 
-    public StrategyConditionVO(StrategyType strategyType, int formationPeriod,
-                               int holdingPeriod, LocalDate beginDate, LocalDate endDate,
-                               int holdingNum ,boolean asd) {
+    public StrategyConditionVO(StrategyType strategyType
+                              , LocalDate beginDate, LocalDate endDate
+                                ,boolean asd) {
         this.strategyType = strategyType;
         this.beginDate = beginDate;
         this.endDate = endDate;

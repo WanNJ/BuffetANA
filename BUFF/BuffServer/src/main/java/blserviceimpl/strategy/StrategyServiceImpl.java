@@ -51,7 +51,7 @@ public class StrategyServiceImpl implements StrategyService {
     public void setFactory(DAOFactoryService daoFactoryService) {
         this.daoFactoryService = daoFactoryService;
         this.strategyDAO = this.daoFactoryService.createStrategyDAO();
-        this.pickleDatas = strategyDAO.getPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
+        this.newpickleDatas = strategyDAO.getNewPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
     }
 
     public void setPickStockService(PickStockService pickStockService){
@@ -65,10 +65,18 @@ public class StrategyServiceImpl implements StrategyService {
         this.stockPickIndexVOs = stockPickIndexVOs;
         setFactory(new DAOFactoryServiceImpl());
         setPickStockService(PickStockServiceImpl.PICK_STOCK_SERVICE);
+
+        //this.newpickleDatas = strategyDAO.getNewPickleData()
     }
 
     @Override
     public void calculate(TraceBackVO traceBackVO) {
+
+
+        this.pickleDatas = getOldPickleData(traceBackVO.holdingNum,traceBackVO.holdingPeriod,
+                traceBackVO.formationPeriod,traceBackVO.holdingRate);
+
+
         // 初始化一些必要的重复计算的参数
         baseYearProfitRate = 0.0;
         yearProfitRate = 0.0;
@@ -79,6 +87,11 @@ public class StrategyServiceImpl implements StrategyService {
             double tempRate = 0.0;
             baseRates.add(pickleData.baseProfitRate);
             baseYearProfitRate += pickleData.baseProfitRate;
+
+
+            double buyMoney = 0;
+            double sellMoney = 0;
+
             for(BackData backData : pickleData.stockCodes) {
 //                System.out.println(backData.code);
 //                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
@@ -86,8 +99,10 @@ public class StrategyServiceImpl implements StrategyService {
 //                System.out.println(backData.firstDayOpen);
 //                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
 //                System.out.println();
-
-                tempRate += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+                double cnt = 100/ backData.firstDayOpen;
+                buyMoney+=100;
+                sellMoney+= cnt * backData.lastDayClose;
+                tempRate += (sellMoney-buyMoney)/buyMoney ;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
             yearProfitRate += tempRate / pickleData.stockCodes.size();
@@ -304,6 +319,8 @@ public class StrategyServiceImpl implements StrategyService {
         // chaneg new pickle to old
         sepPickle = pickleDataNewToOld(sepPickle,formationPeriod);
 
+
+
         //rank and filter
         sepPickle = strategyDAO.rankAndFilterPickleData
                         (sepPickle,stockPickIndexVOs,strategyConditionVO.strategyType
@@ -322,17 +339,17 @@ public class StrategyServiceImpl implements StrategyService {
      */
     private List<PickleData> pickleDataNewToOld(List<PickleData> oldPickleData,int formationPeriod){
 
-        for(NewPickleData newPickleData : newpickleDatas){
+        for(NewPickleData newPickleData : this.newpickleDatas){
 
 
             //记录newPickleData跑到哪里的指针
             int js = 0;
             String code  = newPickleData.code;
-            for(int i = 0 ; i < pickleDatas.size() ; i++) {
+            for(int i = 0 ; i < oldPickleData.size() ; i++) {
                 boolean isStop = false;
                 double buy = 0;
                 double sell= 0;
-                PickleData pickleData = pickleDatas.get(i);
+                PickleData pickleData = oldPickleData.get(i);
                 while(newPickleData.singleBackDataList.get(js).date.isBefore(pickleData.beginDate)){
                     js++;
                 }
@@ -340,23 +357,40 @@ public class StrategyServiceImpl implements StrategyService {
                 Number rank = newPickleData.singleBackDataList.get(js).rankValues[formationPeriod];
                 Number[] filters =  newPickleData.singleBackDataList.get(js).rilterValues;
 
-                while(!newPickleData.singleBackDataList.get(js).date.isAfter(pickleData.endDate)){
+                while(newPickleData.singleBackDataList.get(js).date.isBefore(pickleData.endDate)){
                     if(newPickleData.singleBackDataList.get(js).volume==0){
                         isStop = true;
                         break;
                     }
                     js++;
                 }
+                if(newPickleData.singleBackDataList.get(js).volume==0) isStop = true;
 
-                sell = newPickleData.singleBackDataList.get(js-1).AdjClose;
+                sell = newPickleData.singleBackDataList.get(js).AdjClose;
 
                 if(!isStop){
                     pickleData.stockCodes.add(new BackData(code,rank,buy,sell,filters));
                 }
             }
 
-
             //TODO计算基本收益率
+
+
+            for(PickleData pickleData : oldPickleData) {
+                double sum = 0.0;
+                double buyMoney = 0;
+                double sellMoney = 0;
+
+                for(BackData backData : pickleData.stockCodes) {
+                   // sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+                    double cnt = 100/ backData.firstDayOpen;
+                    buyMoney+=100;
+                    sellMoney+= cnt * backData.lastDayClose;
+                    sum += (sellMoney-buyMoney)/buyMoney;
+                }
+                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
+            }
+
 
         }
 

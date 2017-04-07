@@ -26,7 +26,7 @@ public class MAStratgyServer {
 
 
         StrategyConditionVO strategyConditionVO = new StrategyConditionVO(StrategyType
-                .MA,10,1, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),10,false);
+                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),false);
 
         StockPoolConditionVO stockPoolConditionVO  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();

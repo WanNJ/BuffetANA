@@ -30,4 +30,11 @@ public class NewPickleData {
         this.code = code;
         this.singleBackDataList = new ArrayList<>();
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        NewPickleData o = (NewPickleData)obj;
+        return this.code .equals( o.code);
+    }
 }

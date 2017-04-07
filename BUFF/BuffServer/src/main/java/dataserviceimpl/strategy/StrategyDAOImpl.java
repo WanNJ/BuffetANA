@@ -108,7 +108,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
             stocksInPool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
         }
 
-    
+
         List<String> codePool = stocksInPool;
 
 
@@ -184,7 +184,6 @@ public enum StrategyDAOImpl implements StrategyDAO {
                         .collect(Collectors.toList());
             }
         }
-
 
         //返回已经排好序 决定后的要买的股票代码
         return pickleDataList;
@@ -304,6 +303,9 @@ public enum StrategyDAOImpl implements StrategyDAO {
      */
     private Predicate<BackData> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
             , LocalDate begindate, LocalDate endDate) {
+
+        //System.out.println(stockPickIndexVOs.size());
+
         Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
             public boolean test(BackData s) {

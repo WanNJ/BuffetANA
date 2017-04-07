@@ -38,6 +38,7 @@ public enum StrategyType  implements RankMode{
                 @Override
                 public int compare(BackData o1, BackData o2) {
                     if(asd){
+                        //System.out.println();
                         if((double)o1.rankValue > (double)o2.rankValue)  return 1;
                         else return -1;
                     }else{
@@ -195,12 +196,15 @@ public enum StrategyType  implements RankMode{
             for (String code: codeList) {
 
 //                RunTimeSt.getRunTime("开始读取 "+code+"股票");
-
+                boolean isnull = false;
 
                 List<StockPO>  stockPOs = pickStockService
                         .getSingleCodeInfo(code , begin.minusDays(10) , end.plusDays(10));
 
                 int beforeIndex = 0;
+
+
+                //System.out.println(stockPOs.get(beforeIndex).getDate());
 
                 while (stockPOs.get(beforeIndex).getDate().isBefore(begin)) {
                     beforeIndex++;
@@ -228,8 +232,8 @@ public enum StrategyType  implements RankMode{
                  * 分别计算1到60天形成期的数据
                  */
 
-                RunTimeSt.getRunTime(code+"  begin set rank");
-                for(int  holdPeriod= 1;  holdPeriod<= 60 ; holdPeriod++) {
+                //RunTimeSt.getRunTime(code+"  begin set rank");
+                for(int  holdPeriod= 1;  holdPeriod<= 60 && !isnull; holdPeriod++) {
 
                     //TODO  返回来的数据可能数空的
                     List<DayMA> dayMAs = pickStockService.getSingleCodeMAInfo
@@ -237,6 +241,10 @@ public enum StrategyType  implements RankMode{
 
                     //TODO  以后要做进一步的处理
                     if(dayMAs==null){
+                        NewPickleData newPickleData = new NewPickleData(code);
+                        newPickleDataList.remove(newPickleData);
+                        isnull = true;
+                        codeIndex--;
                         continue;
                     }
 
@@ -269,7 +277,7 @@ public enum StrategyType  implements RankMode{
                     }
 
                 }
-                RunTimeSt.getRunTime(code+"  after set rank");
+                //RunTimeSt.getRunTime(code+"  after set rank");
 
 
                 // TODO 在此处加入  过滤参数的注入

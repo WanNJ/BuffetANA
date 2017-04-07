@@ -1,17 +1,21 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
+import blserviceimpl.strategy.SingleBackData;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPO;
 import util.DayMA;
 import util.FormationMOM;
+import util.RunTimeSt;
 import vo.StockPickIndexVO;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by slow_time on 2017/3/24.
@@ -155,11 +159,11 @@ public enum StrategyType  implements RankMode{
                  */
 
 
-//                RunTimeSt.getRunTime("结束计算 "+code+"股票");
+
             }
             for(PickleData pickleData : pickleDatas) {
                 double sum = 0.0;
-//                if(pickleData.stockCodes.size()==0) continue;
+
                 for(BackData backData : pickleData.stockCodes) {
                     sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
                 }
@@ -167,6 +171,125 @@ public enum StrategyType  implements RankMode{
             }
 
             return pickleDatas;
+        }
+
+
+        /**
+         * add by wsw  原来旧的的方法就不删除了
+         * @param codeList
+         * @param begin
+         * @param end
+         * @param stockPickIndexVOs
+         * @return
+         */
+
+        @Override
+        public List<NewPickleData> setAllValue(List<String> codeList, LocalDate begin, LocalDate end, List<StockPickIndexVO> stockPickIndexVOs) {
+
+
+
+            List<NewPickleData> newPickleDataList = codeList.stream().map(t->{return new NewPickleData(t);}).collect(Collectors.toList());
+
+            int codeIndex =  0;
+
+            for (String code: codeList) {
+
+//                RunTimeSt.getRunTime("开始读取 "+code+"股票");
+
+
+                List<StockPO>  stockPOs = pickStockService
+                        .getSingleCodeInfo(code , begin.minusDays(10) , end.plusDays(10));
+
+                int beforeIndex = 0;
+
+                while (stockPOs.get(beforeIndex).getDate().isBefore(begin)) {
+                    beforeIndex++;
+                }
+
+                newPickleDataList.get(codeIndex).lastAdj = stockPOs.get(beforeIndex-1).getAdjCloseIndex();
+
+                /**
+                 * 初始化该股票  有数据的时候的值
+                 * 例如 如果这只股票在2月1日 没有数据  就不放到singleBackDataList中
+                 * 如果有数据就放入
+                 */
+                newPickleDataList.get(codeIndex).singleBackDataList =
+                        stockPOs.stream()
+                                .filter(t->!(t.getDate().isBefore(begin)||t.getDate().isAfter(end))).map(t->{
+                                    return new  SingleBackData(t.getDate(),t.getOpen_Price()
+                                            ,t.getClose_Price(),t.getAdjCloseIndex(),t.getVolume());
+                                }).collect(Collectors.toList());
+
+
+
+                /**
+                 * //TODO 还是太慢了   以后优化
+                 *
+                 * 分别计算1到60天形成期的数据
+                 */
+
+                RunTimeSt.getRunTime(code+"  begin set rank");
+                for(int  holdPeriod= 1;  holdPeriod<= 60 ; holdPeriod++) {
+
+                    //TODO  返回来的数据可能数空的
+                    List<DayMA> dayMAs = pickStockService.getSingleCodeMAInfo
+                            (code, begin.minusDays(1), end, holdPeriod);
+
+                    //TODO  以后要做进一步的处理
+                    if(dayMAs==null){
+                        continue;
+                    }
+
+                    int MAcount = 0;
+                    int Adjcount = 0;
+
+
+
+
+
+                    for (int i = 0; i < newPickleDataList.get(codeIndex).singleBackDataList.size(); i++) {
+                        SingleBackData singleBackData = newPickleDataList.get(codeIndex).singleBackDataList.get(i);
+                        //System.out.println(singleBackData.date==null);
+                        while (dayMAs.get(MAcount).date.isBefore(singleBackData.date.minusDays(1))) {
+                            MAcount++;
+                        }
+
+                        while (stockPOs.get(Adjcount).getDate().isBefore(singleBackData.date.minusDays(1))) {
+                            Adjcount++;
+                        }
+
+                        double MA = dayMAs.get(MAcount).MAValue;
+
+                        double Adj = stockPOs.get(Adjcount).getAdjCloseIndex();
+
+                        double rank = (MA - Adj) / MA;
+
+                        singleBackData.rankValues[holdPeriod] = rank;
+
+                    }
+
+                }
+                RunTimeSt.getRunTime(code+"  after set rank");
+
+
+                // TODO 在此处加入  过滤参数的注入
+                // !!!!!!!!!!!在此处加入  过滤参数的注入
+                for (StockPickIndexVO s : stockPickIndexVOs) {
+                    //newPickleDataList.get(codeIndex).singleBackDataList. =  s.stockPickIndex.setFilterValue(pickleDatas,code);
+                }
+
+                // add by wsw
+                /**
+                 * 在底层计算相对的收益情况 (基准的收益情况）
+                 */
+
+
+                codeIndex++;
+
+            }
+
+
+            return newPickleDataList;
         }
     },
 
@@ -247,6 +370,11 @@ public enum StrategyType  implements RankMode{
                 pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
             }
             return pickleDatas;
+        }
+
+        @Override
+        public List<NewPickleData> setAllValue(List<String> codeList, LocalDate begin, LocalDate end, List<StockPickIndexVO> stockPickIndexVOs) {
+            return null;
         }
     }
 

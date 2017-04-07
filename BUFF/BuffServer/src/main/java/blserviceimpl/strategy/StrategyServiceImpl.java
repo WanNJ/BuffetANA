@@ -4,8 +4,11 @@ import blservice.strategy.StrategyService;
 import dataservice.strategy.StrategyDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
+import pick.PickStockService;
+import pick.PickStockServiceImpl;
 import vo.*;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,10 @@ public class StrategyServiceImpl implements StrategyService {
     private StockPoolConditionVO stockPoolConditionVO;
     private List<StockPickIndexVO> stockPickIndexVOs;
     private DAOFactoryService daoFactoryService;
+    PickStockService pickStockService;
     private StrategyDAO strategyDAO;
     private List<PickleData> pickleDatas;
+    private List<NewPickleData> newpickleDatas;
     /**
      * 基准收益率列表
      */
@@ -50,12 +55,18 @@ public class StrategyServiceImpl implements StrategyService {
         this.pickleDatas = strategyDAO.getPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
     }
 
+    public void setPickStockService(PickStockService pickStockService){
+        this.pickStockService = pickStockService;
+    }
+
     @Override
     public void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs) {
         this.strategyConditionVO = strategyConditionVO;
         this.stockPoolConditionVO = stockPoolConditionVO;
         this.stockPickIndexVOs = stockPickIndexVOs;
         setFactory(new DAOFactoryServiceImpl());
+        setPickStockService(PickStockServiceImpl.PICK_STOCK_SERVICE);
+
 
         // 初始化一些必要的重复计算的参数
         baseYearProfitRate = 0.0;
@@ -273,4 +284,66 @@ public class StrategyServiceImpl implements StrategyService {
         }
         return -minSum;
     }
+
+
+    private List<PickleData>  getOldPickleData(int holdingNum , int holdingPeriod , int formationPeriod){
+
+        List<PickleData> sepPickle = pickStockService.seprateDaysByTrade
+                (strategyConditionVO.beginDate,strategyConditionVO.endDate,holdingNum);
+
+        sepPickle = pickleDataNewToOld(sepPickle,formationPeriod);
+
+        //
+
+        return null;
+    }
+
+    /**
+     * 将新的PickleData  根据时间划分 和 形成期 换成 老的PickleData
+     * @param oldPickleData
+     * @param formationPeriod
+     * @return
+     */
+    private List<PickleData> pickleDataNewToOld(List<PickleData> oldPickleData,int formationPeriod){
+
+        for(NewPickleData newPickleData : newpickleDatas){
+
+
+            //记录newPickleData跑到哪里的指针
+            int js = 0;
+            String code  = newPickleData.code;
+            for(int i = 0 ; i < pickleDatas.size() ; i++) {
+                boolean isStop = false;
+                double buy = 0;
+                double sell= 0;
+                PickleData pickleData = pickleDatas.get(i);
+                while(newPickleData.singleBackDataList.get(js).date.isBefore(pickleData.beginDate)){
+                    js++;
+                }
+                buy =  js == 0 ? newPickleData.lastAdj:newPickleData.singleBackDataList.get(js-1).AdjClose;
+                Number rank = newPickleData.singleBackDataList.get(js).rankValues[formationPeriod];
+                Number[] filters =  newPickleData.singleBackDataList.get(js).rilterValues;
+
+                while(!newPickleData.singleBackDataList.get(js).date.isAfter(pickleData.endDate)){
+                    if(newPickleData.singleBackDataList.get(js).volume==0){
+                        isStop = true;
+                        break;
+                    }
+                    js++;
+                }
+
+                sell = newPickleData.singleBackDataList.get(js-1).AdjClose;
+
+                if(!isStop){
+                    pickleData.stockCodes.add(new BackData(code,rank,buy,sell,filters));
+                }
+            }
+        }
+
+
+
+        return oldPickleData;
+    }
+
+
 }

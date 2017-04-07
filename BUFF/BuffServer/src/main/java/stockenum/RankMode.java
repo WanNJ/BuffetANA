@@ -1,6 +1,7 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
 import vo.StockPickIndexVO;
 
@@ -27,4 +28,13 @@ public interface RankMode {
      */
     List<PickleData>  setRankValue(List<PickleData> pickleDatas , List<String>  codeList
             ,LocalDate begin , LocalDate end , int holdPeriod, List<StockPickIndexVO> stockPickIndexVOs );
+
+
+    /**
+     * 注入 要比较的数据  最新的数据
+     * @param codeList
+     * @return   List<PickleData>
+     */
+    List<NewPickleData>  setAllValue(List<String>  codeList
+            , LocalDate begin , LocalDate end , List<StockPickIndexVO> stockPickIndexVOs );
 }

@@ -38,4 +38,19 @@ public class BackData {
         filterData  =new Number[StockPickIndex.values().length];
     }
 
+    /**
+     * 带过滤参数的方法
+     * @param code
+     * @param rankValue
+     * @param firstDayOpen
+     * @param lastDayClose
+     */
+    public BackData(String code , Number rankValue, double firstDayOpen, double lastDayClose, Number[] filterData){
+        this.code = code;
+        this.rankValue = rankValue;
+        this.firstDayOpen = firstDayOpen;
+        this.lastDayClose = lastDayClose;
+        this. filterData  = filterData;
+    }
+
 }

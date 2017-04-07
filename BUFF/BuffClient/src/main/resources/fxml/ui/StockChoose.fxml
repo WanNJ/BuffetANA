@@ -3,8 +3,11 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
@@ -18,13 +21,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<?import java.lang.String?>
+<StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
@@ -39,14 +44,21 @@
                   </Label>
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <JFXComboBox fx:id="stockPool" editable="true" maxWidth="200.0" promptText="股票池" />
-                        <JFXComboBox fx:id="plate" editable="true" maxWidth="200.0" promptText="板块" />
-                        <JFXComboBox editable="true" maxWidth="200.0" promptText="行业" />
-                        <JFXCheckBox text="排除ST">
+                        <JFXComboBox fx:id="stockPool" maxWidth="200.0" promptText="股票池" />
+                        <JFXComboBox fx:id="plate" maxWidth="200.0" promptText="板块" />
+                        <JFXComboBox maxWidth="200.0" promptText="行业" />
+                        <JFXCheckBox fx:id="ST" text="排除ST">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </JFXCheckBox>
+                        <JFXDatePicker fx:id="from" maxWidth="170.0" overLay="true" promptText="开始日期" />
+                        <Label scaleX="2.0" text="-">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXDatePicker fx:id="to" maxWidth="170.0" overLay="true" promptText="结束日期" />
                      </children>
                   </HBox>
                </children>
@@ -191,6 +203,33 @@
                         </Tab>
                      </tabs>
                   </JFXTabPane>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" GridPane.rowIndex="3">
+               <children>
+                  <Label text="策略设置">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <JFXComboBox fx:id="strategyType" maxWidth="200.0" promptText="策略类型">
+                           <items>
+                              <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="均值策略" />
+                                 <String fx:value="动量策略" />
+                              </FXCollections>
+                           </items>
+                        </JFXComboBox>
+                        <JFXTextField fx:id="holdingPeriod" labelFloat="true" maxWidth="100.0" promptText="持仓期" />
+                        <JFXTextField fx:id="formativePeriod" labelFloat="true" maxWidth="100.0" promptText="形成期" />
+                        <JFXTextField fx:id="numOfShares" labelFloat="true" maxWidth="100.0" promptText="持股数" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
             </VBox>
          </children>

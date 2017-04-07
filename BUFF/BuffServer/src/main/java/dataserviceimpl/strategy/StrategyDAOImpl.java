@@ -9,7 +9,6 @@ import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import stockenum.StrategyType;
-import util.RunTimeSt;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
@@ -132,94 +131,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
                                           StockPoolConditionVO stockPoolConditionVO,
                                           List<StockPickIndexVO> stockPickIndexVOs) {
 
-        /**
-         * TODO
-         * add by wsw
-         * 我觉得可以 加一个提醒 比如stocksInPool 为空时 抛出异常 或者直接调用
-         */
-        if(this.stocksInPool==null){
-            //throw new NoStockInPoolException();
-            stocksInPool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
-        }
-
-        /**
-        修改 BY TY
-        避免重复调用getStocksInPool方法，减少一次读文件的次数
-        这样就必须保证该方法必须在getStocksInPool方法之后调用
-        本来腌制数据也必须应该在股票池数据确定下来后才能进行腌制，所以从逻辑上讲，也应该是这么个顺序
-        调用时，切记要在getStocksInPool之后调用，测试该方法时尤其要注意！！！！！
-         */
-        List<String> codePool = stocksInPool;
-
-
-
-
-        //首先分割天数
-//        List<PickleData> pickleDatas =
-//                pickStockService.seprateDaysinCommon(strategyConditionVO.beginDate
-//                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
-            List<PickleData> pickleDatas =
-                pickStockService.seprateDaysByTrade(strategyConditionVO.beginDate
-                        , strategyConditionVO.endDate, strategyConditionVO.holdingPeriod);
-        /**
-         * 已经注入好了要比较的信息
-         */
-        List<PickleData> pickleDataList =
-                strategyConditionVO.strategyType.setRankValue(pickleDatas, codePool
-                        , strategyConditionVO.beginDate, strategyConditionVO.endDate
-                        , strategyConditionVO.formationPeriod,stockPickIndexVOs);
-
-        RunTimeSt.getRunTime("注入完成");
-
-        if(strategyConditionVO.holdingRate != 0) {
-            //在每个区间内 确定有效的股票
-            for (int i = 0; i < pickleDataList.size(); i++) {
-                PickleData pickleData = pickleDatas.get(i);
-                LocalDate begin = pickleData.beginDate;
-                LocalDate end = pickleData.endDate;
-                strategyConditionVO.holdingNum = (int)Math.ceil(strategyConditionVO.holdingRate * pickleData.stockCodes.size());
-                if(i == 0) {
-                    System.out.println(pickleData.stockCodes.size());
-                    for(BackData backData : pickleData.stockCodes) {
-                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-                        System.out.println(backData.code + "   " + backData.rankValue);
-                    }
-                }
-                pickleData.stockCodes = pickleData.stockCodes.stream()
-                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
-                        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
-                                .getCompareRank(strategyConditionVO.asd))
-                        .limit(strategyConditionVO.holdingNum)
-                        .collect(Collectors.toList());
-                if(i == 0) {
-                    System.out.println(pickleData.stockCodes.size());
-                    for(BackData backData : pickleData.stockCodes) {
-                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-                        System.out.println(backData.code + "   " + backData.rankValue);
-                    }
-                }
-            }
-
-        }
-        else {
-            //在每个区间内 确定有效的股票
-            for (int i = 0; i < pickleDataList.size(); i++) {
-                PickleData pickleData = pickleDatas.get(i);
-                LocalDate begin = pickleData.beginDate;
-                LocalDate end = pickleData.endDate;
-
-                pickleData.stockCodes = pickleData.stockCodes.stream()
-                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
-                        .sorted(strategyConditionVO.strategyType            //根据rank模式进行排序
-                                .getCompareRank(strategyConditionVO.asd))
-                        .limit(strategyConditionVO.holdingNum)
-                        .collect(Collectors.toList());
-            }
-        }
-
-
-        //返回已经排好序 决定后的要买的股票代码
-        return pickleDataList;
+        return null;
     }
 
 

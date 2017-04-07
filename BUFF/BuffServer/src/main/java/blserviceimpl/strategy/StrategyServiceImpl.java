@@ -8,7 +8,6 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import vo.*;
 
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +65,10 @@ public class StrategyServiceImpl implements StrategyService {
         this.stockPickIndexVOs = stockPickIndexVOs;
         setFactory(new DAOFactoryServiceImpl());
         setPickStockService(PickStockServiceImpl.PICK_STOCK_SERVICE);
+    }
 
-
+    @Override
+    public void calculate(TraceBackVO traceBackVO) {
         // 初始化一些必要的重复计算的参数
         baseYearProfitRate = 0.0;
         yearProfitRate = 0.0;
@@ -94,6 +95,7 @@ public class StrategyServiceImpl implements StrategyService {
         baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
         yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
     }
+
 
     @Override
     public void setStrategyConditionVO(StrategyConditionVO strategyConditionVO) {
@@ -362,6 +364,5 @@ public class StrategyServiceImpl implements StrategyService {
 
         return oldPickleData;
     }
-
 
 }

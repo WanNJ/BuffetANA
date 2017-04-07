@@ -9,8 +9,14 @@ import java.util.List;
  */
 public interface StrategyService {
 
-     void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
+    void init(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
               List<StockPickIndexVO> stockPickIndexVOs);
+
+    /**
+     * 用户点击回测按钮后调用的方法
+     * @param traceBackVO
+     */
+    void calculate(TraceBackVO traceBackVO);
 
     void setStrategyConditionVO(StrategyConditionVO strategyConditionVO);
 

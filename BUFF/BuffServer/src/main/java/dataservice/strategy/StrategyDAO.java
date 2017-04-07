@@ -2,6 +2,7 @@ package dataservice.strategy;
 
 import blserviceimpl.strategy.PickleData;
 import po.StockPoolConditionPO;
+import stockenum.StrategyType;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
 import vo.StrategyConditionVO;
@@ -30,6 +31,20 @@ public interface StrategyDAO {
          */
         List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
                                        List<StockPickIndexVO> stockPickIndexVOs);
+
+        /**
+         * 过滤和排序 pickledata 得到最终的要买的股票的数据
+         * @param pickleDataList
+         * @param stockPickIndexVOs
+         * @param strategyType  策略类型
+         * @param holdingNum   持股数
+         * @param holdingRate  持有率  如果不是动量策略返回0
+         * @param asd   是否按升序排列
+         * @return   List<PickleData>
+         */
+        List<PickleData> rankAndFilterPickleData(List<PickleData> pickleDataList,
+                                                 List<StockPickIndexVO> stockPickIndexVOs , StrategyType strategyType ,
+                                                 int holdingNum , double holdingRate, boolean asd);
 
 
 

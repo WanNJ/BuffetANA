@@ -7,6 +7,7 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
+import stockenum.StrategyType;
 import util.RunTimeSt;
 import vo.StockPickIndexVO;
 import vo.StockPoolConditionVO;
@@ -28,7 +29,8 @@ import java.util.stream.Collectors;
  * Created by wshwbluebird on 2017/3/26.
  */
 public enum StrategyDAOImpl implements StrategyDAO {
-    STRATEGY_DAO;
+    STRATEGY_DAO ;
+
 
 
     private PickStockService pickStockService;
@@ -198,6 +200,67 @@ public enum StrategyDAOImpl implements StrategyDAO {
         //返回已经排好序 决定后的要买的股票代码
         return pickleDataList;
     }
+
+
+    @Override
+    public List<PickleData> rankAndFilterPickleData(
+            List<PickleData> pickleDataList, List<StockPickIndexVO> stockPickIndexVOs,
+            StrategyType strategyType , int holdingNum , double holdingRate, boolean asd) {
+        if(holdingRate != 0) {
+            //在每个区间内 确定有效的股票
+            for (int i = 0; i < pickleDataList.size(); i++) {
+                PickleData pickleData = pickleDataList.get(i);
+                LocalDate begin = pickleData.beginDate;
+                LocalDate end = pickleData.endDate;
+                holdingNum = (int)Math.ceil(holdingRate * pickleData.stockCodes.size());
+                if(i == 0) {
+                    System.out.println(pickleData.stockCodes.size());
+                    for(BackData backData : pickleData.stockCodes) {
+                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+                        System.out.println(backData.code + "   " + backData.rankValue);
+                    }
+                }
+                pickleData.stockCodes = pickleData.stockCodes.stream()
+                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
+                        .sorted(strategyType            //根据rank模式进行排序
+                                .getCompareRank(asd))
+                        .limit(holdingNum)
+                        .collect(Collectors.toList());
+                if(i == 0) {
+                    System.out.println(pickleData.stockCodes.size());
+                    for(BackData backData : pickleData.stockCodes) {
+                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+                        System.out.println(backData.code + "   " + backData.rankValue);
+                    }
+                }
+            }
+
+        }
+        else {
+            //在每个区间内 确定有效的股票
+            for (int i = 0; i < pickleDataList.size(); i++) {
+                PickleData pickleData = pickleDataList.get(i);
+                LocalDate begin = pickleData.beginDate;
+                LocalDate end = pickleData.endDate;
+
+                pickleData.stockCodes = pickleData.stockCodes.stream()
+                        .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
+                        .sorted(strategyType            //根据rank模式进行排序
+                                .getCompareRank(asd))
+                        .limit(holdingNum)
+                        .collect(Collectors.toList());
+            }
+        }
+
+
+        //返回已经排好序 决定后的要买的股票代码
+        return pickleDataList;
+
+
+
+
+    }
+
 
 
     /**

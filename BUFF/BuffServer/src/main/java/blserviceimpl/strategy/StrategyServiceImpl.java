@@ -286,16 +286,27 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
 
-    private List<PickleData>  getOldPickleData(int holdingNum , int holdingPeriod , int formationPeriod){
+    private List<PickleData>  getOldPickleData(int holdingNum , int holdingPeriod , int formationPeriod , double holdingRate){
 
         List<PickleData> sepPickle = pickStockService.seprateDaysByTrade
                 (strategyConditionVO.beginDate,strategyConditionVO.endDate,holdingNum);
 
         sepPickle = pickleDataNewToOld(sepPickle,formationPeriod);
 
+        //TODO计算基本收益率
+
+
+
+        //rank and filter
+
+        sepPickle = strategyDAO.rankAndFilterPickleData
+                        (sepPickle,stockPickIndexVOs,strategyConditionVO.strategyType
+                                ,holdingNum,holdingRate,strategyConditionVO.asd);
+
+
         //
 
-        return null;
+        return sepPickle;
     }
 
     /**

@@ -71,12 +71,8 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public void calculate(TraceBackVO traceBackVO) {
-
-
         this.pickleDatas = getOldPickleData(traceBackVO.holdingNum,traceBackVO.holdingPeriod,
                 traceBackVO.formationPeriod,traceBackVO.holdingRate);
-
-
         // 初始化一些必要的重复计算的参数
         baseYearProfitRate = 0.0;
         yearProfitRate = 0.0;

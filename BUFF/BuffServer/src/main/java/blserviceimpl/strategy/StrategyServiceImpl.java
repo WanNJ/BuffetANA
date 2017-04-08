@@ -21,11 +21,15 @@ public class StrategyServiceImpl implements StrategyService {
     private StrategyConditionVO strategyConditionVO;
     private StockPoolConditionVO stockPoolConditionVO;
     private List<StockPickIndexVO> stockPickIndexVOs;
+    private TraceBackVO traceBackVO;
     private DAOFactoryService daoFactoryService;
     PickStockService pickStockService;
     private StrategyDAO strategyDAO;
     private List<PickleData> pickleDatas;
     private List<NewPickleData> newpickleDatas;
+    private List<BetterTableVO> betterTableVOSByFormation;
+    private List<BetterTableVO> betterTableVOSByHolding;
+
     /**
      * 基准收益率列表
      */
@@ -69,8 +73,11 @@ public class StrategyServiceImpl implements StrategyService {
         //this.newpickleDatas = strategyDAO.getNewPickleData()
     }
 
+
     @Override
     public void calculate(TraceBackVO traceBackVO) {
+        setTraceBackVO(traceBackVO);
+
         this.pickleDatas = getOldPickleData(traceBackVO.holdingNum,traceBackVO.holdingPeriod,
                 traceBackVO.formationPeriod,traceBackVO.holdingRate);
         // 初始化一些必要的重复计算的参数
@@ -124,6 +131,11 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
+    public void setTraceBackVO(TraceBackVO traceBackVO) {
+        this.traceBackVO = traceBackVO;
+    }
+
+    @Override
     public BackDetailVO getBackDetailVO() {
         double beta = getCOV(strategyRates, baseRates) / getVariance(baseRates);
 
@@ -168,23 +180,60 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
+    public List<BetterTableVO> getBetterTableVOByFormation(int formationPeriod) {
+        betterTableVOSByFormation = new ArrayList<>();
+        for(int holdingPeriod = 2; holdingPeriod <= 60; holdingPeriod += 2) {
+            calculate(new TraceBackVO(formationPeriod, holdingPeriod, traceBackVO.holdingNum, traceBackVO.holdingRate));
+            System.out.println(holdingPeriod + "  " + strategyRates.size());
+            // 计算策略赢的次数
+            double winCount = 0;
+            for(int i = 0; i < strategyRates.size(); i++) {
+                if(strategyRates.get(i) > baseRates.get(i))
+                    winCount++;
+            }
+
+            betterTableVOSByFormation.add(new BetterTableVO(holdingPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size(), winCount / baseRates.size()));
+        }
+        return betterTableVOSByFormation;
+    }
+
+    @Override
+    public List<BetterTableVO> getBetterTableVOByHolding(int holdingPeriod) {
+        betterTableVOSByHolding = new ArrayList<>();
+        for(int formationPeriod = 2; formationPeriod <= 60; formationPeriod += 2) {
+            calculate(new TraceBackVO(formationPeriod, holdingPeriod, traceBackVO.holdingNum, traceBackVO.holdingRate));
+            // 计算策略赢的次数
+            double winCount = 0;
+            for(int i = 0; i < strategyRates.size(); i++) {
+                if(strategyRates.get(i) > baseRates.get(i))
+                {
+                    winCount++;
+                }
+            }
+            double winRate = winCount / baseRates.size();
+            betterTableVOSByHolding.add(new BetterTableVO(formationPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size(), winRate));
+        }
+        return betterTableVOSByHolding;
+    }
+
+    @Override
     public List<BetterPieceVO> getOverProfitRateByFormation() {
-        return null;
+        return betterTableVOSByFormation.stream().map(t -> new BetterPieceVO(t.period, t.overProfitRate)).collect(Collectors.toList());
     }
 
     @Override
     public List<BetterPieceVO> getOverProfitRateByHolding() {
-        return null;
+        return betterTableVOSByHolding.stream().map(t -> new BetterPieceVO(t.period, t.overProfitRate)).collect(Collectors.toList());
     }
 
     @Override
     public List<BetterPieceVO> getWinRateByFormation() {
-        return null;
+        return betterTableVOSByFormation.stream().map(t -> new BetterPieceVO(t.period, t.winRate)).collect(Collectors.toList());
     }
 
     @Override
     public List<BetterPieceVO> getWinProfitRateByHolding() {
-        return null;
+        return betterTableVOSByHolding.stream().map(t -> new BetterPieceVO(t.period, t.winRate)).collect(Collectors.toList());
     }
 
     @Override

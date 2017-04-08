@@ -1,11 +1,9 @@
 package runner;
 
 import blservice.strategy.StrategyService;
-import blserviceimpl.strategy.PickleData;
 import blserviceimpl.strategy.StrategyServiceImpl;
 import dataserviceimpl.strategy.StrategyDAOImpl;
 import po.StockPoolConditionPO;
-import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.RunTimeSt;
@@ -55,7 +53,7 @@ public class ServerRunner {
 
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
                 .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
-        //strategyConditionVO1.holdingRate = 0.2;
+//        strategyConditionVO1.holdingRate = 0.2;
         StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
 
@@ -74,7 +72,8 @@ public class ServerRunner {
         StrategyService strategyService = new StrategyServiceImpl();
         strategyService.init(strategyConditionVO1, stockPoolConditionVO1, new ArrayList<>());
 
-		strategyService.calculate(new TraceBackVO(20,10,10));
+        strategyService.calculate(new TraceBackVO(20,10,10));
+//        strategyService.calculate(new TraceBackVO(20,10,10, 0.2));
 
         BackDetailVO backDetailVO = strategyService.getBackDetailVO();
 
@@ -86,6 +85,9 @@ public class ServerRunner {
         System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
         System.out.println("sharpRate: " + backDetailVO.sharpRate);
         System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
+
+        List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByHolding(5);
+        betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));
 
 //
 //        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;

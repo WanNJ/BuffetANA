@@ -18,4 +18,13 @@ public class BetterTableVO {
      * 一年内的胜率
      */
     public double winRate;
+
+    public BetterTableVO() {
+    }
+
+    public BetterTableVO(int period, double overProfitRate, double winRate) {
+        this.period = period;
+        this.overProfitRate = overProfitRate;
+        this.winRate = winRate;
+    }
 }

@@ -32,4 +32,11 @@ public class TraceBackVO {
         this.holdingNum = holdingNum;
         this.holdingRate = 0.0;
     }
+
+    public TraceBackVO(int formationPeriod, int holdingPeriod, int holdingNum, double holdingRate) {
+        this.formationPeriod = formationPeriod;
+        this.holdingPeriod = holdingPeriod;
+        this.holdingNum = holdingNum;
+        this.holdingRate = holdingRate;
+    }
 }

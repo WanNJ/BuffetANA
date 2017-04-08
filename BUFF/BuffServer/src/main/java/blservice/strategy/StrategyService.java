@@ -23,6 +23,8 @@ public interface StrategyService {
     void setStockPoolConditionVO(StockPoolConditionVO stockPoolConditionVO);
 
     void setStockPickIndexVOList(List<StockPickIndexVO> stockPickIndexVOs);
+
+    void setTraceBackVO(TraceBackVO traceBackVO);
     /**
      * 获得回测表数据
      * @return
@@ -42,10 +44,34 @@ public interface StrategyService {
     List<DayRatePieceVO> getBaseDayRatePieceVO();
 
     /**
+     * ！！！！！Attention！！！！！！
+     * ！！！！！此接口已废弃！！！！！
+     * 该接口在当时考虑不周，应该分割成getBetterTableVOByFormation，getBetterTableVOByHolding这两个接口
      * 获得回测的形成期与持有期的TableView
      * @return
      */
     List<BetterTableVO> getBetterTableVO();
+
+
+    /**
+     * !!!!!!!!Attention!!!!!!
+     * 为了在逻辑层提高计算效率，写界面逻辑时，一定要保证！！！！
+     * 此方法必须先于getOverProfitRateByFormation, getWinRateByFormation调用！！！
+     * 通过形成期获得回测的形成期与持有期的TableView
+     * @param formationPeriod 固定的形成期
+     * @return
+     */
+    List<BetterTableVO> getBetterTableVOByFormation(int formationPeriod);
+
+    /**
+     * !!!!!!!!Attention!!!!!!
+     * 为了在逻辑层提高计算效率，写界面逻辑时，一定要保证！！！！
+     * 此方法必须先于getOverProfitRateByHolding，getWinProfitRateByHolding调用！！！
+     * 通过持有期获得回测的形成期与持有期的TableView
+     * @param holdingPeriod 固定的持仓期
+     * @return
+     */
+    List<BetterTableVO> getBetterTableVOByHolding(int holdingPeriod);
 
     /**
      * 通过形成期获得超额收益率图

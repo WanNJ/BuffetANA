@@ -59,7 +59,7 @@ public class ServerRunner {
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
 
 
-		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,10000000000.0,100000000000.0));
+		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100000000000.0));
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 //        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
 //                stockPoolConditionVO1,stockPickIndexVOs1);

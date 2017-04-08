@@ -939,6 +939,7 @@
  ******************************************************************************/
  
 .scroll-pane {
+	-fx-background-color: WHITE;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }

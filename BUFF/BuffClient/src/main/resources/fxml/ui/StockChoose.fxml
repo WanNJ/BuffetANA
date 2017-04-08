@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,7 +20,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import java.lang.String?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
@@ -80,125 +78,100 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXTabPane fx:id="pickingConditions">
+                  <JFXTabPane fx:id="pickingConditions" prefHeight="200.0">
                      <tabs>
                         <Tab text="筛选条件">
                            <content>
-                              <StackPane>
-                                 <children>
-                                    <GridPane fx:id="filterCondition">
-                                      <columnConstraints>
-                                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
-                                         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Label text="指标" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="比较符" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="范围" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="值" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="操作" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="指标名称" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font size="20.0" />
-                                             </font>
-                                          </Label>
-                                          <JFXComboBox promptText="小于" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <JFXTextField maxWidth="100.0" text="250" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <JFXButton text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0">
-                                                   <image>
-                                                      <Image url="@../../images/delete.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </JFXButton>
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </StackPane>
+                              <ScrollPane fitToHeight="true" fitToWidth="true">
+                                 <StackPane style="-fx-background-color: WHITE;">
+                                    <children>
+                                       <GridPane fx:id="filterCondition">
+                                          <columnConstraints>
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                          </columnConstraints>
+                                          <rowConstraints>
+                                             <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+                                          </rowConstraints>
+                                          <children>
+                                             <Label text="指标" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="比较符" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="范围" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="值" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="操作" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                          </children>
+                                          <StackPane.margin>
+                                             <Insets top="10.0" />
+                                          </StackPane.margin>
+                                       </GridPane>
+                                    </children>
+                                 </StackPane>
+                              </ScrollPane>
                            </content>
                         </Tab>
                         <Tab text="排名条件">
                            <content>
-                              <StackPane>
-                                 <children>
-                                    <GridPane fx:id="rankingCondition">
-                                       <columnConstraints>
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
-                                          <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="指标" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="次序" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="范围" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="权重" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="操作" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font></Label>
-                                          <Label text="指标名称" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                             <font>
-                                                <Font size="20.0" />
-                                             </font>
-                                          </Label>
-                                          <JFXComboBox promptText="从小到大" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <JFXComboBox layoutY="40.0" promptText="全部" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <JFXTextField maxWidth="100.0" text="1" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <JFXButton text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0">
-                                                   <image>
-                                                      <Image url="@../../images/delete.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </JFXButton>
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </StackPane>
+                              <ScrollPane fitToHeight="true" fitToWidth="true">
+                                 <StackPane style="-fx-background-color: WHITE;">
+                                    <children>
+                                       <GridPane fx:id="rankingCondition">
+                                          <columnConstraints>
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                          </columnConstraints>
+                                          <rowConstraints>
+                                             <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+                                          </rowConstraints>
+                                          <children>
+                                             <Label text="指标" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="次序" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="范围" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="权重" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                             <Label text="操作" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font></Label>
+                                          </children>
+                                          <padding>
+                                             <Insets top="10.0" />
+                                          </padding>
+                                       </GridPane>
+                                    </children>
+                                 </StackPane>
+                              </ScrollPane>
                            </content>
                         </Tab>
                      </tabs>

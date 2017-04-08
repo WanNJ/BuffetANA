@@ -97,6 +97,7 @@ public class StockChooseController {
 
                     delete.setOnAction(event1 -> {
                         filterCondition.getRowConstraints().remove(rowConstraints);
+                        filterCondition.getChildren().removeAll(conditionName,comparisonCharacter,value,delete);
                     });
                     filterCondition.add(delete,4,row);
                 }else if ("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
@@ -108,7 +109,7 @@ public class StockChooseController {
                     //添加次序ComboBox、范围ComboBox和权重TextField
                     JFXComboBox order=new JFXComboBox();
                     order.setValue("从小到大");
-                    order.setMaxWidth(100);
+                    order.setMaxWidth(130);
                     JFXComboBox range=new JFXComboBox();
                     range.setValue("全部");
                     range.setMaxWidth(100);
@@ -118,7 +119,10 @@ public class StockChooseController {
                     rankingCondition.add(range,2,row);
                     rankingCondition.add(weight,3,row);
 
-                    delete.setOnAction(event1 -> rankingCondition.getRowConstraints().remove(rowConstraints));
+                    delete.setOnAction(event1 -> {
+                        rankingCondition.getRowConstraints().remove(rowConstraints);
+                        rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
+                    });
                     rankingCondition.add(delete,4,row);
                 }
             });

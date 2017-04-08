@@ -302,9 +302,11 @@ public enum StrategyType  implements RankMode {
             return (o1, o2) -> {
                 if (asd) {
                     if ((double) o1.rankValue > (double) o2.rankValue) return 1;
+                    else if((double) o1.rankValue == (double) o2.rankValue) return 0;
                     else return -1;
                 } else {
                     if ((double) o1.rankValue > (double) o2.rankValue) return -1;
+                    else if((double) o1.rankValue == (double) o2.rankValue) return 0;
                     else return 1;
                 }
             };

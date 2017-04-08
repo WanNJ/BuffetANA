@@ -146,26 +146,26 @@ public enum StrategyDAOImpl implements StrategyDAO {
                 LocalDate begin = pickleData.beginDate;
                 LocalDate end = pickleData.endDate;
                 holdingNum = (int)Math.ceil(holdingRate * pickleData.stockCodes.size());
-                if(i == 0) {
-                    System.out.println(pickleData.stockCodes.size());
-                    for(BackData backData : pickleData.stockCodes) {
-                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-                        System.out.println(backData.code + "   " + backData.rankValue);
-                    }
-                }
+//                if(i == 0) {
+//                    System.out.println(pickleData.stockCodes.size());
+//                    for(BackData backData : pickleData.stockCodes) {
+//                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+//                        System.out.println(backData.code + "   " + backData.rankValue);
+//                    }
+//                }
                 pickleData.stockCodes = pickleData.stockCodes.stream()
                         .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
                         .sorted(strategyType            //根据rank模式进行排序
                                 .getCompareRank(asd))
                         .limit(holdingNum)
                         .collect(Collectors.toList());
-                if(i == 0) {
-                    System.out.println(pickleData.stockCodes.size());
-                    for(BackData backData : pickleData.stockCodes) {
-                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-                        System.out.println(backData.code + "   " + backData.rankValue);
-                    }
-                }
+//                if(i == 0) {
+//                    System.out.println(pickleData.stockCodes.size());
+//                    for(BackData backData : pickleData.stockCodes) {
+//                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+//                        System.out.println(backData.code + "   " + backData.rankValue);
+//                    }
+//                }
             }
 
         }

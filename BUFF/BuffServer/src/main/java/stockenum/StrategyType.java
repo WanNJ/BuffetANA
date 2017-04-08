@@ -234,6 +234,7 @@ public enum StrategyType  implements RankMode {
 
                     //TODO  以后要做进一步的处理
                     if (dayMAs == null) {
+                        System.out.println(code);
                         NewPickleData newPickleData = new NewPickleData(code);
                         newPickleDataList.remove(newPickleData);
                         isnull = true;
@@ -273,7 +274,9 @@ public enum StrategyType  implements RankMode {
                 // TODO 在此处加入  过滤参数的注入
                 // !!!!!!!!!!!在此处加入  过滤参数的注入
                 for (StockPickIndexVO s : stockPickIndexVOs) {
-                    //newPickleDataList.get(codeIndex).singleBackDataList. =  s.stockPickIndex.setFilterValue(pickleDatas,code);
+                    newPickleDataList.get(codeIndex).singleBackDataList =
+                            s.stockPickIndex.setNewFilterValue
+                                    (newPickleDataList.get(codeIndex).singleBackDataList,code,codeIndex);
                 }
 
                 // add by wsw

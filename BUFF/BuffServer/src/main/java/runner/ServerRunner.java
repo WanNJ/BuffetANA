@@ -4,6 +4,7 @@ import blservice.strategy.StrategyService;
 import blserviceimpl.strategy.StrategyServiceImpl;
 import dataserviceimpl.strategy.StrategyDAOImpl;
 import po.StockPoolConditionPO;
+import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.RunTimeSt;
@@ -52,13 +53,13 @@ public class ServerRunner {
 //        }
 
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
-                .MOM, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 //        strategyConditionVO1.holdingRate = 0.2;
         StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
 
 
-		//stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100000000000.0));
+		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,10000000000.0,100000000000.0));
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 //        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
 //                stockPoolConditionVO1,stockPickIndexVOs1);
@@ -70,10 +71,10 @@ public class ServerRunner {
 //        }
 
         StrategyService strategyService = new StrategyServiceImpl();
-        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, new ArrayList<>());
+        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
 
-//        strategyService.calculate(new TraceBackVO(20,10,10));
-        strategyService.calculate(new TraceBackVO(20,10,0, 0.2));
+        strategyService.calculate(new TraceBackVO(20,10,10));
+//        strategyService.calculate(new TraceBackVO(20,10,0, 0.2));
 
         BackDetailVO backDetailVO = strategyService.getBackDetailVO();
 

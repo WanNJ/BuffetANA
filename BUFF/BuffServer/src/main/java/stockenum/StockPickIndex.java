@@ -1,7 +1,9 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
+import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
+import blserviceimpl.strategy.SingleBackData;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import vo.LongPeiceVO;
@@ -80,6 +82,35 @@ public enum StockPickIndex implements FilterMode {
            }
            return current;
         }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
+
+
+            List<LongPeiceVO>  longPeiceVOs = pickStockService.getLastVol(code,begin,end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(longPeiceVOs.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        longPeiceVOs.get(j).amount;
+
+
+            }
+            return current;
+        }
+
+
     },
     /**
      * 昨日涨幅
@@ -94,6 +125,13 @@ public enum StockPickIndex implements FilterMode {
         public List<PickleData> setFilterValue(List<PickleData> current, String code) {
             return current;
         }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            return null;
+        }
+
+
     }
 
 }

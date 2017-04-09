@@ -6,6 +6,7 @@ import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
+import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
@@ -47,6 +48,10 @@ public class StrategyServiceImpl implements StrategyService {
      * 策略年化收益率
      */
     private double yearProfitRate;
+    /**
+     * 最大回撤率
+     */
+    private double largestBackRate;
 
 
     /**
@@ -203,6 +208,7 @@ public class StrategyServiceImpl implements StrategyService {
         double sharpRate = (yearProfitRate - r) / getSTD(strategyRates);
 
         double largestBackRate = getMaxDrawDown(strategyRates);
+        this.largestBackRate = largestBackRate;
 
         BackDetailVO backDetailVO = new BackDetailVO(yearProfitRate, baseYearProfitRate, sharpRate, largestBackRate, alpha, beta);
 
@@ -338,6 +344,74 @@ public class StrategyServiceImpl implements StrategyService {
         }
         ProfitDistributionPieVO profitDistributionPieVO = new ProfitDistributionPieVO(green0, green35, green75, red0, red35, red75);
         return profitDistributionPieVO;
+    }
+
+    @Override
+    public StrategyScoreVO getStrategyEstimateResult() {
+
+        int antiRiskAbility = (int)Math.round(20 - largestBackRate * 20);
+        if (antiRiskAbility > 20)
+            antiRiskAbility = 20;
+        else if (antiRiskAbility < 0)
+            antiRiskAbility = 0;
+
+        int absoluteProfit = (int)Math.round(yearProfitRate / 5 * 20);
+        if (absoluteProfit > 20)
+            absoluteProfit = 20;
+        else if (absoluteProfit < 0)
+            absoluteProfit = 0;
+
+        // 计算策略赢的次数
+        double winCount = 0;
+        //股票的盈亏比率
+        double winRate = 0;
+        double loseRate = 0;
+        //最大赢率
+        double maxWinRate = -1;
+        //最大亏损率
+        double maxLoseRate = 1;
+        for(int i = 0; i < strategyRates.size(); i++) {
+            if(strategyRates.get(i) > baseRates.get(i))
+                winCount++;
+            if(strategyRates.get(i) > 0)
+                winRate += strategyRates.get(i);
+            else
+                loseRate += strategyRates.get(i);
+
+            if(strategyRates.get(i) > maxWinRate)
+                maxWinRate = strategyRates.get(i);
+            else if(strategyRates.get(i) < maxLoseRate)
+                maxLoseRate = strategyRates.get(i);
+        }
+        int chooseStockAbility = (int)Math.round(winCount / baseRates.size() * 20);
+        if(chooseStockAbility > 20)
+            chooseStockAbility = 20;
+        else if (chooseStockAbility < 0)
+            chooseStockAbility = 0;
+
+        int profitAbility = 0;
+        if (loseRate == 0)
+            profitAbility = 20;
+        else {
+            profitAbility = (int)Math.round(winRate / (-loseRate) / 5 * 20);
+            if (profitAbility > 20)
+                profitAbility = 20;
+            else if (profitAbility < 0)
+                profitAbility = 0;
+        }
+
+        int stability = (int)Math.round((maxWinRate - maxLoseRate) / 2 * 20);
+        if (stability > 20)
+            stability = 20;
+        else if (stability < 0)
+            stability = 0;
+
+        int strategyScore = profitAbility + stability + chooseStockAbility + absoluteProfit + antiRiskAbility;
+
+        StrategyScoreVO strategyScoreVO = new StrategyScoreVO(profitAbility, stability, chooseStockAbility,
+                absoluteProfit, antiRiskAbility, strategyScore);
+
+        return strategyScoreVO;
     }
 
 

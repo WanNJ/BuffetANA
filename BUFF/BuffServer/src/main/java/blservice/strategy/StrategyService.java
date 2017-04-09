@@ -1,5 +1,6 @@
 package blservice.strategy;
 
+import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
@@ -117,4 +118,10 @@ public interface StrategyService {
      * @return
      */
     ProfitDistributionPieVO getProfitDistributePie();
+
+    /**
+     * 获得策略的评估结果
+     * @return
+     */
+    StrategyScoreVO getStrategyEstimateResult();
 }

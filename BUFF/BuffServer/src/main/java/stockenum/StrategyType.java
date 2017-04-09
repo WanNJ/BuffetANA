@@ -267,7 +267,46 @@ public enum StrategyType  implements RankMode {
         //TODO
         @Override
         public List<PickleData> setRankValue(List<PickleData> pickleDatas, String code, LocalDate begin, LocalDate end, int holdPeriod) {
-            return null;
+            List<FormationMOM> formationMOMS = pickStockService.getSingleCodeMOMInfo
+                    (code, begin.minusDays(1), end, holdPeriod);
+            List<StockPO> stockPOs = pickStockService
+                    .getSingleCodeInfo(code, begin.minusDays(10), end.plusDays(10));
+
+
+
+            int j = 0;
+            int k = 0;
+
+
+
+            /**
+             * 暂时先算前一天的 因为begin就要买了!!!!!
+             */
+
+
+            for (int i = 0; i < pickleDatas.size(); i++) {
+                int lastIndex = pickleDatas.size()-1;
+                PickleData pickleData = pickleDatas.get(i);
+
+                //如果这只股票本来在这期间就不存在 直接跳过  不用注入参数
+                if(pickleData.stockCodes.size()==0||!pickleData.stockCodes.get(lastIndex).code.equals(code)) {
+                    continue;
+                }else if(formationMOMS == null){
+                    //如果没有数据   删除当前列表最后一个 backdata  因为这只股票没有形成期的数据
+                    pickleData.stockCodes.remove(lastIndex);
+                }
+                while (formationMOMS.get(j).date.isBefore(pickleData.beginDate)) {
+                    j++;
+                }
+
+                double rank = formationMOMS.get(j).yeildRate;
+
+                pickleData.stockCodes.get(lastIndex).mixRank[this.ordinal()] = rank;
+
+            }
+
+
+            return pickleDatas;
         }
 
 //        @Override

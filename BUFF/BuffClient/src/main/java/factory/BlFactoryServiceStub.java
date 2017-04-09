@@ -40,6 +40,11 @@ public class BlFactoryServiceStub implements BlFactoryService {
     }
 
     @Override
+    public BenchStockService createBenchStockService() {
+        return null;
+    }
+
+    @Override
     public MALineService createMALineService() {
         return null;
     }

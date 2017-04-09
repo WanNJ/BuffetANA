@@ -25,4 +25,6 @@ public interface BlFactoryService {
     MarketService createMarketService();
 
     ThermometerService createThermometerService();
+
+    BenchStockService createBenchStockService();
 }

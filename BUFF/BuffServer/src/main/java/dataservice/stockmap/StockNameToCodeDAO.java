@@ -11,4 +11,22 @@ import java.util.List;
 public interface StockNameToCodeDAO {
 
     List<StockNameAndCodePO> getNameToCodeMap();
+
+    /**
+     * 获得主板所有股票的名称以及代码
+     * @return
+     */
+    List<StockNameAndCodePO> getMainBoardStock();
+
+    /**
+     * 获得创业板所有股票的名称以及代码
+     * @return
+     */
+    List<StockNameAndCodePO> getSecondBoardStock();
+
+    /**
+     * 获得中小板所有股票的名称以及代码
+     * @return
+     */
+    List<StockNameAndCodePO> getSMEBoardStock();
 }

@@ -49,4 +49,9 @@ public class BLFactorySeviceOnlyImpl implements BlFactoryService {
     public ThermometerService createThermometerService() {
         return SingleBlService.SINGLE_BL_SERVICE.getThermometerService();
     }
+
+    @Override
+    public BenchStockService createBenchStockService() {
+        return SingleBlService.SINGLE_BL_SERVICE.getBenchStockService();
+    }
 }

@@ -43,4 +43,6 @@ public enum SingleBlService {
 
     public ThermometerService getThermometerService(){return ThermometerServiceImpl.THERMOMETER_SERVCE;}
 
+    public BenchStockService getBenchStockService() { return BenchStockServiceImpl.BENCH_STOCK_SERVICE; }
+
 }

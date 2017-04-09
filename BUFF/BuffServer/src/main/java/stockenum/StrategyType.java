@@ -79,7 +79,7 @@ public enum StrategyType  implements RankMode {
 
 
                 for (int i = 0; i < pickleDatas.size(); i++) {
-                    int lastIndex = pickleDatas.size()-1;
+                    int lastIndex = pickleDatas.get(i).stockCodes.size()-1;
                     PickleData pickleData = pickleDatas.get(i);
 
                     //如果这只股票本来在这期间就不存在 直接跳过  不用注入参数
@@ -88,6 +88,7 @@ public enum StrategyType  implements RankMode {
                     }else if(dayMAs == null){
                         //如果没有数据   删除当前列表最后一个 backdata  因为这只股票没有形成期的数据
                         pickleData.stockCodes.remove(lastIndex);
+                        continue;
                     }
                     while (dayMAs.get(MAcount).date.isBefore(pickleData.beginDate.minusDays(1))) {
                         MAcount++;

@@ -34,13 +34,13 @@ public class MAStratgyServer {
 
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
 
-        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
-                stockPoolConditionVO,stockPickIndexVOs);
-        System.out.println("finish");
-        for(PickleData  p: list){
-            System.out.println(p.beginDate+"    "+p.endDate);
-            System.out.println(p.baseProfitRate);
-            System.out.println();
-        }
+//        List<PickleData> list = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO,
+////                stockPoolConditionVO,stockPickIndexVOs);
+//        System.out.println("finish");
+//        for(PickleData  p: list){
+//            System.out.println(p.beginDate+"    "+p.endDate);
+//            System.out.println(p.baseProfitRate);
+//            System.out.println();
+//        }
     }
 }

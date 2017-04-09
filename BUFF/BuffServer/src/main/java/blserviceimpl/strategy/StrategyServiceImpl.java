@@ -88,6 +88,44 @@ public class StrategyServiceImpl implements StrategyService {
         this.strategyDAO = this.daoFactoryService.createStrategyDAO();
 
 
+
+        this.pickleDatas = strategyDAO.getPickleData(beginDate,endDate,stockPoolConditionVO,
+                stockPickIndexVOs,traceBackVO,mixedStrategyVOS);
+
+        // 初始化一些必要的重复计算的参数
+        baseYearProfitRate = 0.0;
+        yearProfitRate = 0.0;
+        baseRates = new ArrayList<>();
+        strategyRates = new ArrayList<>();
+        pickleDatas= pickleDatas.stream().filter(t->t.stockCodes.size()>0).collect(Collectors.toList());
+        for(PickleData pickleData : pickleDatas) {
+            double tempRate = 0.0;
+            baseRates.add(pickleData.baseProfitRate);
+            baseYearProfitRate += pickleData.baseProfitRate;
+
+
+            double buyMoney = 0;
+            double sellMoney = 0;
+
+            for(BackData backData : pickleData.stockCodes) {
+//                System.out.println(backData.code);
+//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
+//                System.out.println(backData.lastDayClose);
+//                System.out.println(backData.firstDayOpen);
+//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
+//                System.out.println();
+                double cnt = 100/ backData.firstDayOpen;
+                buyMoney+=100;
+                sellMoney+= cnt * backData.lastDayClose;
+                tempRate += (sellMoney-buyMoney)/buyMoney ;
+            }
+            strategyRates.add(tempRate / pickleData.stockCodes.size());
+            yearProfitRate += tempRate / pickleData.stockCodes.size();
+        }
+        baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
+        yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
+
+
     }
 
 

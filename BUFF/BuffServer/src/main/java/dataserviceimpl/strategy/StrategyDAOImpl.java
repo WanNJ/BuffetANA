@@ -169,7 +169,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
                 //如果没有停牌 则加入可以进行进一步筛选和排序的队列
                 if (!isStop) {
-                    pickleData.stockCodes.add(new BackData(code, 0, firstDayOpen, lastDayClose));
+                    pickleData.stockCodes.add(new BackData(code, 0.0, firstDayOpen, lastDayClose));
                 }
             }
 
@@ -208,6 +208,25 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     .collect(Collectors.toList());
         }
 
+
+
+        //TODO计算基本收益率
+
+
+        for(PickleData pickleData : pickleDatas) {
+            double sum = 0.0;
+            double buyMoney = 0;
+            double sellMoney = 0;
+
+            for(BackData backData : pickleData.stockCodes) {
+                // sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+                double cnt = 100/ backData.firstDayOpen;
+                buyMoney+=100;
+                sellMoney+= cnt * backData.lastDayClose;
+                sum += (sellMoney-buyMoney)/buyMoney;
+            }
+            pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
+        }
 
 
         return pickleDatas;
@@ -429,7 +448,8 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
                 pickleData.stockCodes = pickleData.stockCodes.stream().map(t->{
                     double x = (double)t.mixRank[mixedStrategyVO.strategyType.ordinal()];
-                    t.rankValue = (double)t.rankValue+mixedStrategyVO.weight*(x-min)/(max-min);
+                    double y = (double)t.rankValue;
+                    t.rankValue =y+ mixedStrategyVO.weight*(x-min)/(max-min);
                     if(mixedStrategyVO.asc)  t.rankValue = -(double)t.rankValue;
                     return t;
                 }).collect(Collectors.toList());

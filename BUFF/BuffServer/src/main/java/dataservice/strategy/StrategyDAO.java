@@ -4,10 +4,9 @@ import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
 import po.StockPoolConditionPO;
 import stockenum.StrategyType;
-import vo.StockPickIndexVO;
-import vo.StockPoolConditionVO;
-import vo.StrategyConditionVO;
+import vo.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -24,14 +23,18 @@ public interface StrategyDAO {
 
 
         /**
-         * 初始化加载好已经需要的数据    非常重要的哦!!!!  选择好要购买的股票
-         * @param strategyConditionVO
+         * 计算混合策略  返回原始的pickledata  即直接可计算的pickledata
+         * @param beginDate
+         * @param endDate
          * @param stockPoolConditionVO
          * @param stockPickIndexVOs
+         * @param traceBackVO
+         * @param mixedStrategyVOS
          * @return
          */
-        List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO,
-                                       List<StockPickIndexVO> stockPickIndexVOs);
+        List<PickleData> getPickleData(LocalDate beginDate , LocalDate endDate ,
+                                       StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs,
+                                       TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS);
 
         /**
          * 过滤和排序 pickledata 得到最终的要买的股票的数据

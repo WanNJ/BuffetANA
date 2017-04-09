@@ -46,12 +46,20 @@ public enum StrategyType  implements RankMode {
             };
         }
 
+        /**
+         * 注入排序的参数   要注意
+         * 如果该股票没有形成期的参数  要把这只股票从pickledata里踢出去
+         * 如果本来就没有这只股票  就跳过
+         * @param pickleDatas
+         * @param code
+         * @param begin
+         * @param end
+         * @param holdPeriod
+         * @return
+         */
         @Override
-        public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
-                , LocalDate begin, LocalDate end, int holdPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
-            for (String code : codeList) {
-
-//                RunTimeSt.getRunTime("开始读取 "+code+"股票");
+        public List<PickleData>  setRankValue(List<PickleData> pickleDatas , String code
+                ,LocalDate begin , LocalDate end , int holdPeriod){
 
                 List<DayMA> dayMAs = pickStockService.getSingleCodeMAInfo
                         (code, begin.minusDays(1), end, holdPeriod);
@@ -59,13 +67,10 @@ public enum StrategyType  implements RankMode {
                         .getSingleCodeInfo(code, begin.minusDays(10), end.plusDays(10));
 
 
-//                RunTimeSt.getRunTime("结束读取 "+code+"股票");
 
                 int MAcount = 0;
                 int Adjcount = 0;
 
-                //Added By TY
-                int k = 0;
 
 
                 /**
@@ -73,12 +78,16 @@ public enum StrategyType  implements RankMode {
                  */
 
 
-                //pickleDatas.stream().forEach(t-> System.out.println(t.beginDate+"   "+t.endDate));
-
                 for (int i = 0; i < pickleDatas.size(); i++) {
+                    int lastIndex = pickleDatas.size()-1;
                     PickleData pickleData = pickleDatas.get(i);
-//                    System.out.println(pickleData.beginDate.minusDays(1));
-//                    System.out.println(dayMAs.get(MAcount).date);
+
+                    //如果这只股票本来在这期间就不存在 直接跳过  不用注入参数
+                    if(!pickleData.stockCodes.get(lastIndex).code.equals(code)) {
+                        continue;
+                    }else if(dayMAs == null){
+                        //如果没有数据   删除当前列表最后一个 backdata  因为这只股票没有形成期的数据
+                    }
                     while (dayMAs.get(MAcount).date.isBefore(pickleData.beginDate.minusDays(1))) {
                         MAcount++;
                     }
@@ -86,83 +95,17 @@ public enum StrategyType  implements RankMode {
                     while (stockPOs.get(Adjcount).getDate().isBefore(pickleData.beginDate.minusDays(1))) {
                         Adjcount++;
                     }
-//                    if(code.equals("300052"))
-//                    System.out.println(dayMAs.get(MAcount).date);
+
                     double MA = dayMAs.get(MAcount).MAValue;
-//                    if(code.equals("300052"))
-//                    System.out.println(MA);
+
                     double Adj = stockPOs.get(Adjcount).getAdjCloseIndex();
 
                     double rank = (MA - Adj) / MA;
 
-                    /**
-                     * 查看在持有期是否   出现停牌
-                     */
-                    boolean isStop = false; //是否停牌
-//                    while(!isStop && !stockPOs.get(Adjcount).getDate().isAfter(pickleData.endDate)){
-//                        if(stockPOs.get(Adjcount).getVolume()==0) {
-//                            isStop = true;
-//
-//                        }
-//                        Adjcount++;
-//                    }
-//                    Adjcount--;
+                    pickleData.stockCodes.get(lastIndex).mixRank[this.ordinal()] = rank;
 
-                    //Added By TY
-                    double firstDayOpen;
-                    double lastDayClose;
-                    //System.out.println("STRATEGY  input KKKKK:::    ");
-                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate)) {
-                        //System.out.println(k);
-                        k++;
-                    }
-                    if (k == 0) {
-                        continue;
-                    }
-                    firstDayOpen = stockPOs.get(k - 1).getAdjCloseIndex();
-                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
-                        if (stockPOs.get(k).getVolume() == 0) {
-                            isStop = true;
-                            break;
-                        }
-                        k++;
                     }
 
-                    if (stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
-                        k--;
-
-                    lastDayClose = stockPOs.get(k).getAdjCloseIndex();
-
-                    //如果没有停牌 则加入可以进行进一步筛选和排序的队列
-                    if (!isStop) {
-                        pickleData.stockCodes.add(new BackData(code, rank, firstDayOpen, lastDayClose));
-                    }
-
-
-                }
-
-
-                // TODO
-                // !!!!!!!!!!!在此处加入  过滤参数的注入
-                for (StockPickIndexVO s : stockPickIndexVOs) {
-                    pickleDatas = s.stockPickIndex.setFilterValue(pickleDatas, code);
-                }
-
-                // add by wsw
-                /**
-                 * 在底层计算相对的收益情况 (基准的收益情况）
-                 */
-
-
-            }
-            for (PickleData pickleData : pickleDatas) {
-                double sum = 0.0;
-
-                for (BackData backData : pickleData.stockCodes) {
-                    sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
-                }
-                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
-            }
 
             return pickleDatas;
         }
@@ -318,65 +261,73 @@ public enum StrategyType  implements RankMode {
             };
         }
 
+
+
+        //TODO
         @Override
-        public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
-                , LocalDate begin, LocalDate end, int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
-            for (String code : codeList) {
-                List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
-                if (formationMOMs == null) {
-//                    System.out.println(code);
-                    continue;
-                }
-                List<StockPO> stockPOs = pickStockService.getSingleCodeInfo(code, begin.minusDays(10), end.plusDays(10));
-                int j = 0;
-                int k = 0;
-                for (int i = 0; i < pickleDatas.size(); i++) {
-                    while (formationMOMs.get(j).date.isBefore(pickleDatas.get(i).beginDate))
-                        j++;
-                    double firstDayOpen;
-                    double lastDayClose;
-
-                    boolean isStop = false;
-                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate))
-                        k++;
-                    if (k == 0) {
-                        continue;
-                    }
-                    firstDayOpen = stockPOs.get(k - 1).getAdjCloseIndex();
-                    if (stockPOs.get(k).getVolume() == 0)
-                        isStop = true;
-                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
-                        if (stockPOs.get(k).getVolume() == 0) {
-                            isStop = true;
-                            break;
-                        }
-                        k++;
-                    }
-                    if (stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
-                        k--;
-                    if (stockPOs.get(k).getVolume() == 0)
-                        isStop = true;
-                    lastDayClose = stockPOs.get(k).getAdjCloseIndex();
-                    if (!isStop) {
-                        pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
-                    }
-                }
-                for (StockPickIndexVO s : stockPickIndexVOs) {
-                    pickleDatas = s.stockPickIndex.setFilterValue(pickleDatas, code);
-                }
-
-
-            }
-
-            for (PickleData pickleData : pickleDatas) {
-                double sum = 0.0;
-                for (BackData backData : pickleData.stockCodes) {
-                    sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
-                }
-                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
-            }
-            return pickleDatas;
+        public List<PickleData> setRankValue(List<PickleData> pickleDatas, String code, LocalDate begin, LocalDate end, int holdPeriod) {
+            return null;
         }
+
+//        @Override
+//        public List<PickleData> setRankValue(List<PickleData> pickleDatas, List<String> codeList
+//                , LocalDate begin, LocalDate end, int formationPeriod, List<StockPickIndexVO> stockPickIndexVOs) {
+//            for (String code : codeList) {
+//                List<FormationMOM> formationMOMs = pickStockService.getSingleCodeMOMInfo(code, begin, end, formationPeriod);
+//                if (formationMOMs == null) {
+////                    System.out.println(code);
+//                    continue;
+//                }
+//                List<StockPO> stockPOs = pickStockService.getSingleCodeInfo(code, begin.minusDays(10), end.plusDays(10));
+//                int j = 0;
+//                int k = 0;
+//                for (int i = 0; i < pickleDatas.size(); i++) {
+//                    while (formationMOMs.get(j).date.isBefore(pickleDatas.get(i).beginDate))
+//                        j++;
+//                    double firstDayOpen;
+//                    double lastDayClose;
+//
+//                    boolean isStop = false;
+//                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate))
+//                        k++;
+//                    if (k == 0) {
+//                        continue;
+//                    }
+//                    firstDayOpen = stockPOs.get(k - 1).getAdjCloseIndex();
+//                    if (stockPOs.get(k).getVolume() == 0)
+//                        isStop = true;
+//                    while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
+//                        if (stockPOs.get(k).getVolume() == 0) {
+//                            isStop = true;
+//                            break;
+//                        }
+//                        k++;
+//                    }
+//                    if (stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
+//                        k--;
+//                    if (stockPOs.get(k).getVolume() == 0)
+//                        isStop = true;
+//                    lastDayClose = stockPOs.get(k).getAdjCloseIndex();
+//                    if (!isStop) {
+//                        pickleDatas.get(i).stockCodes.add(new BackData(code, formationMOMs.get(j).yeildRate, firstDayOpen, lastDayClose));
+//                    }
+//                }
+//                for (StockPickIndexVO s : stockPickIndexVOs) {
+//                    pickleDatas = s.stockPickIndex.setFilterValue(pickleDatas, code);
+//                }
+//
+//
+//            }
+//
+//            for (PickleData pickleData : pickleDatas) {
+//                double sum = 0.0;
+//                for (BackData backData : pickleData.stockCodes) {
+//                    sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+//                }
+//                pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
+//            }
+//            return pickleDatas;
+//        }
 
         @Override
         public List<NewPickleData> setAllValue(List<String> codeList, LocalDate begin, LocalDate end, List<StockPickIndexVO> stockPickIndexVOs) {

@@ -21,13 +21,18 @@ public interface RankMode {
     Comparator<BackData> getCompareRank( boolean asd);
 
     /**
-     * 注入 要比较的数据
+     * 注入排序的参数   要注意
+     * 如果该股票没有形成期的参数  要把这只股票从pickledata里踢出去
+     * 如果本来就没有这只股票  就跳过
      * @param pickleDatas
-     * @param codeList
-     * @return   List<PickleData>
+     * @param code
+     * @param begin
+     * @param end
+     * @param formationPeriod
+     * @return
      */
-    List<PickleData>  setRankValue(List<PickleData> pickleDatas , List<String>  codeList
-            ,LocalDate begin , LocalDate end , int holdPeriod, List<StockPickIndexVO> stockPickIndexVOs );
+    List<PickleData>  setRankValue(List<PickleData> pickleDatas , String code
+            ,LocalDate begin , LocalDate end , int formationPeriod);
 
 
     /**

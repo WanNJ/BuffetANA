@@ -2,6 +2,7 @@ package blservice.strategy;
 
 import vo.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -14,8 +15,11 @@ public interface StrategyService {
 
     /**
      * 混合策略的初始化
+     * 或者是自定义策略
      */
-    void initMixed(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs, TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS);
+    void initMixed(LocalDate beginDate , LocalDate endDate,
+                   StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs,
+                   TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS);
 
     /**
      * 用户点击回测按钮后调用的方法

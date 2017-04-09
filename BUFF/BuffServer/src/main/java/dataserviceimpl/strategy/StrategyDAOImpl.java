@@ -6,12 +6,11 @@ import blserviceimpl.strategy.PickleData;
 import dataservice.strategy.StrategyDAO;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
+import po.StockPO;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import stockenum.StrategyType;
-import vo.StockPickIndexVO;
-import vo.StockPoolConditionVO;
-import vo.StrategyConditionVO;
+import vo.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
@@ -117,21 +117,100 @@ public enum StrategyDAOImpl implements StrategyDAO {
     }
 
 
-
-
     /**
-     * 这个方法必须在getStocksInPool之后调用！！！Attention！！！！！
-     * @param strategyConditionVO
+     * 这个方法 必须在获取股票池之后使用
+     * @param beginDate
+     * @param endDate
      * @param stockPoolConditionVO
      * @param stockPickIndexVOs
+     * @param traceBackVO
+     * @param mixedStrategyVOS
      * @return
      */
     @Override
-    public List<PickleData> getPickleData(StrategyConditionVO strategyConditionVO,
-                                          StockPoolConditionVO stockPoolConditionVO,
-                                          List<StockPickIndexVO> stockPickIndexVOs) {
+    public List<PickleData> getPickleData(LocalDate beginDate , LocalDate endDate,
+                                          StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs,
+                                          TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS) {
 
-        return null;
+        List<String> codePool = getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+
+        List<PickleData> pickleDatas = pickStockService.seprateDaysByTrade(beginDate,endDate,traceBackVO.holdingPeriod);
+
+        for(String code : codePool){
+            List<StockPO> stockPOs = pickStockService
+                    .getSingleCodeInfo(code, beginDate.minusDays(10), endDate.plusDays(10));
+            //  记录  stockPOs  的指针
+            int k = 0 ;
+            for (int i = 0; i < pickleDatas.size(); i++) {
+                PickleData pickleData = pickleDatas.get(i);
+                /**
+                 * 查看在持有期是否   出现停牌
+                 */
+                boolean isStop = false; //是否停牌
+                double firstDayOpen;
+                double lastDayClose;
+                while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).beginDate)) {
+                    k++;
+                }
+                if (k == 0) {
+                    continue;
+                }
+                firstDayOpen = stockPOs.get(k - 1).getAdjCloseIndex();
+                while (stockPOs.get(k).getDate().isBefore(pickleDatas.get(i).endDate)) {
+                    if (stockPOs.get(k).getVolume() == 0) {
+                        isStop = true;
+                        break;
+                    }
+                    k++;
+                }
+                if (stockPOs.get(k).getDate().isAfter(pickleDatas.get(i).endDate))
+                    k--;
+                lastDayClose = stockPOs.get(k).getAdjCloseIndex();
+
+                //如果没有停牌 则加入可以进行进一步筛选和排序的队列
+                if (!isStop) {
+                    pickleData.stockCodes.add(new BackData(code, 0, firstDayOpen, lastDayClose));
+                }
+            }
+
+            //加载排序参数
+            for(MixedStrategyVO mixedStrategyVO : mixedStrategyVOS){
+                pickleDatas = mixedStrategyVO.strategyType.setRankValue
+                        (pickleDatas,code,beginDate,endDate,traceBackVO.formationPeriod);
+            }
+            //加载过滤参数
+
+            for(StockPickIndexVO stockPickIndexVO : stockPickIndexVOs){
+                pickleDatas = stockPickIndexVO.stockPickIndex.setFilterValue(pickleDatas,code);
+            }
+
+
+        }
+
+
+        //归一化
+        pickleDatas = normalization(pickleDatas,mixedStrategyVOS);
+
+
+        //过滤和比较
+        for (int i = 0; i < pickleDatas.size(); i++) {
+            PickleData pickleData = pickleDatas.get(i);
+            LocalDate begin = pickleData.beginDate;
+            LocalDate end = pickleData.endDate;
+
+            pickleData.stockCodes = pickleData.stockCodes.stream()
+                    .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
+                    .sorted((o1,o2)->{
+                        if ((double) o1.rankValue > (double) o2.rankValue) return -1;
+                        else return 1;
+                    })
+                    .limit(traceBackVO.holdingNum)
+                    .collect(Collectors.toList());
+        }
+
+
+
+        return pickleDatas;
     }
 
 
@@ -325,6 +404,40 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
         return predicateAll;
     }
+
+
+    /**
+     * 对于混合策略 排序参数的线性归一化
+     * @param pickleDatas
+     * @param mixedStrategyVOs
+     * @return
+     */
+    private List<PickleData> normalization(List<PickleData> pickleDatas, List<MixedStrategyVO> mixedStrategyVOs){
+        for(int i = 0 ; i < pickleDatas.size() ;i++){
+            PickleData pickleData = pickleDatas.get(i);
+            for (MixedStrategyVO mixedStrategyVO: mixedStrategyVOs){
+                double max,min;
+
+                DoubleSummaryStatistics doubleSummaryStatistics = pickleData.stockCodes.stream()
+                        .mapToDouble(t->(double)t.mixRank[mixedStrategyVO.strategyType.ordinal()])
+                        .summaryStatistics();
+
+
+                max = doubleSummaryStatistics.getMax();
+                min = doubleSummaryStatistics.getMin();
+
+
+                pickleData.stockCodes = pickleData.stockCodes.stream().map(t->{
+                    double x = (double)t.mixRank[mixedStrategyVO.strategyType.ordinal()];
+                    t.rankValue = (double)t.rankValue+mixedStrategyVO.weight*(x-min)/(max-min);
+                    if(mixedStrategyVO.asc)  t.rankValue = -(double)t.rankValue;
+                    return t;
+                }).collect(Collectors.toList());
+            }
+        }
+        return pickleDatas;
+    }
+
 
 
     /**

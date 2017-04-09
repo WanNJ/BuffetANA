@@ -5,6 +5,7 @@ package blserviceimpl.strategy;
  */
 
 import stockenum.StockPickIndex;
+import stockenum.StrategyType;
 
 /**
  * 用来封装要比较的数据类型
@@ -18,6 +19,8 @@ public class BackData {
      */
     public Number rankValue;
 
+    public Number[] mixRank;
+
     public Number[] filterData;
 
     /**
@@ -30,12 +33,20 @@ public class BackData {
      */
     public double lastDayClose;
 
+    /**
+     * 不带过滤参数的初始化过滤方法
+     * @param code
+     * @param rankValue
+     * @param firstDayOpen
+     * @param lastDayClose
+     */
     public BackData(String code , Number rankValue, double firstDayOpen, double lastDayClose){
         this.code = code;
         this.rankValue = rankValue;
         this.firstDayOpen = firstDayOpen;
         this.lastDayClose = lastDayClose;
         filterData  =new Number[StockPickIndex.values().length];
+        mixRank = new Number[StrategyType.values().length];
     }
 
     /**

@@ -8,6 +8,7 @@ import pick.PickStockService;
 import pick.PickStockServiceImpl;
 import vo.*;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,13 +75,18 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public void initMixed(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs, TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS) {
-        this.strategyConditionVO = strategyConditionVO;
+    public void initMixed(LocalDate beginDate ,  LocalDate endDate ,
+                          StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs,
+                          TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS) {
+
+        //不知道用没用   strategyConditionVO  先将能设好的设好
+        this.strategyConditionVO = new StrategyConditionVO(null , beginDate , endDate,false);
         this.stockPoolConditionVO = stockPoolConditionVO;
         this.stockPickIndexVOs = stockPickIndexVOs;
         this.traceBackVO = traceBackVO;
         this.daoFactoryService = new DAOFactoryServiceImpl();
         this.strategyDAO = this.daoFactoryService.createStrategyDAO();
+
 
     }
 

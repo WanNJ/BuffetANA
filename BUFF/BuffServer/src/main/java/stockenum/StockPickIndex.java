@@ -66,8 +66,8 @@ public enum StockPickIndex implements FilterMode {
 
 
                LocalDate beg = current.get(i).beginDate;
-               //System.out.println(beg);
-               //循环到我们要输入数据的那一天
+
+
                while(!longPeiceVOs.get(j).localDate.plusDays(1).isAfter(beg)){
                    j++;
                }
@@ -171,6 +171,11 @@ public enum StockPickIndex implements FilterMode {
             }
             return current;
         }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            return null;
+        }
     },
 
     /**
@@ -229,6 +234,11 @@ public enum StockPickIndex implements FilterMode {
 
             }
             return current;
+        }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            return null;
         }
     },
 

@@ -23,6 +23,10 @@ public enum StockPickIndex implements FilterMode {
      * 前一日成交量
      */
     PREVIOUS_DAY_VOL {
+        @Override
+        public String toString() {
+            return "前一日成交量";
+        }
 
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
 
@@ -115,6 +119,12 @@ public enum StockPickIndex implements FilterMode {
      * 昨日涨幅
      */
     PREVIOUS_DAY_UPRATE {
+
+        @Override
+        public String toString() {
+            return "前一日涨幅";
+        }
+
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
         @Override
         public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
@@ -202,6 +212,11 @@ public enum StockPickIndex implements FilterMode {
      * 昨日复权平均
      */
     PREVIOUS_DAY_ADJ {
+        @Override
+        public String toString() {
+            return "前一日复权收盘价";
+        }
+
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
         @Override
         public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
@@ -288,6 +303,10 @@ public enum StockPickIndex implements FilterMode {
      * 换手率
      */
     CHANGE_RATE {
+        @Override
+        public String toString() {
+            return "前一日换手率";
+        }
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
 
         @Override
@@ -372,6 +391,10 @@ public enum StockPickIndex implements FilterMode {
     },
 
     CIRCULATION_MARKET_VALUE {
+        @Override
+        public String toString() {
+            return "前一日市值";
+        }
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
 
         @Override
@@ -459,6 +482,11 @@ public enum StockPickIndex implements FilterMode {
      * 昨日振幅
      */
     PREVIOUS_DAY_AMPLITUDE {
+        @Override
+        public String toString() {
+            return "前一日振幅";
+        }
+
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
         @Override
         public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {

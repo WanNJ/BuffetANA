@@ -26,6 +26,11 @@ public enum StrategyType  implements RankMode {
      * 回归策略
      */
     MA {
+        @Override
+        public String toString() {
+            return "均线偏离";
+        }
+
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
 
         @Override
@@ -246,6 +251,11 @@ public enum StrategyType  implements RankMode {
      * 动量策略
      */
     MOM {
+        @Override
+        public String toString() {
+            return "动量策略";
+        }
+
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
 
         @Override

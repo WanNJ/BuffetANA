@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -43,7 +44,7 @@ public class StockChooseController {
     @FXML private GridPane rankingCondition;//排名条件GridPane
     @FXML private JFXComboBox<String> strategyType;//策略类型
     @FXML private JFXTextField holdingPeriod;//持仓期
-    @FXML private JFXTextField formativePeriod;//形成期
+    @FXML private JFXTextField formativePeriod;//形成期／几日均线
     @FXML private JFXTextField numOfShares;//持股数（持股比例）
     @FXML private JFXButton start;//开始回测
     @FXML private JFXButton save;//保存策略
@@ -58,7 +59,10 @@ public class StockChooseController {
      */
     private JFXButton[] rankButtons;
 
-
+    /**
+     * 用于标记  均值策略和动量策略 是否已经被选中
+     */
+    boolean strateyChoosed;
 
     @PostConstruct
     public void init(){
@@ -67,16 +71,93 @@ public class StockChooseController {
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
+        strateyChoosed = false;
 
         addButtons();
 
+        strategyType.getItems().clear();
+        strategyType.getItems().addAll("均值策略","动量策略","自定义策略");
+
+
+        /**
+         * add by wsw
+         * 对策略类型选择的说明
+         * 如果选择  均值策略或者动量策略
+         * 调用  给予优化的方法
+         *        显示  formativePeriod;//形成期／几日均线
+         *       不显示  rank的标签
+         *       给定一个策略模式  且不可以删除
+         *       不在 GridPane rankingCondition;//排名条件GridPane 显示形成期如果选择  均值策略或者动量策略
+         *
+         * 如果选择  自定义策略
+         * 调用  给予混合策略的方法
+         *       不显示  formativePeriod;//形成期／几日均线
+         *       显示  rank的标签
+         *       可以选择多个策略模式   且可以删除
+         *       在 GridPane rankingCondition;//排名条件GridPane 显示形成期
+         *
+         *
+         */
         strategyType.setOnAction(event -> {
             if("均值策略".equals(strategyType.getValue())){
+                formativePeriod.setText(null);
                 numOfShares.setPromptText("持股数");
+                formativePeriod.setPromptText("几日均线");
+                strateyChoosed = true;
+                formativePeriod.setVisible(true);
+                /**
+                 * 自动在rank指标里修改是几日均线
+                 */
+                formativePeriod.setOnAction(e -> {
+                    for(Node node : rankingCondition.getChildren()){
+                        if(node instanceof Label){
+                            if(((Label) node).getText().endsWith("均线偏离")){
+                                String days = formativePeriod.getText();
+                                ((Label) node).setText(days+"日均线偏离");
+                            }
+                        }
+                    }
+                });
+
+                if("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
+                    quotaPane.getChildren().clear();;
+                }
+                chooseStrategy(StrategyType.MA.toString());
+
             }else if("动量策略".equals(strategyType.getValue())){
+                formativePeriod.setText(null);
+                formativePeriod.setVisible(true);
                 numOfShares.setPromptText("持股比例");
+                formativePeriod.setPromptText("形成期");
+                strateyChoosed = true;
+                chooseStrategy(StrategyType.MOM.toString());
+                if("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
+                    quotaPane.getChildren().clear();;
+                }
+            }else if("自定义策略".equals(strategyType.getValue())){
+                formativePeriod.setText(null);
+                strateyChoosed = false;
+                formativePeriod.setVisible(false);
+                rankingCondition.getChildren().clear();
+                numOfShares.setPromptText("持股数");
+                formativePeriod.setPromptText("形成期");
+
+                if("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
+                    quotaPane.getChildren().clear();;
+                    quotaPane.getChildren().addAll(rankButtons);
+                }
+
+
             }
+
+
+
+
         });
+
+
+
+
 
         //设置股票池的选择
         stockPool.getItems().addAll
@@ -93,6 +174,7 @@ public class StockChooseController {
                             quotaPane.getChildren().addAll(filterButtons);
                         }else{
                             quotaPane.getChildren().clear();
+                            if(!strateyChoosed)
                             quotaPane.getChildren().addAll(rankButtons);
                         }
                     }
@@ -131,8 +213,7 @@ public class StockChooseController {
         setButtonListener(rankButtons);
 
 
-        quotaPane.getChildren().addAll(filterButtons);
-        //quotaPane.getChildren().addAll(rankButtons);
+        quotaPane.getChildren().addAll(filterButtons);;
 
     }
 
@@ -194,11 +275,28 @@ public class StockChooseController {
                     order.setValue("从小到大");
                     order.getItems().addAll("从小到大","从大到小");
                     order.setMaxWidth(130);
-                    JFXComboBox range=new JFXComboBox();
-                    range.setValue("全部");
-                    range.getItems().addAll("全部");
-                    range.setMaxWidth(100);
-                    JFXTextField weight=new JFXTextField("1");
+
+
+//                    JFXComboBox range=new JFXComboBox();
+//                    range.setValue("全部");
+//                    range.getItems().addAll("全部");
+//                    range.setMaxWidth(100);
+
+
+                    JFXTextField range=new JFXTextField();
+                    range.setPromptText("形成天数");
+                    if(strateyChoosed){
+                        range.setVisible(false);
+                    }
+
+                    JFXTextField weight=new JFXTextField();
+                    if(strateyChoosed){
+                        weight.setPromptText("1");
+                        weight.editableProperty().set(false);
+                    }else{
+                        weight.setPromptText("权重");
+                    }
+
                     weight.setMaxWidth(100);
                     rankingCondition.add(order,1,row);
                     rankingCondition.add(range,2,row);
@@ -214,6 +312,43 @@ public class StockChooseController {
                 }
             });
         }
+    }
+
+
+    /**
+     * 选定了 是均值策略还是动量策略
+     * @param stategyName
+     */
+    private  void  chooseStrategy(String stategyName){
+        rankingCondition.getChildren().clear();
+        RowConstraints rowConstraints=new RowConstraints();
+        rankingCondition.getRowConstraints().add(rowConstraints);
+        int row=rankingCondition.getRowConstraints().size()-1;//行坐标
+
+        Label conditionName=new Label(stategyName);
+        rankingCondition.add(conditionName,0,row);
+
+        //添加次序ComboBox、范围ComboBox和权重TextField
+        JFXComboBox order=new JFXComboBox();
+        order.setValue("从小到大");
+        order.getItems().addAll("从小到大","从大到小");
+        order.setMaxWidth(130);
+        JFXComboBox range=new JFXComboBox();
+        range.setValue("全部");
+        range.getItems().addAll("全部");
+        range.setVisible(false);
+        range.setMaxWidth(100);
+        JFXTextField weight=new JFXTextField("1");
+        weight.setMaxWidth(100);
+        rankingCondition.add(order,1,row);
+        rankingCondition.add(range,2,row);
+        rankingCondition.add(weight,3,row);
+
+//        delete.setOnAction(event1 -> {
+//            rankingCondition.getRowConstraints().remove(rowConstraints);
+//            rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
+//        });
+//        rankingCondition.add(hashCode4,row);
     }
 
 }

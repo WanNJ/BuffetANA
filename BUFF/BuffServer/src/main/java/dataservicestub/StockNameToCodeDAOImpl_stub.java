@@ -17,4 +17,19 @@ public class StockNameToCodeDAOImpl_stub implements StockNameToCodeDAO {
         list.add(po);
         return list;
     }
+
+    @Override
+    public List<StockNameAndCodePO> getMainBoardStock() {
+        return null;
+    }
+
+    @Override
+    public List<StockNameAndCodePO> getSecondBoardStock() {
+        return null;
+    }
+
+    @Override
+    public List<StockNameAndCodePO> getSMEBoardStock() {
+        return null;
+    }
 }

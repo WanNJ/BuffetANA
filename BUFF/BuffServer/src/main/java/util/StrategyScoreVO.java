@@ -13,32 +13,32 @@ public class StrategyScoreVO {
     /**
      * 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
      */
-    int profitAbility;
+    public int profitAbility;
 
     /**
      * 稳定性：策略的波动越小，该项分值越高
      */
-    int stability;
+    public int stability;
 
     /**
      * 选股能力：策略的成功率越大，该项分值越高
      */
-    int chooseStockAbility;
+    public int chooseStockAbility;
 
     /**
      * 绝对收益：策略的年化收益率越大，该项分值越高
      */
-    int absoluteProfit;
+    public int absoluteProfit;
 
     /**
      * 抗风险能力：策略的回撤越小，该项分值越高；
      */
-    int antiRiskAbility;
+    public int antiRiskAbility;
 
     /**
      * 策略总得分，上面5项得分之和
      */
-    int strategyScore;
+    public int strategyScore;
 
     public StrategyScoreVO(int profitAbility, int stability, int chooseStockAbility, int absoluteProfit, int antiRiskAbility, int strategyScore) {
         this.profitAbility = profitAbility;

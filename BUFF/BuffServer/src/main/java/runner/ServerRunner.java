@@ -8,6 +8,7 @@ import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
 import util.RunTimeSt;
+import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
@@ -59,7 +60,7 @@ public class ServerRunner {
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
 
         List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
-        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,1,false));
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,1,false));
 		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100000000000.0));
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 //        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
@@ -72,10 +73,10 @@ public class ServerRunner {
 //        }
 
         StrategyService strategyService = new StrategyServiceImpl();
-       // strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
-        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
-        ,mixedStrategyVOs);
-  //      strategyService.calculate(new TraceBackVO(20,10,10));
+        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
+//        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
+//        ,mixedStrategyVOs);
+        strategyService.calculate(new TraceBackVO(20,10,10));
 //        strategyService.calculate(new TraceBackVO(20,10,0, 0.2));
 
         BackDetailVO backDetailVO = strategyService.getBackDetailVO();
@@ -88,6 +89,14 @@ public class ServerRunner {
         System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
         System.out.println("sharpRate: " + backDetailVO.sharpRate);
         System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
+
+        StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
+        System.out.println("盈利能力: " + strategyScoreVO.profitAbility);
+        System.out.println("稳定性: " + strategyScoreVO.stability);
+        System.out.println("选股能力: " + strategyScoreVO.chooseStockAbility);
+        System.out.println("绝对收益: " + strategyScoreVO.absoluteProfit);
+        System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
+        System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
 
        // List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByHolding(5);
         //betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));

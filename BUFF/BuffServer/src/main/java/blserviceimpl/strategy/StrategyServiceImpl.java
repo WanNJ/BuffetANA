@@ -355,7 +355,7 @@ public class StrategyServiceImpl implements StrategyService {
         else if (antiRiskAbility < 0)
             antiRiskAbility = 0;
 
-        int absoluteProfit = (int)Math.round(yearProfitRate / 5 * 20);
+        int absoluteProfit = (int)Math.round(yearProfitRate / 2 * 20);
         if (absoluteProfit > 20)
             absoluteProfit = 20;
         else if (absoluteProfit < 0)
@@ -400,7 +400,7 @@ public class StrategyServiceImpl implements StrategyService {
                 profitAbility = 0;
         }
 
-        int stability = (int)Math.round((maxWinRate - maxLoseRate) / 2 * 20);
+        int stability = 20 - (int)Math.round((maxWinRate - maxLoseRate) / 2  * 20);
         if (stability > 20)
             stability = 20;
         else if (stability < 0)

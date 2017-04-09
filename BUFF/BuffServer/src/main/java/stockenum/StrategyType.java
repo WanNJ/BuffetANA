@@ -295,6 +295,7 @@ public enum StrategyType  implements RankMode {
                 }else if(formationMOMS == null){
                     //如果没有数据   删除当前列表最后一个 backdata  因为这只股票没有形成期的数据
                     pickleData.stockCodes.remove(lastIndex);
+                    continue;
                 }
                 while (formationMOMS.get(j).date.isBefore(pickleData.beginDate)) {
                     j++;

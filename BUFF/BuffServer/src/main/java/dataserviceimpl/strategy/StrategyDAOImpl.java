@@ -220,7 +220,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
             pickleData.stockCodes = pickleData.stockCodes.stream()
                     .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
                     .sorted((o1,o2)->{
-                        if ((double) o1.rankValue > (double) o2.rankValue) return -1;
+                        if ((double) o1.rankValue < (double) o2.rankValue) return -1;
                         else return 1;
                     })
                     .limit(traceBackVO.holdingNum)

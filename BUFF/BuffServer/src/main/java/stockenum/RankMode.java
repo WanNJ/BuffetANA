@@ -32,7 +32,7 @@ public interface RankMode {
      * @return
      */
     List<PickleData>  setRankValue(List<PickleData> pickleDatas , String code
-            ,LocalDate begin , LocalDate end , int formationPeriod);
+            ,LocalDate begin , LocalDate end , int formationPeriod, int index);
 
 
     /**

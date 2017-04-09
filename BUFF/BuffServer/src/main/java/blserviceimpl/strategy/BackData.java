@@ -46,7 +46,7 @@ public class BackData {
         this.firstDayOpen = firstDayOpen;
         this.lastDayClose = lastDayClose;
         filterData  =new Number[StockPickIndex.values().length];
-        mixRank = new Number[StrategyType.values().length];
+        mixRank = new Number[10];
     }
 
     /**

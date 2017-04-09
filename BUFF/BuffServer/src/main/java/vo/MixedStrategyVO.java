@@ -16,9 +16,15 @@ public class MixedStrategyVO {
      */
     public boolean asc;
 
-    public MixedStrategyVO(StrategyType strategyType, double weight, boolean asc) {
+    /**
+     * 持仓期
+     */
+    public int formationPeriod;
+
+    public MixedStrategyVO(StrategyType strategyType, double weight, boolean asc, int formationPeriod) {
         this.strategyType = strategyType;
         this.weight = weight;
         this.asc = asc;
+        this.formationPeriod = formationPeriod;
     }
 }

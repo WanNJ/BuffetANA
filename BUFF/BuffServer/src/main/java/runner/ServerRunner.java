@@ -53,37 +53,42 @@ public class ServerRunner {
 //            System.out.println();
 //        }
 
-        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
-                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+//        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
+//                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+
+
+        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
+                , LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 //        strategyConditionVO1.holdingRate = 0.2;
         StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
+        List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
+        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false,20));
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MOM,1,false,20));
+        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,9,false,18));
 
-//        List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
-//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,1,false));
-//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MOM,1,false));
-    //    mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false));
-		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.PREVIOUS_DAY_VOL,100.0,100000000000.0));
+        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,8,false,16));
+
+        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,7,false,14));
+
+      //  mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,-1,false,60));
+
+
+		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.CHANGE_RATE,null,-0.02));
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
-//        List<PickleData> list1 = StrategyDAOImpl.STRATEGY_DAO.getPickleData(strategyConditionVO1,
-//                stockPoolConditionVO1,stockPickIndexVOs1);
-//        System.out.println("finish");
-//        for(PickleData  p: list1){
-//            System.out.println(p.beginDate+"    "+p.endDate);
-//            p.stockCodes.stream().forEach(t-> System.out.println(t.code+"   "+t.rankValue));
-//            System.out.println();
-//        }
+
 
         StrategyService strategyService = new StrategyServiceImpl();
-        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
-//        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
-//        ,mixedStrategyVOs);
+//        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
+        strategyService.initMixed( LocalDate.of(2013,1,1)
+                ,LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
+       ,mixedStrategyVOs);
 //        strategyService.calculate(new TraceBackVO(20,10,10));
 //        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
 //        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,
 //                stockPickIndexVOs1,new TraceBackVO(20,10,200)
 //        ,mixedStrategyVOs);
-        strategyService.calculate(new TraceBackVO(20,10,10));
+//        strategyService.calculate(new TraceBackVO(20,10,10));
 //        strategyService.calculate(new TraceBackVO(20,10,0, 0.2));
 
         BackDetailVO backDetailVO = strategyService.getBackDetailVO();

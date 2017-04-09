@@ -64,7 +64,7 @@ public enum StrategyType  implements RankMode {
          */
         @Override
         public List<PickleData>  setRankValue(List<PickleData> pickleDatas , String code
-                ,LocalDate begin , LocalDate end , int holdPeriod){
+                ,LocalDate begin , LocalDate end , int holdPeriod ,int index){
 
                 List<DayMA> dayMAs = pickStockService.getSingleCodeMAInfo
                         (code, begin.minusDays(1), end, holdPeriod);
@@ -109,7 +109,7 @@ public enum StrategyType  implements RankMode {
 
                     double rank = (MA - Adj) / MA;
 
-                    pickleData.stockCodes.get(lastIndex).mixRank[this.ordinal()] = rank;
+                    pickleData.stockCodes.get(lastIndex).mixRank[index] = rank;
 
                     }
 
@@ -277,7 +277,10 @@ public enum StrategyType  implements RankMode {
 
         //TODO
         @Override
-        public List<PickleData> setRankValue(List<PickleData> pickleDatas, String code, LocalDate begin, LocalDate end, int holdPeriod) {
+        public List<PickleData> setRankValue(List<PickleData> pickleDatas,
+                                             String code, LocalDate begin,
+                                             LocalDate end, int holdPeriod,
+                                             int index) {
             List<FormationMOM> formationMOMS = pickStockService.getSingleCodeMOMInfo
                     (code, begin.minusDays(1), end, holdPeriod);
             List<StockPO> stockPOs = pickStockService
@@ -313,7 +316,7 @@ public enum StrategyType  implements RankMode {
 
                 double rank = formationMOMS.get(j).yeildRate;
 
-                pickleData.stockCodes.get(lastIndex).mixRank[this.ordinal()] = rank;
+                pickleData.stockCodes.get(lastIndex).mixRank[index] = rank;
 
             }
 

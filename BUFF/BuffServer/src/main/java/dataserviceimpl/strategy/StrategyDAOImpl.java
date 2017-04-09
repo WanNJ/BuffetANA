@@ -174,9 +174,11 @@ public enum StrategyDAOImpl implements StrategyDAO {
             }
 
             //加载排序参数
+            int index = 0;
             for(MixedStrategyVO mixedStrategyVO : mixedStrategyVOS){
                 pickleDatas = mixedStrategyVO.strategyType.setRankValue
-                        (pickleDatas,code,beginDate,endDate,traceBackVO.formationPeriod);
+                        (pickleDatas,code,beginDate,endDate,mixedStrategyVO.formationPeriod,index);
+                index++;
             }
             //加载过滤参数
 
@@ -437,11 +439,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
     private List<PickleData> normalization(List<PickleData> pickleDatas, List<MixedStrategyVO> mixedStrategyVOs){
         for(int i = 0 ; i < pickleDatas.size() ;i++){
             PickleData pickleData = pickleDatas.get(i);
+            int tIndex = 0;
             for (MixedStrategyVO mixedStrategyVO: mixedStrategyVOs){
                 double max,min;
-
+                int index = tIndex;
                 DoubleSummaryStatistics doubleSummaryStatistics = pickleData.stockCodes.stream()
-                        .mapToDouble(t->(double)t.mixRank[mixedStrategyVO.strategyType.ordinal()])
+                        .mapToDouble(t->(double)t.mixRank[index])
                         .summaryStatistics();
 
 
@@ -450,13 +453,14 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
 
                 pickleData.stockCodes = pickleData.stockCodes.stream().map(t->{
-                    double x = (double)t.mixRank[mixedStrategyVO.strategyType.ordinal()];
+                    double x = (double)t.mixRank[index];
                     double y = (double)t.rankValue;
                     t.rankValue =y+ mixedStrategyVO.weight*(x-min)/(max-min);
                     if(mixedStrategyVO.asc)  t.rankValue = -(double)t.rankValue;
                     return t;
                 }).collect(Collectors.toList());
             }
+            tIndex ++;
         }
         return pickleDatas;
     }

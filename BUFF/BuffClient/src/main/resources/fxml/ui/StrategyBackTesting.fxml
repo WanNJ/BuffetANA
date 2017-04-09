@@ -23,11 +23,11 @@
         </styleClass>
         <content>
             <AnchorPane  style="-fx-background-color: WHITE">
-                <ScrollPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <ScrollPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToWidth="true">
                     <content>
-                        <VBox fx:id="viewsBox">
+                        <VBox fx:id="viewsBox" alignment="CENTER"  >
                             <padding>
-                                <Insets top="100.0" bottom="130.0"/>
+                                <Insets bottom="30.0"/>
                             </padding>
                         </VBox>
                     </content>

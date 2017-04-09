@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.*?>
 
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <VBox >
          <children>
             <Label text="策略评估" />
             <Label text="策略优化" />
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox >
                <children>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                  <BorderPane>
                      <top>
                         <Label text="评估参数" BorderPane.alignment="CENTER" />
                      </top>
@@ -30,14 +30,14 @@
                </children>
             </HBox>
             <Label text="策略优化" />
-            <HBox prefHeight="203.0" prefWidth="600.0">
+            <HBox >
                <children>
-                  <BorderPane prefHeight="199.0" prefWidth="147.0">
+                  <BorderPane >
                      <top>
                         <Label text="优化说明" BorderPane.alignment="CENTER" />
                      </top>
                   </BorderPane>
-                  <BorderPane fx:id="winRateCalBorder" prefHeight="200.0" prefWidth="200.0" />
+                  <BorderPane fx:id="winRateCalBorder" />
                </children>
             </HBox>
          </children>

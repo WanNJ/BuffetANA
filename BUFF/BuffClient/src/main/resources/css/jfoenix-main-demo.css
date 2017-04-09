@@ -3,7 +3,7 @@
  */
 
 .root {
-	-fx-font-family: "Roboto";	
+	/*-fx-font-family: "Roboto";*/
 }
 
 .side-menu{
@@ -13,9 +13,9 @@
 	-fx-text-fill: #444;
 }
 .title-label{
-	-fx-font-size: 16.0px;
-	-fx-padding	: 14.0px;
-	-fx-text-fill: rgba(0.0, 0.0, 0.0, 0.87);
+	-fx-font-weight: bold;
+	-fx-font-size: 30.0px;
+	-fx-text-fill: #523bd7;
 }
 .radio-button-title-label {
 	-fx-font-size: 16.0px;
@@ -1017,6 +1017,5 @@
 	-fx-text-fill : #D34336;
 	-fx-font-size: 1.0em;
 }
-
 
 

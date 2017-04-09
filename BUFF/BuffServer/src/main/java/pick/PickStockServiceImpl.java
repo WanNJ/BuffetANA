@@ -8,9 +8,7 @@ import po.StockPO;
 import util.DateUtil;
 import util.DayMA;
 import util.FormationMOM;
-import vo.AdjVO;
-import vo.LongPeiceVO;
-import vo.UpRangeVO;
+import vo.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -362,6 +360,77 @@ public enum PickStockServiceImpl implements PickStockService {
             }catch (Exception e){
                 while(!temp.isBefore(begin)){
                     ans.add(new AdjVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+                Collections.reverse(ans);
+                return ans;
+            }
+
+        }
+
+        Collections.reverse(ans);
+        return ans;
+    }
+
+    @Override
+    public List<ChangeRateVO> getChangeRate(String code, LocalDate begin , LocalDate end) {
+        double changeRate = stockDAO.getStockChangeRate(code);
+        List<ChangeRateVO> ans = new ArrayList<>();
+        LocalDate temp = begin;
+        while(!temp.isAfter(end)) {
+            ans.add(new ChangeRateVO(temp, changeRate));
+            temp = temp.plusDays(1);
+        }
+        return ans;
+    }
+
+    @Override
+    public List<CirculationMarketValueVO> getCirculationMarketValue(String code, LocalDate begin ,LocalDate end) {
+        double circulationMarketValue = stockDAO.getStockCirculationMarketValue(code);
+        List<CirculationMarketValueVO> ans = new ArrayList<>();
+        LocalDate temp = begin;
+        while(!temp.isAfter(end)) {
+            ans.add(new CirculationMarketValueVO(temp, circulationMarketValue));
+            temp = temp.plusDays(1);
+        }
+        return ans;
+    }
+
+    @Override
+    public List<AmplitudeVO> getAmplitude(String code, LocalDate begin , LocalDate end) {
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
+        Collections.reverse(list);
+
+        list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
+        List<AmplitudeVO> ans = new ArrayList<>();
+        LocalDate temp = end;
+
+        //list.stream().forEach(t-> System.out.println(t.getDate()+"   "+t.getVolume()));
+        // System.out.println(list.size());
+        //if(list.size()<0)
+        for (int i = 0 ; !temp.isBefore(begin);i++){
+            if(i>list.size()-2){
+                //System.out.println(i);
+                while(!temp.isBefore(begin)){
+                    ans.add(new AmplitudeVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+
+                Collections.reverse(ans);
+                return ans;
+            }
+
+
+            while(temp.isAfter(list.get(i).getDate())){
+                ans.add(new AmplitudeVO(temp,(list.get(i).getHigh_Price() - list.get(i).getLow_Price()) / list.get(i + 1).getClose_Price()));
+                temp = temp.minusDays(1);
+            }
+            try {
+                ans.add(new AmplitudeVO(temp, (list.get(i + 1).getHigh_Price() - list.get(i + 1).getLow_Price()) / list.get(i + 2).getClose_Price()));
+                temp = temp.minusDays(1);
+            }catch (Exception e){
+                while(!temp.isBefore(begin)){
+                    ans.add(new AmplitudeVO(temp,0));
                     temp = temp.minusDays(1);
                 }
                 Collections.reverse(ans);

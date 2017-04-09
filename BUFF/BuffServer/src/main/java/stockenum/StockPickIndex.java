@@ -124,7 +124,7 @@ public enum StockPickIndex implements FilterMode {
                     return true;
 
                 //有下限
-                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                double value =  (double)backData.filterData[this.ordinal()];
                 if(lowerBound!=null  && value<lowerBound)
                     return false;
 
@@ -211,7 +211,7 @@ public enum StockPickIndex implements FilterMode {
                     return true;
 
                 //有下限
-                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                double value =  (double)backData.filterData[this.ordinal()];
                 if(lowerBound!=null  && value<lowerBound)
                     return false;
 
@@ -298,7 +298,7 @@ public enum StockPickIndex implements FilterMode {
                     return true;
 
                 //有下限
-                long value = (long) backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                double value =  (double)backData.filterData[this.ordinal()];
                 if (lowerBound != null && value < lowerBound)
                     return false;
 
@@ -382,7 +382,7 @@ public enum StockPickIndex implements FilterMode {
                     return true;
 
                 //有下限
-                long value = (long) backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                double value =  (double)backData.filterData[this.ordinal()];
                 if (lowerBound != null && value < lowerBound)
                     return false;
 
@@ -468,7 +468,7 @@ public enum StockPickIndex implements FilterMode {
                     return true;
 
                 //有下限
-                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                double value =  (double)backData.filterData[this.ordinal()];
                 if(lowerBound!=null  && value<lowerBound)
                     return false;
 

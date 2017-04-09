@@ -1,14 +1,11 @@
 package stockenum;
 
 import blserviceimpl.strategy.BackData;
-import blserviceimpl.strategy.NewPickleData;
 import blserviceimpl.strategy.PickleData;
 import blserviceimpl.strategy.SingleBackData;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
-import vo.AdjVO;
-import vo.LongPeiceVO;
-import vo.UpRangeVO;
+import vo.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -171,6 +168,33 @@ public enum StockPickIndex implements FilterMode {
             }
             return current;
         }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
+
+
+            List<UpRangeVO>  upRangeVOS = pickStockService.getLastUpRange(code,begin,end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(upRangeVOS.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        upRangeVOS.get(j).upRange;
+
+
+            }
+            return current;
+        }
     },
 
     /**
@@ -230,9 +254,126 @@ public enum StockPickIndex implements FilterMode {
             }
             return current;
         }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
+
+
+            List<AdjVO>  adjVOS = pickStockService.getAdj(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(adjVOS.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        adjVOS.get(j).adj;
+
+
+            }
+            return current;
+        }
     },
 
+    /**
+     * 换手率
+     */
     CHANGE_RATE {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+
+        @Override
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
+            Predicate<BackData> backDataPredicate = backData -> {
+                //如果没有限制
+                if (lowerBound == null && upBound == null)
+                    return true;
+
+                //有下限
+                long value = (long) backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                if (lowerBound != null && value < lowerBound)
+                    return false;
+
+                //有上限
+                if (upBound != null && value > upBound)
+                    return false;
+                return true;
+            };
+            return backDataPredicate;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            LocalDate begin = current.get(0).beginDate;
+            LocalDate end = current.get(current.size() - 1).endDate;
+
+
+            List<ChangeRateVO> changeRateVOS = pickStockService.getChangeRate(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0; i < current.size(); i++) {
+
+
+                LocalDate beg = current.get(i).beginDate;
+                //System.out.println(beg);
+                //循环到我们要输入数据的那一天
+                while (!changeRateVOS.get(j).localDate.plusDays(1).isAfter(beg)) {
+                    j++;
+                }
+
+                int last = current.get(i).stockCodes.size() - 1;
+                if (last < 0 || current.get(i).stockCodes.get(last).code != code) {
+                    // nothing todo
+                } else {
+                    current.get(i).stockCodes.get(last).filterData[this.ordinal()]
+                            = changeRateVOS.get(j).changeRate;
+                }
+
+
+            }
+            return current;
+        }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
+
+
+            List<ChangeRateVO>  changeRateVOS = pickStockService.getChangeRate(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(changeRateVOS.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        changeRateVOS.get(j).changeRate;
+
+
+            }
+            return current;
+        }
+    },
+
+    /**
+     * 昨日振幅
+     */
+    PREVIOUS_DAY_AMPLITUDE {
         PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
         @Override
         public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
@@ -260,7 +401,7 @@ public enum StockPickIndex implements FilterMode {
             LocalDate end = current.get(current.size()-1).endDate;
 
 
-            List<AdjVO>  adjVOS = pickStockService.getAdj(code, begin, end);
+            List<AmplitudeVO>  amplitudeVOS = pickStockService.getAmplitude(code, begin, end);
 
             int j = 0;
 
@@ -270,7 +411,7 @@ public enum StockPickIndex implements FilterMode {
                 LocalDate beg = current.get(i).beginDate;
                 //System.out.println(beg);
                 //循环到我们要输入数据的那一天
-                while(!adjVOS.get(j).localDate.plusDays(1).isAfter(beg)){
+                while(!amplitudeVOS.get(j).localDate.plusDays(1).isAfter(beg)){
                     j++;
                 }
 
@@ -279,7 +420,7 @@ public enum StockPickIndex implements FilterMode {
                     // nothing todo
                 }else{
                     current.get(i).stockCodes.get(last).filterData[this.ordinal()]
-                            = adjVOS.get(j).adj;
+                            = amplitudeVOS.get(j).amplitude;
                 }
 
 
@@ -289,9 +430,30 @@ public enum StockPickIndex implements FilterMode {
 
         @Override
         public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
-            return null;
-        }
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
 
+
+            List<AmplitudeVO>  amplitudeVOS = pickStockService.getAmplitude(code,begin,end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(amplitudeVOS.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        amplitudeVOS.get(j).amplitude;
+
+
+            }
+            return current;
+        }
 
     }
 

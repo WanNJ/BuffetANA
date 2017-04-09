@@ -41,4 +41,20 @@ public interface StockDAO {
      * @return
      */
     List<StockPO>  getStockInFoInRangeDate(String code , LocalDate begin , LocalDate end);
+
+
+    /**
+     * 获得该股票的换手率
+     * @param code
+     * @return
+     */
+    double getStockChangeRate(String code);
+
+
+    /**
+     * 获得该股票的流通市值
+     * @param code
+     * @return
+     */
+    double getStockCirculationMarketValue(String code);
 }

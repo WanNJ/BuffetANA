@@ -9,10 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +32,10 @@ public enum StockDAOImpl implements StockDAO{
     List<StockPO> codeList = null;  //存取上一次的股票列表
 
     List<LocalDate>  noneDate = null; //存储非交易日
+
+    HashMap<String, Double> changeRate = null;  //换手率
+
+    HashMap<String, Double> circulationMarketValue = null; //流通市值
 
     @Override
     public List<StockPO> getStockInFoInRangeDate(String code, LocalDate begin, LocalDate end) {
@@ -93,6 +94,43 @@ public enum StockDAOImpl implements StockDAO{
                 return 0;
             return stockPO1.getDate().isBefore(stockPO2.getDate()) ? -1 : 1;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public double getStockChangeRate(String code) {
+        if(changeRate != null)
+            return changeRate.get(code);
+        else {
+            BufferedReader br = null;
+
+            try {
+                InputStreamReader reader = new InputStreamReader(new FileInputStream("../Data/ChangeRate.csv"), "UTF-8");
+                br = new BufferedReader(reader);
+                changeRate = new HashMap<>();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    String[] nameAndCode = line.split(",");
+                    changeRate.put(nameAndCode[0], Double.valueOf(nameAndCode[1]));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if(br != null) {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return changeRate.get(code);
+            }
+        }
+    }
+
+    @Override
+    public double getStockCirculationMarketValue(String code) {
+        return 0;
     }
 
 

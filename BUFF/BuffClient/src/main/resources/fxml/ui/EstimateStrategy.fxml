@@ -6,11 +6,16 @@
 <?import javafx.scene.layout.*?>
 
 
-<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.geometry.Insets?>
+<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox >
          <children>
-            <Label text="策略评估" />
+            <Label styleClass="title-label" text="策略评估">
+               <VBox.margin>
+                  <Insets left="50.0" />
+               </VBox.margin>
+            </Label>
             <Label text="策略优化" />
             <HBox >
                <children>
@@ -19,7 +24,7 @@
                         <Label text="评估参数" BorderPane.alignment="CENTER" />
                      </top>
                   </BorderPane>
-                  <BarChart prefHeight="150.0" prefWidth="547.0">
+                  <BarChart>
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

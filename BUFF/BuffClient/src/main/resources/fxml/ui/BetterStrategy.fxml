@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXTabPane>
          <tabs>
@@ -15,10 +18,10 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTreeTableView layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
+                        <JFXTreeTableView fx:id="treeTableView_formativePeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
                         <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
                            <children>
-                              <LineChart>
+                              <LineChart fx:id="excessEarnings_formativePeriod">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -26,7 +29,7 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart>
+                              <LineChart fx:id="winningStrategies_formativePeriod">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -44,10 +47,10 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTreeTableView layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
+                        <JFXTreeTableView fx:id="treeTableView_holdingPeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
                         <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
                            <children>
-                              <LineChart>
+                              <LineChart fx:id="excessEarnings_holdingPeriod">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>
@@ -55,7 +58,7 @@
                                     <NumberAxis side="LEFT" />
                                  </yAxis>
                               </LineChart>
-                              <LineChart>
+                              <LineChart fx:id="winningStrategies_holdingPeriod">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>

@@ -130,7 +130,34 @@ public enum StockDAOImpl implements StockDAO{
 
     @Override
     public double getStockCirculationMarketValue(String code) {
-        return 0;
+        if(circulationMarketValue != null)
+            return circulationMarketValue.get(code);
+        else {
+            BufferedReader br = null;
+
+            try {
+                InputStreamReader reader = new InputStreamReader(new FileInputStream("../Data/CirculationMarketValue.csv"), "UTF-8");
+                br = new BufferedReader(reader);
+                circulationMarketValue = new HashMap<>();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    String[] nameAndCode = line.split(",");
+                    circulationMarketValue.put(nameAndCode[0], Double.valueOf(nameAndCode[1]));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if(br != null) {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return circulationMarketValue.get(code);
+            }
+        }
     }
 
 

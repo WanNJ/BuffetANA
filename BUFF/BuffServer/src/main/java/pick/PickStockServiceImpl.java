@@ -385,6 +385,18 @@ public enum PickStockServiceImpl implements PickStockService {
     }
 
     @Override
+    public List<CirculationMarketValueVO> getCirculationMarketValue(String code, LocalDate begin ,LocalDate end) {
+        double circulationMarketValue = stockDAO.getStockCirculationMarketValue(code);
+        List<CirculationMarketValueVO> ans = new ArrayList<>();
+        LocalDate temp = begin;
+        while(!temp.isAfter(end)) {
+            ans.add(new CirculationMarketValueVO(temp, circulationMarketValue));
+            temp = temp.plusDays(1);
+        }
+        return ans;
+    }
+
+    @Override
     public List<AmplitudeVO> getAmplitude(String code, LocalDate begin , LocalDate end) {
         List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
         Collections.reverse(list);

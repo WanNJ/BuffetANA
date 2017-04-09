@@ -108,6 +108,16 @@ public interface PickStockService {
 
 
     /**
+     * 获得流通市值
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<CirculationMarketValueVO> getCirculationMarketValue(String code, LocalDate begin ,LocalDate end);
+
+
+    /**
      * 获得昨日的振幅
      * @param code
      * @param begin

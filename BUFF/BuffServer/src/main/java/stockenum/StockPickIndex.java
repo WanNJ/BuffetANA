@@ -370,6 +370,90 @@ public enum StockPickIndex implements FilterMode {
         }
     },
 
+    CIRCULATION_MARKET_VALUE {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+
+        @Override
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
+            Predicate<BackData> backDataPredicate = backData -> {
+                //如果没有限制
+                if (lowerBound == null && upBound == null)
+                    return true;
+
+                //有下限
+                long value = (long) backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                if (lowerBound != null && value < lowerBound)
+                    return false;
+
+                //有上限
+                if (upBound != null && value > upBound)
+                    return false;
+                return true;
+            };
+            return backDataPredicate;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            LocalDate begin = current.get(0).beginDate;
+            LocalDate end = current.get(current.size() - 1).endDate;
+
+
+            List<CirculationMarketValueVO> circulationMarketValueVOS = pickStockService.getCirculationMarketValue(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0; i < current.size(); i++) {
+
+
+                LocalDate beg = current.get(i).beginDate;
+                //System.out.println(beg);
+                //循环到我们要输入数据的那一天
+                while (!circulationMarketValueVOS.get(j).localDate.plusDays(1).isAfter(beg)) {
+                    j++;
+                }
+
+                int last = current.get(i).stockCodes.size() - 1;
+                if (last < 0 || current.get(i).stockCodes.get(last).code != code) {
+                    // nothing todo
+                } else {
+                    current.get(i).stockCodes.get(last).filterData[this.ordinal()]
+                            = circulationMarketValueVOS.get(j).circulationMarketValue;
+                }
+
+
+            }
+            return current;
+        }
+
+        @Override
+        public List<SingleBackData> setNewFilterValue(List<SingleBackData> current, String code, int codeIndex) {
+            LocalDate begin =  current.get(0).date;
+            int lastIndex =  current.size()-1;
+            LocalDate end = current.get(lastIndex).date;
+
+
+            List<CirculationMarketValueVO>  circulationMarketValueVOS = pickStockService.getCirculationMarketValue(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<=lastIndex ; i++){
+
+
+                LocalDate beg = current.get(i).date;
+                while(circulationMarketValueVOS.get(j).localDate.isBefore(beg)){
+                    j++;
+                }
+
+                current.get(i).rilterValues[this.ordinal()] =
+                        circulationMarketValueVOS.get(j).circulationMarketValue;
+
+
+            }
+            return current;
+        }
+    },
+
     /**
      * 昨日振幅
      */

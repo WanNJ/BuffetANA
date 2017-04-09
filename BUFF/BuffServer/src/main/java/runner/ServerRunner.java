@@ -89,8 +89,8 @@ public class ServerRunner {
         System.out.println("sharpRate: " + backDetailVO.sharpRate);
         System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
 
-        List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByHolding(5);
-        betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));
+       // List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByHolding(5);
+        //betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));
 
 //
 //        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;

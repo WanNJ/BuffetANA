@@ -188,6 +188,25 @@ public enum StrategyDAOImpl implements StrategyDAO {
         }
 
 
+
+        //TODO计算基本收益率
+
+
+        for(PickleData pickleData : pickleDatas) {
+            double sum = 0.0;
+            double buyMoney = 0;
+            double sellMoney = 0;
+
+            for(BackData backData : pickleData.stockCodes) {
+                // sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
+                double cnt = 100/ backData.firstDayOpen;
+                buyMoney+=100;
+                sellMoney+= cnt * backData.lastDayClose;
+                sum += (sellMoney-buyMoney)/buyMoney;
+            }
+            pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
+        }
+
         //归一化
         pickleDatas = normalization(pickleDatas,mixedStrategyVOS);
 
@@ -210,23 +229,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
 
 
 
-        //TODO计算基本收益率
 
-
-        for(PickleData pickleData : pickleDatas) {
-            double sum = 0.0;
-            double buyMoney = 0;
-            double sellMoney = 0;
-
-            for(BackData backData : pickleData.stockCodes) {
-                // sum += (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen;
-                double cnt = 100/ backData.firstDayOpen;
-                buyMoney+=100;
-                sellMoney+= cnt * backData.lastDayClose;
-                sum += (sellMoney-buyMoney)/buyMoney;
-            }
-            pickleData.baseProfitRate = sum / pickleData.stockCodes.size();
-        }
 
 
         return pickleDatas;

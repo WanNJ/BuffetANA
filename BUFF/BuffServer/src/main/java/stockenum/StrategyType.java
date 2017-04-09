@@ -189,6 +189,7 @@ public enum StrategyType  implements RankMode {
 
             for (String code : codeList) {
 
+//                System.out.println(code);
 //                RunTimeSt.getRunTime("开始读取 "+code+"股票");
                 boolean isnull = false;
 
@@ -428,7 +429,7 @@ public enum StrategyType  implements RankMode {
 
                     //TODO  返回来的数据可能数空的
                     List<FormationMOM> formationMOMS = pickStockService.getSingleCodeMOMInfo
-                            (code, begin.minusDays(1), end, holdPeriod);
+                            (code, begin, end, holdPeriod);
 
                     //TODO  以后要做进一步的处理
                     if (formationMOMS == null) {
@@ -436,6 +437,7 @@ public enum StrategyType  implements RankMode {
                         newPickleDataList.remove(newPickleData);
                         isnull = true;
                         codeIndex--;
+                        System.out.println(code);
                         continue;
                     }
 
@@ -444,7 +446,7 @@ public enum StrategyType  implements RankMode {
                     for (int i = 0; i < newPickleDataList.get(codeIndex).singleBackDataList.size(); i++) {
                         SingleBackData singleBackData = newPickleDataList.get(codeIndex).singleBackDataList.get(i);
                         //System.out.println(singleBackData.date==null);
-                        while (formationMOMS.get(j).date.isBefore(singleBackData.date.minusDays(1)))
+                        while (formationMOMS.get(j).date.isBefore(singleBackData.date))
                             j++;
 
                         singleBackData.rankValues[holdPeriod] = formationMOMS.get(j).yeildRate;

@@ -73,6 +73,17 @@ public class StrategyServiceImpl implements StrategyService {
         //this.newpickleDatas = strategyDAO.getNewPickleData()
     }
 
+    @Override
+    public void initMixed(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs, TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS) {
+        this.strategyConditionVO = strategyConditionVO;
+        this.stockPoolConditionVO = stockPoolConditionVO;
+        this.stockPickIndexVOs = stockPickIndexVOs;
+        this.traceBackVO = traceBackVO;
+        this.daoFactoryService = new DAOFactoryServiceImpl();
+        this.strategyDAO = this.daoFactoryService.createStrategyDAO();
+
+    }
+
 
     @Override
     public void calculate(TraceBackVO traceBackVO) {

@@ -6,7 +6,9 @@ import blserviceimpl.strategy.PickleData;
 import blserviceimpl.strategy.SingleBackData;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
+import vo.AdjVO;
 import vo.LongPeiceVO;
+import vo.UpRangeVO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -116,13 +118,172 @@ public enum StockPickIndex implements FilterMode {
      * 昨日涨幅
      */
     PREVIOUS_DAY_UPRATE {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
         @Override
         public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
-            return null;
+            Predicate<BackData> backDataPredicate = backData -> {
+                //如果没有限制
+                if(lowerBound==null && upBound==null)
+                    return true;
+
+                //有下限
+                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                if(lowerBound!=null  && value<lowerBound)
+                    return false;
+
+                //有上限
+                if(upBound!=null  && value>upBound)
+                    return false;
+                return true;
+            };
+            return backDataPredicate;
         }
 
         @Override
         public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            LocalDate begin =  current.get(0).beginDate;
+            LocalDate end = current.get(current.size()-1).endDate;
+
+
+            List<UpRangeVO>  upRangeVOS = pickStockService.getLastUpRange(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<current.size() ; i++){
+
+
+                LocalDate beg = current.get(i).beginDate;
+                //System.out.println(beg);
+                //循环到我们要输入数据的那一天
+                while(!upRangeVOS.get(j).localDate.plusDays(1).isAfter(beg)){
+                    j++;
+                }
+
+                int last = current.get(i).stockCodes.size()-1;
+                if(last < 0 || current.get(i).stockCodes.get(last).code != code){
+                    // nothing todo
+                }else{
+                    current.get(i).stockCodes.get(last).filterData[this.ordinal()]
+                            = upRangeVOS.get(j).upRange;
+                }
+
+
+            }
+            return current;
+        }
+    },
+
+    /**
+     * 昨日复权平均
+     */
+    PREVIOUS_DAY_ADJ {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+        @Override
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
+            Predicate<BackData> backDataPredicate = backData -> {
+                //如果没有限制
+                if(lowerBound==null && upBound==null)
+                    return true;
+
+                //有下限
+                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                if(lowerBound!=null  && value<lowerBound)
+                    return false;
+
+                //有上限
+                if(upBound!=null  && value>upBound)
+                    return false;
+                return true;
+            };
+            return backDataPredicate;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            LocalDate begin =  current.get(0).beginDate;
+            LocalDate end = current.get(current.size()-1).endDate;
+
+
+            List<AdjVO>  adjVOS = pickStockService.getAdj(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<current.size() ; i++){
+
+
+                LocalDate beg = current.get(i).beginDate;
+                //System.out.println(beg);
+                //循环到我们要输入数据的那一天
+                while(!adjVOS.get(j).localDate.plusDays(1).isAfter(beg)){
+                    j++;
+                }
+
+                int last = current.get(i).stockCodes.size()-1;
+                if(last < 0 || current.get(i).stockCodes.get(last).code != code){
+                    // nothing todo
+                }else{
+                    current.get(i).stockCodes.get(last).filterData[this.ordinal()]
+                            = adjVOS.get(j).adj;
+                }
+
+
+            }
+            return current;
+        }
+    },
+
+    CHANGE_RATE {
+        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;
+        @Override
+        public Predicate<BackData> getFilter(Double lowerBound, Double upBound) {
+            Predicate<BackData> backDataPredicate = backData -> {
+                //如果没有限制
+                if(lowerBound==null && upBound==null)
+                    return true;
+
+                //有下限
+                long value =  (long)backData.filterData[PREVIOUS_DAY_VOL.ordinal()];
+                if(lowerBound!=null  && value<lowerBound)
+                    return false;
+
+                //有上限
+                if(upBound!=null  && value>upBound)
+                    return false;
+                return true;
+            };
+            return backDataPredicate;
+        }
+
+        @Override
+        public List<PickleData> setFilterValue(List<PickleData> current, String code) {
+            LocalDate begin =  current.get(0).beginDate;
+            LocalDate end = current.get(current.size()-1).endDate;
+
+
+            List<AdjVO>  adjVOS = pickStockService.getAdj(code, begin, end);
+
+            int j = 0;
+
+            for (int i = 0 ; i<current.size() ; i++){
+
+
+                LocalDate beg = current.get(i).beginDate;
+                //System.out.println(beg);
+                //循环到我们要输入数据的那一天
+                while(!adjVOS.get(j).localDate.plusDays(1).isAfter(beg)){
+                    j++;
+                }
+
+                int last = current.get(i).stockCodes.size()-1;
+                if(last < 0 || current.get(i).stockCodes.get(last).code != code){
+                    // nothing todo
+                }else{
+                    current.get(i).stockCodes.get(last).filterData[this.ordinal()]
+                            = adjVOS.get(j).adj;
+                }
+
+
+            }
             return current;
         }
 

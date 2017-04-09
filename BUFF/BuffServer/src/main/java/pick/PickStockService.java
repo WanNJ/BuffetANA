@@ -4,7 +4,9 @@ import po.StockPO;
 import util.DayMA;
 import blserviceimpl.strategy.PickleData;
 import util.FormationMOM;
+import vo.AdjVO;
 import vo.LongPeiceVO;
+import vo.UpRangeVO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -77,6 +79,24 @@ public interface PickStockService {
     List<LongPeiceVO>  getLastVol(String code , LocalDate begin ,LocalDate end);
 
 
+    /**
+     * 获得上一日的涨幅
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<UpRangeVO> getLastUpRange(String code, LocalDate begin ,LocalDate end);
+
+
+    /**
+     * 获得上一日的复权平均价
+     * @param code
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<AdjVO> getAdj(String code, LocalDate begin ,LocalDate end);
 
 
 }

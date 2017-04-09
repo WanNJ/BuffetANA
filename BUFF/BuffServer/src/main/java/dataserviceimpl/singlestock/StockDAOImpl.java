@@ -312,7 +312,7 @@ public enum StockDAOImpl implements StockDAO{
         List<LocalDate> dateList = new ArrayList<>();
 
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("UTF-8"))) {
-            System.out.println("here");
+            System.out.println("none     here");
             dateList = br.lines().map(t->DateUtil.parseLine(t)).collect(Collectors.toList());
             br.close();
 

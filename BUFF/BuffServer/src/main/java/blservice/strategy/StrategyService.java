@@ -13,6 +13,11 @@ public interface StrategyService {
               List<StockPickIndexVO> stockPickIndexVOs);
 
     /**
+     * 混合策略的初始化
+     */
+    void initMixed(StrategyConditionVO strategyConditionVO, StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexVOs, TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS);
+
+    /**
      * 用户点击回测按钮后调用的方法
      * @param traceBackVO
      */

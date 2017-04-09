@@ -8,7 +8,9 @@ import po.StockPO;
 import util.DateUtil;
 import util.DayMA;
 import util.FormationMOM;
+import vo.AdjVO;
 import vo.LongPeiceVO;
+import vo.UpRangeVO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -234,20 +236,67 @@ public enum PickStockServiceImpl implements PickStockService {
     @Override
     public List<LongPeiceVO> getLastVol(String code, LocalDate begin, LocalDate end) {
         List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
+            Collections.reverse(list);
+
+            list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
+            List<LongPeiceVO> ans = new ArrayList<>();
+            LocalDate temp = end;
+
+            //list.stream().forEach(t-> System.out.println(t.getDate()+"   "+t.getVolume()));
+            // System.out.println(list.size());
+            //if(list.size()<0)
+            for (int i = 0 ; !temp.isBefore(begin);i++){
+                if(i>list.size()-1){
+                    //System.out.println(i);
+                    while(!temp.isBefore(begin)){
+                        ans.add(new LongPeiceVO(temp,0));
+                        temp = temp.minusDays(1);
+                    }
+
+                    Collections.reverse(ans);
+                    return ans;
+                }
+
+
+                while(temp.isAfter(list.get(i).getDate())){
+                    ans.add(new LongPeiceVO(temp,list.get(i).getVolume()));
+                    temp = temp.minusDays(1);
+                }
+                try {
+                    ans.add(new LongPeiceVO(temp,list.get(i+1).getVolume()));
+                    temp = temp.minusDays(1);
+                }catch (Exception e){
+                    while(!temp.isBefore(begin)){
+                        ans.add(new LongPeiceVO(temp,0));
+                        temp = temp.minusDays(1);
+                    }
+                    Collections.reverse(ans);
+                    return ans;
+                }
+
+        }
+
+        Collections.reverse(ans);
+        return ans;
+    }
+
+    @Override
+    public List<UpRangeVO> getLastUpRange(String code, LocalDate begin , LocalDate end) {
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
         Collections.reverse(list);
 
         list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
-        List<LongPeiceVO> ans = new ArrayList<>();
+        List<UpRangeVO> ans = new ArrayList<>();
         LocalDate temp = end;
 
         //list.stream().forEach(t-> System.out.println(t.getDate()+"   "+t.getVolume()));
-       // System.out.println(list.size());
+        // System.out.println(list.size());
         //if(list.size()<0)
         for (int i = 0 ; !temp.isBefore(begin);i++){
-            if(i>list.size()-1){
+            if(i>list.size()-2){
                 //System.out.println(i);
                 while(!temp.isBefore(begin)){
-                    ans.add(new LongPeiceVO(temp,0));
+                    ans.add(new UpRangeVO(temp,0));
                     temp = temp.minusDays(1);
                 }
 
@@ -257,15 +306,62 @@ public enum PickStockServiceImpl implements PickStockService {
 
 
             while(temp.isAfter(list.get(i).getDate())){
-                ans.add(new LongPeiceVO(temp,list.get(i).getVolume()));
+                ans.add(new UpRangeVO(temp,(list.get(i).getAdjCloseIndex() - list.get(i + 1).getAdjCloseIndex()) / list.get(i + 1).getAdjCloseIndex()));
                 temp = temp.minusDays(1);
             }
             try {
-                ans.add(new LongPeiceVO(temp,list.get(i+1).getVolume()));
+                ans.add(new UpRangeVO(temp, (list.get(i + 1).getAdjCloseIndex() - list.get(i + 2).getAdjCloseIndex()) / list.get(i + 2).getAdjCloseIndex()));
                 temp = temp.minusDays(1);
             }catch (Exception e){
                 while(!temp.isBefore(begin)){
-                    ans.add(new LongPeiceVO(temp,0));
+                    ans.add(new UpRangeVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+                Collections.reverse(ans);
+                return ans;
+            }
+
+        }
+
+        Collections.reverse(ans);
+        return ans;
+    }
+
+    @Override
+    public List<AdjVO> getAdj(String code, LocalDate begin , LocalDate end) {
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code , begin.minusDays(10) , end);
+        Collections.reverse(list);
+
+        list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
+        List<AdjVO> ans = new ArrayList<>();
+        LocalDate temp = end;
+
+        //list.stream().forEach(t-> System.out.println(t.getDate()+"   "+t.getVolume()));
+        // System.out.println(list.size());
+        //if(list.size()<0)
+        for (int i = 0 ; !temp.isBefore(begin);i++){
+            if(i>list.size()-1){
+                //System.out.println(i);
+                while(!temp.isBefore(begin)){
+                    ans.add(new AdjVO(temp,0));
+                    temp = temp.minusDays(1);
+                }
+
+                Collections.reverse(ans);
+                return ans;
+            }
+
+
+            while(temp.isAfter(list.get(i).getDate())){
+                ans.add(new AdjVO(temp,list.get(i).getAdjCloseIndex()));
+                temp = temp.minusDays(1);
+            }
+            try {
+                ans.add(new AdjVO(temp,list.get(i+1).getAdjCloseIndex()));
+                temp = temp.minusDays(1);
+            }catch (Exception e){
+                while(!temp.isBefore(begin)){
+                    ans.add(new AdjVO(temp,0));
                     temp = temp.minusDays(1);
                 }
                 Collections.reverse(ans);

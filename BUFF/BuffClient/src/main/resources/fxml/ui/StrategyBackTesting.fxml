@@ -6,17 +6,42 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition?>
 <?import com.jfoenix.controls.JFXRippler?>
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<StackPane fx:id="root" style="-fx-background-color: WHITE" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <JFXDrawer fx:id="drawer" defaultDrawerSize="500" direction="TOP">
         <styleClass>
             <String fx:value="body" />
         </styleClass>
+        <content>
+            <AnchorPane  style="-fx-background-color: WHITE">
+                <ScrollPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                    <content>
+                        <VBox fx:id="viewsBox">
+                            <padding>
+                                <Insets top="100.0" bottom="130.0"/>
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+                <HBox alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                    <JFXRippler fx:id="rippler" maskType="CIRCLE" style="-fx-ripple-color:GREEN;">
+                        <StackPane fx:id="titleBurgerContainer">
+                            <JFXHamburger fx:id="titleBurger" styleClass="red-jfx-hamburger">
+                                <HamburgerBackArrowBasicTransition />
+                            </JFXHamburger>
+                        </StackPane>
+                    </JFXRippler>
+                </HBox>
+            </AnchorPane>
+        </content>
     </JFXDrawer>
-    <JFXRippler fx:id="rippler" maskType="CIRCLE" style="-fx-ripple-color:BLACK;">
-        <StackPane fx:id="titleBurgerContainer">
-            <JFXHamburger fx:id="titleBurger">
-                <HamburgerBackArrowBasicTransition />
-            </JFXHamburger>
-        </StackPane>
-    </JFXRippler>
 </StackPane>

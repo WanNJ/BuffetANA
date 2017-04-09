@@ -37,6 +37,8 @@ public class StockChooseController {
     @FXML private JFXTextField holdingPeriod;//持仓期
     @FXML private JFXTextField formativePeriod;//形成期
     @FXML private JFXTextField numOfShares;//持股数（持股比例）
+    @FXML private JFXButton start;//开始回测
+    @FXML private JFXButton save;//保存策略
 
     @PostConstruct
     public void init(){

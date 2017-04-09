@@ -14,6 +14,7 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +30,7 @@ public class StrategyBackTestingController {
     @FXML private StackPane titleBurgerContainer;
     @FXML private JFXHamburger titleBurger;
     @FXML private JFXDrawer drawer;
+    @FXML private VBox viewsBox;
 
     @PostConstruct
     public void init() throws FlowException {
@@ -61,7 +63,11 @@ public class StrategyBackTestingController {
         // side controller will add links to the content flow
         Flow sideMenuFlow = new Flow(StockChooseController.class);
         FlowHandler sideMenuFlowHandler = sideMenuFlow.createHandler(context);
-        drawer.setContent(new JFXButton());
         drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
+
+        viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(new Flow(EstimateStrategyController.class).createHandler(context).start());
+
     }
 }

@@ -104,7 +104,7 @@
 }
 
 .jfx-snackbar-toast {
-	-fx-text-fill: WHITE;	
+	-fx-text-fill: WHITE;
 }
 
 .jfx-snackbar-action {
@@ -177,6 +177,19 @@
 	-fx-background-radius: 5px;	
 }
 
+.red-jfx-hamburger{
+	-fx-padding: 10.0;
+	-fx-spacing: 4px;
+	-fx-cursor: hand;
+}
+
+.red-jfx-hamburger StackPane{
+	-fx-pref-width: 30px;
+	-fx-pref-height: 4px;
+	-fx-background-color: RED ;
+	-fx-background-radius: 5px;
+}
+
 /*******************************************************************************
  *                                                                             *
  * JFX Tool Bar                                                                *
@@ -209,7 +222,7 @@
 }
 
 .jfx-tool-bar .jfx-rippler {
-	-fx-rippler-fill: WHITE;
+	-fx-rippler-fill: GREEN;
 }
 
 .option-list-view {
@@ -340,6 +353,38 @@
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(102.0,153.0,102.0);
 	-fx-pref-width: 200.0;
+	-fx-text-fill: WHITE;
+}
+
+.custom-jfx-button-red {
+	 -fx-pref-width: 120.0;
+	 -fx-font-size: 20px;
+	 -fx-button-type: RAISED;
+	 -fx-background-color: RED;
+	 -fx-text-fill: WHITE;
+ }
+
+.custom-jfx-button-blue {
+	-fx-pref-width: 120.0;
+	-fx-font-size: 20px;
+	-fx-button-type: RAISED;
+	-fx-background-color: rgb(77,102,204);
+	-fx-text-fill: WHITE;
+}
+
+.custom-jfx-button-green {
+	-fx-pref-width: 120.0;
+	-fx-font-size: 21px;
+	-fx-button-type: RAISED;
+	-fx-background-color: rgb(33,221,49);
+	-fx-text-fill: WHITE;
+}
+
+.custom-jfx-button-purple {
+	-fx-pref-width: 120.0;
+	-fx-font-size: 20px;
+	-fx-button-type: RAISED;
+	-fx-background-color: rgb(224,11,118);
 	-fx-text-fill: WHITE;
 }
 

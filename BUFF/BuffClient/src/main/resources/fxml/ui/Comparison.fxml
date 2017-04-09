@@ -15,7 +15,7 @@
 
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXPopup?>
-<StackPane fx:id="root" stylesheets="@../../css/jfoenix-main-demo.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" style="-fx-background-color: WHITE" stylesheets="@../../css/jfoenix-main-demo.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <GridPane>
             <columnConstraints>

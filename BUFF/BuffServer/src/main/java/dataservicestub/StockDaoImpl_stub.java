@@ -56,4 +56,14 @@ public class StockDaoImpl_stub implements StockDAO {
     public List<StockPO> getStockInFoInRangeDate(String code, LocalDate begin, LocalDate end) {
         return null;
     }
+
+    @Override
+    public double getStockChangeRate(String code) {
+        return 0;
+    }
+
+    @Override
+    public double getStockCirculationMarketValue(String code) {
+        return 0;
+    }
 }

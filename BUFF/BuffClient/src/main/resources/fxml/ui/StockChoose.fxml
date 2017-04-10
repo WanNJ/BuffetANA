@@ -46,7 +46,7 @@
                      <children>
                         <JFXComboBox fx:id="stockPool" maxWidth="200.0" promptText="股票池" />
                         <JFXComboBox fx:id="plate" maxWidth="200.0" promptText="板块" />
-                        <JFXComboBox maxWidth="200.0" promptText="行业" />
+                        <JFXComboBox fx:id="industry" maxWidth="200.0" promptText="行业" />
                         <JFXCheckBox fx:id="ST" text="排除ST">
                            <font>
                               <Font size="20.0" />

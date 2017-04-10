@@ -2,6 +2,7 @@ package gui.functions;
 
 import com.jfoenix.controls.*;
 import gui.utils.DatePickerUtil;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,9 +22,14 @@ import javafx.scene.text.Font;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
+import vo.MixedStrategyVO;
+import vo.StockPoolConditionVO;
 
 import javax.annotation.PostConstruct;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zjy
@@ -48,6 +54,12 @@ public class StockChooseController {
     @FXML private JFXTextField numOfShares;//持股数（持股比例）
     @FXML private JFXButton start;//开始回测
     @FXML private JFXButton save;//保存策略
+
+
+
+
+
+
     /**
      * add by wsw
      * 保存那些 过滤指标的button
@@ -62,16 +74,61 @@ public class StockChooseController {
     /**
      * 用于标记  均值策略和动量策略 是否已经被选中
      */
-    boolean strateyChoosed;
+    public static boolean strateyChoosed;
+
+
+
+
+
+
+    //记录股票池的选择信息
+    private StockPoolConditionVO stockPoolConditionVO;
+
+
+    //记录回测的开始日期
+    private LocalDate begin;
+
+    // 记录回测的结束日期
+    private  LocalDate end;
+
+
+
 
     @PostConstruct
     public void init(){
+
+        //init all the VO value
+
+        stockPoolConditionVO = new StockPoolConditionVO();
+
         //初始化界面用到的各种控件
         from.setDialogParent(root);
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
         strateyChoosed = false;
+
+
+        from.setValue(LocalDate.of(2013,1,1));
+        to.setValue(LocalDate.of(2014,1,1));
+
+        begin = LocalDate.of(2013,1,1);
+        end = LocalDate.of(2014,1,1);
+
+
+        //获取日期
+        from.setOnAction(event -> {
+            if(from.getValue().isBefore(LocalDate.of(2012,1,1))){
+                Dialogs.showMessage("回测时间不支持", "起始时间不支持早于2012年");
+            }
+            begin = from.getValue();
+        });
+
+        to.setOnAction(event -> {
+            end = to.getValue();
+        });
+
+
 
         addButtons();
 
@@ -98,6 +155,9 @@ public class StockChooseController {
          *
          *
          */
+
+        strategyType.setValue("自定义策略");
+
         strategyType.setOnAction(event -> {
             if("均值策略".equals(strategyType.getValue())){
                 formativePeriod.setText(null);
@@ -164,6 +224,8 @@ public class StockChooseController {
                 (StockPool.All.toString(),StockPool.HS300.toString()
                         ,StockPool.UserMode.toString());
 
+
+
         //设置切换 tabpane监听
         pickingConditions.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Tab>() {
@@ -180,6 +242,38 @@ public class StockChooseController {
                     }
                 }
         );
+
+
+        /**
+         * 股票池选择的监听
+         */
+        stockPool.setOnAction(event -> {
+            if("全部".equals(stockPool.getValue())){
+                plate.getItems().clear();
+                industry.getItems().clear();
+                plate.getItems().add("无");
+                industry.getItems().add("无");
+            }else if("沪深300".equals(stockPool.getValue())){
+                plate.getItems().clear();
+                industry.getItems().clear();
+                plate.getItems().add("无");
+                industry.getItems().add("无");
+            }else{
+                //TODO  用户自定义模式   现在不知道 多选怎么实现
+            }
+        });
+
+
+
+
+
+        start.setOnAction(event -> {
+            if(!strateyChoosed){
+
+            }
+        });
+
+
 
     }
 
@@ -349,6 +443,12 @@ public class StockChooseController {
 //            rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
 //        });
 //        rankingCondition.add(hashCode4,row);
+    }
+
+
+
+    private void collectCurrentData(){
+
     }
 
 }

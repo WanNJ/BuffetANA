@@ -26,9 +26,12 @@ public class StockPoolConditionVO {
      */
     public boolean excludeST;
 
-//    public StockPoolConditionVO() {
-//
-//    }
+
+    //无参数初始化方法
+    public StockPoolConditionVO() {
+        //TODO delete
+        System.out.println(stockPool==null);
+    }
 
     public StockPoolConditionVO(StockPool stockPool, Set<String> block, Set<String> industry, boolean excludeST) {
         this.stockPool = stockPool;

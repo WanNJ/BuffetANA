@@ -225,11 +225,11 @@ public class ComparisonController {
             return;
         }
         //判断数据格式是否合法
-        if(!mainStockCode.getText().trim().matches("^[1-9]\\d*|0$")) {
+        if(!mainStockCode.getText().trim().matches("^[0-9]\\d*|0$")) {
             Dialogs.showMessage("股票代号格式不正确", "请输入有效的主股代号！(以数字构成)");
             return;
         } else {
-            if (!deputyStockCode.getText().trim().matches("^[1-9]\\d*|0$")) {
+            if (!deputyStockCode.getText().trim().matches("^[0-9]\\d*|0$")) {
                 Dialogs.showMessage("股票代号格式不正确", "请输入格式正确的副股代号！(以数字构成)");
                 return;
             }

@@ -44,6 +44,9 @@ import java.util.OptionalDouble;
 /**
  * @author zjy
  */
+
+
+//TODO 添加数值监听器
 @FXMLController(value = "/resources/fxml/ui/StockChoose.fxml" , title = "StockChoose")
 public class StockChooseController {
 

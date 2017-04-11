@@ -26,6 +26,12 @@ public class TraceBackVO {
      */
     public double holdingRate;
 
+    /**
+     *
+     * @param formationPeriod
+     * @param holdingPeriod
+     * @param holdingNum
+     */
     public TraceBackVO(int formationPeriod, int holdingPeriod, int holdingNum) {
         this.formationPeriod = formationPeriod;
         this.holdingPeriod = holdingPeriod;
@@ -33,6 +39,13 @@ public class TraceBackVO {
         this.holdingRate = 0.0;
     }
 
+    /**
+     *
+     * @param formationPeriod
+     * @param holdingPeriod
+     * @param holdingNum
+     * @param holdingRate
+     */
     public TraceBackVO(int formationPeriod, int holdingPeriod, int holdingNum, double holdingRate) {
         this.formationPeriod = formationPeriod;
         this.holdingPeriod = holdingPeriod;

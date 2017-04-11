@@ -1,17 +1,20 @@
 package gui.functions;
 
 import com.jfoenix.controls.*;
+import exception.WrongValueException;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -19,17 +22,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import jdk.nashorn.internal.runtime.options.Option;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
-import vo.MixedStrategyVO;
-import vo.StockPoolConditionVO;
+import vo.*;
 
 import javax.annotation.PostConstruct;
 import java.awt.event.ActionListener;
+import java.awt.geom.Arc2D;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 /**
  * @author zjy
@@ -38,9 +43,9 @@ import java.util.List;
 public class StockChooseController {
 
     @FXML private StackPane root;
-    @FXML private JFXComboBox stockPool;//股票池
-    @FXML private JFXComboBox plate;//板块
-    @FXML private JFXComboBox industry;//行业
+    @FXML private JFXComboBox<String> stockPool;//股票池
+    @FXML private JFXComboBox<String> plate;//板块
+    @FXML private JFXComboBox<String> industry;//行业
     @FXML private JFXCheckBox ST;//是否排除ST
     @FXML private JFXDatePicker from;//开始日期
     @FXML private JFXDatePicker to;//结束日期
@@ -91,15 +96,28 @@ public class StockChooseController {
     // 记录回测的结束日期
     private  LocalDate end;
 
+    private  List<MixedStrategyVO> mixedStrategyVOList;
+
+    private  List<StockPickIndexVO> stockPickIndexList;
+
+    private StrategyConditionVO strategyConditionVO;
+
+    private TraceBackVO traceBackVO;
 
 
 
     @PostConstruct
     public void init(){
 
+
         //init all the VO value
 
         stockPoolConditionVO = new StockPoolConditionVO();
+
+        mixedStrategyVOList = new ArrayList<>();
+
+        stockPickIndexList = new ArrayList<>();
+
 
         //初始化界面用到的各种控件
         from.setDialogParent(root);
@@ -131,6 +149,8 @@ public class StockChooseController {
 
 
         addButtons();
+
+
 
         strategyType.getItems().clear();
         strategyType.getItems().addAll("均值策略","动量策略","自定义策略");
@@ -264,12 +284,16 @@ public class StockChooseController {
         });
 
 
-
-
-
+        /**
+         * 开始回测
+         */
         start.setOnAction(event -> {
-            if(!strateyChoosed){
-
+            mixedStrategyVOList.clear();
+            stockPickIndexList.clear();
+            try {
+                collectCurrentData();
+            } catch (WrongValueException e) {
+                Dialogs.showMessage(e.getErr());
             }
         });
 
@@ -447,8 +471,236 @@ public class StockChooseController {
 
 
 
-    private void collectCurrentData(){
+    private void collectCurrentData() throws WrongValueException {
 
+        String pool = stockPool.getValue();
+        if("全部".equals(pool)){
+            stockPoolConditionVO.stockPool = StockPool.All;
+            stockPoolConditionVO.excludeST = ST.isSelected();
+
+        }else if("沪深300".equals(pool)){
+            stockPoolConditionVO.stockPool = StockPool.HS300;
+            stockPoolConditionVO.excludeST = ST.isSelected();
+
+        }else if("自选股票池".equals(pool)) {
+            stockPoolConditionVO.stockPool = StockPool.UserMode;
+            stockPoolConditionVO.excludeST = ST.isSelected();
+            //TODO 其余多选属性
+
+        }else{
+            throw new WrongValueException("股票池没有选择");
+        }
+
+
+       getFilterCondition();
+
+       getRankingCondition();
+
+       this.stockPickIndexList = filterBlender();
+
+    }
+
+
+
+
+    private void getRankingCondition() throws WrongValueException {
+        if(strateyChoosed){
+            ObservableList<Node> observableList =  rankingCondition.getChildren();
+            StrategyType strategyType = null;
+            boolean asc = false;
+            int js = 0;
+            for(Node node : observableList) {
+                if (node instanceof Label) {
+                    if (((Label) node).getText().endsWith("动量策略")) {
+                        strategyType = StrategyType.MOM;
+                        js = 1;
+                        //System.out.println(((Label) node).getText());
+                    } else if (((Label) node).getText().endsWith("均线偏离")) {
+                        strategyType = StrategyType.MA;
+                        js = 1;
+                        // System.out.println(((Label) node).getText());
+                    }
+                } else if (node instanceof JFXComboBox) {
+                    if (js == 1) {
+                        String comp = (String) ((JFXComboBox) node).getValue();
+                        if (comp.equals("从小到大")) asc = true;
+                        else asc = false;
+                        js++;
+
+                        strategyConditionVO  = new StrategyConditionVO
+                                (strategyType,begin,end, asc);
+                        System.out.println("Ranking save:   "
+                                +strategyConditionVO.strategyType.toString());
+                    }
+                }
+
+
+            }
+
+        } else {
+            ObservableList<Node> observableList =  rankingCondition.getChildren();
+            StrategyType strategyType = null;
+            boolean asc = false;
+            int formationPeriod = 0;
+            double weight;
+            int js = 0;
+            for(Node node : observableList){
+                if(node instanceof Label){
+                    if(((Label) node).getText().endsWith("动量策略")){
+                        strategyType = StrategyType.MOM;
+                        js = 1;
+                        //System.out.println(((Label) node).getText());
+                    }else if(((Label) node).getText().endsWith("均线偏离")){
+                        strategyType = StrategyType.MA;
+                        js = 1;
+                        // System.out.println(((Label) node).getText());
+                    }
+                }else
+                if(node instanceof JFXComboBox){
+                    if(js==1) {
+                        String comp = (String) ((JFXComboBox) node).getValue();
+                        if(comp.equals("从小到大")) asc = true;
+                        else asc = false;
+                        js++;
+                    }
+                }else
+                if(node instanceof JFXTextField){
+                    if(js==2) {
+                        String temp = ((JFXTextField) node).getText();
+                        if(temp == null || "".equals(temp)){
+                            throw new WrongValueException("形成期不能为空");
+                        }else{
+                            formationPeriod = Integer.parseInt(temp);
+                        }
+                        //System.out.println(temp);
+                        js++;
+                    }else if(js==3){
+                        String temp = ((JFXTextField) node).getText();
+                        if(temp == null || "".equals(temp)){
+                            throw new WrongValueException("权重不能为空");
+                        }else{
+                            weight = Double.parseDouble(temp);
+                        }
+                        //System.out.println(temp);
+                        MixedStrategyVO mixedStrategyVO =  new MixedStrategyVO(strategyType,weight,asc,formationPeriod);
+                        mixedStrategyVOList.add(mixedStrategyVO);
+                        System.out.println("Ranking save:   "+
+                                mixedStrategyVO.strategyType.toString()+"   形成期:"+
+                                mixedStrategyVO.formationPeriod+"   权重: "+
+                                mixedStrategyVO.weight);
+
+                        js=0;
+                    }
+                }
+
+            }
+
+            if(mixedStrategyVOList.size()==0){
+                throw new WrongValueException(" 没有选择排名条件");
+            }
+        }
+
+
+
+    }
+
+
+    private void getFilterCondition()  throws  WrongValueException{
+        ObservableList<Node> observableList =  filterCondition.getChildren();
+        StockPickIndex stockPickIndex = null;
+        boolean less = true;
+        double value;
+        int js = 0;
+        for(Node node : observableList){
+            if(node instanceof Label){
+                String label = ((Label) node).getText();
+                stockPickIndex  = getStockPickIndexByName(label);
+                if(stockPickIndex!=null)  js = 1;
+            }else
+            if(node instanceof JFXComboBox){
+                if(js==1) {
+                    String comp = (String) ((JFXComboBox) node).getValue();
+                    if(comp.equals("大于")) less = true;
+                    else less = false;
+                    js++;
+                }
+            }else
+            if(node instanceof JFXTextField){
+                if(js==2) {
+                    String temp = ((JFXTextField) node).getText();
+                    if(temp == null || "".equals(temp)){
+                        throw new WrongValueException("比较值不能为空");
+                    }else{
+                        value = Double.parseDouble(temp);
+                    }
+
+                    StockPickIndexVO stockPickIndexVO = null;
+                    if(less) {
+                        stockPickIndexVO = new StockPickIndexVO(stockPickIndex, value, null);
+                    }
+                    else{
+                        stockPickIndexVO = new StockPickIndexVO(stockPickIndex, null, value);
+                    }
+                    stockPickIndexList.add(stockPickIndexVO);
+//                    System.out.println("Filter save:   "+
+//                            stockPickIndexVO.stockPickIndex.toString()+ (less? "大于":"小于")+
+//                            value);
+
+
+                    js=0;
+                }
+            }
+
+        }
+
+
+    }
+
+
+
+    
+
+
+    /**
+     * 根据中文名字 获得过滤股票的类型
+     * @param name
+     * @return
+     */
+    private StockPickIndex getStockPickIndexByName(String name){
+        for(StockPickIndex stockPickIndex : StockPickIndex.values()){
+            if(name.equals(stockPickIndex.toString()))
+                return stockPickIndex;
+        }
+        return null;
+    }
+
+    /**
+     * 条件的拼接
+     */
+    private List<StockPickIndexVO> filterBlender(){
+        List<StockPickIndexVO> stockPickIndexVOs = new ArrayList<>();
+
+        for(StockPickIndex stockPickIndex : StockPickIndex.values()){
+            OptionalDouble upBound = stockPickIndexList.stream().
+                   filter(t->t.stockPickIndex.equals(stockPickIndex)&& t.upBound!=null)
+                    .mapToDouble(t->t.upBound).min();
+            OptionalDouble lowBound = stockPickIndexList.stream().
+                    filter(t->t.stockPickIndex.equals(stockPickIndex)&&t.lowerBound!=null)
+                    .mapToDouble(t->t.lowerBound).max();
+
+            if(upBound.isPresent() || lowBound.isPresent()){
+                StockPickIndexVO stockPickIndexVO  = new StockPickIndexVO(stockPickIndex,null,null);
+                if(lowBound.isPresent())   stockPickIndexVO.lowerBound = lowBound.getAsDouble();
+                if(upBound.isPresent())  stockPickIndexVO.upBound = upBound.getAsDouble();
+
+                stockPickIndexVOs.add(stockPickIndexVO);
+
+                System.out.println("FIlter:    "+stockPickIndexVO.stockPickIndex.toString()+
+                "上限:   "+ (stockPickIndexVO.upBound==null?"null":stockPickIndexVO.upBound)+
+                "   下限:   "+ (stockPickIndexVO.lowerBound==null?"null":stockPickIndexVO.lowerBound));
+            }
+        }
+        return stockPickIndexVOs;
     }
 
 }

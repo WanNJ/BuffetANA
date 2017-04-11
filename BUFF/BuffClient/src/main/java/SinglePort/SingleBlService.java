@@ -3,10 +3,12 @@ package SinglePort;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 import blserviceimpl.comparison.ComparisonImpl;
 import blserviceimpl.market.MarketServiceImpl;
 import blserviceimpl.singlestock.*;
+import blserviceimpl.strategy.StrategyServiceImpl;
 import blserviceimpl.thermometer.ThermometerServiceImpl;
 
 /**
@@ -35,14 +37,23 @@ public enum SingleBlService {
         return AllStockServiceImpl.ALL_STOCK_SERVICE;
     }
 
-    public ComparisonService getComparisonService() { return ComparisonImpl.COMPARISON_SERVICE; }
-
-    public MarketService getMarketService() {
-        return  MarketServiceImpl.MARKET_SERVICE;
+    public ComparisonService getComparisonService() {
+        return ComparisonImpl.COMPARISON_SERVICE;
     }
 
-    public ThermometerService getThermometerService(){return ThermometerServiceImpl.THERMOMETER_SERVCE;}
+    public MarketService getMarketService() {
+        return MarketServiceImpl.MARKET_SERVICE;
+    }
 
-    public BenchStockService getBenchStockService() { return BenchStockServiceImpl.BENCH_STOCK_SERVICE; }
+    public ThermometerService getThermometerService() {
+        return ThermometerServiceImpl.THERMOMETER_SERVCE;
+    }
 
+    public BenchStockService getBenchStockService() {
+        return BenchStockServiceImpl.BENCH_STOCK_SERVICE;
+    }
+
+    public StrategyService getStrategyService() {
+        return StrategyServiceImpl.STRATEGY_SERVICE;
+    }
 }

@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 /**
  * Created by slow_time on 2017/3/24.
  */
-public class StrategyServiceImpl implements StrategyService {
+public enum StrategyServiceImpl implements StrategyService {
+    STRATEGY_SERVICE;
 
     private StrategyConditionVO strategyConditionVO;
     private StockPoolConditionVO stockPoolConditionVO;

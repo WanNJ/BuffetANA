@@ -1,7 +1,11 @@
 package gui.functions;
 
+import SinglePort.SingleBlService;
+import blservice.strategy.StrategyService;
 import com.jfoenix.controls.*;
 import exception.WrongValueException;
+import factory.BLFactorySeviceOnlyImpl;
+import factory.BlFactoryService;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
@@ -26,6 +30,7 @@ import jdk.nashorn.internal.runtime.options.Option;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
+import util.StrategyScoreVO;
 import vo.*;
 
 import javax.annotation.PostConstruct;
@@ -61,9 +66,25 @@ public class StockChooseController {
     @FXML private JFXButton save;//保存策略
 
 
+    private StrategyService strategyService;
 
+    private BlFactoryService blFactoryService;
 
+    /**
+     * 外部注入工厂
+     * @param blFactoryService
+     */
+    public void setBlFactoryService(BlFactoryService blFactoryService){
+        this.blFactoryService = blFactoryService;
+    }
 
+    /**
+     * 外部注入bl
+     * @param strategyService
+     */
+    public void setStrategyService(StrategyService strategyService){
+        this.strategyService = strategyService;
+    }
 
     /**
      * add by wsw
@@ -109,7 +130,9 @@ public class StockChooseController {
     @PostConstruct
     public void init(){
 
+        blFactoryService = new BLFactorySeviceOnlyImpl();
 
+        strategyService = blFactoryService.createStrategyService();
         //init all the VO value
 
         stockPoolConditionVO = new StockPoolConditionVO();
@@ -177,6 +200,7 @@ public class StockChooseController {
          */
 
         strategyType.setValue("自定义策略");
+        formativePeriod.setVisible(false);
 
         strategyType.setOnAction(event -> {
             if("均值策略".equals(strategyType.getValue())){
@@ -295,7 +319,41 @@ public class StockChooseController {
             } catch (WrongValueException e) {
                 Dialogs.showMessage(e.getErr());
             }
+
+            if(strateyChoosed){
+                strategyService.init(strategyConditionVO,stockPoolConditionVO,stockPickIndexList);
+                strategyService.calculate(traceBackVO);
+            }else{
+                strategyService.initMixed(begin,end,stockPoolConditionVO,
+                        stockPickIndexList,traceBackVO,mixedStrategyVOList);
+            }
+
+
+            BackDetailVO backDetailVO = strategyService.getBackDetailVO();
+
+
+
+            System.out.println("alpha: " + backDetailVO.alpha);
+            System.out.println("beta: " + backDetailVO.beta);
+            System.out.println("yearProfitRate: " + backDetailVO.yearProfitRate);
+            System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
+            System.out.println("sharpRate: " + backDetailVO.sharpRate);
+            System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
+
+            StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
+            System.out.println("盈利能力: " + strategyScoreVO.profitAbility);
+            System.out.println("稳定性: " + strategyScoreVO.stability);
+            System.out.println("选股能力: " + strategyScoreVO.chooseStockAbility);
+            System.out.println("绝对收益: " + strategyScoreVO.absoluteProfit);
+            System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
+            System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
+
         });
+
+
+
+
+
 
 
 
@@ -498,6 +556,8 @@ public class StockChooseController {
 
        this.stockPickIndexList = filterBlender();
 
+       getTraceBackCondition();
+
     }
 
 
@@ -658,7 +718,46 @@ public class StockChooseController {
 
 
 
-    
+    private void getTraceBackCondition()  throws  WrongValueException{
+        if(strateyChoosed){
+            String holdStr = holdingPeriod.getText();
+            if(holdStr==null||holdStr.equals("")){
+                throw new WrongValueException(holdingPeriod.getPromptText()+"不能为空");
+            }
+
+            String formationStr = formativePeriod.getText();
+            if(formationStr==null||formationStr.equals("")){
+                throw new WrongValueException(formativePeriod.getPromptText()+"不能为空");
+            }
+
+            String numStr = numOfShares.getText();
+            if(numStr==null||numStr.equals("")){
+                throw new WrongValueException(numOfShares.getPromptText()+"不能为空");
+            }
+
+            if("动量策略".equals(strategyType.getValue())){
+                this.traceBackVO = new TraceBackVO(Integer.parseInt(formationStr),Integer.parseInt(holdStr),
+                        0, Double.parseDouble(numStr));
+            }else{
+                this.traceBackVO = new TraceBackVO(Integer.parseInt(formationStr),Integer.parseInt(holdStr),
+                        Integer.parseInt(numStr));
+            }
+        }else{
+            String holdStr = holdingPeriod.getText();
+            if(holdStr==null||holdStr.equals("")){
+                throw new WrongValueException(holdingPeriod.getPromptText()+"不能为空");
+            }
+
+            String numStr = numOfShares.getText();
+            if(numStr==null||numStr.equals("")){
+                throw new WrongValueException(numOfShares.getPromptText()+"不能为空");
+            }
+
+
+            this.traceBackVO = new TraceBackVO(0,Integer.parseInt(holdStr),Integer.parseInt(numStr));
+
+        }
+    }
 
 
     /**

@@ -78,7 +78,7 @@ public class ServerRunner {
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 
 
-        StrategyService strategyService = new StrategyServiceImpl();
+        StrategyService strategyService =  StrategyServiceImpl.STRATEGY_SERVICE;
 //        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
         strategyService.initMixed( LocalDate.of(2013,1,1)
                 ,LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)

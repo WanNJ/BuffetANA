@@ -3,6 +3,7 @@ package factory;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 
 /**
@@ -27,4 +28,6 @@ public interface BlFactoryService {
     ThermometerService createThermometerService();
 
     BenchStockService createBenchStockService();
+
+    StrategyService createStrategyService();
 }

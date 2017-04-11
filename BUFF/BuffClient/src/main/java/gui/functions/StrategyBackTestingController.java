@@ -68,7 +68,7 @@ public class StrategyBackTestingController {
         viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(AccumulatedIncomeController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
-        //viewsBox.getChildren().addAll(new Flow(EstimateStrategyController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
 
     }
 }

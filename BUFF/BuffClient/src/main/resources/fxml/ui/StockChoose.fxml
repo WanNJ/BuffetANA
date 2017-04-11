@@ -70,6 +70,14 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
+                  <JFXComboBox fx:id="strategyType" maxWidth="200.0" promptText="策略类型">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="均值策略" />
+                           <String fx:value="动量策略" />
+                        </FXCollections>
+                     </items>
+                  </JFXComboBox>
                   <FlowPane fx:id="quotaPane" prefHeight="80.0" prefWidth="200.0" />
                </children>
             </VBox>
@@ -189,14 +197,6 @@
                   </Label>
                   <HBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <JFXComboBox fx:id="strategyType" maxWidth="200.0" promptText="策略类型">
-                           <items>
-                              <FXCollections fx:factory="observableArrayList">
-                                 <String fx:value="均值策略" />
-                                 <String fx:value="动量策略" />
-                              </FXCollections>
-                           </items>
-                        </JFXComboBox>
                         <JFXTextField fx:id="holdingPeriod" labelFloat="true" maxWidth="100.0" promptText="持仓期" />
                         <JFXTextField fx:id="formativePeriod" labelFloat="true" maxWidth="100.0" promptText="形成期" />
                         <JFXTextField fx:id="numOfShares" labelFloat="true" maxWidth="100.0" promptText="持股数" />

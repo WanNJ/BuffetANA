@@ -2,42 +2,42 @@
 
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox fx:id="vBox">
-         <children>
-            <Label styleClass="title-label" text="回测结果">
-               <VBox.margin>
-                  <Insets left="50.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTreeTableView fx:id="treeTableView" />
-            <Label styleClass="title-label" text="累计收益比较">
-               <VBox.margin>
-                  <Insets left="50.0" />
-               </VBox.margin></Label>
-            <LineChart fx:id="chart">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
-            <Label styleClass="title-label" text="相对收益分布">
-               <VBox.margin>
-                  <Insets left="50.0" />
-               </VBox.margin>
-            </Label>
-         </children>
-      </VBox>
-   </children>
+    <children>
+        <VBox fx:id="vBox">
+            <children>
+                <Label styleClass="title-label" text="回测结果">
+                    <VBox.margin>
+                        <Insets left="50.0" />
+                    </VBox.margin>
+                </Label>
+            <HBox alignment="BOTTOM_CENTER">
+               <children>
+                  <Label text="--" textFill="#ffac3f">
+                     <font>
+                        <Font size="80.0" />
+                     </font>
+                  </Label>
+                  <Label text="分" textFill="#ffac3f">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+                <Label styleClass="title-label" text="持仓历史">
+                    <VBox.margin>
+                        <Insets left="50.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTreeTableView fx:id="treeTableView" />
+            </children>
+        </VBox>
+    </children>
 </StackPane>

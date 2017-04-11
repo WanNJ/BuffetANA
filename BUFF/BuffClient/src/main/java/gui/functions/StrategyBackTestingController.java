@@ -66,8 +66,9 @@ public class StrategyBackTestingController {
         drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
 
         viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
-        //viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
-        viewsBox.getChildren().addAll(new Flow(EstimateStrategyController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(new Flow(AccumulatedIncomeController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
+        //viewsBox.getChildren().addAll(new Flow(EstimateStrategyController.class).createHandler(context).start());
 
     }
 }

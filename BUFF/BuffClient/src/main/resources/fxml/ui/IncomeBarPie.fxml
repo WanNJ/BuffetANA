@@ -5,40 +5,51 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
+<?import javafx.geometry.Insets?>
 <StackPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTabPane>
-         <tabs>
-            <Tab text="直方图">
-              <content>
-                <StackPane>
-                     <children>
-                        <BarChart>
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
-                     </children>
-                  </StackPane>
-              </content>
-            </Tab>
-            <Tab text="饼图">
-              <content>
-                <StackPane>
-                     <children>
-                        <PieChart />
-                     </children>
-                  </StackPane>
-              </content>
-            </Tab>
-         </tabs>
-      </JFXTabPane>
+      <VBox>
+         <children>
+             <Label styleClass="title-label" text="相对收益分布">
+                 <VBox.margin>
+                     <Insets left="50.0" />
+                 </VBox.margin>
+             </Label>
+            <JFXTabPane>
+               <tabs>
+                  <Tab text="直方图">
+                    <content>
+                      <StackPane>
+                           <children>
+                              <BarChart>
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </StackPane>
+                    </content>
+                  </Tab>
+                  <Tab text="饼图">
+                    <content>
+                      <StackPane>
+                           <children>
+                              <PieChart />
+                           </children>
+                        </StackPane>
+                    </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children>
+      </VBox>
    </children>
 </StackPane>

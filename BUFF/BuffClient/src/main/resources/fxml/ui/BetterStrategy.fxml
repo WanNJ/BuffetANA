@@ -1,78 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTabPane>
-         <tabs>
-            <Tab text="固定形成期(均线天数)">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <JFXTreeTableView fx:id="treeTableView_formativePeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
-                        <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
+      <VBox>
+         <children>
+             <Label styleClass="title-label" text="累计收益比较">
+                 <VBox.margin>
+                     <Insets left="50.0" />
+                 </VBox.margin>
+             </Label>
+            <JFXComboBox editable="true" promptText="固定的天数" />
+            <JFXTabPane>
+               <tabs>
+                  <Tab text="固定形成期(均线天数)">
+                    <content>
+                      <StackPane>
                            <children>
-                              <LineChart fx:id="excessEarnings_formativePeriod">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                              </LineChart>
-                              <LineChart fx:id="winningStrategies_formativePeriod">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                              </LineChart>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <JFXTreeTableView fx:id="treeTableView_formativePeriod" HBox.hgrow="ALWAYS" />
+                                    <VBox HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <LineChart fx:id="excessEarnings_formativePeriod" VBox.vgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                          <LineChart fx:id="winningStrategies_formativePeriod" VBox.vgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
                            </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="固定持有期(持仓天数)">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <JFXTreeTableView fx:id="treeTableView_holdingPeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
-                        <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
+                        </StackPane>
+                    </content>
+                  </Tab>
+                  <Tab text="固定持有期(持仓天数)">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <LineChart fx:id="excessEarnings_holdingPeriod">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
-                              <LineChart fx:id="winningStrategies_holdingPeriod">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
+                              <JFXTreeTableView fx:id="treeTableView_holdingPeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
+                              <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
+                                 <children>
+                                    <LineChart fx:id="excessEarnings_holdingPeriod">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis side="LEFT" />
+                                       </yAxis>
+                                    </LineChart>
+                                    <LineChart fx:id="winningStrategies_holdingPeriod">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis side="LEFT" />
+                                       </yAxis>
+                                    </LineChart>
+                                 </children>
+                              </VBox>
                            </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-         </tabs>
-      </JFXTabPane>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children>
+      </VBox>
    </children>
 </StackPane>

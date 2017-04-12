@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.DoubleConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -448,8 +449,12 @@ public enum StrategyDAOImpl implements StrategyDAO {
                         .summaryStatistics();
 
 
+
                 max = doubleSummaryStatistics.getMax();
                 min = doubleSummaryStatistics.getMin();
+
+                //doubleSummaryStatistics.andThen(t-> System.out.println(t));
+
 
 
                 pickleData.stockCodes = pickleData.stockCodes.stream().map(t->{

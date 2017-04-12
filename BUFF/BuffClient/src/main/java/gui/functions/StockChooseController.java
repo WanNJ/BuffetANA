@@ -321,6 +321,7 @@ public class StockChooseController {
                 collectCurrentData();
             } catch (WrongValueException e) {
                 Dialogs.showMessage(e.getErr());
+                return;
             }
 
             if(strateyChoosed){

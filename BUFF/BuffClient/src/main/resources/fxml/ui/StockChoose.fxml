@@ -21,6 +21,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.skins.JFXTabPaneSkin.HeaderContainer?>
+<?import com.jfoenix.skins.JFXTabPaneSkin.TabHeaderContainer?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
@@ -88,7 +90,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXTabPane fx:id="pickingConditions" prefHeight="200.0">
+                  <JFXTabPane fx:id="pickingConditions" prefHeight="200.0" >
                      <tabs>
                         <Tab text="筛选条件">
                            <content>

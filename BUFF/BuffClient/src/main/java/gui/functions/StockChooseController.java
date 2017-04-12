@@ -3,6 +3,7 @@ package gui.functions;
 import SinglePort.SingleBlService;
 import blservice.strategy.StrategyService;
 import com.jfoenix.controls.*;
+import com.jfoenix.skins.JFXTabPaneSkin;
 import exception.WrongValueException;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
@@ -132,7 +133,6 @@ public class StockChooseController {
 
     @PostConstruct
     public void init(){
-
         blFactoryService = new BLFactorySeviceOnlyImpl();
 
         strategyService = blFactoryService.createStrategyService();

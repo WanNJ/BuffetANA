@@ -42,7 +42,7 @@ public class CustomizeSpiderWebPlot extends SpiderWebPlot {
     private static final double THRESHOLD = 15;
     private static final int DEFAULT_TICKS = 5; //刻度数
     private static final double DEFAULT_MAX_VALUE = 10; //坐标最大值
-    private static final boolean DEFAULT_DRAW_RING = false; //画换默认值
+    private static final boolean DEFAULT_DRAW_RING = true; //画环默认值
     /**
      * 刻度数/环数
      */
@@ -366,7 +366,7 @@ public class CustomizeSpiderWebPlot extends SpiderWebPlot {
                     if(true){
                         g2.setPaint(paint);
 //         g2.drawString(StrUtil.obj2str(value,""), StrUtil.obj2int(point.getX() - headW), StrUtil.obj2int(point.getY() - headH));
-                        g2.drawString(value+"", (int)(point.getX() - headW), (int)(point.getY() - headH));
+                        g2.drawString((int)value+"", (int)(point.getX() - headW), (int)(point.getY() - headH));
                         g2.setStroke(outlineStroke);
                         g2.setPaint(outlinePaint);
                     }

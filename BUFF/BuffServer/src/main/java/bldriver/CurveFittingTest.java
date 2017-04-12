@@ -40,7 +40,7 @@ public class CurveFittingTest {
             System.out.println(i);
         }
 
-        NormalDistribution normal = new NormalDistribution(parameters[1], Math.sqrt(parameters[2]));
+        NormalDistribution normal = new NormalDistribution(parameters[1], parameters[2]);
         double norm  = parameters[0]/normal.density(parameters[1]);
         list.stream().forEach(t-> System.out.println(t+"   "+normal.density(t)*norm));
 

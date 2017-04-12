@@ -19,9 +19,17 @@ public class NormalStasticVO {
     public List<GuassLineVO> guessLine;
 
 
-    public NormalStasticVO( List<RangeF> normalHist , double kurtosis){
+    public NormalStasticVO( List<RangeF> normalHist , double kurtosis ){
         this.normalHist = normalHist;
         this.kurtosis = kurtosis;
+
+    }
+
+
+    public NormalStasticVO( List<RangeF> normalHist , double kurtosis ,List<GuassLineVO> guessLine){
+        this.normalHist = normalHist;
+        this.kurtosis = kurtosis;
+        this.guessLine = guessLine;
 
     }
 }

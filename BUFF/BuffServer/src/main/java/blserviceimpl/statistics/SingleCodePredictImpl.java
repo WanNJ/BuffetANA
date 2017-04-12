@@ -6,6 +6,7 @@ import dataservice.singlestock.StockDAO;
 import dataservice.strategy.StrategyDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
 import dataserviceimpl.strategy.StrategyDAOImpl;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.fitting.GaussianCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
@@ -13,6 +14,7 @@ import po.StockPO;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import util.RangeF;
+import vo.GuassLineVO;
 import vo.NormalStasticVO;
 
 import java.time.LocalDate;
@@ -27,7 +29,6 @@ import java.util.stream.Collectors;
 public enum SingleCodePredictImpl implements SingleCodePredict {
     SINGLE_CODE_PREDICT;
 
-    private StrategyDAO strategyDAO = StrategyDAOImpl.STRATEGY_DAO;
 
 
     private StockDAO stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
@@ -41,18 +42,10 @@ public enum SingleCodePredictImpl implements SingleCodePredict {
         this.stockDAO = strategyDAO;
     }
 
-    /**
-     * 外部注入 数据接口
-     * @param strategyDAO
-     */
-    public void setStrategyDAO (StrategyDAO strategyDAO){
-        this.strategyDAO = strategyDAO;
-    }
-
 
     @Override
     public NormalStasticVO getNormalStasticVO(String code) {
-        return null;
+        return caculateNormalStasticVO(code);
     }
 
     /**
@@ -96,9 +89,14 @@ public enum SingleCodePredictImpl implements SingleCodePredict {
 
         double bias = parameters[2];
 
+        NormalDistribution normal = new NormalDistribution(loc, bias);
 
+        double norm  =  peak/normal.density(loc);
 
-        return  new NormalStasticVO(rangeFList,kk);
+        List<GuassLineVO> guessLine = rangeFList.stream().map(t->new GuassLineVO(0.5*(t.small+t.big)
+                ,norm*normal.density(0.5*(t.small+t.big)))).collect(Collectors.toList());
+
+        return  new NormalStasticVO(rangeFList,kk,guessLine);
 
     }
 

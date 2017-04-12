@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
@@ -61,31 +61,33 @@
                   </Tab>
                   <Tab text="固定持有期(持仓天数)">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <StackPane>
                            <children>
-                              <JFXTreeTableView fx:id="treeTableView_holdingPeriod" layoutY="-15.0" prefHeight="400.0" prefWidth="189.0" />
-                              <VBox layoutX="188.0" layoutY="1.0" prefHeight="367.0" prefWidth="410.0">
-                                 <children>
-                                    <LineChart fx:id="excessEarnings_holdingPeriod">
-                                       <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
-                                       </xAxis>
-                                       <yAxis>
-                                          <NumberAxis side="LEFT" />
-                                       </yAxis>
-                                    </LineChart>
-                                    <LineChart fx:id="winningStrategies_holdingPeriod">
-                                       <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
-                                       </xAxis>
-                                       <yAxis>
-                                          <NumberAxis side="LEFT" />
-                                       </yAxis>
-                                    </LineChart>
-                                 </children>
-                              </VBox>
+                               <HBox alignment="CENTER">
+                                   <JFXTreeTableView fx:id="treeTableView_holdingPeriod" HBox.hgrow="ALWAYS" />
+                                   <VBox HBox.hgrow="ALWAYS">
+                                       <children>
+                                           <LineChart fx:id="excessEarnings_holdingPeriod" VBox.vgrow="ALWAYS">
+                                               <xAxis>
+                                                   <CategoryAxis side="BOTTOM" />
+                                               </xAxis>
+                                               <yAxis>
+                                                   <NumberAxis side="LEFT" />
+                                               </yAxis>
+                                           </LineChart>
+                                           <LineChart fx:id="winningStrategies_holdingPeriod" VBox.vgrow="ALWAYS">
+                                               <xAxis>
+                                                   <CategoryAxis side="BOTTOM" />
+                                               </xAxis>
+                                               <yAxis>
+                                                   <NumberAxis side="LEFT" />
+                                               </yAxis>
+                                           </LineChart>
+                                       </children>
+                                   </VBox>
+                               </HBox>
                            </children>
-                        </AnchorPane>
+                        </StackPane>
                      </content>
                   </Tab>
                </tabs>

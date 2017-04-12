@@ -6,10 +6,12 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import gui.RadarChart.MySpiderChart;
 import gui.utils.TreeTableViewUtil;
+import gui.utils.TreeTableViewValue;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +24,8 @@ import javafx.scene.layout.VBox;
 import util.StrategyScoreVO;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by wshwbluebird on 2017/3/24.
@@ -52,11 +56,10 @@ public class EstimateResultController {
         System.out.println("Bingo!");
 
         records = FXCollections.observableArrayList();
-        records.addAll(new Record());  //添加行
+        records.addAll(new Record("时间段编号","开始日期","结束日期","持仓期内的基准收益率"));  //添加行
 
-        String titles[]={};
-        StringProperty propertys[]={};
-        TreeTableViewUtil.initTreeTableView(treeTableView,records,titles,propertys);
+        String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率"};
+        TreeTableViewUtil.initTreeTableView(treeTableView,records,titles);
 
     }
 
@@ -65,14 +68,29 @@ public class EstimateResultController {
 
     }
 
-    private  class Record extends RecursiveTreeObject<Record> {
+    /**
+     * 每一行的值
+     */
+    private  class Record extends TreeTableViewValue<Record> {
         StringProperty ID;
-        StringProperty stockCode;
-        StringProperty stockName;
-        StringProperty buyDate;
-        StringProperty sellDate;
-        StringProperty buyPrice;
-        StringProperty sellPrice;
-        StringProperty earnedPercent;
+        StringProperty beginDate;
+        StringProperty endDate;
+        StringProperty baseProfitRate;
+
+        /**
+         *
+         * @param ID 时间段编号
+         * @param beginDate 开始日期
+         * @param endDate 结束日期
+         * @param baseProfitRate 持仓期内的基准收益率
+         */
+        public Record(String ID, String beginDate, String endDate, String baseProfitRate) {
+            this.ID = new SimpleStringProperty(ID);
+            this.beginDate = new SimpleStringProperty(beginDate);
+            this.endDate = new SimpleStringProperty(endDate);
+            this.baseProfitRate = new SimpleStringProperty(baseProfitRate);
+
+            values.addAll(Arrays.asList(this.ID,this.beginDate,this.endDate,this.baseProfitRate));
+        }
     }
 }

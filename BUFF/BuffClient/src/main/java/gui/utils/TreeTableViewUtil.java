@@ -9,8 +9,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by asus-a on 2017/4/12.
+ * Created by zjy on 2017/4/12.
  */
 public class TreeTableViewUtil {
 
@@ -21,24 +24,23 @@ public class TreeTableViewUtil {
      * @param list 与treeTableView绑定的ObservableList
      * @param titles 每一列的标题名
      * @param <T> 每一行的数据对象
-     * @param propertys T的属性的集合，要求和titles的内容一一对应
      */
-    public static <T extends RecursiveTreeObject<T>> void initTreeTableView(JFXTreeTableView<T> treeTableView, ObservableList<T> list, String titles[], StringProperty propertys[]){
+    public static <T extends TreeTableViewValue<T>> void initTreeTableView(JFXTreeTableView<T> treeTableView, ObservableList<T> list, String titles[]){
         final TreeItem<T> root = new RecursiveTreeItem<T>(list, RecursiveTreeObject::getChildren);
         treeTableView.setRoot(root);
 
         //创建TreeTableView的列
         for(int index=0;index<titles.length;index++){
-            setColumn(treeTableView,titles[index],propertys[index]);
+            setColumn(treeTableView,titles,index);
         }
     }
 
-    private static <T extends RecursiveTreeObject<T>> void setColumn(JFXTreeTableView<T> treeTableView, String title,StringProperty property){
-        JFXTreeTableColumn<T, String> colum=new JFXTreeTableColumn<>(title);
+    private static <T extends TreeTableViewValue<T>> void setColumn(JFXTreeTableView<T> treeTableView, String titles[],int index){
+        JFXTreeTableColumn<T, String> colum=new JFXTreeTableColumn<>(titles[index]);
         colum.setPrefWidth(100);
         //设置要显示的值
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<T, String> param) ->{
-            if(colum.validateValue(param)) return property;
+            if(colum.validateValue(param)) return param.getValue().getValue().values.get(index);
             else return colum.getComputedValue(param);
         });
 

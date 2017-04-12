@@ -37,7 +37,8 @@ public class TreeTableViewUtil {
 
     private static <T extends TreeTableViewValue<T>> void setColumn(JFXTreeTableView<T> treeTableView, String titles[],int index){
         JFXTreeTableColumn<T, String> colum=new JFXTreeTableColumn<>(titles[index]);
-        colum.setPrefWidth(100);
+        colum.setMinWidth(100);
+
         //设置要显示的值
         colum.setCellValueFactory((TreeTableColumn.CellDataFeatures<T, String> param) ->{
             if(colum.validateValue(param)) return param.getValue().getValue().values.get(index);

@@ -42,7 +42,7 @@
                         <Insets left="50.0" />
                     </VBox.margin>
                 </Label>
-                <JFXTreeTableView fx:id="treeTableView" />
+                <JFXTreeTableView fx:id="treeTableView" showRoot="false"  />
             </children>
         </VBox>
     </children>

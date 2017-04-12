@@ -1,5 +1,7 @@
 package gui.functions;
 
+import blservice.strategy.StrategyService;
+import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -24,8 +26,11 @@ import javafx.scene.layout.VBox;
 import util.StrategyScoreVO;
 
 import javax.annotation.PostConstruct;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/3/24.
@@ -36,7 +41,7 @@ public class EstimateResultController {
 
     @FXMLViewFlowContext private ViewFlowContext context;
 
-    @FXML JFXTreeTableView treeTableView; //持仓历史
+    @FXML JFXTreeTableView<Record> treeTableView; //持仓历史
     @FXML VBox vBox;
     @FXML Label scoreLabel;
 
@@ -55,11 +60,20 @@ public class EstimateResultController {
         vBox.getChildren().add(2, spiderChartScene);
         System.out.println("Bingo!");
 
+        StrategyService strategyService=new StrategyServiceImpl_Stub();
         records = FXCollections.observableArrayList();
-        records.addAll(new Record("时间段编号","开始日期","结束日期","持仓期内的基准收益率"));  //添加行
+        records.addAll(strategyService.getPickleData().stream().map(pickleData -> new Record("1",
+                pickleData.beginDate.format(DateTimeFormatter.BASIC_ISO_DATE),
+                pickleData.endDate.format(DateTimeFormatter.BASIC_ISO_DATE),
+                pickleData.baseProfitRate+""))
+                .collect(Collectors.toList()));  //添加行
 
         String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率"};
         TreeTableViewUtil.initTreeTableView(treeTableView,records,titles);
+        treeTableView.getColumns().get(0).setPrefWidth(100);
+        treeTableView.getColumns().get(1).setPrefWidth(150);
+        treeTableView.getColumns().get(2).setPrefWidth(150);
+        treeTableView.getColumns().get(3).setPrefWidth(200);
 
     }
 

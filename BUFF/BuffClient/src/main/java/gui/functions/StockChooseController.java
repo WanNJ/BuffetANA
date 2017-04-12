@@ -172,11 +172,7 @@ public class StockChooseController {
             end = to.getValue();
         });
 
-
-
         addButtons();
-
-
 
         strategyType.getItems().clear();
         strategyType.getItems().addAll("均值策略","动量策略","自定义策略");
@@ -253,22 +249,11 @@ public class StockChooseController {
                     quotaPane.getChildren().clear();;
                     quotaPane.getChildren().addAll(rankButtons);
                 }
-
-
             }
-
-
-
-
         });
 
-
-
-
-
         //设置股票池的选择
-        stockPool.getItems().addAll
-                (StockPool.All.toString(),StockPool.HS300.toString()
+        stockPool.getItems().addAll(StockPool.All.toString(),StockPool.HS300.toString()
                         ,StockPool.UserMode.toString());
 
 
@@ -332,10 +317,7 @@ public class StockChooseController {
                         stockPickIndexList,traceBackVO,mixedStrategyVOList);
             }
 
-
             BackDetailVO backDetailVO = strategyService.getBackDetailVO();
-
-
 
             System.out.println("alpha: " + backDetailVO.alpha);
             System.out.println("beta: " + backDetailVO.beta);
@@ -353,21 +335,7 @@ public class StockChooseController {
             System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
 
         });
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 
     /**
      * 添加选股指标的按钮
@@ -442,8 +410,6 @@ public class StockChooseController {
                     });
                     filterCondition.add(delete,4,row);
 
-
-
                 }else if ("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
                     rankingCondition.getRowConstraints().add(rowConstraints);
                     int row=rankingCondition.getRowConstraints().size()-1;//行坐标
@@ -464,6 +430,7 @@ public class StockChooseController {
 
 
                     JFXTextField range=new JFXTextField();
+                    range.setMaxWidth(100);
                     range.setPromptText("形成天数");
                     if(strateyChoosed){
                         range.setVisible(false);
@@ -531,8 +498,6 @@ public class StockChooseController {
 //        rankingCondition.add(hashCode4,row);
     }
 
-
-
     private void collectCurrentData() throws WrongValueException {
 
         String pool = stockPool.getValue();
@@ -553,7 +518,6 @@ public class StockChooseController {
             throw new WrongValueException("股票池没有选择");
         }
 
-
        getFilterCondition();
 
        getRankingCondition();
@@ -563,9 +527,6 @@ public class StockChooseController {
        getTraceBackCondition();
 
     }
-
-
-
 
     private void getRankingCondition() throws WrongValueException {
         if(strateyChoosed){
@@ -597,10 +558,7 @@ public class StockChooseController {
                                 +strategyConditionVO.strategyType.toString());
                     }
                 }
-
-
             }
-
         } else {
             ObservableList<Node> observableList =  rankingCondition.getChildren();
             StrategyType strategyType = null;
@@ -663,11 +621,7 @@ public class StockChooseController {
                 throw new WrongValueException(" 没有选择排名条件");
             }
         }
-
-
-
     }
-
 
     private void getFilterCondition()  throws  WrongValueException{
         ObservableList<Node> observableList =  filterCondition.getChildren();
@@ -706,21 +660,12 @@ public class StockChooseController {
                         stockPickIndexVO = new StockPickIndexVO(stockPickIndex, null, value);
                     }
                     stockPickIndexList.add(stockPickIndexVO);
-//                    System.out.println("Filter save:   "+
-//                            stockPickIndexVO.stockPickIndex.toString()+ (less? "大于":"小于")+
-//                            value);
-
 
                     js=0;
                 }
             }
-
         }
-
-
     }
-
-
 
     private void getTraceBackCondition()  throws  WrongValueException{
         if(strateyChoosed){
@@ -757,12 +702,10 @@ public class StockChooseController {
                 throw new WrongValueException(numOfShares.getPromptText()+"不能为空");
             }
 
-
             this.traceBackVO = new TraceBackVO(0,Integer.parseInt(holdStr),Integer.parseInt(numStr));
 
         }
     }
-
 
     /**
      * 根据中文名字 获得过滤股票的类型

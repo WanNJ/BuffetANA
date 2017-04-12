@@ -23,7 +23,7 @@ public class TreeTableViewUtil {
      * @param <T> 每一行的数据对象
      * @param propertys T的属性的集合，要求和titles的内容一一对应
      */
-    public  <T extends RecursiveTreeObject<T>> void initTreeTableView(JFXTreeTableView<T> treeTableView, ObservableList<T> list, String titles[], StringProperty propertys[]){
+    public static <T extends RecursiveTreeObject<T>> void initTreeTableView(JFXTreeTableView<T> treeTableView, ObservableList<T> list, String titles[], StringProperty propertys[]){
         final TreeItem<T> root = new RecursiveTreeItem<T>(list, RecursiveTreeObject::getChildren);
         treeTableView.setRoot(root);
 
@@ -33,7 +33,7 @@ public class TreeTableViewUtil {
         }
     }
 
-    private <T extends RecursiveTreeObject<T>> void setColumn(JFXTreeTableView<T> treeTableView, String title,StringProperty property){
+    private static <T extends RecursiveTreeObject<T>> void setColumn(JFXTreeTableView<T> treeTableView, String title,StringProperty property){
         JFXTreeTableColumn<T, String> colum=new JFXTreeTableColumn<>(title);
         colum.setPrefWidth(100);
         //设置要显示的值

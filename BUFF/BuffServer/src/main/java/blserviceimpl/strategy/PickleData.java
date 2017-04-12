@@ -7,7 +7,7 @@ import java.util.List;
  * Created by slow_time on 2017/3/24.
  */
 public class PickleData {
-    public LocalDate beginDate;
+    public LocalDate beginDate;//这阶段的开始日期
     public  LocalDate endDate;
     public  List<BackData> stockCodes;
 

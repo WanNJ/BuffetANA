@@ -1,5 +1,6 @@
 package blservice.strategy;
 
+import blserviceimpl.strategy.PickleData;
 import util.StrategyScoreVO;
 import vo.*;
 
@@ -124,4 +125,10 @@ public interface StrategyService {
      * @return
      */
     StrategyScoreVO getStrategyEstimateResult();
+
+    /**
+     * 获取股票历史记录
+     * @return
+     */
+    List<PickleData> getPickleData();
 }

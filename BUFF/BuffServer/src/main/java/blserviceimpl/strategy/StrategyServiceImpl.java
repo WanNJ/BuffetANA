@@ -19,7 +19,9 @@ import java.util.stream.Collectors;
  * Created by slow_time on 2017/3/24.
  */
 public enum StrategyServiceImpl implements StrategyService {
-    STRATEGY_SERVICE;
+    STRATEGY_SERVICE ;
+
+
 
     private StrategyConditionVO strategyConditionVO;
     private StockPoolConditionVO stockPoolConditionVO;
@@ -572,6 +574,13 @@ public enum StrategyServiceImpl implements StrategyService {
 
 
         return oldPickleData;
+    }
+
+
+
+    @Override
+    public List<PickleData> getPickleData() {
+        return this.pickleDatas;
     }
 
 }

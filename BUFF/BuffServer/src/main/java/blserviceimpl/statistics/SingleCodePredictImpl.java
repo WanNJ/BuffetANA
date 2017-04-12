@@ -1,70 +1,113 @@
-package bldriver;
+package blserviceimpl.statistics;
 
+import bldriver.getCountISta;
+import blservice.statistics.SingleCodePredict;
 import dataservice.singlestock.StockDAO;
+import dataservice.strategy.StrategyDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
 import dataserviceimpl.strategy.StrategyDAOImpl;
-import factroy.DAOFactoryService;
-import factroy.DAOFactoryServiceImpl;
+import org.apache.commons.math3.fitting.GaussianCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
 import po.StockPO;
 import po.StockPoolConditionPO;
 import stockenum.StockPool;
 import util.RangeF;
+import vo.NormalStasticVO;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/4/12.
  */
-public class getCountISta {
+public enum SingleCodePredictImpl implements SingleCodePredict {
+    SINGLE_CODE_PREDICT;
 
-     DAOFactoryService daoFactoryService = new DAOFactoryServiceImpl();
-
-    static int cntg = 0 ;
-    static int cntb = 0;
-
-    public static void main(String[] args){
-
-        StrategyDAOImpl strategyDAO = StrategyDAOImpl.STRATEGY_DAO;
-        List<String> codeName = strategyDAO.getStocksInPool(new StockPoolConditionPO(StockPool.All,null,null,false));
-        getCountISta sta = new getCountISta();
-        for(String str: codeName){
-            System.out.println(str);
-            sta.calK(str);
-        }
-
-        System.out.println("good:  "+cntg);
-        System.out.println("bad:  "+cntb);
+    private StrategyDAO strategyDAO = StrategyDAOImpl.STRATEGY_DAO;
 
 
+    private StockDAO stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
+
+
+    /**
+     * 外部注入数据接口
+     * @param strategyDAO
+     */
+    public void setStrategyDAO(StockDAO strategyDAO){
+        this.stockDAO = strategyDAO;
+    }
+
+    /**
+     * 外部注入 数据接口
+     * @param strategyDAO
+     */
+    public void setStrategyDAO (StrategyDAO strategyDAO){
+        this.strategyDAO = strategyDAO;
     }
 
 
-    private void calK(String code){
-        StockDAO stockDAO = StockDAOImpl.STOCK_DAO_IMPL;
+    @Override
+    public NormalStasticVO getNormalStasticVO(String code) {
+        return null;
+    }
+
+    /**
+     * 返回直接分布直方图
+     * @param code
+     * @return
+     */
+    private NormalStasticVO caculateNormalStasticVO(String code){
+
         List<StockPO> list = stockDAO.getStockInFoInRangeDate(code, LocalDate.of(2012,1,1),LocalDate.of(2014,1,1));
-        //list.forEach(t-> System.out.println(t.getDate()));
+
         List<Double>  doubleList = list.stream().filter(t->t.getVolume()>0).map(t->t.getAdjCloseIndex()).collect(Collectors.toList());
-        //doubleList.forEach(t-> System.out.println(t));
-        if(doubleList.size()<50)  return;
+
+        if(doubleList.size()<50)  return null;
+
+        //分割天数
         List<RangeF> rangeFList = getDep(doubleList,30);
         List<Double> values= rangeFList.stream().map(t->(double)t.cnt).collect(Collectors.toList());
+
+        //计算峰度
         Kurtosis kurtosis = new Kurtosis();
 
         double[]  vv = new double[values.size()];
+
         for (int i = 0 ; i < values.size() ; i++){
             vv[i] = values.get(i);
         }
+
         double kk = kurtosis.evaluate(vv);
-        System.out.println(code+"  "+  kk);
-        if(kk>= 0 ) cntg++;
-        else cntb++;
+
+        //计算拟合正太分布特征值
+        WeightedObservedPoints obs = new WeightedObservedPoints();
+
+        rangeFList.forEach(t-> obs.add((t.big+t.small)/2,t.cnt==0?t.cnt:0.1));
+
+        double[] parameters = GaussianCurveFitter.create().fit(obs.toList());
+
+        double peak =  parameters[0];
+
+        double loc = parameters[1];
+
+        double bias = parameters[2];
+
+
+
+        return  new NormalStasticVO(rangeFList,kk);
 
     }
 
-
+    /**
+     * 计算天数的分割
+     * @param doubleList
+     * @param sep
+     * @return
+     */
     private List<RangeF> getDep( List<Double>  doubleList , int sep){
         DoubleSummaryStatistics summaryStatistics = doubleList.stream().mapToDouble(t->(double)t).summaryStatistics();
         double max = summaryStatistics.getMax();
@@ -93,7 +136,6 @@ public class getCountISta {
 
         return rangeFList;
     }
-
 
 
 

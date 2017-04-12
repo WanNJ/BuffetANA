@@ -1,7 +1,13 @@
 package bldriver;
 
+import org.apache.commons.math3.analysis.integration.gauss.GaussIntegrator;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.fitting.GaussianCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
+import util.GuassY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/4/12.
@@ -23,12 +29,24 @@ public class CurveFittingTest {
         obs.add(4.08237071, 717104.0);
         obs.add(4.08366408, 620014.0);
 
+        List<Double> list = new ArrayList<>();
+        for(int i = 0 ; i <12 ; i++){
+            list.add(obs.toList().get(i).getX());
+        }
+
     double[] parameters = GaussianCurveFitter.create().fit(obs.toList());
         System.out.println(parameters.length);
         for (double i : parameters) {
             System.out.println(i);
         }
 
+        NormalDistribution normal = new NormalDistribution(parameters[1], Math.sqrt(parameters[2]));
+        double norm  = parameters[0]/normal.density(parameters[1]);
+        list.stream().forEach(t-> System.out.println(t+"   "+normal.density(t)*norm));
+
+
     }
+
+
 
 }

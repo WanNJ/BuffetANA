@@ -333,7 +333,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
      * @return 该文件内部所有的 stock code
      */
     private static List<String> readFromIndustry(String industryName, boolean excludeST) {
-        final String pref = "../Data/Industry/";
+        final String pref = "../Data/industry/";
         String pathOfFile = pref + industryName + ".csv";
 
         List<String> codelist = new ArrayList<>();

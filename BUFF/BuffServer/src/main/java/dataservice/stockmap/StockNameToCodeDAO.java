@@ -29,4 +29,11 @@ public interface StockNameToCodeDAO {
      * @return
      */
     List<StockNameAndCodePO> getSMEBoardStock();
+
+    /**
+     * 获得该行业的所有股票的名称以及代码
+     * @param industry
+     * @return
+     */
+    List<StockNameAndCodePO> getSameIndustryStocks(String industry);
 }

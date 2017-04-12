@@ -4,6 +4,7 @@ import SinglePort.SingleBlService;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.statistics.IndustryCorrelationService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 
@@ -59,6 +60,11 @@ public class BLFactorySeviceOnlyImpl implements BlFactoryService {
     @Override
     public StrategyService createStrategyService() {
         return SingleBlService.SINGLE_BL_SERVICE.getStrategyService();
+    }
+
+    @Override
+    public IndustryCorrelationService createIndustryCorrelationService() {
+        return SingleBlService.SINGLE_BL_SERVICE.getIndustryCorrelationService();
     }
 
 

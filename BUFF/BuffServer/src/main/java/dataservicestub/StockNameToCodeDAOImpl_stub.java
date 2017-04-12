@@ -32,4 +32,9 @@ public class StockNameToCodeDAOImpl_stub implements StockNameToCodeDAO {
     public List<StockNameAndCodePO> getSMEBoardStock() {
         return null;
     }
+
+    @Override
+    public List<StockNameAndCodePO> getSameIndustryStocks(String industry) {
+        return null;
+    }
 }

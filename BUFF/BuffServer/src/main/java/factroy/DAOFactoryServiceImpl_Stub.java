@@ -1,5 +1,6 @@
 package factroy;
 
+import dataservice.industry.IndustryDAO;
 import dataservice.singlestock.StockDAO;
 import dataservice.stockmap.StockNameToCodeDAO;
 import dataservice.strategy.StrategyDAO;
@@ -22,6 +23,11 @@ public class DAOFactoryServiceImpl_Stub implements DAOFactoryService {
 
     @Override
     public StrategyDAO createStrategyDAO() {
+        return null;
+    }
+
+    @Override
+    public IndustryDAO createIndustryDAO() {
         return null;
     }
 }

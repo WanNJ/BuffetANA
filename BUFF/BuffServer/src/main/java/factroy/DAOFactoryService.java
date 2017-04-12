@@ -1,5 +1,6 @@
 package factroy;
 
+import dataservice.industry.IndustryDAO;
 import dataservice.singlestock.StockDAO;
 import dataservice.stockmap.StockNameToCodeDAO;
 import dataservice.strategy.StrategyDAO;
@@ -14,4 +15,6 @@ public interface DAOFactoryService {
     StockNameToCodeDAO createStockNameToCodeDAO();
 
     StrategyDAO createStrategyDAO();
+
+    IndustryDAO createIndustryDAO();
 }

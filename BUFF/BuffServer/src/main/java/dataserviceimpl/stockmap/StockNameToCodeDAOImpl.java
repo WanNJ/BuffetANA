@@ -36,7 +36,7 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if(br != null) {
+            if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
@@ -62,6 +62,11 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
         return getByFileName(SME_BOARD_FILENAME);
     }
 
+    @Override
+    public List<StockNameAndCodePO> getSameIndustryStocks(String industry) {
+        return getByFileName("../Data/Industry/" + industry + ".csv");
+    }
+
     private List<StockNameAndCodePO> getByFileName(String fileName) {
         List<StockNameAndCodePO> nameToCode = null;
         BufferedReader br = null;
@@ -79,7 +84,7 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if(br != null) {
+            if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {

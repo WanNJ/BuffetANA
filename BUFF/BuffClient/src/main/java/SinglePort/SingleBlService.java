@@ -3,11 +3,13 @@ package SinglePort;
 import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
+import blservice.statistics.IndustryCorrelationService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 import blserviceimpl.comparison.ComparisonImpl;
 import blserviceimpl.market.MarketServiceImpl;
 import blserviceimpl.singlestock.*;
+import blserviceimpl.statistics.IndustryCorrelationServiceImpl;
 import blserviceimpl.strategy.StrategyServiceImpl;
 import blserviceimpl.thermometer.ThermometerServiceImpl;
 
@@ -55,5 +57,9 @@ public enum SingleBlService {
 
     public StrategyService getStrategyService() {
         return StrategyServiceImpl.STRATEGY_SERVICE;
+    }
+
+    public IndustryCorrelationService getIndustryCorrelationService() {
+        return IndustryCorrelationServiceImpl.INDUSTRY_CORRELATION_SERVICE;
     }
 }

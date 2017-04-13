@@ -1,11 +1,13 @@
 package blstub.strategy;
 
 import blservice.strategy.StrategyService;
+import blserviceimpl.strategy.BackData;
 import blserviceimpl.strategy.PickleData;
 import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -115,6 +117,15 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public List<PickleData> getPickleData() {
-        return Arrays.asList(new PickleData(LocalDate.now(),LocalDate.now(),null));
+        List<BackData> stockCodes=Arrays.asList(new BackData("code1",null,3.155,3.333),
+                new BackData("code2",null,3.155,3.333),
+                new BackData("code3",null,3.155,3.333),
+                new BackData("code4",null,3.155,3.333),
+                new BackData("code5",null,3.155,3.333),
+                new BackData("code6",null,3.155,3.333));
+        return Arrays.asList(new PickleData(LocalDate.now(),LocalDate.now(),stockCodes),
+                new PickleData(LocalDate.now(),LocalDate.now(),stockCodes),
+                new PickleData(LocalDate.now(),LocalDate.now(),stockCodes),
+                new PickleData(LocalDate.now(),LocalDate.now(),stockCodes));
     }
 }

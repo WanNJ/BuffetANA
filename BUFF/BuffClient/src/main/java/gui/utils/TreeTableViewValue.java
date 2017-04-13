@@ -2,6 +2,7 @@ package gui.utils;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Hyperlink;
 
 import java.util.ArrayList;
 import java.util.List;

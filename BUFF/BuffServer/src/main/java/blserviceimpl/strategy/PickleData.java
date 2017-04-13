@@ -52,4 +52,12 @@ public class PickleData {
     public void setStockCodes(List<BackData> stockCodes) {
         this.stockCodes = stockCodes;
     }
+
+    public String getStockCodes_String(){
+        String result="";
+        for(BackData backData:stockCodes){
+            result+=backData.code+"   买入价:"+String.format("%.2f",backData.firstDayOpen)+"   卖出价:"+String.format("%.2f",backData.lastDayClose)+"\n";
+        }
+        return  result;
+    }
 }

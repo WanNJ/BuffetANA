@@ -10,6 +10,11 @@ import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
 import gui.utils.CodeComplementUtil;
 import io.datafx.controller.FXMLController;
+import io.datafx.controller.flow.Flow;
+import io.datafx.controller.flow.FlowException;
+import io.datafx.controller.flow.FlowHandler;
+import io.datafx.controller.flow.context.FXMLViewFlowContext;
+import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -27,6 +32,9 @@ import java.util.List;
 public class StasticANAController {
 
 
+    @FXMLViewFlowContext
+    private ViewFlowContext context;
+
     @FXML BorderPane borderPane; //用于加载不同分析形式的 分析
     @FXML JFXTextField codeInput;  //股票代码输入
     @FXML Label codeName;  // 显示股票的名字
@@ -42,17 +50,54 @@ public class StasticANAController {
      */
     @FXML private JFXListView stockList;
 
+
+
+
+    /**
+     *画图的handler
+     */
+    private FlowHandler normHandler;
+
+    /**
+     * 存储加载线程时 生成的容器
+     * add by wsw
+     */
+    private StackPane normPane;
+
+
+
     private String code; //股票代码
 
     @PostConstruct
-    public void init(){
+    public void init() throws FlowException {
 
-        this.code = null;
         /**
          * init pop up
          */
         popup.setPopupContainer(uproot);
         uproot.getChildren().remove(popup);
+
+        stockList.getItems().clear();
+
+
+        /**
+         *  加载流控制
+         */
+
+        Flow normFlow = new Flow(NormANAController.class);
+
+        normHandler = normFlow.createHandler(context);
+
+
+        context.register("normHandler", normHandler);
+
+
+        normPane = normHandler.start();
+
+
+
+
+        this.code = null;
 
 
         codeInput.textProperty().addListener(new ChangeListener<String>() {
@@ -77,6 +122,12 @@ public class StasticANAController {
                     stockList.getItems().add(label);
                 }
             }
+        });
+
+
+        priceButton.setOnAction(event -> {
+            borderPane.getChildren().clear();
+            borderPane.centerProperty().setValue(normPane);
         });
 
 

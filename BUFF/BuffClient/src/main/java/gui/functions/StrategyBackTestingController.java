@@ -32,6 +32,7 @@ public class StrategyBackTestingController {
     @FXML private JFXDrawer drawer;
     @FXML private VBox viewsBox;
 
+
     @PostConstruct
     public void init() throws FlowException {
         // init the title hamburger icon

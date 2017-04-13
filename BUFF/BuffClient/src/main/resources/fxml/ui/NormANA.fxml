@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import component.titlelabel.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <Label text="价格频次分布统计">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox>
+               <children>
+                  <BorderPane fx:id="normHistPane" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="峰度:" textAlignment="JUSTIFY" />
+                        <Label fx:id="kurtosis" GridPane.columnIndex="1" />
+                        <Label text="可否拟合" textAlignment="JUSTIFY" GridPane.rowIndex="1" />
+                        <Label fx:id="isNorm" prefHeight="17.0" prefWidth="14.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="均值:" textAlignment="JUSTIFY" GridPane.rowIndex="2" />
+                        <Label text="Sigma:" textAlignment="JUSTIFY" GridPane.rowIndex="3" />
+                        <Label text="推荐入手:" textAlignment="JUSTIFY" GridPane.rowIndex="4" />
+                        <Label text="推荐出售:" textAlignment="JUSTIFY" GridPane.rowIndex="5" />
+                        <Label fx:id="mean" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="sigma" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="recOut" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="recIn" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

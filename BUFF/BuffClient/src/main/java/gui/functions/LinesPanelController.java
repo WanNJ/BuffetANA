@@ -6,7 +6,6 @@ package gui.functions;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXToggleButton;
-import gui.ChartController.MAChartController;
 import gui.utils.DatePickerUtil;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -16,15 +15,10 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.time.LocalDate;
 
 

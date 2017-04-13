@@ -1,5 +1,7 @@
-package gui.ChartController;
+package gui.ChartController.graphic;
 
+
+import gui.ChartController.tooltip.TooltipContentCandleStick;
 import javafx.scene.Group;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Region;
@@ -9,7 +11,7 @@ import javafx.scene.shape.Line;
 /**
  * 画出K线的candle
  */
-class Candle extends Group {
+public class Candle extends Group {
     /**
      * 从最低点到最高点
      */

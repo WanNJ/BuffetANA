@@ -1,8 +1,11 @@
-package gui.ChartController;
+package gui.ChartController.controller;
 
 import blservice.exception.DateIndexException;
 import blservice.market.MarketService;
 import blservice.singlestock.KLineService;
+import gui.ChartController.chart.KLineType;
+import gui.ChartController.chart.MarketKLineChart;
+import gui.ChartController.chart.KLineChart;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -52,7 +55,7 @@ public class KLineChartController implements Initializable {
     /**
      * 记录当前控制器要画的K线图类型
      */
-    private  KLineType  currentType;
+    private KLineType currentType;
 
     /**
      * 获取传进来的Marketservice实现

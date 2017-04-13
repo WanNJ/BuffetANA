@@ -1,24 +1,8 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
-import javafx.animation.FadeTransition;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.chart.*;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.util.Duration;
-import vo.KLineExtraVO;
-import vo.KLinePieceVO;
 import vo.MAPieceVO;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/7.

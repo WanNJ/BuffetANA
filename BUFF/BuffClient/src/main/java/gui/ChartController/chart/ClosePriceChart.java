@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
 import javafx.collections.ObservableList;
 import javafx.scene.chart.*;

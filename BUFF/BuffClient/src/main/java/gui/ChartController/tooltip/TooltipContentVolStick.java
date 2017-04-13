@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.tooltip;
 
 import com.sun.javafx.binding.StringFormatter;
 import javafx.scene.control.Label;

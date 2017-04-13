@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.tooltip;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;

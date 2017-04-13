@@ -1,5 +1,7 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
+import gui.ChartController.graphic.NormBar;
+import gui.ChartController.graphic.VolBar;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,11 +12,13 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import util.RangeF;
 import vo.*;
 
-import javax.naming.ldap.ExtendedRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -70,16 +74,16 @@ public class NormHistChart extends XYChart<String,Number> {
      */
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
-        Node volbar = createVolbar(getData().indexOf(series), item, itemIndex);
+        Node normBar = createNormbar(getData().indexOf(series), item, itemIndex);
         if (shouldAnimate()) {
-            volbar.setOpacity(0);// 设置不透明
-            getPlotChildren().add(volbar);
+            normBar.setOpacity(0);// 设置不透明
+            getPlotChildren().add(normBar);
             // fade in new candle
-            FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), normBar);
             ft.setToValue(1);
             ft.play();
         } else {
-            getPlotChildren().add(volbar);
+            getPlotChildren().add(normBar);
         }
         // always draw average line on top
         if (series.getNode() != null) {
@@ -89,21 +93,21 @@ public class NormHistChart extends XYChart<String,Number> {
 
     @Override
     protected void dataItemRemoved(Data<String, Number> item, Series<String, Number> series) {
-        final Node volbar = item.getNode();
+        final Node normBar = item.getNode();
         if (shouldAnimate()) {
             // fade out old candle
-            FadeTransition ft = new FadeTransition(Duration.millis(500), volbar);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), normBar);
             ft.setToValue(0);
             ft.setOnFinished(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    getPlotChildren().remove(volbar);
+                    getPlotChildren().remove(normBar);
                 }
             });
             ft.play();
         } else {
-            getPlotChildren().remove(volbar);
+            getPlotChildren().remove(normBar);
         }
     }
 
@@ -131,7 +135,7 @@ public class NormHistChart extends XYChart<String,Number> {
     protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
         for (int j = 0; j < series.getData().size(); j++) {
             Data item = series.getData().get(j);
-            Node volbar = createVolbar(seriesIndex, item, j);
+            Node volbar = createNormbar(seriesIndex, item, j);
             if (shouldAnimate()) {
                 volbar.setOpacity(0);
                 getPlotChildren().add(volbar);
@@ -148,21 +152,21 @@ public class NormHistChart extends XYChart<String,Number> {
     @Override
     protected void seriesRemoved(Series<String, Number> series) {
         for (XYChart.Data<String, Number> d : series.getData()) {
-            final Node volBar = d.getNode();
+            final Node normBar = d.getNode();
             if (shouldAnimate()) {
                 // fade out old candle
-                FadeTransition ft = new FadeTransition(Duration.millis(500), volBar);
+                FadeTransition ft = new FadeTransition(Duration.millis(500), normBar);
                 ft.setToValue(0);
                 ft.setOnFinished(new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        getPlotChildren().remove(volBar);
+                        getPlotChildren().remove(normBar);
                     }
                 });
                 ft.play();
             } else {
-                getPlotChildren().remove(volBar);
+                getPlotChildren().remove(normBar);
             }
         }
     }
@@ -180,6 +184,14 @@ public class NormHistChart extends XYChart<String,Number> {
             Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);
 
 
+            // 做拟合的正太分布图
+            Path seriesPath = null;
+            if (series.getNode() instanceof Path) {
+
+                seriesPath = (Path) series.getNode();
+                seriesPath.getElements().clear();
+            }
+
             //迭代  获取每一个要画的node
             while (iter.hasNext()) {
                 Data<String, Number> item = iter.next();
@@ -190,13 +202,13 @@ public class NormHistChart extends XYChart<String,Number> {
                 double y = getYAxis().getDisplayPosition(getCurrentDisplayedYValue(item));
 
                 Node itemNode = item.getNode();
-                VolExtraVO extra = (VolExtraVO) item.getExtraValue();
+                ExtraNormHistVO extra = (ExtraNormHistVO) item.getExtraValue();
 
 
                 //  实体化 自定义的组件图像
-                if (itemNode instanceof VolBar && extra != null) {
+                if (itemNode instanceof NormBar && extra != null) {
                     //System.out.println("iam a bar");
-                    VolBar volBar = (VolBar) itemNode;
+                    NormBar normBar = (NormBar) itemNode;
 
                     //System.out.println("extra:  "+extra.volume);
                     double high = getYAxis().getDisplayPosition(0);
@@ -212,11 +224,20 @@ public class NormHistChart extends XYChart<String,Number> {
                     this.candleWith = candleWidth;
 
                     // update volBar
-                    volBar.update(high - y, candleWidth, extra.openAboveClose);
+                    normBar.update(high - y, candleWidth);
                     // volBar.updateTooltip(extra.date,extra.volume,extra.changeValue,extra.changeRate);
                     // position the volBar
-                    volBar.setLayoutX(x);
-                    volBar.setLayoutY(y);
+                    normBar.setLayoutX(x);
+                    normBar.setLayoutY(y);
+                }
+
+                // 拟合正太分布折线的点在这里添加
+                if (seriesPath != null) {
+                    if (seriesPath.getElements().isEmpty()) {
+                        seriesPath.getElements().add(new MoveTo(x, getYAxis().getDisplayPosition(extra.similar)));
+                    } else {
+                        seriesPath.getElements().add(new LineTo(x, getYAxis().getDisplayPosition(extra.similar)));
+                    }
                 }
 
             }
@@ -412,16 +433,16 @@ public class NormHistChart extends XYChart<String,Number> {
     }
 
 
-    private Node createVolbar(int seriesIndex, final Data item, int itemIndex) {
-        Node volBar = item.getNode();
+    private Node createNormbar(int seriesIndex, final Data item, int itemIndex) {
+        Node normBar = item.getNode();
         // check if candle has already been created
-        if (volBar instanceof VolBar) {
-            ((VolBar) volBar).setSeriesAndDataStyleClasses("series" + seriesIndex, "data" + itemIndex);
+        if (normBar instanceof VolBar) {
+            ((NormBar) normBar).setSeriesAndDataStyleClasses("series" + seriesIndex, "data" + itemIndex);
         } else {
-            volBar = new VolBar();
-            item.setNode(volBar);
+            normBar = new NormBar();
+            item.setNode(normBar);
         }
-        return volBar;
+        return normBar;
     }
 
     public double getCandleWith(){

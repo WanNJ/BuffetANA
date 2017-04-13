@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
 /**
  * Created by wshwbluebird on 2017/3/11.

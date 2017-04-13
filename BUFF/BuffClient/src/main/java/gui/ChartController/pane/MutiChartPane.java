@@ -1,52 +1,85 @@
-package gui.ChartController;
+package gui.ChartController.pane;
 
+import gui.ChartController.chart.UpDownLineChart;
+import gui.ChartController.chart.UpDownChart;
+import gui.ChartController.tooltip.TooltipContentMutiStick;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import vo.VolExtraVO;
 
 import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/13.
  */
-public class MALinePane extends StackPane {
+public class MutiChartPane extends StackPane {
 
     private final AnchorPane detailsWindow;
 
-    private final MALineChart maLineChart;
+    private final UpDownChart upDownChart;
+
+    private final UpDownLineChart upDownLineChart;
 
     private double strokWidth = 0.3;
 
     Line xLine = new Line();
     Line yLine = new Line();
 
-    public MALinePane(MALineChart maLineChart, Double strokWidth){
+    public MutiChartPane(UpDownChart upDownChart,  UpDownLineChart upDownLineChart, Double strokWidth){
         this.detailsWindow  = new AnchorPane();
-        this.maLineChart = maLineChart;
-        getChildren().add(maLineChart);
+
+        this.upDownChart = upDownChart;
+        this.upDownLineChart = upDownLineChart;
+
+        styleBackgroundChart(this.upDownLineChart);
+        this.upDownLineChart.setAnimated(false);
+        this.upDownLineChart.setLegendVisible(false);
+        this.upDownChart.setLegendVisible(false);
+
+        this.upDownChart.getStylesheets()
+                .add(getClass().getResource("/resources/css/mutiChart.css").toExternalForm());
+        this.upDownLineChart.getStylesheets()
+                .add(getClass().getResource("/resources/css/mutiForeChart.css").toExternalForm());
+        this.upDownLineChart.setBackground(Background.EMPTY);
+        getChildren().addAll(this.upDownChart,this.upDownLineChart);
 
 
-        xLine.setStroke(Color.PINK);;
-        yLine.setStroke(Color.PINK);
+        xLine.setStroke(Color.WHITE);
+        yLine.setStroke(Color.WHITE);
 
 
         if (strokWidth != null) {
             this.strokWidth = strokWidth;
         }
 
-        bindMouseEvents(maLineChart,this.strokWidth);
+        bindMouseEvents(this.upDownLineChart,this.strokWidth);
     }
 
-    private void bindMouseEvents(MALineChart baseChart, Double strokeWidth) {
-        final MALinePane.DetailsPopup detailsPopup = new MALinePane.DetailsPopup();
+
+
+    private void styleBackgroundChart(LineChart lineChart) {
+
+        Node contentBackground = lineChart.lookup(".chart-content").lookup(".chart-plot-background");
+        contentBackground.setStyle("-fx-background-color: transparent;");
+
+        lineChart.setVerticalZeroLineVisible(false);
+        lineChart.setHorizontalZeroLineVisible(false);
+        lineChart.setVerticalGridLinesVisible(false);
+        lineChart.setHorizontalGridLinesVisible(false);
+        lineChart.setCreateSymbols(false);
+    }
+
+    private void bindMouseEvents(UpDownLineChart baseChart, Double strokeWidth) {
+        final MutiChartPane.DetailsPopup detailsPopup = new MutiChartPane.DetailsPopup();
         getChildren().add(detailsWindow);
         detailsWindow.getChildren().add(detailsPopup);
         detailsWindow.prefHeightProperty().bind(heightProperty());
@@ -106,10 +139,13 @@ public class MALinePane extends StackPane {
                 AnchorPane.setTopAnchor(detailsPopup, y-10-detailsPopup.getHeight());
             }
 
-//            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
+//            if (x + detailsPopup.getWidth() + 10 < getWidth()/2) {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
-            AnchorPane.setLeftAnchor(detailsPopup, x-10-detailsPopup.getWidth());
+            double full = upDownLineChart.getXAxis().widthProperty().doubleValue();
+            //System.out.println("full:  "+full);
+            AnchorPane.setRightAnchor(detailsPopup, full-(x+10-detailsPopup.getWidth()));
+            //}
             //}
         });
     }
@@ -129,21 +165,20 @@ public class MALinePane extends StackPane {
         public void showChartDescrpition(MouseEvent event) {
             getChildren().clear();
 
-            String xValueStr = maLineChart.getXAxis().getValueForDisplay(event.getX());
-            double realX = maLineChart.getXAxis().getDisplayPosition(xValueStr);
-            if(!isMouseNearLine(realX,event.getX(),5.0)) {
+            String xValueStr = upDownChart.getXAxis().getValueForDisplay(event.getX());
+            double realX = upDownChart.getXAxis().getDisplayPosition(xValueStr);
+            if(!isMouseNearLine(realX,event.getX(),20.0)) {
                 return ;
             }
 
-            double yValue0 = (double)getYValueForX(xValueStr,0);
-            double yValue1 = (double)getYValueForX(xValueStr,1);
-            double yValue2 = (double)getYValueForX(xValueStr,2);
-            double yValue3 = (double)getYValueForX(xValueStr,3);
+            long yValue0 = (long)getYValueForX(xValueStr,0);
+            long yValue1 = (long)getYValueForX(xValueStr,1);
 
-            TooltipMAContentStick tooltipMAContentStick = new TooltipMAContentStick();
-            tooltipMAContentStick.update(yValue0,yValue1,yValue2,yValue3);
 
-            getChildren().add(tooltipMAContentStick);
+            TooltipContentMutiStick tooltipContentMutiStick = new TooltipContentMutiStick();
+            tooltipContentMutiStick.update(xValueStr,yValue0,yValue1);
+
+            getChildren().add(tooltipContentMutiStick);
 
         }
 
@@ -156,7 +191,7 @@ public class MALinePane extends StackPane {
 
         public Object getYValueForX( String xValue,int indexI) {
             List<XYChart.Data> dataList =
-                    ((List<XYChart.Data>)((XYChart.Series)maLineChart.getData().get(indexI)).getData());
+                    ((List<XYChart.Data>)((XYChart.Series) upDownChart.getData().get(indexI)).getData());
             for (XYChart.Data data : dataList) {
                 if (data.getXValue().equals(xValue)) {
                     return data.getYValue();

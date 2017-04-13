@@ -2,21 +2,22 @@ package gui.ChartController;
 
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
+import gui.ChartController.controller.*;
 
 /**
  * Created by wshwbluebird on 2017/3/11.
  */
 public enum ChartController  {
     INSTANCE;
-    private  KLineChartController kLineChartController = null;
+    private KLineChartController kLineChartController = null;
 
     private VOLChartController volChartController  =null;
 
-    private  MAChartController maChartController = null;
+    private MAChartController maChartController = null;
 
-    private  TheVOLChartController theVOLChartController = null;
+    private TheVOLChartController theVOLChartController = null;
 
-    private  UpDownChartController upDownChartController =null;
+    private UpDownChartController upDownChartController =null;
 
     private BlFactoryService factory;
 

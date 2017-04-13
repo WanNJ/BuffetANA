@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.tooltip;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
  * @date 2016/3/24
  */
 
-class TooltipMAContentStick extends GridPane {
+public class TooltipMAContentStick extends GridPane {
     private Label MA5Value = new Label();
     private Label MA10Value = new Label();
     private Label MA30Value = new Label();

@@ -1,4 +1,4 @@
-package gui.ChartController;
+package gui.ChartController.tooltip;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -9,17 +9,17 @@ import javafx.scene.layout.GridPane;
  * @date 2016/3/24
  */
 
-class TooltipContentCandleStick extends GridPane {
+public class TooltipContentNormStick extends GridPane {
     private Label openValue = new Label();
     private Label closeValue = new Label();
     private Label highValue = new Label();
     private Label lowValue = new Label();
 
-    public TooltipContentCandleStick() {
-        Label open = new Label("开盘:");
-        Label close = new Label("收盘:");
-        Label high = new Label("最高:");
-        Label low = new Label("最低:");
+    public TooltipContentNormStick() {
+        Label open = new Label("大于:");
+        Label close = new Label("小于:");
+        Label high = new Label("实际:");
+        Label low = new Label("拟合:");
 
         open.getStyleClass().add("candlestick-tooltip-label");
         close.getStyleClass().add("candlestick-tooltip-label");
@@ -44,8 +44,13 @@ class TooltipContentCandleStick extends GridPane {
         str = Double.toString(close);
         str = str.length()>5?  str.substring(0,5):str;
         closeValue.setText(str);
+
         highValue.setText(Double.toString(high));
-        lowValue.setText(Double.toString(low));
+
+        str = Double.toString(low);
+        str = str.length()>5?  str.substring(0,5):str;
+
+        lowValue.setText(str);
     }
 }
 

@@ -1,5 +1,6 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
+import gui.ChartController.graphic.VolBar;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +12,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.util.Duration;
-import vo.KLineExtraVO;
 import vo.StockVolVO;
 import vo.VolExtraVO;
 

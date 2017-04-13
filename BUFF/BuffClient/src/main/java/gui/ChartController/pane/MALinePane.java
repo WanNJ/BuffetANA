@@ -1,5 +1,7 @@
-package gui.ChartController;
+package gui.ChartController.pane;
 
+import gui.ChartController.chart.MALineChart;
+import gui.ChartController.tooltip.TooltipMAContentStick;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
@@ -10,43 +12,42 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import vo.VolExtraVO;
 
 import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/13.
  */
-public class TheVolPane extends StackPane {
+public class MALinePane extends StackPane {
 
     private final AnchorPane detailsWindow;
 
-    private final ThemometerVolBarChart themometerVolBarChart;
+    private final MALineChart maLineChart;
 
     private double strokWidth = 0.3;
 
     Line xLine = new Line();
     Line yLine = new Line();
 
-    public TheVolPane(ThemometerVolBarChart themometerVolBarChart, Double strokWidth){
+    public MALinePane(MALineChart maLineChart, Double strokWidth){
         this.detailsWindow  = new AnchorPane();
-        this.themometerVolBarChart = themometerVolBarChart;
-        getChildren().add(themometerVolBarChart);
+        this.maLineChart = maLineChart;
+        getChildren().add(maLineChart);
 
 
-        xLine.setStroke(Color.WHITE);;
-        yLine.setStroke(Color.WHITE);
+        xLine.setStroke(Color.PINK);;
+        yLine.setStroke(Color.PINK);
 
 
         if (strokWidth != null) {
             this.strokWidth = strokWidth;
         }
 
-        bindMouseEvents(themometerVolBarChart,this.strokWidth);
+        bindMouseEvents(maLineChart,this.strokWidth);
     }
 
-    private void bindMouseEvents(ThemometerVolBarChart baseChart, Double strokeWidth) {
-        final DetailsPopup detailsPopup = new DetailsPopup();
+    private void bindMouseEvents(MALineChart baseChart, Double strokeWidth) {
+        final MALinePane.DetailsPopup detailsPopup = new MALinePane.DetailsPopup();
         getChildren().add(detailsWindow);
         detailsWindow.getChildren().add(detailsPopup);
         detailsWindow.prefHeightProperty().bind(heightProperty());
@@ -109,12 +110,9 @@ public class TheVolPane extends StackPane {
 //            if (x + detailsPopup.getWidth() + 10 < getWidth()) {
 //                AnchorPane.setLeftAnchor(detailsPopup, x+10);
 //            } else {
-            double full = themometerVolBarChart.getXAxis().widthProperty().doubleValue();
-            //System.out.println("full:  "+full);
-            AnchorPane.setRightAnchor(detailsPopup, full-(x-40-detailsPopup.getWidth()));
+            AnchorPane.setLeftAnchor(detailsPopup, x-10-detailsPopup.getWidth());
             //}
-            //}
-    });
+        });
     }
 
 
@@ -132,22 +130,21 @@ public class TheVolPane extends StackPane {
         public void showChartDescrpition(MouseEvent event) {
             getChildren().clear();
 
-            String xValueStr = themometerVolBarChart.getXAxis().getValueForDisplay(event.getX());
-            double realX = themometerVolBarChart.getXAxis().getDisplayPosition(xValueStr);
-            if(!isMouseNearLine(realX,event.getX(),themometerVolBarChart.getCandleWidth()/2)) {
+            String xValueStr = maLineChart.getXAxis().getValueForDisplay(event.getX());
+            double realX = maLineChart.getXAxis().getDisplayPosition(xValueStr);
+            if(!isMouseNearLine(realX,event.getX(),5.0)) {
                 return ;
             }
 
-            Object yValue = getYValueForX(xValueStr);
-            TooltipContentVolStick tooltipContentVolStick = new TooltipContentVolStick();
-            try {
-                VolExtraVO extra = (VolExtraVO) yValue;
-                tooltipContentVolStick.update(extra.date, extra.volume, extra.changeValue, extra.changeRate);
-                getChildren().add(tooltipContentVolStick);
-            }catch (Exception e){
+            double yValue0 = (double)getYValueForX(xValueStr,0);
+            double yValue1 = (double)getYValueForX(xValueStr,1);
+            double yValue2 = (double)getYValueForX(xValueStr,2);
+            double yValue3 = (double)getYValueForX(xValueStr,3);
 
-            }
+            TooltipMAContentStick tooltipMAContentStick = new TooltipMAContentStick();
+            tooltipMAContentStick.update(yValue0,yValue1,yValue2,yValue3);
 
+            getChildren().add(tooltipMAContentStick);
 
         }
 
@@ -158,15 +155,16 @@ public class TheVolPane extends StackPane {
             return (Math.abs(realXValue - CurXValue) < tolerance);
         }
 
-        public Object getYValueForX( String xValue) {
+        public Object getYValueForX( String xValue,int indexI) {
             List<XYChart.Data> dataList =
-                    ((List<XYChart.Data>)((XYChart.Series)themometerVolBarChart.getData().get(0)).getData());
+                    ((List<XYChart.Data>)((XYChart.Series)maLineChart.getData().get(indexI)).getData());
             for (XYChart.Data data : dataList) {
                 if (data.getXValue().equals(xValue)) {
-                    return data.getExtraValue();
+                    return data.getYValue();
                 }
             }
             return null;
         }
     }
 }
+

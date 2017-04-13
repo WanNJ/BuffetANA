@@ -1,18 +1,13 @@
 package gui.functions;
 
-import blservice.singlestock.MALineService;
-import blstub.singlestockstub.MALineServiceImpl_Stub;
-import gui.ChartController.*;
+import gui.ChartController.ChartController;
+import gui.ChartController.controller.MAChartController;
+import gui.ChartController.pane.MALinePane;
 import io.datafx.controller.FXMLController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import vo.MAPieceVO;
 
-import java.rmi.RemoteException;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/4.

@@ -1,5 +1,6 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
+import gui.ChartController.graphic.Candle;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

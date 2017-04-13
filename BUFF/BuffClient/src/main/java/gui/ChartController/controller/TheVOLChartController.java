@@ -1,12 +1,12 @@
-package gui.ChartController;
+package gui.ChartController.controller;
 
-import blservice.exception.DateIndexException;
-import blservice.market.MarketService;
-import blservice.singlestock.VolService;
+import blservice.exception.RangeException;
+import blservice.thermometer.ThermometerService;
+import gui.ChartController.chart.ThemometerVolBarChart;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import vo.KLinePieceVO;
+import util.DateRange;
 import vo.StockVolVO;
 
 import java.net.URL;
@@ -21,21 +21,16 @@ import java.util.ResourceBundle;
  * 用于画volchart的控制器
  * 不是fxml的控制器!!!!!!!!
  */
-public class VOLChartController implements Initializable {
+public class TheVOLChartController implements Initializable {
     /**
      * 动态存储图表
      */
-    public VolBarChart Chart;
+    public ThemometerVolBarChart Chart;
 
     /**
      * 动态存储传过来的 list
      */
     public ObservableList<StockVolVO> dataList;
-
-    /**
-     * 记录用户选择的股票代码
-     */
-    private String stockCode;
 
     /**
      * 记录用户选择的时间
@@ -45,17 +40,9 @@ public class VOLChartController implements Initializable {
     /**
      * 获取传进来的service实现
      */
-    private VolService volService;
+    private ThermometerService thermometerService;
 
-    /**
-     * 记录当前控制器要画的vol类型
-     */
-    private  KLineType  currentType;
 
-    /**
-     * 获取传进来的Marketservice实现
-     */
-    private MarketService marketService;
 
 
 
@@ -67,21 +54,14 @@ public class VOLChartController implements Initializable {
     /**
      * 隐藏的初始化方法
      */
-    public  VOLChartController(){
-        stockCode = "ALL";
+    public TheVOLChartController(){
+
         startDate = LocalDate.of(2014,9,1);
         endDate =   LocalDate.of(2014,9,20);
         dataList = FXCollections.observableArrayList();
         dataList.clear();
-        currentType = KLineType.Daily;
     }
 
-
-
-
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode;
-    }
 
 
 
@@ -97,54 +77,31 @@ public class VOLChartController implements Initializable {
 
 
 
-    public void setVolService(VolService volService) {
-        this.volService = volService;
+    public void setThermometerService(ThermometerService thermometerService) {
+        this.thermometerService = thermometerService;
     }
 
-    public void setMarketService(MarketService marketService){
-        this.marketService = marketService;
-    }
-
-
-    public void setCurrentType(KLineType kLineType){
-        this.currentType = kLineType;
-    }
 
 
     /**
      * 根据已经存储的值获取数据
      */
     private void getData(){
-        if(volService == null && stockCode !="ALL"){
-            System.err.println("没有VOLLineService的实现传入");
+        if(thermometerService == null){
+            System.err.println("没有thermometerService的实现传入");
             return ;
         }
         dataList.clear();
 
 
-        if(stockCode == "ALL"){
-            dataList.clear();
-            List<StockVolVO> dayList = new ArrayList<StockVolVO>();
-            try {
-
-                dayList = marketService.getMarketVol(startDate,endDate);
-            } catch (DateIndexException e) {
-                e.printStackTrace();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            dataList = getObeservableList(dayList);
-            return ;
-        }
-
         //目前不区分周和月
         //TODO  未来可能区分周和月
         List<StockVolVO> dayList = new ArrayList<StockVolVO>();
         try {
-            dayList = volService.getStockVol(stockCode,startDate,endDate);
-        } catch (DateIndexException e) {
-            e.printStackTrace();
+            dayList = thermometerService.getTradingVolume(new DateRange(startDate,endDate));
         } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (RangeException e) {
             e.printStackTrace();
         }
         dataList = getObeservableList(dayList);
@@ -169,10 +126,10 @@ public class VOLChartController implements Initializable {
 
     public void drawChat(){
         getData();
-        this.Chart = VolBarChart.createChart(this.dataList);
+        this.Chart = ThemometerVolBarChart.createChart(dataList);
     }
 
-    public VolBarChart getChart(){
+    public ThemometerVolBarChart getChart(){
         return this.Chart;
     }
 }

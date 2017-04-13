@@ -1,9 +1,8 @@
-package gui.ChartController;
+package gui.ChartController.chart;
 
 import javafx.collections.ObservableList;
 import javafx.scene.chart.*;
 import vo.LongPeiceVO;
-import vo.MAPieceVO;
 
 /**
  * Created by wshwbluebird on 2017/3/7.

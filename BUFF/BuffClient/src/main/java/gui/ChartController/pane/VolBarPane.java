@@ -1,56 +1,42 @@
-package gui.ChartController;
+package gui.ChartController.pane;
 
+import gui.ChartController.chart.VolBarChart;
+import gui.ChartController.tooltip.TooltipContentVolStick;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import vo.VolExtraVO;
 
 import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/3/13.
  */
-public class MutiChartPane extends StackPane {
+public class VolBarPane extends StackPane {
 
     private final AnchorPane detailsWindow;
 
-    private final UpDownChart upDownChart;
-
-    private final UpDownLineChart upDownLineChart;
+    private final VolBarChart volBarChart;
 
     private double strokWidth = 0.3;
 
     Line xLine = new Line();
     Line yLine = new Line();
 
-    public MutiChartPane(UpDownChart upDownChart,  UpDownLineChart upDownLineChart, Double strokWidth){
+    public VolBarPane(VolBarChart volBarChart, Double strokWidth){
         this.detailsWindow  = new AnchorPane();
-
-        this.upDownChart = upDownChart;
-        this.upDownLineChart = upDownLineChart;
-
-        styleBackgroundChart(this.upDownLineChart);
-        this.upDownLineChart.setAnimated(false);
-        this.upDownLineChart.setLegendVisible(false);
-        this.upDownChart.setLegendVisible(false);
-
-        this.upDownChart.getStylesheets()
-                .add(getClass().getResource("/resources/css/mutiChart.css").toExternalForm());
-        this.upDownLineChart.getStylesheets()
-                .add(getClass().getResource("/resources/css/mutiForeChart.css").toExternalForm());
-        this.upDownLineChart.setBackground(Background.EMPTY);
-        getChildren().addAll(this.upDownChart,this.upDownLineChart);
+        this.volBarChart = volBarChart;
+        getChildren().add(volBarChart);
 
 
-        xLine.setStroke(Color.WHITE);
+        xLine.setStroke(Color.WHITE);;
         yLine.setStroke(Color.WHITE);
 
 
@@ -58,25 +44,11 @@ public class MutiChartPane extends StackPane {
             this.strokWidth = strokWidth;
         }
 
-        bindMouseEvents(this.upDownLineChart,this.strokWidth);
+        bindMouseEvents(volBarChart,this.strokWidth);
     }
 
-
-
-    private void styleBackgroundChart(LineChart lineChart) {
-
-        Node contentBackground = lineChart.lookup(".chart-content").lookup(".chart-plot-background");
-        contentBackground.setStyle("-fx-background-color: transparent;");
-
-        lineChart.setVerticalZeroLineVisible(false);
-        lineChart.setHorizontalZeroLineVisible(false);
-        lineChart.setVerticalGridLinesVisible(false);
-        lineChart.setHorizontalGridLinesVisible(false);
-        lineChart.setCreateSymbols(false);
-    }
-
-    private void bindMouseEvents(UpDownLineChart baseChart, Double strokeWidth) {
-        final MutiChartPane.DetailsPopup detailsPopup = new MutiChartPane.DetailsPopup();
+    private void bindMouseEvents(VolBarChart baseChart, Double strokeWidth) {
+        final VolBarPane.DetailsPopup detailsPopup = new VolBarPane.DetailsPopup();
         getChildren().add(detailsWindow);
         detailsWindow.getChildren().add(detailsPopup);
         detailsWindow.prefHeightProperty().bind(heightProperty());
@@ -131,19 +103,13 @@ public class MutiChartPane extends StackPane {
             detailsPopup.showChartDescrpition(event);
 
             if (y + detailsPopup.getHeight() + 10 < getHeight()) {
-                AnchorPane.setTopAnchor(detailsPopup, y+10);
+                AnchorPane.setTopAnchor(detailsPopup, y+5);
             } else {
-                AnchorPane.setTopAnchor(detailsPopup, y-10-detailsPopup.getHeight());
+                AnchorPane.setTopAnchor(detailsPopup, y-5-detailsPopup.getHeight());
             }
-
-//            if (x + detailsPopup.getWidth() + 10 < getWidth()/2) {
-//                AnchorPane.setLeftAnchor(detailsPopup, x+10);
-//            } else {
-            double full = upDownLineChart.getXAxis().widthProperty().doubleValue();
+            double full = volBarChart.getXAxis().widthProperty().doubleValue();
             //System.out.println("full:  "+full);
-            AnchorPane.setRightAnchor(detailsPopup, full-(x+10-detailsPopup.getWidth()));
-            //}
-            //}
+            AnchorPane.setRightAnchor(detailsPopup, full-(x-20-detailsPopup.getWidth()));
         });
     }
 
@@ -162,20 +128,22 @@ public class MutiChartPane extends StackPane {
         public void showChartDescrpition(MouseEvent event) {
             getChildren().clear();
 
-            String xValueStr = upDownChart.getXAxis().getValueForDisplay(event.getX());
-            double realX = upDownChart.getXAxis().getDisplayPosition(xValueStr);
-            if(!isMouseNearLine(realX,event.getX(),20.0)) {
+            String xValueStr = volBarChart.getXAxis().getValueForDisplay(event.getX());
+            double realX = volBarChart.getXAxis().getDisplayPosition(xValueStr);
+            if(!isMouseNearLine(realX,event.getX(), volBarChart.getCandleWith()/2)) {
                 return ;
             }
 
-            long yValue0 = (long)getYValueForX(xValueStr,0);
-            long yValue1 = (long)getYValueForX(xValueStr,1);
+            Object yValue = getYValueForX(xValueStr);
+            TooltipContentVolStick tooltipContentVolStick = new TooltipContentVolStick();
+            try {
+                VolExtraVO extra = (VolExtraVO) yValue;
+                tooltipContentVolStick.update(extra.date, extra.volume, extra.changeValue, extra.changeRate);
+                getChildren().add(tooltipContentVolStick);
+            }catch (Exception e){
 
+            }
 
-            TooltipContentMutiStick tooltipContentMutiStick = new TooltipContentMutiStick();
-            tooltipContentMutiStick.update(xValueStr,yValue0,yValue1);
-
-            getChildren().add(tooltipContentMutiStick);
 
         }
 
@@ -186,16 +154,15 @@ public class MutiChartPane extends StackPane {
             return (Math.abs(realXValue - CurXValue) < tolerance);
         }
 
-        public Object getYValueForX( String xValue,int indexI) {
+        public Object getYValueForX( String xValue) {
             List<XYChart.Data> dataList =
-                    ((List<XYChart.Data>)((XYChart.Series) upDownChart.getData().get(indexI)).getData());
+                    ((List<XYChart.Data>)((XYChart.Series) volBarChart.getData().get(0)).getData());
             for (XYChart.Data data : dataList) {
                 if (data.getXValue().equals(xValue)) {
-                    return data.getYValue();
+                    return data.getExtraValue();
                 }
             }
             return null;
         }
     }
 }
-

@@ -4,6 +4,8 @@ package vo;
  * Created by slow_time on 2017/4/12.
  */
 
+import java.util.List;
+
 /**
  * 行业相关性最高的股票的代号、名称、相关性、以及可能的盈利率
  */
@@ -22,6 +24,18 @@ public class IndustryCorrelationVO {
      * 预测的盈利率
      */
     public double profitRate;
+
+    public List<Double> base;
+
+    public List<Double> compare;
+
+    public void setBase(List<Double> base) {
+        this.base = base;
+    }
+
+    public void setCompare(List<Double> compare) {
+        this.compare = compare;
+    }
 
     public IndustryCorrelationVO(String code, String name, double correlation, double profitRate) {
         this.code = code;

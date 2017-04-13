@@ -81,6 +81,10 @@ public enum IndustryCorrelationServiceImpl implements IndustryCorrelationService
                 maxCorrelation = correlation;
                 double profitRate = (test.get(0).getAdjCloseIndex() - test.get(holdingPeriod -1).getAdjCloseIndex()) / test.get(holdingPeriod -1).getAdjCloseIndex() * correlation;
                 industryCorrelationVO = new IndustryCorrelationVO(stock.getCode(), stock.getName(), correlation, profitRate);
+                Collections.reverse(baseTemp);
+                Collections.reverse(testTemp);
+                industryCorrelationVO.setBase(baseTemp.stream().map(StockPO::getAdjCloseIndex).collect(Collectors.toList()));
+                industryCorrelationVO.setCompare(testTemp.stream().map(StockPO::getAdjCloseIndex).collect(Collectors.toList()));
             }
         }
 

@@ -25,7 +25,7 @@
 
 
 .candlestick-average-line {              /*折线 */
-    -fx-stroke: #fff704;
+    -fx-stroke: red;
     -fx-stroke-width: 4px;
 }
 

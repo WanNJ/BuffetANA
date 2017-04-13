@@ -40,6 +40,12 @@ public class SideMenuController {
 	private Label StrategyBackTesting;
 
 	@FXML
+	@ActionTrigger("StasticAnalysis")
+	private Label StasticAnalysis;
+
+
+
+	@FXML
 	private JFXListView<Label> sideList;
 
 	private FlowHandler contentFlowHandler;
@@ -59,6 +65,7 @@ public class SideMenuController {
 		bindNodeToController(Comparison, ComparisonController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(Thermometer, ThermometerController.class, contentFlow, contentFlowHandler);
 		bindNodeToController(StrategyBackTesting, StrategyBackTestingController.class, contentFlow, contentFlowHandler);
+		bindNodeToController(StasticAnalysis, StasticANAController.class, contentFlow, contentFlowHandler);
 	}
 
 	private void bindNodeToController(Node node, Class<?> controllerClass, Flow flow, FlowHandler flowHandler) {

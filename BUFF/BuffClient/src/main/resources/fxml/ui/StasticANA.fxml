@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <StackPane fx:id="uproot">
+               <children>
+                  <HBox>
+                     <children>
+                        <JFXTextField fx:id="codeInput" promptText="请输入股票代码" />
+                        <Label fx:id="codeName" contentDisplay="CENTER" text="股票名称">
+                           <HBox.margin>
+                              <Insets left="40.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <JFXButton fx:id="priceButton" text="价格分布分析">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                         <JFXPopup fx:id="popup" styleClass="tool-bar-popup">
+                             <JFXListView fx:id="stockList" styleClass="option-list-view">
+                             </JFXListView>
+                         </JFXPopup>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <BorderPane fx:id="borderPane" />
+         </children>
+      </VBox>
+   </children>
+</FlowPane>

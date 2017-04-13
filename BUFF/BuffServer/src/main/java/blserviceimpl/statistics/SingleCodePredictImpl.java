@@ -1,18 +1,13 @@
 package blserviceimpl.statistics;
 
-import bldriver.getCountISta;
 import blservice.statistics.SingleCodePredict;
 import dataservice.singlestock.StockDAO;
-import dataservice.strategy.StrategyDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
-import dataserviceimpl.strategy.StrategyDAOImpl;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.fitting.GaussianCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
 import po.StockPO;
-import po.StockPoolConditionPO;
-import stockenum.StockPool;
 import util.RangeF;
 import vo.GuassLineVO;
 import vo.NormalStasticVO;

@@ -14,5 +14,6 @@
 		<Label fx:id="Comparison"> 对比 </Label>
 		<Label fx:id="Thermometer"> 市场温度计 </Label>
 		<Label fx:id="StrategyBackTesting"> 量化回测 </Label>
+		<Label fx:id="StasticAnalysis"> 统计分析 </Label>
 	</JFXListView>
 </StackPane>

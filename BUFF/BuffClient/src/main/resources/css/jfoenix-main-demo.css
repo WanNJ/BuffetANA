@@ -781,6 +781,13 @@
 * JFX Combo Box                                                                *
 *                                                                              *
 *******************************************************************************/
+.combo-box .text{
+	-fx-font-size: 20.0px;
+}
+
+.combo-box .text-field{
+	-fx-font-size: 20.0px;
+}
 
 .combo-box-popup .list-view .jfx-list-cell .label {
   	-fx-text-fill: BLACK ;
@@ -797,7 +804,7 @@
 }
 .combo-box-popup .list-view .jfx-list-cell {
 	-fx-background-insets: 0.0 ; 
-	-fx-text-fill: BLACK; 
+	-fx-text-fill: BLACK;
 }
 .combo-box-popup .list-view .jfx-list-cell:odd, 
 .combo-box-popup .list-view .jfx-list-cell:even {

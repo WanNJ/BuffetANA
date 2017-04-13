@@ -3,27 +3,70 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
-             <Label styleClass="title-label" text="累计收益比较">
+             <Label styleClass="title-label" text="超额收益率与策略胜率">
                  <VBox.margin>
                      <Insets left="50.0" />
                  </VBox.margin>
              </Label>
-            <JFXComboBox editable="true" promptText="固定的天数" />
+            <HBox alignment="CENTER" spacing="10.0">
+               <children>
+                  <Label text="固定">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <JFXComboBox editable="true" maxWidth="180.0">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="1" />
+                              <String fx:value="2" />
+                              <String fx:value="3" />
+                              <String fx:value="5" />
+                              <String fx:value="10" />
+                              <String fx:value="15" />
+                              <String fx:value="20" />
+                              <String fx:value="30" />
+                              <String fx:value="60" />
+                              <String fx:value="90" />
+                          </FXCollections>
+                      </items>
+                      <value>
+                          <String fx:value="1" />
+                      </value>
+                  </JFXComboBox>
+                  <Label text="天">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
             <JFXTabPane>
                <tabs>
                   <Tab text="固定形成期(均线天数)">

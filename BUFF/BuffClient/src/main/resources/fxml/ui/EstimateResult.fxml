@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -14,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox fx:id="vBox">
             <children>
@@ -23,18 +17,22 @@
                         <Insets left="50.0" />
                     </VBox.margin>
                 </Label>
-            <HBox alignment="BOTTOM_CENTER">
+            <HBox fx:id="hBox" alignment="CENTER">
                <children>
-                  <Label fx:id="scoreLabel" text="--" textFill="#ffac3f">
-                     <font>
-                        <Font size="80.0" />
-                     </font>
-                  </Label>
-                  <Label text="分" textFill="#ffac3f">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="110.0">
+                     <children>
+                        <Label fx:id="scoreLabel" text="--" textFill="#ffac3f">
+                           <font>
+                              <Font size="80.0" />
+                           </font>
+                        </Label>
+                        <Label text="分" textFill="#ffac3f">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
                 <Label styleClass="title-label" text="持仓历史">
@@ -42,7 +40,7 @@
                         <Insets left="50.0" />
                     </VBox.margin>
                 </Label>
-                <JFXTreeTableView fx:id="treeTableView" showRoot="false"  />
+                <JFXTreeTableView fx:id="treeTableView" showRoot="false" />
             </children>
         </VBox>
     </children>

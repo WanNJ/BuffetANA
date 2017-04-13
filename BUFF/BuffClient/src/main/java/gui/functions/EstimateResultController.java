@@ -22,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import util.StrategyScoreVO;
@@ -44,6 +45,7 @@ public class EstimateResultController {
 
     @FXML JFXTreeTableView<Record> treeTableView; //持仓历史
     @FXML VBox vBox;
+    @FXML HBox hBox;
     @FXML Label scoreLabel;
 
     private ObservableList<Record> records;//所有持仓记录列表项的集合，动态绑定JFXTreeTableView的显示
@@ -58,8 +60,9 @@ public class EstimateResultController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        spiderChartScene.setStyle("-fx-background-color: WHITE;");
         scoreLabel.setText(String.valueOf(fakeVo.strategyScore));
-        vBox.getChildren().add(2, spiderChartScene);
+        hBox.getChildren().add(spiderChartScene);
         System.out.println("Bingo!");
 
         StrategyService strategyService=new StrategyServiceImpl_Stub();
@@ -68,18 +71,22 @@ public class EstimateResultController {
                 pickleData.beginDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 pickleData.endDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 pickleData.baseProfitRate+"",
+                pickleData.getProfitPercent(),
+                pickleData.getProfit_1000(),
                 pickleData.getStockCodes_String()))
                 .collect(Collectors.toList()));  //添加行
 
-        String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率"};
+        String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率","收益率","1000元收益"};
         TreeTableViewUtil.initTreeTableView(treeTableView,records,titles);
         treeTableView.getColumns().get(0).setPrefWidth(100);
         treeTableView.getColumns().get(1).setPrefWidth(150);
         treeTableView.getColumns().get(2).setPrefWidth(150);
-        treeTableView.getColumns().get(3).setPrefWidth(250);
+        treeTableView.getColumns().get(3).setPrefWidth(200);
+        treeTableView.getColumns().get(4).setPrefWidth(100);
+        treeTableView.getColumns().get(5).setPrefWidth(100);
 
         JFXTreeTableColumn<Record, ScrollPane> stockColum = new JFXTreeTableColumn<>("持仓股票");
-        stockColum.setMinWidth(450);
+        stockColum.setMinWidth(350);
         stockColum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Record, ScrollPane> param) ->{
             if(stockColum.validateValue(param)) return new ObservableObjectValue<ScrollPane>() {
                 @Override
@@ -92,7 +99,7 @@ public class EstimateResultController {
                 public void removeListener(ChangeListener<? super ScrollPane> listener) {}
                 @Override
                 public ScrollPane getValue() {
-                    ScrollPane scrollPane = new ScrollPane(new Label(param.getValue().getValue().values.get(4).getValue()));
+                    ScrollPane scrollPane = new ScrollPane(new Label(param.getValue().getValue().values.get(6).getValue()));
                     scrollPane.setPrefHeight(100);
                     return  scrollPane;
                 }
@@ -123,6 +130,8 @@ public class EstimateResultController {
         StringProperty beginDate;
         StringProperty endDate;
         StringProperty baseProfitRate;
+        StringProperty profitPercent;
+        StringProperty profit_1000;
         StringProperty stocks;
 
         /**
@@ -131,15 +140,20 @@ public class EstimateResultController {
          * @param beginDate 开始日期
          * @param endDate 结束日期
          * @param baseProfitRate 持仓期内的基准收益率
+         * @param profitPercent 收益率
+         * @param profit_1000 1000元收益
+         * @param stocks 持仓的股票
          */
-        public Record(String ID, String beginDate, String endDate, String baseProfitRate, String stocks) {
+        public Record(String ID, String beginDate, String endDate, String baseProfitRate, String profitPercent, String profit_1000, String stocks) {
             this.ID = new SimpleStringProperty(ID);
             this.beginDate = new SimpleStringProperty(beginDate);
             this.endDate = new SimpleStringProperty(endDate);
             this.baseProfitRate = new SimpleStringProperty(baseProfitRate);
+            this.profitPercent = new SimpleStringProperty(profitPercent);
+            this.profit_1000 = new SimpleStringProperty(profit_1000);
             this.stocks = new SimpleStringProperty(stocks);
 
-            values.addAll(Arrays.asList(this.ID,this.beginDate,this.endDate,this.baseProfitRate,this.stocks));
+            values.addAll(Arrays.asList(this.ID,this.beginDate,this.endDate,this.baseProfitRate,this.profitPercent,this.profit_1000,this.stocks));
         }
     }
 }

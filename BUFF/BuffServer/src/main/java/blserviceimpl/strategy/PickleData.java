@@ -53,6 +53,10 @@ public class PickleData {
         this.stockCodes = stockCodes;
     }
 
+    /**
+     * 股票的信息
+     * @return 转换成String的股票信息
+     */
     public String getStockCodes_String(){
         String result="";
         for(BackData backData:stockCodes){
@@ -60,4 +64,35 @@ public class PickleData {
         }
         return  result;
     }
+
+    /**
+     * 获取收益率
+     * @return
+     */
+    public String getProfitPercent(){
+        return getProfit(100)+"%";
+    }
+
+    /**
+     * 获取1000元收益
+     * @return
+     */
+    public String getProfit_1000(){
+        return getProfit(1000);
+    }
+
+    private String getProfit(double principal){
+        if(stockCodes==null || stockCodes.size()==0){
+            return "/";
+        }
+
+        double profit=0;
+        double principal_each=principal/stockCodes.size();
+        for(BackData backData:stockCodes){
+            double quantity=principal_each/backData.firstDayOpen;//所得到的股票数量
+            profit+=quantity*backData.lastDayClose-principal_each;//减去本金
+        }
+        return (profit>=0?"+":"-")+String.format("%.2f",profit);
+    }
+
 }

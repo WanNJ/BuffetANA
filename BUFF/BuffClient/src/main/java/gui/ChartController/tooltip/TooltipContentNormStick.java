@@ -21,10 +21,10 @@ public class TooltipContentNormStick extends GridPane {
         Label high = new Label("实际:");
         Label low = new Label("拟合:");
 
-        open.getStyleClass().add("candlestick-tooltip-label");
-        close.getStyleClass().add("candlestick-tooltip-label");
-        high.getStyleClass().add("candlestick-tooltip-label");
-        low.getStyleClass().add("candlestick-tooltip-label");
+        open.getStyleClass().add("normHist-tooltip-label");
+        close.getStyleClass().add("normHist-tooltip-label");
+        high.getStyleClass().add("normHist-tooltip-label");
+        low.getStyleClass().add("normHist-tooltip-label");
 
         setConstraints(open, 0, 0);  //参数：Node  column row
         setConstraints(openValue, 1, 0);

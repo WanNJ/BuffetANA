@@ -33,10 +33,6 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </JFXButton>
-                         <JFXPopup fx:id="popup" styleClass="tool-bar-popup">
-                             <JFXListView fx:id="stockList" styleClass="option-list-view">
-                             </JFXListView>
-                         </JFXPopup>
                      </children>
                   </HBox>
                </children>
@@ -44,5 +40,9 @@
             <BorderPane fx:id="borderPane" />
          </children>
       </VBox>
+      <JFXPopup fx:id="popup" styleClass="tool-bar-popup">
+         <JFXListView fx:id="stockList" styleClass="option-list-view">
+         </JFXListView>
+      </JFXPopup>
    </children>
 </FlowPane>

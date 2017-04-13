@@ -2,6 +2,7 @@ package gui.ChartController;
 
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
+import gui.ChartController.chart.NormHistChart;
 import gui.ChartController.controller.*;
 
 /**
@@ -19,6 +20,8 @@ public enum ChartController  {
 
     private UpDownChartController upDownChartController =null;
 
+    private NormHistChartController normHistChartController = null;
+
     private BlFactoryService factory;
 
      ChartController(){
@@ -28,6 +31,7 @@ public enum ChartController  {
         this.volChartController = new VOLChartController();
         this.theVOLChartController = new TheVOLChartController();
         this.upDownChartController = new UpDownChartController();
+        this.normHistChartController = new NormHistChartController();
          plugServiceIn();
     }
 
@@ -68,5 +72,7 @@ public enum ChartController  {
     }
 
     public UpDownChartController getUpDownChartController() {return this.upDownChartController;}
+
+    public NormHistChartController getNormHistChartController() {return this.normHistChartController;}
 
 }

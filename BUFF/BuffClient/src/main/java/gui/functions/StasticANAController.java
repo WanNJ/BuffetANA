@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
 import gui.utils.CodeComplementUtil;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
@@ -126,8 +127,17 @@ public class StasticANAController {
 
 
         priceButton.setOnAction(event -> {
+            if(code==null || "".equals(code)){
+                Dialogs.showMessage("请输入股票的代码");
+            }
+
             borderPane.getChildren().clear();
             borderPane.centerProperty().setValue(normPane);
+
+            NormANAController normANAController =
+                    (NormANAController)normHandler.getCurrentView().getViewContext().getController();
+            normANAController.setCode(code);
+
         });
 
 
@@ -139,6 +149,7 @@ public class StasticANAController {
         String[] sep = str.split("\\(");
         String temp = sep[0];
         codeInput.setText(sep[0]);
+        this.code = sep[0];
         int len = sep[1].length()-1;
         codeName.setText(sep[1].substring(0,len));
 

@@ -147,6 +147,11 @@ public class NormHistChart extends XYChart<String,Number> {
                 getPlotChildren().add(volbar);
             }
         }
+
+        Path seriesPath = new Path();
+        seriesPath.getStyleClass().setAll("candlestick-average-line", "series" + seriesIndex);
+        series.setNode(seriesPath);
+        getPlotChildren().add(seriesPath);
     }
 
     @Override
@@ -311,7 +316,7 @@ public class NormHistChart extends XYChart<String,Number> {
 
 
         //  参考学长的代码 计算间距
-        double gap=(max-min)/10;
+        double gap=0;
         double HpixelPerValue=20;
         //X轴
         final CategoryAxis xAxis = new CategoryAxis ();
@@ -320,8 +325,8 @@ public class NormHistChart extends XYChart<String,Number> {
         // 初始化K线图
         final NormHistChart normHistChart= new NormHistChart(xAxis,yAxis);
 
-        xAxis.setLabel("Day");
-        yAxis.setLabel("VOL");
+        xAxis.setLabel("Price");
+        yAxis.setLabel("Times");
 
         // 加载传过来的数据序列
         XYChart.Series<String,Number> series = new XYChart.Series<String,Number>();

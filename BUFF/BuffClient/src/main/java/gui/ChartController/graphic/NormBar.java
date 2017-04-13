@@ -57,7 +57,7 @@ public class NormBar extends Group {
      * TODO
      */
     private void updateStyleClasses_Eastern(){
-        getStyleClass().setAll("volestick-vol");
-        bar.getStyleClass().setAll("volstick-bar"+".close-above-open");
+        getStyleClass().setAll("normHist-bar");
+        bar.getStyleClass().setAll("normHist-bar","open-above-close");
     }
 }

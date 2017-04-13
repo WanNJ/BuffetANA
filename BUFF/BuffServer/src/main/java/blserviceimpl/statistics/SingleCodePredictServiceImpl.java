@@ -1,6 +1,6 @@
 package blserviceimpl.statistics;
 
-import blservice.statistics.SingleCodePredict;
+import blservice.statistics.SingleCodePredictService;
 import dataservice.singlestock.StockDAO;
 import dataserviceimpl.singlestock.StockDAOImpl;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by wshwbluebird on 2017/4/12.
  */
-public enum SingleCodePredictImpl implements SingleCodePredict {
+public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
     SINGLE_CODE_PREDICT;
 
 
@@ -74,7 +74,7 @@ public enum SingleCodePredictImpl implements SingleCodePredict {
         //计算拟合正太分布特征值
         WeightedObservedPoints obs = new WeightedObservedPoints();
 
-        rangeFList.forEach(t-> obs.add((t.big+t.small)/2,t.cnt==0?t.cnt:0.1));
+        rangeFList.forEach(t-> obs.add((t.big+t.small)/2,t.cnt==0?0.1:t.cnt));
 
         double[] parameters = GaussianCurveFitter.create().fit(obs.toList());
 
@@ -83,6 +83,8 @@ public enum SingleCodePredictImpl implements SingleCodePredict {
         double loc = parameters[1];
 
         double bias = parameters[2];
+
+        System.out.println("loc:  "+loc);
 
         NormalDistribution normal = new NormalDistribution(loc, bias);
 

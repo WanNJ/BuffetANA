@@ -72,12 +72,20 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public List<BetterTableVO> getBetterTableVOByFormation(int formationPeriod) {
-        return null;
+        return Arrays.asList(new BetterTableVO(2,0.8,58),
+                new BetterTableVO(4,2.9,65),
+                new BetterTableVO(6,3.0,65),
+                new BetterTableVO(8,2.7,58),
+                new BetterTableVO(10,2.5,60));
     }
 
     @Override
     public List<BetterTableVO> getBetterTableVOByHolding(int holdingPeriod) {
-        return null;
+        return Arrays.asList(new BetterTableVO(2,0.8,58),
+                new BetterTableVO(4,2.9,65),
+                new BetterTableVO(6,3.0,65),
+                new BetterTableVO(8,2.7,58),
+                new BetterTableVO(10,2.5,60));
     }
 
     @Override

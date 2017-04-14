@@ -8,7 +8,7 @@
 
 .side-menu{
 	-fx-padding: 20.0,10.0;
-	-fx-font-size: 15.0;
+	-fx-font-size: 20.0;
 	-fx-font-weight: NORMAL;
 	-fx-text-fill: #444;
 }
@@ -50,7 +50,7 @@
 .dialog-trigger{
 	-fx-background-color: WHITE;
 	-fx-button-type:RAISED;
-	-fx-font-size: 14.0px;
+	-fx-font-size: 20.0px;
 }
 
 .jfx-dialog-layout {
@@ -65,7 +65,7 @@
 }
 
 .jfx-layout-body .label {
-	-fx-font-size: 14.0px;
+	/*-fx-font-size: 24.0px;*/
 	-fx-pref-width: 400.0px;
 	-fx-wrap-text: true;
 }
@@ -374,7 +374,7 @@
 
 .custom-jfx-button-green {
 	-fx-pref-width: 120.0;
-	-fx-font-size: 21px;
+	-fx-font-size: 20px;
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(33,221,49);
 	-fx-text-fill: WHITE;

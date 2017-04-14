@@ -14,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import jdk.nashorn.internal.runtime.options.Option;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
@@ -51,7 +53,7 @@ public class StockChooseController {
 
     @FXML private StackPane root;
     @FXML private JFXComboBox<String> stockPool;//股票池
-    @FXML private JFXComboBox<String> plate;//板块
+    @FXML private JFXButton plate;//板块
     @FXML private JFXComboBox<String> industry;//行业
     @FXML private JFXCheckBox ST;//是否排除ST
     @FXML private JFXDatePicker from;//开始日期
@@ -69,6 +71,9 @@ public class StockChooseController {
     @FXML private JFXDialog stockDialog;//显示股票池的Dialog
     @FXML private Label stocks;//显示股票池的Label
     @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
+    @FXML private JFXDialog plateDialog;//显示板块选择的Dialog
+    @FXML private JFXListView unselectedList;//用户未选择的板块的ListView
+    @FXML private JFXListView selectedList;//用户已选择的板块的ListView,用getItem方法能获得用户选择的所有板块
 
 
     private StrategyService strategyService;
@@ -138,6 +143,7 @@ public class StockChooseController {
 
         //初始化界面用到的各种控件
         acceptButton.setOnAction(e->stockDialog.close());
+        initPlate();
         from.setDialogParent(root);
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
@@ -149,6 +155,7 @@ public class StockChooseController {
         to.setValue(LocalDate.of(2014,1,1));
 
         addButtons();//增加排名条件和筛选条件的Button
+
 
         /**
          * add by wsw
@@ -253,15 +260,14 @@ public class StockChooseController {
             stocks.setText("stock1\nstock2\n");
             stockDialog.show(root);
 
+            unselectedList.getItems().clear();
             if("全部".equals(stockPool.getValue())){
-                plate.getItems().clear();
                 industry.getItems().clear();
-                plate.getItems().add("无");
+                unselectedList.getItems().add("无");
                 industry.getItems().add("无");
             }else if("沪深300".equals(stockPool.getValue())){
-                plate.getItems().clear();
                 industry.getItems().clear();
-                plate.getItems().add("无");
+                unselectedList.getItems().add("无");
                 industry.getItems().add("无");
             }else{
                 //TODO  用户自定义模式   现在不知道 多选怎么实现
@@ -307,6 +313,41 @@ public class StockChooseController {
             System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
             System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
 
+        });
+    }
+
+    /**
+     * 初始化板块选择的Dialog
+     */
+    private void initPlate(){
+        plate.setOnAction(event -> plateDialog.show(root));
+
+        //为板块选择的Dialog的ListView添加双击添加选择板块的监听
+        unselectedList.setCellFactory(listView->{
+            JFXListCell listCell=new JFXListCell<>();
+            listCell.setOnMouseClicked(event -> {
+                synchronized (this){
+                    Object selectedItem=unselectedList.getSelectionModel().getSelectedItem();
+                    if(event.getClickCount()==2 && null!=selectedItem){
+                        unselectedList.getItems().remove(selectedItem);
+                        selectedList.getItems().add(selectedItem);
+                    }
+                }
+            });
+            return listCell;
+        });
+        selectedList.setCellFactory(listView->{
+            JFXListCell listCell=new JFXListCell<>();
+            listCell.setOnMouseClicked(event -> {
+                synchronized (this){
+                    Object selectedItem=selectedList.getSelectionModel().getSelectedItem();
+                    if(event.getClickCount()==2 && null!=selectedItem){
+                        selectedList.getItems().remove(selectedItem);
+                        unselectedList.getItems().add(selectedItem);
+                    }
+                }
+            });
+            return listCell;
         });
     }
 

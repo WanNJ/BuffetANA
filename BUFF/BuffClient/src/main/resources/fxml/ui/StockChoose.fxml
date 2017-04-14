@@ -23,6 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXListView?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
@@ -47,7 +48,11 @@
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
                         <JFXComboBox fx:id="stockPool" maxWidth="200.0" promptText="股票池" />
-                        <JFXComboBox fx:id="plate" maxWidth="200.0" promptText="板块" />
+                        <JFXButton fx:id="plate" minWidth="110.0" text="选择板块">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </JFXButton>
                         <JFXComboBox fx:id="industry" maxWidth="200.0" promptText="行业" />
                         <JFXCheckBox fx:id="ST" text="排除ST">
                            <font>
@@ -234,6 +239,34 @@
                   </font>
                </JFXButton>
             </actions>
+         </JFXDialogLayout>
+      </JFXDialog>
+
+      <JFXDialog fx:id="plateDialog" transitionType="CENTER">
+         <JFXDialogLayout>
+            <body>
+               <VBox>
+                  <HBox>
+                     <VBox alignment="CENTER">
+                        <Label text="未选板块" maxWidth="80" textFill="BLUE">
+                           <font>
+                              <Font size="20"/>
+                           </font>
+                        </Label>
+                        <JFXListView fx:id="unselectedList" prefWidth="200" prefHeight="300" style="-fx-border-color: #ff9936"/>
+                     </VBox>
+                     <VBox alignment="CENTER">
+                        <Label text="已选板块" maxWidth="80" textFill="GREEN">
+                           <font>
+                              <Font size="20"/>
+                           </font>
+                        </Label>
+                        <JFXListView fx:id="selectedList" prefWidth="200" prefHeight="300" style="-fx-border-color: #ff9936"/>
+                     </VBox>
+                  </HBox>
+                  <Label>双击可添加选择的板块</Label>
+               </VBox>
+            </body>
          </JFXDialogLayout>
       </JFXDialog>
    </children>

@@ -228,7 +228,10 @@
                <Label fx:id="stocks" />
             </body>
             <actions>
-               <JFXButton fx:id="acceptButton" styleClass="dialog-accept" text="确定">ACCEPT
+               <JFXButton fx:id="acceptButton" styleClass="dialog-accept" text="确定">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
                </JFXButton>
             </actions>
          </JFXDialogLayout>

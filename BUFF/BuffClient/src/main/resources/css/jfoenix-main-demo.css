@@ -77,7 +77,7 @@
 .dialog-accept{
 	-fx-text-fill: #03A9F4;
 	-fx-font-weight: BOLD; 	
-	-fx-padding: 0.7em 0.8em;
+	-fx-font-size: 24.0px;
 }
 
 /*******************************************************************************

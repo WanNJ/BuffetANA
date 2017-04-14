@@ -16,10 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -39,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -70,6 +68,7 @@ public class StockChooseController {
     @FXML private JFXButton save;//保存策略
     @FXML private JFXDialog stockDialog;//显示股票池的Dialog
     @FXML private Label stocks;//显示股票池的Label
+    @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
 
 
     private StrategyService strategyService;
@@ -138,6 +137,7 @@ public class StockChooseController {
         stockPickIndexList = new ArrayList<>();
 
         //初始化界面用到的各种控件
+        acceptButton.setOnAction(e->stockDialog.close());
         from.setDialogParent(root);
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
@@ -195,7 +195,7 @@ public class StockChooseController {
                 });
 
                 if("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
-                    quotaPane.getChildren().clear();;
+                    quotaPane.getChildren().clear();
                 }
                 chooseStrategy(StrategyType.MA.toString());
 
@@ -250,6 +250,9 @@ public class StockChooseController {
          * 股票池选择的监听
          */
         stockPool.setOnAction(event -> {
+            stocks.setText("stock1\nstock2\n");
+            stockDialog.show(root);
+
             if("全部".equals(stockPool.getValue())){
                 plate.getItems().clear();
                 industry.getItems().clear();
@@ -320,17 +323,19 @@ public class StockChooseController {
 
         //加载标签
         for (StockPickIndex stockPickIndex : StockPickIndex.values()){
-            filterButtons[stockPickIndex.ordinal()] = new JFXButton(stockPickIndex.toString());
+            JFXButton button=new JFXButton(stockPickIndex.toString());
+            filterButtons[stockPickIndex.ordinal()] = button;
+            button.setFont(Font.font(25));
+            setButtonListener(button);//设置监听
         }
         for (StrategyType strategyType : StrategyType.values()){
-            rankButtons[strategyType.ordinal()] = new JFXButton(strategyType.toString());
+            JFXButton button=new JFXButton(strategyType.toString());
+            rankButtons[strategyType.ordinal()] = button;
+            button.setFont(Font.font(25));
+            setButtonListener(button);//设置监听
         }
 
-        //设置监听
-        setButtonListener(filterButtons);
-        setButtonListener(rankButtons);
-
-        quotaPane.getChildren().addAll(filterButtons);;
+        quotaPane.getChildren().addAll(filterButtons);
 
     }
 
@@ -339,57 +344,56 @@ public class StockChooseController {
      * add by wsw
      * 将添加的button的代码进行复用
      */
-    private void setButtonListener(JFXButton[]  buttons){
-        for(JFXButton button:buttons){
-            button.setOnAction(event -> {
-                //添加行
-                RowConstraints rowConstraints=new RowConstraints();
-                rowConstraints.setValignment(VPos.CENTER);
+    private void setButtonListener(JFXButton  button){
+        button.setOnAction(event -> {
+            //添加行
+            RowConstraints rowConstraints=new RowConstraints();
+            rowConstraints.setValignment(VPos.CENTER);
 
-                //添加指标名称Label
-                Label conditionName=new Label(button.getText());
-                conditionName.setFont(Font.font(20));
+            //添加指标名称Label
+            Label conditionName=new Label(button.getText());
+            conditionName.setFont(Font.font(20));
 
-                //添加删除按钮
-                JFXButton delete=new JFXButton("");
-                ImageView imageView=new ImageView(new Image("/resources/images/delete.png"));
-                imageView.setFitHeight(20);
-                imageView.setFitWidth(20);
-                delete.setGraphic(imageView);
+            //添加删除按钮
+            JFXButton delete=new JFXButton("");
+            ImageView imageView=new ImageView(new Image("/resources/images/delete.png"));
+            imageView.setFitHeight(20);
+            imageView.setFitWidth(20);
+            delete.setGraphic(imageView);
 
-                if("筛选条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
-                    filterCondition.getRowConstraints().add(rowConstraints);
-                    int row=filterCondition.getRowConstraints().size()-1;//行坐标
+            if("筛选条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
+                filterCondition.getRowConstraints().add(rowConstraints);
+                int row=filterCondition.getRowConstraints().size()-1;//行坐标
 
-                    filterCondition.add(conditionName,0,row);
+                filterCondition.add(conditionName,0,row);
 
-                    //添加比较符ComboBox和值TextField
-                    JFXComboBox comparisonCharacter=new JFXComboBox();
-                    comparisonCharacter.setValue("小于");
-                    comparisonCharacter.getItems().addAll("小于","大于");
-                    comparisonCharacter.setMaxWidth(100);
-                    JFXTextField value=new JFXTextField("250");
-                    value.setMaxWidth(100);
-                    filterCondition.add(comparisonCharacter,1,row);
-                    filterCondition.add(value,3,row);
+                //添加比较符ComboBox和值TextField
+                JFXComboBox comparisonCharacter=new JFXComboBox();
+                comparisonCharacter.setValue("小于");
+                comparisonCharacter.getItems().addAll("小于","大于");
+                comparisonCharacter.setMaxWidth(100);
+                JFXTextField value=new JFXTextField("250");
+                value.setMaxWidth(100);
+                filterCondition.add(comparisonCharacter,1,row);
+                filterCondition.add(value,3,row);
 
-                    delete.setOnAction(event1 -> {
-                        filterCondition.getRowConstraints().remove(rowConstraints);
-                        filterCondition.getChildren().removeAll(conditionName,comparisonCharacter,value,delete);
-                    });
-                    filterCondition.add(delete,4,row);
+                delete.setOnAction(event1 -> {
+                    filterCondition.getRowConstraints().remove(rowConstraints);
+                    filterCondition.getChildren().removeAll(conditionName,comparisonCharacter,value,delete);
+                });
+                filterCondition.add(delete,4,row);
 
-                }else if ("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
-                    rankingCondition.getRowConstraints().add(rowConstraints);
-                    int row=rankingCondition.getRowConstraints().size()-1;//行坐标
+            }else if ("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())){
+                rankingCondition.getRowConstraints().add(rowConstraints);
+                int row=rankingCondition.getRowConstraints().size()-1;//行坐标
 
-                    rankingCondition.add(conditionName,0,row);
+                rankingCondition.add(conditionName,0,row);
 
-                    //添加次序ComboBox、范围ComboBox和权重TextField
-                    JFXComboBox order=new JFXComboBox();
-                    order.setValue("从小到大");
-                    order.getItems().addAll("从小到大","从大到小");
-                    order.setMaxWidth(130);
+                //添加次序ComboBox、范围ComboBox和权重TextField
+                JFXComboBox order=new JFXComboBox();
+                order.setValue("从小到大");
+                order.getItems().addAll("从小到大","从大到小");
+                order.setMaxWidth(130);
 
 
 //                    JFXComboBox range=new JFXComboBox();
@@ -398,36 +402,35 @@ public class StockChooseController {
 //                    range.setMaxWidth(100);
 
 
-                    JFXTextField range=new JFXTextField();
-                    range.setMaxWidth(100);
-                    range.setPromptText("形成天数");
-                    if(strateyChoosed){
-                        range.setVisible(false);
-                    }
-
-                    JFXTextField weight=new JFXTextField();
-                    if(strateyChoosed){
-                        weight.setPromptText("1");
-                        weight.editableProperty().set(false);
-                    }else{
-                        weight.setPromptText("权重");
-                    }
-
-                    weight.setMaxWidth(100);
-                    rankingCondition.add(order,1,row);
-                    rankingCondition.add(range,2,row);
-                    rankingCondition.add(weight,3,row);
-
-                    delete.setOnAction(event1 -> {
-                        rankingCondition.getRowConstraints().remove(rowConstraints);
-                        rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
-                    });
-                    rankingCondition.add(delete,4,row);
-
-
+                JFXTextField range=new JFXTextField();
+                range.setMaxWidth(100);
+                range.setPromptText("形成天数");
+                if(strateyChoosed){
+                    range.setVisible(false);
                 }
-            });
-        }
+
+                JFXTextField weight=new JFXTextField();
+                if(strateyChoosed){
+                    weight.setPromptText("1");
+                    weight.editableProperty().set(false);
+                }else{
+                    weight.setPromptText("权重");
+                }
+
+                weight.setMaxWidth(100);
+                rankingCondition.add(order,1,row);
+                rankingCondition.add(range,2,row);
+                rankingCondition.add(weight,3,row);
+
+                delete.setOnAction(event1 -> {
+                    rankingCondition.getRowConstraints().remove(rowConstraints);
+                    rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
+                });
+                rankingCondition.add(delete,4,row);
+
+
+            }
+        });
     }
 
 

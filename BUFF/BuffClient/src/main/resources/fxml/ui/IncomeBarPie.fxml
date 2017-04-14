@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
@@ -11,22 +18,25 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
-             <Label styleClass="title-label" text="相对收益分布">
+             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="365.0" styleClass="title-label" text="相对收益分布">
                  <VBox.margin>
                      <Insets left="50.0" />
                  </VBox.margin>
+               <font>
+                  <Font size="29.0" />
+               </font>
              </Label>
             <JFXTabPane>
                <tabs>
                   <Tab text="直方图">
                     <content>
-                      <StackPane>
+                      <StackPane fx:id="barChartPane">
                            <children>
-                              <BarChart>
+                              <BarChart fx:id="barChart">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -40,9 +50,9 @@
                   </Tab>
                   <Tab text="饼图">
                     <content>
-                      <StackPane>
+                      <StackPane fx:id="peiChartPane">
                            <children>
-                              <PieChart />
+                              <PieChart fx:id="pieChart" />
                            </children>
                         </StackPane>
                     </content>

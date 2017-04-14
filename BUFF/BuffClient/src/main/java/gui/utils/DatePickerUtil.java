@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
  */
 public class DatePickerUtil {
     private static final LocalDate lastDate = LocalDate.of(2014, 4, 29);
+    private static final LocalDate firstDate = LocalDate.of(2012, 1, 1);
 
     /**
      * 初始化日期选择器，使得结束日期一定在开始日期之后，且提示时间段的天数
@@ -33,7 +34,8 @@ public class DatePickerUtil {
                     @Override
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item.isBefore(from.getValue()) || item.isAfter(lastDate)) {//如果结束日期在开始日期前或者晚于最晚日期
+                        //如果结束日期在开始日期前，或者晚于最晚日期
+                        if (item.isBefore(from.getValue()) || item.isAfter(lastDate)) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
@@ -51,7 +53,8 @@ public class DatePickerUtil {
                     @Override
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item.isAfter(lastDate)) {//如果开始日期晚于今天
+                        //如果开始日期晚于今天，或者早于最早日期
+                        if (item.isAfter(lastDate) ||item.isBefore(firstDate)) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }

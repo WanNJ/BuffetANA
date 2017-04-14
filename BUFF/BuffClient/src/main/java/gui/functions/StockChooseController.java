@@ -68,6 +68,8 @@ public class StockChooseController {
     @FXML private JFXTextField numOfShares;//持股数（持股比例）
     @FXML private JFXButton start;//开始回测
     @FXML private JFXButton save;//保存策略
+    @FXML private JFXDialog stockDialog;//显示股票池的Dialog
+    @FXML private Label stocks;//显示股票池的Label
 
 
     private StrategyService strategyService;
@@ -106,20 +108,15 @@ public class StockChooseController {
      */
     public static boolean strateyChoosed;
 
-
-
-
-
-
     //记录股票池的选择信息
     private StockPoolConditionVO stockPoolConditionVO;
 
 
-    //记录回测的开始日期
-    private LocalDate begin;
+    //记录回测的开始日期    zjy 删
+    //private LocalDate begin;
 
-    // 记录回测的结束日期
-    private  LocalDate end;
+    // 记录回测的结束日期   zjy 删
+    //private  LocalDate end;
 
     private  List<MixedStrategyVO> mixedStrategyVOList;
 
@@ -134,16 +131,11 @@ public class StockChooseController {
     @PostConstruct
     public void init(){
         blFactoryService = new BLFactorySeviceOnlyImpl();
-
         strategyService = blFactoryService.createStrategyService();
         //init all the VO value
-
         stockPoolConditionVO = new StockPoolConditionVO();
-
         mixedStrategyVOList = new ArrayList<>();
-
         stockPickIndexList = new ArrayList<>();
-
 
         //初始化界面用到的各种控件
         from.setDialogParent(root);
@@ -152,31 +144,11 @@ public class StockChooseController {
         DatePickerUtil.initDatePicker(from,to);
         strateyChoosed = false;
 
-
+        //设置日期选择器的默认时间
         from.setValue(LocalDate.of(2013,1,1));
         to.setValue(LocalDate.of(2014,1,1));
 
-        begin = LocalDate.of(2013,1,1);
-        end = LocalDate.of(2014,1,1);
-
-
-        //获取日期
-        from.setOnAction(event -> {
-            if(from.getValue().isBefore(LocalDate.of(2012,1,1))){
-                Dialogs.showMessage("回测时间不支持", "起始时间不支持早于2012年");
-            }
-            begin = from.getValue();
-        });
-
-        to.setOnAction(event -> {
-            end = to.getValue();
-        });
-
-        addButtons();
-
-        strategyType.getItems().clear();
-        strategyType.getItems().addAll("均值策略","动量策略","自定义策略");
-
+        addButtons();//增加排名条件和筛选条件的Button
 
         /**
          * add by wsw
@@ -256,8 +228,6 @@ public class StockChooseController {
         stockPool.getItems().addAll(StockPool.All.toString(),StockPool.HS300.toString()
                         ,StockPool.UserMode.toString());
 
-
-
         //设置切换 tabpane监听
         pickingConditions.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Tab>() {
@@ -313,7 +283,7 @@ public class StockChooseController {
                 strategyService.init(strategyConditionVO,stockPoolConditionVO,stockPickIndexList);
                 strategyService.calculate(traceBackVO);
             }else{
-                strategyService.initMixed(begin,end,stockPoolConditionVO,
+                strategyService.initMixed(from.getValue(),to.getValue(),stockPoolConditionVO,
                         stockPickIndexList,traceBackVO,mixedStrategyVOList);
             }
 
@@ -359,7 +329,6 @@ public class StockChooseController {
         //设置监听
         setButtonListener(filterButtons);
         setButtonListener(rankButtons);
-
 
         quotaPane.getChildren().addAll(filterButtons);;
 
@@ -553,7 +522,7 @@ public class StockChooseController {
                         js++;
 
                         strategyConditionVO  = new StrategyConditionVO
-                                (strategyType,begin,end, asc);
+                                (strategyType,from.getValue(),to.getValue(), asc);
                         System.out.println("Ranking save:   "
                                 +strategyConditionVO.strategyType.toString());
                     }

@@ -21,8 +21,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.skins.JFXTabPaneSkin.HeaderContainer?>
-<?import com.jfoenix.skins.JFXTabPaneSkin.TabHeaderContainer?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
@@ -77,6 +77,7 @@
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="均值策略" />
                            <String fx:value="动量策略" />
+                           <String fx:value="自定义策略" />
                         </FXCollections>
                      </items>
                   </JFXComboBox>
@@ -217,5 +218,20 @@
             </HBox>
          </children>
       </GridPane>
+
+      <JFXDialog fx:id="stockDialog" transitionType="CENTER">
+         <JFXDialogLayout>
+            <heading>
+               <Label>股票池</Label>
+            </heading>
+            <body>
+               <Label fx:id="stocks"/>
+            </body>
+            <actions>
+               <JFXButton fx:id="acceptButton" text="确定" styleClass="dialog-accept">ACCEPT
+               </JFXButton>
+            </actions>
+         </JFXDialogLayout>
+      </JFXDialog>
    </children>
 </StackPane>

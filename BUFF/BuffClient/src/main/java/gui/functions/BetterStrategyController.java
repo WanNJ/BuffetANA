@@ -38,7 +38,7 @@ public class BetterStrategyController {
     private ObservableList<Peroid> peroids_holdingPeriod;//所有固定持有期列表项的集合，动态绑定JFXTreeTableView的显示
     @PostConstruct
     public void init(){
-        days.setOnAction(e->showData());
+        days.valueProperty().addListener((observable,oldValue,newValue)->showData());
 
         peroids_formativePeriod= FXCollections.observableArrayList();
         peroids_holdingPeriod= FXCollections.observableArrayList();
@@ -52,14 +52,20 @@ public class BetterStrategyController {
         showData();
     }
 
-    private void showData(){
+    public void showData(){
         StrategyService strategyService=new StrategyServiceImpl_Stub();
 
         peroids_formativePeriod.clear();
         peroids_holdingPeriod.clear();
 
         //添加两个TreeTableView的行
-        int days=Integer.parseInt(this.days.getValue());
+        int days=1;
+        try{
+            days=Integer.parseInt(this.days.getValue());
+        }catch (NumberFormatException e){
+            this.days.setValue("1");
+            return;
+        }
         peroids_formativePeriod.addAll(strategyService.getBetterTableVOByFormation(days).stream().map(
                 betterTableVO -> new Peroid(betterTableVO.period,betterTableVO.overProfitRate,
                         betterTableVO.winRate)

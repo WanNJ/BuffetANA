@@ -22,6 +22,8 @@ public enum ChartController  {
 
     private NormHistChartController normHistChartController = null;
 
+    private DotChartController dotChartController  =null;
+
     private BlFactoryService factory;
 
      ChartController(){
@@ -32,6 +34,7 @@ public enum ChartController  {
         this.theVOLChartController = new TheVOLChartController();
         this.upDownChartController = new UpDownChartController();
         this.normHistChartController = new NormHistChartController();
+        this.dotChartController = new DotChartController();
          plugServiceIn();
     }
 
@@ -52,6 +55,7 @@ public enum ChartController  {
         this.upDownChartController.setThermometerService(factory.createThermometerService());
         this.kLineChartController.setMarketService(factory.createMarketService());
         this.volChartController.setMarketService(factory.createMarketService());
+        this.dotChartController.setSingleCodePredictService(factory.createSingleCodePredictService());
     }
 
 
@@ -74,5 +78,7 @@ public enum ChartController  {
     public UpDownChartController getUpDownChartController() {return this.upDownChartController;}
 
     public NormHistChartController getNormHistChartController() {return this.normHistChartController;}
+
+    public DotChartController getDotChartController() {return this.dotChartController;}
 
 }

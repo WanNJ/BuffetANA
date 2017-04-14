@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
@@ -45,4 +45,4 @@
          </JFXListView>
       </JFXPopup>
    </children>
-</FlowPane>
+</StackPane>

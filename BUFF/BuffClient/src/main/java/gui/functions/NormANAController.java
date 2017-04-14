@@ -4,6 +4,7 @@ import blservice.statistics.SingleCodePredictService;
 import blserviceimpl.statistics.SingleCodePredictServiceImpl;
 import com.jfoenix.controls.JFXComboBox;
 import gui.ChartController.ChartController;
+import gui.ChartController.controller.DotChartController;
 import gui.ChartController.controller.NormHistChartController;
 import gui.ChartController.pane.NormHistPane;
 import io.datafx.controller.FXMLController;
@@ -41,7 +42,11 @@ public class NormANAController {
 
     @FXML BorderPane dotPane; //用来画散点图
 
-    @FXML JFXComboBox<String> holdPeriod; //用来选择形成期
+    @FXML JFXComboBox<Integer> holdPeriod; //用来选择形成期
+
+
+    //   股票代码
+    private String code ;
 
 
     private SingleCodePredictService singleCodePredictService;
@@ -54,8 +59,25 @@ public class NormANAController {
 
     @PostConstruct
     public void init(){
+
+        holdPeriod.getItems().addAll(5,10,15,20,25,30,35,40,50,60);
         //TODO  这种注入方式不对
         this.singleCodePredictService = SingleCodePredictServiceImpl.SINGLE_CODE_PREDICT;
+
+        holdPeriod.setOnAction(event -> {
+            DotChartController dotChartController = ChartController.INSTANCE.getDotChartController();
+
+            dotChartController.setStockCode(code);
+
+            int days = holdPeriod.getValue();
+
+            dotChartController.setHoldPeriod(days);
+
+            dotChartController.drawChat();
+
+            dotPane.centerProperty().setValue(dotChartController.getChart());
+
+        });
 
     }
 
@@ -73,6 +95,16 @@ public class NormANAController {
 
         kurtosis.setText(String.valueOf(normalStasticVO.kurtosis));
 
+        this.code = code;
+
+        DotChartController dotChartController = ChartController.INSTANCE.getDotChartController();
+
+        dotChartController.setStockCode(code);
+
+        dotChartController.drawChat();
+
+        dotPane.centerProperty().setValue(dotChartController.getChart());
     }
+
 
 }

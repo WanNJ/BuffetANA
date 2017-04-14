@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
-<?import component.titlelabel.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
@@ -18,7 +17,7 @@
             </Label>
             <HBox>
                <children>
-                  <BorderPane fx:id="normHistPane" maxHeight="500.0" stylesheets="@../../css/normHist.css" />
+                  <BorderPane fx:id="normHistPane" maxHeight="300.0" maxWidth="800.0" stylesheets="@../../css/normHist.css" />
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -52,7 +51,7 @@
             <Label text="价格收益分布图" />
             <HBox>
                <children>
-                  <BorderPane fx:id="dotPane" stylesheets="@../../css/normHist.css" />
+                  <BorderPane fx:id="dotPane" maxHeight="300.0" maxWidth="800.0" stylesheets="@../../css/normHist.css" />
                   <GridPane>
                      <children>
                         <JFXComboBox fx:id="holdPeriod" prefHeight="27.0" prefWidth="162.0" promptText="持仓期天数" />

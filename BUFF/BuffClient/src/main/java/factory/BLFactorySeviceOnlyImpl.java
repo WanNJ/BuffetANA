@@ -5,6 +5,7 @@ import blservice.comparison.ComparisonService;
 import blservice.market.MarketService;
 import blservice.singlestock.*;
 import blservice.statistics.IndustryCorrelationService;
+import blservice.statistics.SingleCodePredictService;
 import blservice.strategy.IndustryAndBoardService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
@@ -71,6 +72,11 @@ public class BLFactorySeviceOnlyImpl implements BlFactoryService {
     @Override
     public IndustryAndBoardService createIndustryAndBoardService() {
         return SingleBlService.SINGLE_BL_SERVICE.getIndustryAndBoardService();
+    }
+
+    @Override
+    public SingleCodePredictService createSingleCodePredictService() {
+        return SingleBlService.SINGLE_BL_SERVICE.getSingleCodePredictService();
     }
 
 

@@ -104,7 +104,37 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
 
     @Override
     public List<PriceIncomeVO> getDotByPeriod(String code, int holdPeriod) {
-        return null;
+        List<StockPO> list = stockDAO.getStockInFoInRangeDate(code, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1));
+
+        list = list.stream().filter(t->t.getVolume()>0).collect(Collectors.toList());
+
+        List<PriceIncomeVO>  incomeVOList = new ArrayList<>();
+        for (int i = 0 ; i < list.size()-holdPeriod-5; i++){
+
+            double closemax =  getMax( list.get(i+holdPeriod).getAdjCloseIndex(),
+                              list.get(i+holdPeriod+1).getAdjCloseIndex(),
+                              list.get(i+holdPeriod-1).getAdjCloseIndex(),
+                              list.get(i+holdPeriod-2).getAdjCloseIndex(),
+                              list.get(i+holdPeriod+2).getAdjCloseIndex());
+
+         //   double closemax = list.get(i+holdPeriod).getAdjCloseIndex();
+            double cur  = closemax/list.get(i).getAdjCloseIndex();
+
+            incomeVOList.add(new PriceIncomeVO(list.get(i).getAdjCloseIndex()
+                    ,cur));
+        }
+        incomeVOList.forEach(t-> System.out.println(t.price+"  "+t.incomeRate));
+        return incomeVOList;
+    }
+
+    private double getMax(double ...close) {
+        double maxC = 0;
+
+        for(int i = 0 ; i < close.length ; i++){
+            maxC = maxC>close[i]? maxC:close[i];
+        }
+
+        return maxC;
     }
 
     @Override

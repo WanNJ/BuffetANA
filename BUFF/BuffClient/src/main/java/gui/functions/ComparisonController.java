@@ -360,7 +360,6 @@ public class ComparisonController {
             observableList.add(temp);
         }
         return observableList;
-
     }
 
     /**

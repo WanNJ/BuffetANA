@@ -4,6 +4,8 @@
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
@@ -21,8 +23,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXDialog?>
-<?import com.jfoenix.controls.JFXDialogLayout?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane vgap="10.0">
@@ -39,7 +39,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="选择股票">
+                  <Label text="选择股票" textFill="#a77000">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -67,7 +67,7 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="1">
                <children>
-                  <Label text="选股指标">
+                  <Label text="选股指标" textFill="#a77000">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -86,12 +86,12 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Label text="选股条件">
+                  <Label text="选股条件" textFill="#a77000">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXTabPane fx:id="pickingConditions" prefHeight="200.0" >
+                  <JFXTabPane fx:id="pickingConditions" prefHeight="200.0">
                      <tabs>
                         <Tab text="筛选条件">
                            <content>
@@ -193,7 +193,7 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="3">
                <children>
-                  <Label text="策略设置">
+                  <Label text="策略设置" textFill="#a77000">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -225,10 +225,10 @@
                <Label>股票池</Label>
             </heading>
             <body>
-               <Label fx:id="stocks"/>
+               <Label fx:id="stocks" />
             </body>
             <actions>
-               <JFXButton fx:id="acceptButton" text="确定" styleClass="dialog-accept">ACCEPT
+               <JFXButton fx:id="acceptButton" styleClass="dialog-accept" text="确定">ACCEPT
                </JFXButton>
             </actions>
          </JFXDialogLayout>

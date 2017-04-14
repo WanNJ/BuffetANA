@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.DoubleConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -318,7 +317,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[0];
-            }).collect(Collectors.toList());
+            }).filter(t -> !t.equals("ST")).collect(Collectors.toList());
 
         } catch (IOException e) {
             System.err.println(pathOfFile + " is not exits");
@@ -346,7 +345,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[0];
-            }).collect(Collectors.toList());
+            }).filter(t -> !t.equals("ST")).collect(Collectors.toList());
 
         } catch (IOException e) {
             System.err.println(pathOfFile + " is not exits");
@@ -368,7 +367,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
                     return "ST";
                 else
                     return codeAndName[1];
-            }).collect(Collectors.toList());
+            }).filter(t -> !t.equals("ST")).collect(Collectors.toList());
 
         } catch (IOException e) {
             System.err.println(pathOfFile + " is not exits");

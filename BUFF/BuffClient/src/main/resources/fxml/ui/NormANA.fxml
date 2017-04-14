@@ -18,7 +18,7 @@
             </Label>
             <HBox>
                <children>
-                  <BorderPane fx:id="normHistPane" stylesheets="@../../css/normHist.css" />
+                  <BorderPane fx:id="normHistPane" maxHeight="500.0" stylesheets="@../../css/normHist.css" />
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

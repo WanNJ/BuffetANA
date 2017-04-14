@@ -9,8 +9,10 @@ import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
 import po.StockPO;
 import util.RangeF;
+import vo.DotStaticVO;
 import vo.GuassLineVO;
 import vo.NormalStasticVO;
+import vo.PriceIncomeVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +24,9 @@ import java.util.stream.Collectors;
  * Created by wshwbluebird on 2017/4/12.
  */
 public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
-    SINGLE_CODE_PREDICT;
+    SINGLE_CODE_PREDICT ;
+
+
 
 
 
@@ -96,6 +100,18 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
         return  new NormalStasticVO(rangeFList,kk,guessLine);
 
     }
+
+
+    @Override
+    public List<PriceIncomeVO> getDotByPeriod(String code, int holdPeriod) {
+        return null;
+    }
+
+    @Override
+    public DotStaticVO getDotStaticVO(String code) {
+        return null;
+    }
+
 
     /**
      * 计算天数的分割

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import component.titlelabel.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -45,6 +46,24 @@
                         <Label fx:id="recOut" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Label fx:id="recIn" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
+                  </GridPane>
+               </children>
+            </HBox>
+            <Label text="价格收益分布图" />
+            <HBox>
+               <children>
+                  <BorderPane fx:id="dotPane" stylesheets="@../../css/normHist.css" />
+                  <GridPane>
+                     <children>
+                        <JFXComboBox fx:id="holdPeriod" prefHeight="27.0" prefWidth="162.0" promptText="持仓期天数" />
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                   </GridPane>
                </children>
             </HBox>

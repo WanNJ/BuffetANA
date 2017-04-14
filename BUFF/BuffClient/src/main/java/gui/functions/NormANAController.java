@@ -2,6 +2,7 @@ package gui.functions;
 
 import blservice.statistics.SingleCodePredictService;
 import blserviceimpl.statistics.SingleCodePredictServiceImpl;
+import com.jfoenix.controls.JFXComboBox;
 import gui.ChartController.ChartController;
 import gui.ChartController.controller.NormHistChartController;
 import gui.ChartController.pane.NormHistPane;
@@ -37,6 +38,10 @@ public class NormANAController {
     @FXML Label recOut;  // 推荐出售价格
 
     @FXML BorderPane normHistPane ;  // 画直方图的图
+
+    @FXML BorderPane dotPane; //用来画散点图
+
+    @FXML JFXComboBox<String> holdPeriod; //用来选择形成期
 
 
     private SingleCodePredictService singleCodePredictService;

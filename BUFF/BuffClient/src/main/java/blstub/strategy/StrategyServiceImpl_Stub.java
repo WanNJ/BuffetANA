@@ -7,7 +7,6 @@ import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,6 +47,11 @@ public class StrategyServiceImpl_Stub implements StrategyService{
     @Override
     public void setTraceBackVO(TraceBackVO traceBackVO) {
 
+    }
+
+    @Override
+    public List<StockNameAndCodeVO> getAllStocksInPool() {
+        return null;
     }
 
     @Override

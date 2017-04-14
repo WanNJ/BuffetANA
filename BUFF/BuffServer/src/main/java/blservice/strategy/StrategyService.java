@@ -36,6 +36,12 @@ public interface StrategyService {
     void setStockPickIndexVOList(List<StockPickIndexVO> stockPickIndexVOs);
 
     void setTraceBackVO(TraceBackVO traceBackVO);
+
+    /**
+     * 用以获得股票池内所有股票的代码以及名称
+     * @return
+     */
+    List<StockNameAndCodeVO> getAllStocksInPool();
     /**
      * 获得回测表数据
      * @return

@@ -1,11 +1,14 @@
 package blserviceimpl.strategy;
 
 import blservice.strategy.StrategyService;
+import dataservice.stockmap.StockNameToCodeDAO;
 import dataservice.strategy.StrategyDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
 import pick.PickStockService;
 import pick.PickStockServiceImpl;
+import po.StockNameAndCodePO;
+import po.StockPoolConditionPO;
 import util.StrategyScoreVO;
 import vo.*;
 
@@ -30,6 +33,7 @@ public enum StrategyServiceImpl implements StrategyService {
     private DAOFactoryService daoFactoryService;
     PickStockService pickStockService;
     private StrategyDAO strategyDAO;
+    private StockNameToCodeDAO stockNameToCodeDAO;
     private List<PickleData> pickleDatas;
     private List<NewPickleData> newpickleDatas;
     private List<BetterTableVO> betterTableVOSByFormation;
@@ -63,6 +67,7 @@ public enum StrategyServiceImpl implements StrategyService {
      */
     public void setFactory(DAOFactoryService daoFactoryService) {
         this.daoFactoryService = daoFactoryService;
+        this.stockNameToCodeDAO = daoFactoryService.createStockNameToCodeDAO();
         this.strategyDAO = this.daoFactoryService.createStrategyDAO();
         this.newpickleDatas = strategyDAO.getNewPickleData(strategyConditionVO, stockPoolConditionVO, stockPickIndexVOs);
     }
@@ -94,7 +99,7 @@ public enum StrategyServiceImpl implements StrategyService {
         this.traceBackVO = traceBackVO;
         this.daoFactoryService = new DAOFactoryServiceImpl();
         this.strategyDAO = this.daoFactoryService.createStrategyDAO();
-
+        this.stockNameToCodeDAO = daoFactoryService.createStockNameToCodeDAO();
 
 
         this.pickleDatas = strategyDAO.getPickleData(beginDate,endDate,stockPoolConditionVO,
@@ -196,6 +201,13 @@ public enum StrategyServiceImpl implements StrategyService {
     @Override
     public void setTraceBackVO(TraceBackVO traceBackVO) {
         this.traceBackVO = traceBackVO;
+    }
+
+    @Override
+    public List<StockNameAndCodeVO> getAllStocksInPool() {
+        List<String> codes = strategyDAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO));
+        List<StockNameAndCodePO> stockNameAndCodePOS = stockNameToCodeDAO.getNameToCodeMap();
+        return stockNameAndCodePOS.stream().filter(t -> codes.contains(t.getCode())).map(t -> new StockNameAndCodeVO(t.getName(), t.getCode())).collect(Collectors.toList());
     }
 
     @Override

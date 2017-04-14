@@ -60,7 +60,7 @@ public class ServerRunner {
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
                 , LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 //        strategyConditionVO1.holdingRate = 0.2;
-        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
+        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,true);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
         List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
         mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false,20));
@@ -74,7 +74,7 @@ public class ServerRunner {
       //  mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,-1,false,60));
 
 
-		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.CHANGE_RATE,null,-0.02));
+		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.CHANGE_RATE,0.02,4.0));
         StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 
 
@@ -90,8 +90,9 @@ public class ServerRunner {
 //        ,mixedStrategyVOs);
 //        strategyService.calculate(new TraceBackVO(20,10,10));
 //        strategyService.calculate(new TraceBackVO(20,10,0, 0.2));
-
         BackDetailVO backDetailVO = strategyService.getBackDetailVO();
+        List<StockNameAndCodeVO> stockNameAndCodeVOS = strategyService.getAllStocksInPool();
+        stockNameAndCodeVOS.forEach(stockNameAndCodeVO -> System.out.println(stockNameAndCodeVO.code + " " + stockNameAndCodeVO.name));
 
 
 

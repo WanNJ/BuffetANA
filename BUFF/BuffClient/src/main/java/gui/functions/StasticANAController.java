@@ -38,7 +38,9 @@ public class StasticANAController {
     @FXML private JFXTextField codeInput;  //股票代码输入
     @FXML private Label codeName;  // 显示股票的名字
     @FXML private JFXButton priceButton; //价格分布分析的按钮
+    @FXML JFXButton relateButton;//相关性分析的按钮
     @FXML private StackPane uproot;  //上面封装的stackpane
+
     /**
      * 自动补全提示框
      */

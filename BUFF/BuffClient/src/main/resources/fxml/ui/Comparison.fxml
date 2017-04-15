@@ -151,7 +151,7 @@
                               </GridPane>
                            </children>
                         </StackPane>
-                        <JFXButton fx:id="confirmButton" onAction="#beginCompare" text="确认对比" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <JFXButton fx:id="confirmButton" styleClass="custom-jfx-button-green" onAction="#beginCompare"  text="确认对比" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                         <StackPane GridPane.rowIndex="2">
                            <children>
                               <GridPane maxHeight="300.0">

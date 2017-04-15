@@ -2,21 +2,19 @@ package gui.JavaFxHistogram;
 
 import gui.RadarChart.ChartCanvas;
 import javafx.scene.layout.StackPane;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.urls.StandardXYURLGenerator;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
+
+import java.util.List;
 
 /**
  * Created by Accident on 2017/4/15.
@@ -46,15 +44,20 @@ public class MyHistogram {
 
     }
 
-    private static HistogramDataset createDataset(double[] data) {
+    private static HistogramDataset createDataset(List<Double> data) {
+        final int size = data.size();
+        double[] value = new double[size];
+        for(int i = 0; i < size; i++) {
+            value[i] = data.get(i);
+        };
         HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.FREQUENCY);
-        dataset.addSeries("Histogram", data, 100);
+        dataset.addSeries("分布", value, 100);
 
         return dataset;
     }
 
-    public static StackPane getMySpiderChart(double[] data) throws Exception {
+    public static StackPane getMySpiderChart(List<Double> data) throws Exception {
         HistogramDataset dataset = createDataset(data);
         JFreeChart chart = createChart(dataset);
         ChartCanvas canvas = new ChartCanvas(chart);

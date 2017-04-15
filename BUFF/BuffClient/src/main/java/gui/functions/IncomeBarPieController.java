@@ -49,11 +49,20 @@ public class IncomeBarPieController {
     }
 
     @FXML
+    private void setBarChartPane() throws Exception {
+        List<Double> value = strategyService.getProfitDistributeBar();
+        StackPane pane = MyHistogram.getMySpiderChart(value);
+        pane.setMinWidth(800);
+        pane.setMinHeight(400);
+        barChartPane.getChildren().set(0, pane);
+    }
+
+    @FXML
     private void setFakeBarChartPane() throws Exception {
-        double[] value = new double[1000];
+        List<Double> value = new ArrayList<>();
         Random generator = new Random();
         for (int i=1; i < 1000; i++) {
-            value[i] = generator.nextDouble() * Math.pow(-1, i);
+            value.add(generator.nextDouble() * Math.pow(-1, i));
         }
         StackPane pane = MyHistogram.getMySpiderChart(value);
         pane.setMinWidth(800);

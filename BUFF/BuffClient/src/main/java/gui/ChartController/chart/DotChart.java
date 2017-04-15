@@ -59,7 +59,7 @@ public class DotChart extends ScatterChart<String , Number> {
         if(curWidth<Width){
             curWidth=Width;
         }
-        dotChart.setPrefSize(curWidth,Height*0.95);
+        //dotChart.setPrefSize(curWidth,Height*0.95);
 
 
         return dotChart;

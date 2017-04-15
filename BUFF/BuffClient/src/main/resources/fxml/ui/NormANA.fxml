@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
 <StackPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
@@ -26,11 +26,11 @@
             </Label>
             <HBox alignment="TOP_LEFT">
                <children>
-                  <BorderPane fx:id="normHistPane" stylesheets="@../../css/normHist.css" />
-                  <GridPane maxHeight="300.0" styleClass="custom-grid-pane">
+                  <BorderPane fx:id="normHistPane" stylesheets="@../../css/normHist.css" HBox.hgrow="ALWAYS" />
+                  <GridPane maxHeight="300.0" prefWidth="250.0" styleClass="custom-grid-pane">
                       <columnConstraints>
                           <ColumnConstraints minWidth="100" />
-                          <ColumnConstraints minWidth="100" />
+                          <ColumnConstraints hgrow="ALWAYS" minWidth="100" />
                       </columnConstraints>
                       <rowConstraints>
                           <RowConstraints vgrow="ALWAYS" />
@@ -57,16 +57,23 @@
                   </GridPane>
                </children>
             </HBox>
-            <Label text="价格收益分布图" />
+            <Label text="价格收益分布图" textFill="#cd4e00">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" />
+               </VBox.margin>
+            </Label>
             <HBox>
                <children>
-                  <BorderPane fx:id="dotPane" maxHeight="300.0" maxWidth="800.0" stylesheets="@../../css/normHist.css" />
-                  <GridPane>
+                  <BorderPane fx:id="dotPane" stylesheets="@../../css/normHist.css" HBox.hgrow="ALWAYS" />
+                  <GridPane maxHeight="200.0" prefWidth="250.0">
                      <children>
-                        <JFXComboBox fx:id="holdPeriod" prefHeight="27.0" prefWidth="162.0" promptText="持仓期天数" />
+                        <JFXComboBox fx:id="holdPeriod" promptText="持仓期天数" />
                      </children>
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

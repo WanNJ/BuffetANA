@@ -367,7 +367,7 @@ public class NormHistChart extends XYChart<String,Number> {
             curWidth=Width;
         }
         System.out.println("Bar:   "+curWidth);
-        normHistChart.setPrefSize(curWidth,Height*0.95);
+        //normHistChart.setPrefSize(curWidth,Height*0.95);
 
 
         return normHistChart;

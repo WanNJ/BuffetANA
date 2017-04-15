@@ -357,7 +357,7 @@
 }
 
 .custom-jfx-button-red {
-	 -fx-pref-width: 120.0;
+	 /*-fx-pref-width: 120.0;*/
 	 -fx-font-size: 20px;
 	 -fx-button-type: RAISED;
 	 -fx-background-color: RED;
@@ -365,7 +365,7 @@
  }
 
 .custom-jfx-button-blue {
-	-fx-pref-width: 120.0;
+	/*-fx-pref-width: 120.0;*/
 	-fx-font-size: 20px;
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(77,102,204);
@@ -373,7 +373,7 @@
 }
 
 .custom-jfx-button-green {
-	-fx-pref-width: 120.0;
+	/*-fx-pref-width: 120.0;*/
 	-fx-font-size: 20px;
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(33,221,49);
@@ -381,7 +381,7 @@
 }
 
 .custom-jfx-button-purple {
-	-fx-pref-width: 120.0;
+	/*-fx-pref-width: 120.0;*/
 	-fx-font-size: 20px;
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(224,11,118);
@@ -1023,4 +1023,16 @@
 	-fx-font-size: 1.0em;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Grid Pane			                                                       *
+ *                                                                             *
+ ******************************************************************************/
 
+.custom-grid-pane {
+
+}
+.custom-grid-pane .label{
+	-fx-font-size: 20px;
+	-fx-text-fill : BLUE;
+}

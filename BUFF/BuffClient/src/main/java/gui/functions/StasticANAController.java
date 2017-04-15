@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -31,16 +32,13 @@ import java.util.List;
  */
 @FXMLController(value = "/resources/fxml/ui/StasticANA.fxml" , title = "test add in Grid Pane")
 public class StasticANAController {
+    @FXMLViewFlowContext private ViewFlowContext context;
 
-
-    @FXMLViewFlowContext
-    private ViewFlowContext context;
-
-    @FXML BorderPane borderPane; //用于加载不同分析形式的 分析
-    @FXML JFXTextField codeInput;  //股票代码输入
-    @FXML Label codeName;  // 显示股票的名字
-    @FXML JFXButton priceButton; //价格分布分析的按钮
-    @FXML StackPane uproot;  //上面封装的stackpane
+    @FXML private VBox vBox;
+    @FXML private JFXTextField codeInput;  //股票代码输入
+    @FXML private Label codeName;  // 显示股票的名字
+    @FXML private JFXButton priceButton; //价格分布分析的按钮
+    @FXML private StackPane uproot;  //上面封装的stackpane
     /**
      * 自动补全提示框
      */
@@ -52,21 +50,11 @@ public class StasticANAController {
     @FXML private JFXListView stockList;
 
 
-
-
     /**
      *画图的handler
      */
     private FlowHandler normHandler;
-
-    /**
-     * 存储加载线程时 生成的容器
-     * add by wsw
-     */
-    private StackPane normPane;
-
-
-
+    private StackPane normPane;//存储加载线程时 生成的容器
     private String code; //股票代码
 
     @PostConstruct
@@ -76,74 +64,58 @@ public class StasticANAController {
          * init pop up
          */
         popup.setPopupContainer(uproot);
-        uproot.getChildren().remove(popup);
 
         stockList.getItems().clear();
 
-
-        /**
-         *  加载流控制
-         */
-
-        Flow normFlow = new Flow(NormANAController.class);
-
-        normHandler = normFlow.createHandler(context);
-
-
-        context.register("normHandler", normHandler);
-
-
-        normPane = normHandler.start();
-
-
-
-
         this.code = null;
 
+        //添加codeInput的监听
+        codeInput.textProperty().addListener(((observable, oldValue, newValue) -> {
+            stockList.getItems().clear();
+            List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
 
-        codeInput.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                stockList.getItems().clear();
-                List<String> list = CodeComplementUtil.CODE_COMPLEMENT_UTIL.getComplement(newValue);
+            if(list==null || list.size()==0)
+                list.add("No Suggestion");
 
-                if(list==null || list.size()==0)
-                    list.add("No Suggestion");
+            popup.setSource(codeInput)  ;
+            popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 10, 45);
 
-
-                popup.setSource(codeInput)  ;
-                popup.show(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 5, 33);
-
-                for (String str:list) {
-                    Label label = new Label(str);
-                    label.setOnMouseClicked(e->{
-                        if(!str.equals("No Suggestion"))
-                            handleText(str);
-                    });
-                    stockList.getItems().add(label);
-                }
+            for (String str:list) {
+                Label label = new Label(str);
+                label.setOnMouseClicked(e->{
+                    if(!str.equals("No Suggestion"))
+                        handleText(str);
+                });
+                stockList.getItems().add(label);
             }
-        });
+        }));
 
-
+        //添加priceButton的监听
         priceButton.setOnAction(event -> {
             if(code==null || "".equals(code)){
                 Dialogs.showMessage("请输入股票的代码");
+                return;
             }
 
-            borderPane.getChildren().clear();
-            borderPane.centerProperty().setValue(normPane);
+            /**
+             *  加载流控制
+             */
+            vBox.getChildren().remove(normPane);
+            Flow normFlow = new Flow(NormANAController.class);
+            normHandler = normFlow.createHandler(context);
+            try {
+                normPane = normHandler.start();
+            } catch (FlowException e) {
+                e.printStackTrace();
+            }
+            vBox.getChildren().add(normPane);
 
             NormANAController normANAController =
                     (NormANAController)normHandler.getCurrentView().getViewContext().getController();
             normANAController.setCode(code);
 
         });
-
-
-
     }
-
 
     private void handleText(String str){
         String[] sep = str.split("\\(");

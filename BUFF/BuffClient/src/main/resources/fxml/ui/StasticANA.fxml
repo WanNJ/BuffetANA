@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXPopup?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="uproot" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox>
+      <VBox alignment="CENTER" fx:id="vBox">
          <children>
-            <StackPane fx:id="uproot">
+            <HBox alignment="CENTER">
                <children>
-                  <HBox>
-                     <children>
-                        <JFXTextField fx:id="codeInput" promptText="请输入股票代码" />
-                        <Label fx:id="codeName" contentDisplay="CENTER" text="股票名称">
-                           <HBox.margin>
-                              <Insets left="40.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <JFXButton fx:id="priceButton" text="价格分布分析">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </JFXButton>
-                     </children>
-                  </HBox>
+                  <JFXTextField fx:id="codeInput" promptText="请输入股票代码" />
+                  <Label fx:id="codeName" text="股票名称">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <JFXButton fx:id="priceButton" styleClass="custom-jfx-button-blue" text="价格分布分析">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </JFXButton>
                </children>
-            </StackPane>
-            <BorderPane fx:id="borderPane" />
+            </HBox>
          </children>
       </VBox>
       <JFXPopup fx:id="popup" styleClass="tool-bar-popup">
@@ -45,4 +40,4 @@
          </JFXListView>
       </JFXPopup>
    </children>
-</FlowPane>
+</StackPane>

@@ -22,30 +22,19 @@ import javax.annotation.PostConstruct;
 @FXMLController(value = "/resources/fxml/ui/NormANA.fxml" , title = "test add in Grid Pane")
 public class NormANAController {
 
-
-
     @FXML Label kurtosis; // 峰度
-
     @FXML Label isNorm;  //可否拟合
-
     @FXML Label mean;   //可否拟合
-
     @FXML Label sigma;  //可否拟合
-
     @FXML Label recIn;  //推荐入手价格
-
     @FXML Label recOut;  // 推荐出售价格
-
     @FXML BorderPane normHistPane ;  // 画直方图的图
 
-
     private SingleCodePredictService singleCodePredictService;
-
 
     public void setSingleCodePredictService(SingleCodePredictService singleCodePredictService){
         this.singleCodePredictService = singleCodePredictService;
     }
-
 
     @PostConstruct
     public void init(){

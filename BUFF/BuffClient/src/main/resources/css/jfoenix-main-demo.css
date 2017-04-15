@@ -396,6 +396,7 @@
 
 .jfx-check-box{
     -fx-font-weight: BOLD;
+	-fx-font-size: 20px;
 }
 
 .custom-jfx-check-box{

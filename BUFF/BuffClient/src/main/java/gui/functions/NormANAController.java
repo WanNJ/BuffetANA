@@ -33,7 +33,7 @@ public class NormANAController {
     @FXML BorderPane normHistPane ;  // 画直方图的图
     @FXML BorderPane dotPane; //用来画散点图
     @FXML JFXComboBox<Integer> holdPeriod; //用来选择形成期
-    
+
     //   股票代码
     private String code ;
     private SingleCodePredictService singleCodePredictService;

@@ -1,9 +1,7 @@
 package gui.functions;
 
-import SinglePort.SingleBlService;
 import blservice.strategy.StrategyService;
 import com.jfoenix.controls.*;
-import com.jfoenix.skins.JFXTabPaneSkin;
 import exception.WrongValueException;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
@@ -14,7 +12,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -25,8 +22,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-import jdk.nashorn.internal.runtime.options.Option;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
@@ -34,11 +29,8 @@ import util.StrategyScoreVO;
 import vo.*;
 
 import javax.annotation.PostConstruct;
-import java.awt.event.ActionListener;
-import java.awt.geom.Arc2D;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -53,8 +45,8 @@ public class StockChooseController {
 
     @FXML private StackPane root;
     @FXML private JFXComboBox<String> stockPool;//股票池
-    @FXML private JFXButton plate;//板块
-    @FXML private JFXComboBox<String> industry;//行业
+    @FXML private JFXComboBox<String> plate;//板块
+    @FXML private JFXButton industry;//行业
     @FXML private JFXCheckBox ST;//是否排除ST
     @FXML private JFXDatePicker from;//开始日期
     @FXML private JFXDatePicker to;//结束日期
@@ -71,7 +63,7 @@ public class StockChooseController {
     @FXML private JFXDialog stockDialog;//显示股票池的Dialog
     @FXML private Label stocks;//显示股票池的Label
     @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
-    @FXML private JFXDialog plateDialog;//显示板块选择的Dialog
+    @FXML private JFXDialog industryDialog;//显示板块选择的Dialog
     @FXML private JFXListView unselectedList;//用户未选择的板块的ListView
     @FXML private JFXListView selectedList;//用户已选择的板块的ListView,用getItem方法能获得用户选择的所有板块
 
@@ -143,7 +135,7 @@ public class StockChooseController {
 
         //初始化界面用到的各种控件
         acceptButton.setOnAction(e->stockDialog.close());
-        initPlate();
+        initIndustry();
         from.setDialogParent(root);
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
@@ -262,13 +254,13 @@ public class StockChooseController {
 
             unselectedList.getItems().clear();
             if("全部".equals(stockPool.getValue())){
-                industry.getItems().clear();
+                unselectedList.getItems().clear();
+                selectedList.getItems().clear();
                 unselectedList.getItems().add("无");
-                industry.getItems().add("无");
             }else if("沪深300".equals(stockPool.getValue())){
-                industry.getItems().clear();
+                unselectedList.getItems().clear();
+                selectedList.getItems().clear();
                 unselectedList.getItems().add("无");
-                industry.getItems().add("无");
             }else{
                 //TODO  用户自定义模式   现在不知道 多选怎么实现
             }
@@ -319,10 +311,10 @@ public class StockChooseController {
     /**
      * 初始化板块选择的Dialog
      */
-    private void initPlate(){
-        plate.setOnAction(event -> plateDialog.show(root));
+    private void initIndustry(){
+        industry.setOnAction(event -> industryDialog.show(root));
 
-        //为板块选择的Dialog的ListView添加双击添加选择板块的监听
+        //为行业选择的Dialog的ListView添加双击添加选择行业的监听
         unselectedList.setCellFactory(listView->{
             JFXListCell listCell=new JFXListCell<>();
             listCell.setOnMouseClicked(event -> {

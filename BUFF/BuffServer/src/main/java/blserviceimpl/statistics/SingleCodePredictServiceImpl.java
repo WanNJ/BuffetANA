@@ -58,7 +58,16 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
 
         List<Double>  doubleList = list.stream().filter(t->t.getVolume()>0).map(t->t.getAdjCloseIndex()).collect(Collectors.toList());
 
+
         if(doubleList.size()<50)  return null;
+
+
+        int cnt =  doubleList.size();
+
+        doubleList.sort((a,b)->(a>b?1:-1));
+
+        int minInd = cnt/10;
+
 
         //分割天数
         List<RangeF> rangeFList = getDep(doubleList,30);
@@ -97,7 +106,21 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
         List<GuassLineVO> guessLine = rangeFList.stream().map(t->new GuassLineVO(0.5*(t.small+t.big)
                 ,norm*normal.density(0.5*(t.small+t.big)))).collect(Collectors.toList());
 
-        return  new NormalStasticVO(rangeFList,kk,guessLine);
+
+
+        NormalStasticVO normalStasticVO =  new NormalStasticVO(rangeFList,kk,guessLine);
+
+        normalStasticVO.setMean(loc);
+
+        normalStasticVO.setSigma(bias);
+
+        normalStasticVO.setRecIn(doubleList.get(minInd));
+
+        normalStasticVO.setRecOut(loc*2-doubleList.get(minInd));
+
+
+
+        return normalStasticVO;
 
     }
 
@@ -119,11 +142,13 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
 
          //   double closemax = list.get(i+holdPeriod).getAdjCloseIndex();
             double cur  = closemax/list.get(i).getAdjCloseIndex();
+            //cur = Math.log(cur);
 
             incomeVOList.add(new PriceIncomeVO(list.get(i).getAdjCloseIndex()
                     ,cur));
         }
         incomeVOList.forEach(t-> System.out.println(t.price+"  "+t.incomeRate));
+        incomeVOList = incomeVOList.stream().sorted((a,b)->a.price>b.price?1:-1).collect(Collectors.toList());
         return incomeVOList;
     }
 

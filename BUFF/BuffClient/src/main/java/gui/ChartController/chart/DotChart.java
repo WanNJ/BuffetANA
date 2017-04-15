@@ -90,7 +90,7 @@ public class DotChart extends ScatterChart<String , Number> {
      * @return  返回股票信息的最高值的最大值
      */
     private static double getMax(ObservableList<PriceIncomeVO>  priceIncomeVOs) {
-        double max = 0;
+        double max = -100;
         for (PriceIncomeVO temp : priceIncomeVOs) {
             if (temp.incomeRate > max) {
                 max = temp.incomeRate;

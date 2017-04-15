@@ -43,12 +43,12 @@
                       <children>
                           <Label text="峰度:" textAlignment="JUSTIFY" />
                           <Label fx:id="kurtosis" GridPane.columnIndex="1" />
-                          <Label text="可否拟合" textAlignment="JUSTIFY" GridPane.rowIndex="1" />
+                          <Label fx:id="isNormLabel" text="可否拟合" textAlignment="JUSTIFY" GridPane.rowIndex="1" />
                           <Label fx:id="isNorm" prefHeight="17.0" prefWidth="14.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                           <Label text="均值:" textAlignment="JUSTIFY" GridPane.rowIndex="2" />
                           <Label text="Sigma:" textAlignment="JUSTIFY" GridPane.rowIndex="3" />
-                          <Label text="推荐入手:" textAlignment="JUSTIFY" GridPane.rowIndex="4" />
-                          <Label text="推荐出售:" textAlignment="JUSTIFY" GridPane.rowIndex="5" />
+                          <Label fx:id="inLabel" text="推荐入手:" textAlignment="JUSTIFY" GridPane.rowIndex="4" />
+                          <Label fx:id="outLabel" text="推荐出售:" textAlignment="JUSTIFY" GridPane.rowIndex="5" />
                           <Label fx:id="mean" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                           <Label fx:id="sigma" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                           <Label fx:id="recOut" GridPane.columnIndex="1" GridPane.rowIndex="5" />

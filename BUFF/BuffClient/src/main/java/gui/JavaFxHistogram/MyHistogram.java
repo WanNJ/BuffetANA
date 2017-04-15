@@ -3,8 +3,18 @@ package gui.JavaFxHistogram;
 import gui.RadarChart.ChartCanvas;
 import javafx.scene.layout.StackPane;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.urls.StandardXYURLGenerator;
+import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
@@ -18,10 +28,22 @@ public class MyHistogram {
         String xaxis = "收益率";
         String yaxis = "次数";
         PlotOrientation orientation = PlotOrientation.VERTICAL;
-        JFreeChart chart = ChartFactory.createHistogram( plotTitle, xaxis, yaxis,
-                dataset, orientation, true, false, false);
-        chart.getXYPlot().setRenderer(new NagetiveBarRenderer());
+
+        ParamChecks.nullNotPermitted(orientation, "orientation");
+        NumberAxis xAxis = new NumberAxis(xaxis);
+        xAxis.setAutoRangeIncludesZero(false);
+        ValueAxis yAxis = new NumberAxis(yaxis);
+        XYItemRenderer renderer = new NegativeBarRenderer();
+
+        XYPlot plot = new XYPlot(dataset, xAxis, yAxis, renderer);
+        plot.setOrientation(orientation);
+        plot.setDomainZeroBaselineVisible(true);
+        plot.setRangeZeroBaselineVisible(true);
+        JFreeChart chart = new JFreeChart(plotTitle, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        ChartTheme currentTheme = new StandardChartTheme("JFree");
+        currentTheme.apply(chart);
         return chart;
+
     }
 
     private static HistogramDataset createDataset(double[] data) {

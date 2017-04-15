@@ -5,9 +5,8 @@ import org.jfree.data.xy.XYDataset;
 
 import java.awt.*;
 
-public class NagetiveBarRenderer extends XYBarRenderer {
-    //TODO 显示上的一点小BUG —— 会有重叠部分
-    public NagetiveBarRenderer() {
+public class NegativeBarRenderer extends XYBarRenderer {
+    public NegativeBarRenderer() {
         super();
     }
     public Paint getItemPaint(int x_row, int x_col) {

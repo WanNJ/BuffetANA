@@ -115,11 +115,8 @@ public class StockChooseController {
     //private  LocalDate end;
 
     private  List<MixedStrategyVO> mixedStrategyVOList;
-
     private  List<StockPickIndexVO> stockPickIndexList;
-
     private StrategyConditionVO strategyConditionVO;
-
     private TraceBackVO traceBackVO;
 
 
@@ -254,15 +251,19 @@ public class StockChooseController {
 
             unselectedList.getItems().clear();
             if("全部".equals(stockPool.getValue())){
-                unselectedList.getItems().clear();
-                selectedList.getItems().clear();
-                unselectedList.getItems().add("无");
+                plate.setDisable(true);
+                industry.setDisable(true);
             }else if("沪深300".equals(stockPool.getValue())){
-                unselectedList.getItems().clear();
-                selectedList.getItems().clear();
-                unselectedList.getItems().add("无");
+                plate.setDisable(true);
+                industry.setDisable(true);
             }else{
                 //TODO  用户自定义模式   现在不知道 多选怎么实现
+
+                plate.setDisable(false);
+                industry.setDisable(false);
+                unselectedList.getItems().clear();
+                selectedList.getItems().clear();
+                unselectedList.getItems().add("无");
             }
         });
 

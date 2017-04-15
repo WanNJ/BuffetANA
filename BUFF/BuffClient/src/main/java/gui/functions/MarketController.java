@@ -1,10 +1,7 @@
 package gui.functions;
 
 import blservice.market.MarketService;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.base.JFXTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import factory.BLFactorySeviceOnlyImpl;
@@ -50,6 +47,7 @@ public class MarketController {
     @FXMLViewFlowContext private ViewFlowContext context;
 
     @FXML private StackPane root;
+    @FXML private JFXListView plate;//的listview，只有主板、创业板、中小板三个值
     @FXML private JFXTreeTableView<Share> allSharesList;
     @FXML private JFXTreeTableView<Share> recentlySharesList;
     @FXML private JFXDatePicker from;
@@ -74,6 +72,21 @@ public class MarketController {
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
+
+        //给板块选择listview添加监听
+        plate.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            //TODO:
+            if("主板".equals(newValue)){
+
+            }else if("创业板".equals(newValue)){
+
+            }else if("中小板".equals(newValue)){
+
+            }else {
+                return;
+            }
+        });
+        plate.getSelectionModel().select(0);//默认选择主板
 
         //初始化ObservableList
         allShares = FXCollections.observableArrayList();

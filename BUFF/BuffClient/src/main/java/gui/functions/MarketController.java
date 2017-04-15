@@ -33,10 +33,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import vo.MarketStockDetailVO;
 
 import javax.annotation.PostConstruct;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -77,16 +79,16 @@ public class MarketController {
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
         //添加要显示的行的信息
-//        List<MarketStockDetailVO> marketStockDetailVOS=null;
-//        try {
-//            marketStockDetailVOS=marketService.getMarketStockDetailVO();
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//        allShares.addAll(marketStockDetailVOS.stream().map(
-//                share->new Share(share.code,share.name,share.currentPrice,
-//                        share.changeValue,share.changeValueRange*100)
-//        ).collect(Collectors.toList()));
+        List<MarketStockDetailVO> marketStockDetailVOS=null;
+        try {
+            marketStockDetailVOS=marketService.getMarketStockDetailVO();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        allShares.addAll(marketStockDetailVOS.stream().map(
+                share->new Share(share.code,share.name,share.currentPrice,
+                        share.changeValue,share.changeValueRange*100)
+        ).collect(Collectors.toList()));
 
         /**
          * 我这个lambda表达式 是不是写的有点过分

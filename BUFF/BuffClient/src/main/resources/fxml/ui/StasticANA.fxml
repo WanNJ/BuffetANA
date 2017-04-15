@@ -33,6 +33,14 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </JFXButton>
+                        <JFXButton fx:id="relateButton" text="相关性分析分析">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </JFXButton>
                      </children>
                   </HBox>
                </children>

@@ -10,7 +10,7 @@ import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.Rectangle2D;
 
-class ChartCanvas extends Canvas {
+public class ChartCanvas extends Canvas {
     JFreeChart chart;
 
     private FXGraphics2D g2;

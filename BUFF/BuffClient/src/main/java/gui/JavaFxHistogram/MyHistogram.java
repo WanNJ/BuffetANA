@@ -39,7 +39,7 @@ public class MyHistogram {
         plot.setOrientation(orientation);
         plot.setDomainZeroBaselineVisible(true);
         plot.setRangeZeroBaselineVisible(true);
-        JFreeChart chart = new JFreeChart(plotTitle, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        JFreeChart chart = new JFreeChart(plotTitle, JFreeChart.DEFAULT_TITLE_FONT, plot, false);
         ChartTheme currentTheme = new StandardChartTheme("JFree");
         currentTheme.apply(chart);
         return chart;

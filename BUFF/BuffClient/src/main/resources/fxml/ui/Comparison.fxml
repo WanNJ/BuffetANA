@@ -112,22 +112,22 @@
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="mainMinPriceLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                            <Label fx:id="mainMinPriceLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="mainMaxPriceLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <Label fx:id="mainMaxPriceLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="mainChangeRateLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                            <Label fx:id="mainChangeRateLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="mainVarianceOfLRLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                            <Label fx:id="mainVarianceOfLRLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
@@ -142,7 +142,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="mainStockNameLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label fx:id="mainStockNameLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -173,17 +173,17 @@
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="deputyChangeRateLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                            <Label fx:id="deputyChangeRateLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="deputyMaxPriceLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <Label fx:id="deputyMaxPriceLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="deputyMinPriceLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                            <Label fx:id="deputyMinPriceLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
@@ -209,7 +209,7 @@
                                                     <Font size="24.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="deputyVarianceOfLRLabel" text="/" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                            <Label fx:id="deputyVarianceOfLRLabel" text="--" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                 <font>
                                                     <Font size="24.0" />
                                                 </font>
@@ -219,7 +219,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="deputyStockNameLabel1" text="/" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label fx:id="deputyStockNameLabel1" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="24.0" />
                                        </font>

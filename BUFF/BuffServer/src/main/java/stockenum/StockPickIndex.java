@@ -390,6 +390,9 @@ public enum StockPickIndex implements FilterMode {
         }
     },
 
+    /**
+     * 前一日市值
+     */
     CIRCULATION_MARKET_VALUE {
         @Override
         public String toString() {

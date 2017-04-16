@@ -57,7 +57,7 @@ public class MyHistogram {
         return dataset;
     }
 
-    public static StackPane getMySpiderChart(List<Double> data) throws Exception {
+    public static StackPane getMySpiderChart(List<Double> data) {
         HistogramDataset dataset = createDataset(data);
         JFreeChart chart = createChart(dataset);
         ChartCanvas canvas = new ChartCanvas(chart);

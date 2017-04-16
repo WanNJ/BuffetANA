@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by asus-a on 2017/4/12.
@@ -125,12 +126,17 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public List<Double> getProfitDistributeBar() {
-        return null;
+        List<Double> value = new ArrayList<>();
+        Random generator = new Random();
+        for (int i=1; i < 1000; i++) {
+            value.add(generator.nextDouble() * Math.pow(-1, i));
+        }
+        return value;
     }
 
     @Override
     public ProfitDistributionPieVO getProfitDistributePie() {
-        return null;
+        return new ProfitDistributionPieVO(20, 20, 25, 55, 10,40);
     }
 
     @Override

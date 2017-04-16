@@ -53,7 +53,7 @@ public class AccumulatedIncomeController implements Updatable{
 
     private BlFactoryService factory;
     private StrategyService strategyService;
-    private BackDetailVO backDetailVO;
+//    private BackDetailVO backDetailVO;
 
     @PostConstruct
     public void init() throws FlowException {
@@ -85,7 +85,7 @@ public class AccumulatedIncomeController implements Updatable{
     }
 
     private void setFakeBackDetailVO() {
-        backDetailVO = new BackDetailVO(0.357, 0.124, 1.29, 0.238, 0.146, 0.97);
+        BackDetailVO backDetailVO = new BackDetailVO(0.357, 0.124, 1.29, 0.238, 0.146, 0.97);
         annualizedReturn.setText(String.format("%.2f", backDetailVO.yearProfitRate * 100) + '%');
         baseAnnualizedReturn.setText(String.format("%.2f", backDetailVO.baseYearProfitRate * 100) + '%');
         alpha.setText(String.format("%.2f", backDetailVO.alpha * 100) + '%');
@@ -106,6 +106,7 @@ public class AccumulatedIncomeController implements Updatable{
     }
 
     private void setBackDetailVO() {
+        BackDetailVO backDetailVO = strategyService.getBackDetailVO();
         annualizedReturn.setText(String.format("%.2f", backDetailVO.yearProfitRate * 100) + '%');
         baseAnnualizedReturn.setText(String.format("%.2f", backDetailVO.baseYearProfitRate * 100) + '%');
         alpha.setText(String.format("%.2f", backDetailVO.alpha * 100) + '%');
@@ -129,7 +130,6 @@ public class AccumulatedIncomeController implements Updatable{
     @Override
     public void updateData() {
         strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
-        backDetailVO = strategyService.getBackDetailVO();
         setBackDetailVO();
         setChart();
     }

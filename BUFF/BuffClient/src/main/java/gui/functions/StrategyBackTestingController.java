@@ -83,11 +83,11 @@ public class StrategyBackTestingController {
         viewList.addAll(Arrays.asList(
                 context.getRegisteredObject(EstimateResultController.class),
                 context.getRegisteredObject(AccumulatedIncomeController.class),
-                context.getRegisteredObject(EstimateResultController.class),
+                context.getRegisteredObject(IncomeBarPieController.class),
                 context.getRegisteredObject(EstimateResultController.class)
         ));
 
-        //showData();
+        showData();
     }
 
     public void showData(){

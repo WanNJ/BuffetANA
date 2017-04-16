@@ -4,6 +4,7 @@ import blservice.strategy.StrategyService;
 import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableView;
+import gui.ChartController.controller.PeriodRateChartController;
 import gui.utils.TreeTableViewUtil;
 import gui.utils.TreeTableViewValue;
 import gui.utils.Updatable;
@@ -15,7 +16,9 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
+import javafx.scene.layout.StackPane;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -31,11 +34,11 @@ public class BetterStrategyController implements Updatable{
 
     @FXML JFXComboBox<String> days;
     @FXML JFXTreeTableView<Peroid> treeTableView_formativePeriod;//固定形成期的TreeTableView
-    @FXML LineChart excessEarnings_formativePeriod;//固定形成期的超额收益
-    @FXML LineChart winningStrategies_formativePeriod;//固定形成期的策略胜率
+    @FXML StackPane excessEarnings_formativePeriod;//固定形成期的超额收益
+    @FXML StackPane winningStrategies_formativePeriod;//固定形成期的策略胜率
     @FXML JFXTreeTableView<Peroid> treeTableView_holdingPeriod;//固定持有期的TreeTableView
-    @FXML LineChart excessEarnings_holdingPeriod;//固定持有期的超额收益
-    @FXML LineChart winningStrategies_holdingPeriod;//固定持有期的策略胜率
+    @FXML StackPane excessEarnings_holdingPeriod;//固定持有期的超额收益
+    @FXML StackPane winningStrategies_holdingPeriod;//固定持有期的策略胜率
 
     private ObservableList<Peroid> peroids_formativePeriod;//所有固定形成期列表项的集合，动态绑定JFXTreeTableView的显示
     private ObservableList<Peroid> peroids_holdingPeriod;//所有固定持有期列表项的集合，动态绑定JFXTreeTableView的显示
@@ -52,6 +55,36 @@ public class BetterStrategyController implements Updatable{
         TreeTableViewUtil.initTreeTableView(treeTableView_holdingPeriod,peroids_holdingPeriod,titles);
         treeTableView_formativePeriod.getColumns().get(0).setPrefWidth(150);
         treeTableView_holdingPeriod.getColumns().get(0).setPrefWidth(150);
+        //初始化空表
+        PeriodRateChartController periodRateChartController = PeriodRateChartController.PERIOD_RATE_CHART_CONTROLLER;
+        periodRateChartController.init();
+        this.excessEarnings_formativePeriod.getChildren().add
+                (periodRateChartController.getExcessEarnings_formativePeriod());
+        this.excessEarnings_holdingPeriod.getChildren().add
+                (periodRateChartController.getExcessEarnings_holdingPeriod());
+        this.winningStrategies_formativePeriod.getChildren().add
+                (periodRateChartController.getWinningStrategies_formativePeriod());
+        this.winningStrategies_holdingPeriod.getChildren().add(
+                periodRateChartController.getWinningStrategies_holdingPeriod());
+
+        // 界面端的测试
+//        StrategyService strategyService=new StrategyServiceImpl_Stub();
+//       // PeriodRateChartController periodRateChartController =  PeriodRateChartController.PERIOD_RATE_CHART_CONTROLLER;
+//        periodRateChartController.update(strategyService);
+//        this.excessEarnings_formativePeriod.getChildren().clear();
+//        this.excessEarnings_formativePeriod.getChildren().add
+//                (periodRateChartController.getExcessEarnings_formativePeriod());
+//        this.excessEarnings_holdingPeriod.getChildren().clear();
+//        this.excessEarnings_holdingPeriod.getChildren().add
+//                (periodRateChartController.getExcessEarnings_holdingPeriod());
+//        this.winningStrategies_formativePeriod.getChildren().clear();
+//        this.winningStrategies_formativePeriod.getChildren().add
+//                (periodRateChartController.getWinningStrategies_formativePeriod());
+//
+//        this.winningStrategies_holdingPeriod.getChildren().clear();
+//        this.winningStrategies_holdingPeriod.getChildren().add(
+//                periodRateChartController.getWinningStrategies_holdingPeriod());
+
 
     }
 
@@ -64,6 +97,7 @@ public class BetterStrategyController implements Updatable{
         //必须先更新TreeTableView的数据再更新图标的数据
         updateTreeTableView(strategyService);
         updateChart(strategyService);
+
     }
 
     private void updateTreeTableView(StrategyService strategyService){
@@ -89,7 +123,21 @@ public class BetterStrategyController implements Updatable{
     }
 
     private void updateChart(StrategyService strategyService){
-        //TODO:更新图标的数据
+        PeriodRateChartController periodRateChartController =  PeriodRateChartController.PERIOD_RATE_CHART_CONTROLLER;
+        periodRateChartController.update(strategyService);
+        this.excessEarnings_formativePeriod.getChildren().clear();
+        this.excessEarnings_formativePeriod.getChildren().add
+                (periodRateChartController.getExcessEarnings_formativePeriod());
+        this.excessEarnings_holdingPeriod.getChildren().clear();
+        this.excessEarnings_holdingPeriod.getChildren().add
+                (periodRateChartController.getExcessEarnings_holdingPeriod());
+        this.winningStrategies_formativePeriod.getChildren().clear();
+        this.winningStrategies_formativePeriod.getChildren().add
+                (periodRateChartController.getWinningStrategies_formativePeriod());
+
+        this.winningStrategies_holdingPeriod.getChildren().clear();
+        this.winningStrategies_holdingPeriod.getChildren().add(
+                periodRateChartController.getWinningStrategies_holdingPeriod());
     }
 
     /**

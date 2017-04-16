@@ -106,22 +106,48 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public List<BetterPieceVO> getOverProfitRateByFormation() {
-        return null;
+        return Arrays.asList(new BetterPieceVO(2,0.8),
+                new BetterPieceVO(4,2.9),
+                new BetterPieceVO(6,3.0),
+                new BetterPieceVO(8,2.7),
+                new BetterPieceVO(10,2.5),
+                new BetterPieceVO(12,-2.5),
+                new BetterPieceVO(14,-2.0));
     }
 
     @Override
     public List<BetterPieceVO> getOverProfitRateByHolding() {
-        return null;
+        return Arrays.asList(new BetterPieceVO(2,0.8),
+                new BetterPieceVO(4,2.9),
+                new BetterPieceVO(6,3.0),
+                new BetterPieceVO(8,2.7),
+                new BetterPieceVO(10,2.5),
+                new BetterPieceVO(12,-2.5),
+                new BetterPieceVO(14,-2.0));
+
     }
 
     @Override
     public List<BetterPieceVO> getWinRateByFormation() {
-        return null;
+        return Arrays.asList(new BetterPieceVO(2,0.8),
+                new BetterPieceVO(4,0.9),
+                new BetterPieceVO(6,0.3),
+                new BetterPieceVO(8,0.45),
+                new BetterPieceVO(10,0.68),
+                new BetterPieceVO(12,0.36),
+                new BetterPieceVO(14,0.34));
+
     }
 
     @Override
     public List<BetterPieceVO> getWinProfitRateByHolding() {
-        return null;
+        return Arrays.asList(new BetterPieceVO(2,0.8),
+                new BetterPieceVO(4,0.9),
+                new BetterPieceVO(6,0.3),
+                new BetterPieceVO(8,0.45),
+                new BetterPieceVO(10,0.68),
+                new BetterPieceVO(12,0.36),
+                new BetterPieceVO(14,0.34));
     }
 
     @Override

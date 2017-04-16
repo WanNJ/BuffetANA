@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.chart.AreaChart?>
 <StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
@@ -75,22 +76,10 @@
                                     <JFXTreeTableView fx:id="treeTableView_formativePeriod" maxWidth="400.0" showRoot="false" HBox.hgrow="ALWAYS" />
                                     <VBox HBox.hgrow="ALWAYS">
                                        <children>
-                                          <LineChart fx:id="excessEarnings_formativePeriod" VBox.vgrow="ALWAYS">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis side="LEFT" />
-                                            </yAxis>
-                                          </LineChart>
-                                          <LineChart fx:id="winningStrategies_formativePeriod" VBox.vgrow="ALWAYS">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis side="LEFT" />
-                                            </yAxis>
-                                          </LineChart>
+                                          <StackPane fx:id="excessEarnings_formativePeriod" VBox.vgrow="ALWAYS">
+                                          </StackPane>
+                                          <StackPane fx:id="winningStrategies_formativePeriod" VBox.vgrow="ALWAYS">
+                                          </StackPane>
                                        </children>
                                     </VBox>
                                  </children>
@@ -107,22 +96,10 @@
                                    <JFXTreeTableView fx:id="treeTableView_holdingPeriod" maxWidth="400.0" showRoot="false" HBox.hgrow="ALWAYS" />
                                    <VBox HBox.hgrow="ALWAYS">
                                        <children>
-                                           <LineChart fx:id="excessEarnings_holdingPeriod" VBox.vgrow="ALWAYS">
-                                               <xAxis>
-                                                   <CategoryAxis side="BOTTOM" />
-                                               </xAxis>
-                                               <yAxis>
-                                                   <NumberAxis side="LEFT" />
-                                               </yAxis>
-                                           </LineChart>
-                                           <LineChart fx:id="winningStrategies_holdingPeriod" VBox.vgrow="ALWAYS">
-                                               <xAxis>
-                                                   <CategoryAxis side="BOTTOM" />
-                                               </xAxis>
-                                               <yAxis>
-                                                   <NumberAxis side="LEFT" />
-                                               </yAxis>
-                                           </LineChart>
+                                           <StackPane fx:id="excessEarnings_holdingPeriod" VBox.vgrow="ALWAYS">
+                                           </StackPane>
+                                           <StackPane fx:id="winningStrategies_holdingPeriod" VBox.vgrow="ALWAYS">
+                                           </StackPane>
                                        </children>
                                    </VBox>
                                </HBox>

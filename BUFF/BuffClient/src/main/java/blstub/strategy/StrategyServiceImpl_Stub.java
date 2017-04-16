@@ -7,6 +7,7 @@ import util.StrategyScoreVO;
 import vo.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,17 +57,27 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public BackDetailVO getBackDetailVO() {
-        return null;
+        return new BackDetailVO(0.357, 0.124, 1.29, 0.238, 0.146, 0.97);
     }
 
     @Override
     public List<DayRatePieceVO> getStrategyDayRatePieceVO() {
-        return null;
+        List<DayRatePieceVO> list = new ArrayList<>();
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 1, 1), -0.1));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 2, 1), 0.2));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 3, 1), 0.25));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 4, 1), 0.7));
+        return list;
     }
 
     @Override
     public List<DayRatePieceVO> getBaseDayRatePieceVO() {
-        return null;
+        List<DayRatePieceVO> list = new ArrayList<>();
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 1, 1), -0.4));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 2, 1), 0.1));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 3, 1), 0.2));
+        list.add(new DayRatePieceVO(LocalDate.of(2000, 4, 1), 0.5));
+        return list;
     }
 
     @Override

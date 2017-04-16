@@ -21,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public class StrategyBackTestingController {
     @FXML private VBox viewsBox;
     @FXML private StackPane spinnerPane;
 
-    private List<Updatable> viewList;
+    private List<Updatable> viewList=new ArrayList<>();
 
     @PostConstruct
     public void init() throws FlowException {
@@ -78,6 +80,14 @@ public class StrategyBackTestingController {
         viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
 
+        viewList.addAll(Arrays.asList(
+                context.getRegisteredObject(EstimateResultController.class),
+                context.getRegisteredObject(AccumulatedIncomeController.class),
+                context.getRegisteredObject(EstimateResultController.class),
+                context.getRegisteredObject(EstimateResultController.class)
+        ));
+
+        //showData();
     }
 
     public void showData(){

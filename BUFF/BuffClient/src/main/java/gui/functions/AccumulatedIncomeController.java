@@ -1,11 +1,13 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
+import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXTreeTableView;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
 import gui.ChartController.chart.AccumulatedIncomeChart;
 import gui.ChartController.chart.ClosePriceChart;
+import gui.utils.Updatable;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.FlowHandler;
@@ -33,8 +35,7 @@ import java.util.List;
  */
 
 @FXMLController(value = "/resources/fxml/ui/AccumulatedIncome.fxml" , title = "AccumulatedIncome")
-public class AccumulatedIncomeController {
-
+public class AccumulatedIncomeController implements Updatable{
     @FXMLViewFlowContext private ViewFlowContext context;
 
     @FXML private VBox vBox;
@@ -56,10 +57,13 @@ public class AccumulatedIncomeController {
 
     @PostConstruct
     public void init() throws FlowException {
-        factory = new BLFactorySeviceOnlyImpl();
-        strategyService = factory.createStrategyService();
-        setFakeChart();
-        setFakeBackDetailVO();
+        context.register(this);
+
+//        factory = new BLFactorySeviceOnlyImpl();
+//        strategyService = factory.createStrategyService();
+//        backDetailVO = strategyService.getBackDetailVO();
+//        setFakeChart();
+//        setFakeBackDetailVO();
     }
 
     private  void setFakeChart() {
@@ -80,19 +84,6 @@ public class AccumulatedIncomeController {
         chartBox.getChildren().add(chart);
     }
 
-    private void setBackDetailVO() {
-        backDetailVO = strategyService.getBackDetailVO();
-        annualizedReturn.setText(String.format("%.2f", backDetailVO.yearProfitRate * 100) + '%');
-        baseAnnualizedReturn.setText(String.format("%.2f", backDetailVO.baseYearProfitRate * 100) + '%');
-        alpha.setText(String.format("%.2f", backDetailVO.alpha * 100) + '%');
-        beta.setText(String.format("%.2f", backDetailVO.beta * 100) + '%');
-        sharpeRatio.setText(String.format("%.2f", backDetailVO.sharpRate));
-        maximumRetracement.setText(String.format("%.2f", backDetailVO.largestBackRate * 100) + '%');
-        returnVolatility.setText("--");
-        informationRatio.setText("--");
-        turnoverRate.setText("--");
-    }
-
     private void setFakeBackDetailVO() {
         backDetailVO = new BackDetailVO(0.357, 0.124, 1.29, 0.238, 0.146, 0.97);
         annualizedReturn.setText(String.format("%.2f", backDetailVO.yearProfitRate * 100) + '%');
@@ -106,16 +97,40 @@ public class AccumulatedIncomeController {
         turnoverRate.setText("--");
     }
 
-    private void setChart() throws RemoteException {
+    private void setChart() {
+        chartBox.getChildren().remove(chart);
         chart = AccumulatedIncomeChart.createChart(
                 getDayRatePieceObserverable(strategyService.getStrategyDayRatePieceVO()),
                 getDayRatePieceObserverable(strategyService.getBaseDayRatePieceVO()));
-        vBox.getChildren().set(2, chart);
+        chartBox.getChildren().add(chart);
+    }
+
+    private void setBackDetailVO() {
+        annualizedReturn.setText(String.format("%.2f", backDetailVO.yearProfitRate * 100) + '%');
+        baseAnnualizedReturn.setText(String.format("%.2f", backDetailVO.baseYearProfitRate * 100) + '%');
+        alpha.setText(String.format("%.2f", backDetailVO.alpha * 100) + '%');
+        beta.setText(String.format("%.2f", backDetailVO.beta * 100) + '%');
+        sharpeRatio.setText(String.format("%.2f", backDetailVO.sharpRate));
+        maximumRetracement.setText(String.format("%.2f", backDetailVO.largestBackRate * 100) + '%');
+        returnVolatility.setText("--");
+        informationRatio.setText("--");
+        turnoverRate.setText("--");
     }
 
     private ObservableList<DayRatePieceVO> getDayRatePieceObserverable(List<DayRatePieceVO> list){
         ObservableList<DayRatePieceVO> observableList = FXCollections.observableArrayList();
         observableList.addAll(list);
         return observableList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateData() {
+        strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
+        backDetailVO = strategyService.getBackDetailVO();
+        setBackDetailVO();
+        setChart();
     }
 }

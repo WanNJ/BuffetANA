@@ -55,9 +55,10 @@ public class EstimateResultController implements Updatable{
 
     @PostConstruct
     public void init() throws FlowException {
+        context.register(this);
 
+        //初始化TreeTableView
         records = FXCollections.observableArrayList();
-
         String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率","收益率","1000元收益"};
         TreeTableViewUtil.initTreeTableView(treeTableView,records,titles);
         treeTableView.getColumns().get(0).setPrefWidth(100);
@@ -66,7 +67,7 @@ public class EstimateResultController implements Updatable{
         treeTableView.getColumns().get(3).setPrefWidth(200);
         treeTableView.getColumns().get(4).setPrefWidth(100);
         treeTableView.getColumns().get(5).setPrefWidth(100);
-
+        //单独设定持仓股票列
         JFXTreeTableColumn<Record, ScrollPane> stockColum = new JFXTreeTableColumn<>("持仓股票");
         stockColum.setMinWidth(350);
         stockColum.setCellValueFactory((TreeTableColumn.CellDataFeatures<Record, ScrollPane> param) ->{

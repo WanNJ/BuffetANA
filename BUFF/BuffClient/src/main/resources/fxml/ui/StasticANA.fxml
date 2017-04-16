@@ -31,7 +31,7 @@
                         <Insets left="50.0" />
                      </HBox.margin>
                   </JFXButton>
-                  <JFXButton fx:id="relateButton" styleClass="custom-jfx-button-green" text="相关性分析分析">
+                  <JFXButton fx:id="correlationButton" styleClass="custom-jfx-button-green" text="相关性分析分析">
                      <font>
                         <Font size="18.0" />
                      </font>

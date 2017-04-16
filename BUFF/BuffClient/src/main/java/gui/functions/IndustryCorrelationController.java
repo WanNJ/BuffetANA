@@ -8,9 +8,12 @@ import factory.BlFactoryService;
 import io.datafx.controller.FXMLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import vo.IndustryCorrelationVO;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +24,9 @@ import javax.annotation.PostConstruct;
 
 @FXMLController(value = "/resources/fxml/ui/IndustryCorrelation.fxml" , title = "IndustryCorrelation")
 public class IndustryCorrelationController {
+
+    @FXML
+    StackPane correlationPane;
 
     @FXML JFXTextField holdingPeriodTextField;
 
@@ -36,6 +42,9 @@ public class IndustryCorrelationController {
 
     @FXML
     ScatterChart<Number, Number> scatterChart ;  // 散点图
+
+    @FXML
+    VBox vBox;
 
     private IndustryCorrelationService industryCorrelationService;
     private BlFactoryService factory;
@@ -61,15 +70,32 @@ public class IndustryCorrelationController {
     private void showCorrelationResult(int holdingPeriod) {
         IndustryCorrelationVO industryCorrelationVO = industryCorrelationService.getInIndustryCorrelationResult(selectedCode, holdingPeriod);
         code.setText(industryCorrelationVO.code);
-        name.setText(industryCorrelationVO.code);
+        name.setText(industryCorrelationVO.name);
         correlation.setText(String.format("%.2f", industryCorrelationVO.correlation));
         profitRate.setText(String.format("%.2f", industryCorrelationVO.profitRate * 100) + "%");
 
         XYChart.Series series = new XYChart.Series();
         series.setName(selectedCode + " and " + industryCorrelationVO.code + "相关度");
+
+        double minX = 100;
+        double maxX = 0;
+        double minY = 100;
+        double maxY = 0;
         for(int i = 0; i < industryCorrelationVO.base.size(); i++) {
+            if(industryCorrelationVO.base.get(i) > maxX)
+                maxX = industryCorrelationVO.base.get(i);
+            if(industryCorrelationVO.base.get(i) < minX)
+                minX = industryCorrelationVO.base.get(i);
+            if(industryCorrelationVO.compare.get(i) > maxY)
+                maxY = industryCorrelationVO.compare.get(i);
+            if(industryCorrelationVO.compare.get(i) < minY)
+                minY = industryCorrelationVO.compare.get(i);
             series.getData().add(new XYChart.Data(industryCorrelationVO.base.get(i), industryCorrelationVO.compare.get(i)));
         }
+        final NumberAxis xAxis = new NumberAxis(Math.floor(minX), Math.ceil(maxX), 0.1);
+        final NumberAxis yAxis = new NumberAxis(Math.floor(minY), Math.ceil(maxY), 0.1);
+        scatterChart = new ScatterChart<Number, Number>(xAxis, yAxis);
         scatterChart.getData().addAll(series);
+        vBox.getChildren().set(2, scatterChart);
     }
 }

@@ -16,11 +16,8 @@ import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.FlowHandler;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -38,7 +35,7 @@ public class StasticANAController {
     @FXML private JFXTextField codeInput;  //股票代码输入
     @FXML private Label codeName;  // 显示股票的名字
     @FXML private JFXButton priceButton; //价格分布分析的按钮
-    @FXML JFXButton relateButton;//相关性分析的按钮
+    @FXML private JFXButton correlationButton;//相关性分析的按钮
     @FXML private StackPane uproot;  //上面封装的stackpane
 
     /**
@@ -57,6 +54,8 @@ public class StasticANAController {
      */
     private FlowHandler normHandler;
     private StackPane normPane;//存储加载线程时 生成的容器
+    private FlowHandler correlationHandler;
+    private StackPane correlationPane;
     private String code; //股票代码
 
     @PostConstruct
@@ -116,6 +115,29 @@ public class StasticANAController {
                     (NormANAController)normHandler.getCurrentView().getViewContext().getController();
             normANAController.setCode(code);
 
+        });
+
+        correlationButton.setOnAction(event -> {
+            if(code==null || "".equals(code)){
+                Dialogs.showMessage("请输入股票的代码");
+                return;
+            }
+
+            /**
+             *  加载流控制
+             */
+            vBox.getChildren().remove(correlationPane);
+            Flow correlationFlow = new Flow(IndustryCorrelationController.class);
+            correlationHandler = correlationFlow.createHandler(context);
+            try {
+                correlationPane = correlationHandler.start();
+            } catch (FlowException e) {
+                e.printStackTrace();
+            }
+            vBox.getChildren().add(correlationPane);
+            IndustryCorrelationController industryCorrelationController =
+                    (IndustryCorrelationController)correlationHandler.getCurrentView().getViewContext().getController();
+            industryCorrelationController.setSelectedCode(code);
         });
     }
 

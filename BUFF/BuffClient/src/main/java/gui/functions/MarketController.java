@@ -1,6 +1,7 @@
 package gui.functions;
 
 import blservice.market.MarketService;
+import blservice.singlestock.BenchStockService;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.base.JFXTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -58,6 +59,7 @@ public class MarketController {
     private ObservableList<Share> recentlyShares;//最近浏览股票列表项的集合，动态绑定JFXTreeTableView的显示
     private BlFactoryService factory;
     private MarketService marketService;
+    private BenchStockService benchStockService;
     private static final String titles[]={"股票代码","股票名称","现价（元）","涨跌（元）","涨跌幅（%）"};
 
 
@@ -66,6 +68,7 @@ public class MarketController {
         //初始化所要用到的逻辑层接口
         factory = new BLFactorySeviceOnlyImpl();
         marketService=factory.createMarketService();
+        benchStockService = factory.createBenchStockService();
 
         //初始化界面用到的各种控件
         from.setDialogParent(root);
@@ -73,35 +76,9 @@ public class MarketController {
         //为日期选择器加上可选范围的控制
         DatePickerUtil.initDatePicker(from,to);
 
-        //给板块选择listview添加监听
-        plate.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //TODO:
-            if("主板".equals(newValue)){
-
-            }else if("创业板".equals(newValue)){
-
-            }else if("中小板".equals(newValue)){
-
-            }else {
-                return;
-            }
-        });
-        plate.getSelectionModel().select(0);//默认选择主板
-
         //初始化ObservableList
         allShares = FXCollections.observableArrayList();
         recentlyShares = FXCollections.observableArrayList();
-        //添加要显示的行的信息
-        List<MarketStockDetailVO> marketStockDetailVOS=null;
-        try {
-            marketStockDetailVOS=marketService.getMarketStockDetailVO();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        allShares.addAll(marketStockDetailVOS.stream().map(
-                share->new Share(share.code,share.name,share.currentPrice,
-                        share.changeValue,share.changeValueRange*100)
-        ).collect(Collectors.toList()));
 
         /**
          * 我这个lambda表达式 是不是写的有点过分
@@ -116,11 +93,60 @@ public class MarketController {
                     }
                 }).filter(t->t!=null).map(share->new Share(share.code,share.name,share.currentPrice,
                         share.changeValue,share.changeValueRange*100)
-        ).collect(Collectors.toList()));
+                ).collect(Collectors.toList()));
 
-        //初始化TreeTableView
-        initTreeTableView(allSharesList,allShares);
         initTreeTableView(recentlySharesList,recentlyShares);
+        //给板块选择listview添加监听
+        plate.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            //TODO:
+            if("主板".equals(newValue)){
+                //添加要显示的行的信息
+                List<MarketStockDetailVO> marketStockDetailVOS = benchStockService.getMainBoardStock();
+                allShares.remove(0, allShares.size());
+                allShares.addAll(marketStockDetailVOS.stream().map(
+                        share->new Share(share.code,share.name,share.currentPrice,
+                                share.changeValue,share.changeValueRange*100)
+                ).collect(Collectors.toList()));
+                //初始化TreeTableView
+//                initTreeTableView(allSharesList,allShares);
+            }else if("创业板".equals(newValue)){
+                //添加要显示的行的信息
+                List<MarketStockDetailVO> marketStockDetailVOS = benchStockService.getSecondBoardStock();
+                allShares.remove(0, allShares.size());
+                allShares.addAll(marketStockDetailVOS.stream().map(
+                        share->new Share(share.code,share.name,share.currentPrice,
+                                share.changeValue,share.changeValueRange*100)
+                ).collect(Collectors.toList()));
+                //初始化TreeTableView
+//                initTreeTableView(allSharesList,allShares);
+            }else if("中小板".equals(newValue)){
+                //添加要显示的行的信息
+                List<MarketStockDetailVO> marketStockDetailVOS = benchStockService.getSMEBoardStock();
+                allShares.remove(0, allShares.size());
+                allShares.addAll(marketStockDetailVOS.stream().map(
+                        share->new Share(share.code,share.name,share.currentPrice,
+                                share.changeValue,share.changeValueRange*100)
+                ).collect(Collectors.toList()));
+                //初始化TreeTableView
+//                initTreeTableView(allSharesList,allShares);
+            }else {
+                return;
+            }
+        });
+        plate.getSelectionModel().select(0);//默认选择主板
+        initTreeTableView(allSharesList,allShares);
+//        //添加要显示的行的信息
+//        List<MarketStockDetailVO> marketStockDetailVOS=null;
+//        try {
+//            marketStockDetailVOS=marketService.getMarketStockDetailVO();
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//        allShares.addAll(marketStockDetailVOS.stream().map(
+//                share->new Share(share.code,share.name,share.currentPrice,
+//                        share.changeValue,share.changeValueRange*100)
+//        ).collect(Collectors.toList()));
+
         from.setValue(LocalDate.of(2014, 3, 1));
         to.setValue(LocalDate.of(2014, 3, 10));
 
@@ -175,6 +201,7 @@ public class MarketController {
 
     private void initTreeTableView(JFXTreeTableView<Share> treeTableView,ObservableList<Share> list){
         final TreeItem<Share> root = new RecursiveTreeItem<Share>(list, RecursiveTreeObject::getChildren);
+//        treeTableView.refresh();
         treeTableView.setRoot(root);
 
         //创建TreeTableView的列

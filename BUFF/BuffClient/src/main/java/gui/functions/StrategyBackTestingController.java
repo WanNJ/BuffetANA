@@ -1,10 +1,14 @@
 package gui.functions;
 
+import blservice.strategy.StrategyService;
+import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXRippler;
 import datafx.AnimatedFlowContainer;
+import factory.BLFactorySeviceOnlyImpl;
+import factory.BlFactoryService;
 import gui.utils.Updatable;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.Flow;
@@ -19,8 +23,11 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import util.StrategyScoreVO;
+import vo.*;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +51,8 @@ public class StrategyBackTestingController {
 
     @PostConstruct
     public void init() throws FlowException {
+        context.register(this);
+
         // init the title hamburger icon
         drawer.setOnDrawerClosed((e) -> {
             rippler.setVisible(true);
@@ -74,23 +83,26 @@ public class StrategyBackTestingController {
         Flow sideMenuFlow = new Flow(StockChooseController.class);
         FlowHandler sideMenuFlowHandler = sideMenuFlow.createHandler(context);
         drawer.setSidePane(sideMenuFlowHandler.start(new AnimatedFlowContainer(Duration.millis(320), ContainerAnimations.SWIPE_LEFT)));
-
+        //添加界面到viewsBox中显示
         viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(AccumulatedIncomeController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
-
+        //将界面添加到待更新数据的集合里，将来若要更新数据，会依次调用这些类的updateData()方法
         viewList.addAll(Arrays.asList(
                 context.getRegisteredObject(EstimateResultController.class),
                 context.getRegisteredObject(AccumulatedIncomeController.class),
                 context.getRegisteredObject(IncomeBarPieController.class),
-                context.getRegisteredObject(EstimateResultController.class)
+                context.getRegisteredObject(BetterStrategyController.class)
         ));
 
-        showData();
+        //showData();
     }
 
-    public void showData(){
+    public void showData(boolean strateyChoosed, StrategyConditionVO strategyConditionVO,
+                         StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexList,
+                         TraceBackVO traceBackVO, LocalDate from,LocalDate to,
+                         List<MixedStrategyVO> mixedStrategyVOList){
         //显示加载动画，把界面变为不可操作
         spinnerPane.setVisible(true);
         root.setDisable(true);
@@ -101,7 +113,33 @@ public class StrategyBackTestingController {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        //TODO:
+                        BlFactoryService blFactoryService = new BLFactorySeviceOnlyImpl();
+                        StrategyService strategyService=blFactoryService.createStrategyService();//TODO:待将stub换成真正的实现
+                        if(strateyChoosed){
+                            strategyService.init(strategyConditionVO,stockPoolConditionVO,stockPickIndexList);
+                            strategyService.calculate(traceBackVO);
+                        }else{
+                            strategyService.initMixed(from,to,stockPoolConditionVO,
+                                    stockPickIndexList,traceBackVO,mixedStrategyVOList);
+                        }
+
+                        BackDetailVO backDetailVO = strategyService.getBackDetailVO();
+
+                        System.out.println("alpha: " + backDetailVO.alpha);
+                        System.out.println("beta: " + backDetailVO.beta);
+                        System.out.println("yearProfitRate: " + backDetailVO.yearProfitRate);
+                        System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
+                        System.out.println("sharpRate: " + backDetailVO.sharpRate);
+                        System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
+
+                        StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
+                        System.out.println("盈利能力: " + strategyScoreVO.profitAbility);
+                        System.out.println("稳定性: " + strategyScoreVO.stability);
+                        System.out.println("选股能力: " + strategyScoreVO.chooseStockAbility);
+                        System.out.println("绝对收益: " + strategyScoreVO.absoluteProfit);
+                        System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
+                        System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
+
                         return null;
                     }
                 };
@@ -112,6 +150,7 @@ public class StrategyBackTestingController {
             viewList.stream().forEach(Updatable::updateData);
             spinnerPane.setVisible(false);
             root.setDisable(false);
+            drawer.close();
         });
         updateDataService.start();
     }

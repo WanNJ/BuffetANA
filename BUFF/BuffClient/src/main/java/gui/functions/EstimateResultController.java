@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 
 @FXMLController(value = "/resources/fxml/ui/EstimateResult.fxml" , title = "EstimateResult")
 public class EstimateResultController implements Updatable{
-
     @FXMLViewFlowContext private ViewFlowContext context;
 
     @FXML JFXTreeTableView<Record> treeTableView; //持仓历史
@@ -113,16 +112,16 @@ public class EstimateResultController implements Updatable{
     public void updateData() {
         StrategyService strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
 
-        StrategyScoreVO fakeVo = strategyService.getStrategyEstimateResult();
+        StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
         try {
             hBox.getChildren().remove(spiderChartScene);
-            spiderChartScene = MySpiderChart.getMySpiderChart(fakeVo);
+            spiderChartScene = MySpiderChart.getMySpiderChart(strategyScoreVO);
             spiderChartScene.setStyle("-fx-background-color: WHITE;");
             hBox.getChildren().add(spiderChartScene);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        scoreLabel.setText(String.valueOf(fakeVo.strategyScore));
+        scoreLabel.setText(String.valueOf(strategyScoreVO.strategyScore));
 
         records.clear();
         records.addAll(strategyService.getPickleData().stream().map(pickleData -> new Record(getRecordIndex(),

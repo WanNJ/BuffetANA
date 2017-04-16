@@ -8,6 +8,8 @@ import factory.BlFactoryService;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
+import io.datafx.controller.flow.context.FXMLViewFlowContext;
+import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -42,6 +44,7 @@ import java.util.OptionalDouble;
 //TODO 添加数值监听器
 @FXMLController(value = "/resources/fxml/ui/StockChoose.fxml" , title = "StockChoose")
 public class StockChooseController {
+    @FXMLViewFlowContext private ViewFlowContext context;
 
     @FXML private StackPane root;
     @FXML private JFXComboBox<String> stockPool;//股票池
@@ -281,31 +284,13 @@ public class StockChooseController {
                 return;
             }
 
-            if(strateyChoosed){
-                strategyService.init(strategyConditionVO,stockPoolConditionVO,stockPickIndexList);
-                strategyService.calculate(traceBackVO);
-            }else{
-                strategyService.initMixed(from.getValue(),to.getValue(),stockPoolConditionVO,
-                        stockPickIndexList,traceBackVO,mixedStrategyVOList);
-            }
-
-            BackDetailVO backDetailVO = strategyService.getBackDetailVO();
-
-            System.out.println("alpha: " + backDetailVO.alpha);
-            System.out.println("beta: " + backDetailVO.beta);
-            System.out.println("yearProfitRate: " + backDetailVO.yearProfitRate);
-            System.out.println("baseYearProfitRate: " + backDetailVO.baseYearProfitRate);
-            System.out.println("sharpRate: " + backDetailVO.sharpRate);
-            System.out.println("largestBackRate: " + backDetailVO.largestBackRate);
-
-            StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
-            System.out.println("盈利能力: " + strategyScoreVO.profitAbility);
-            System.out.println("稳定性: " + strategyScoreVO.stability);
-            System.out.println("选股能力: " + strategyScoreVO.chooseStockAbility);
-            System.out.println("绝对收益: " + strategyScoreVO.absoluteProfit);
-            System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
-            System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
-
+            /**
+             * 这部分代码转移到了StrategyBackTestingController.showData方法中
+             * 更新数据的任务委托给StrategyBackTestingController，放到后台线程中计算
+             */
+            StrategyBackTestingController strategyBackTestingController=context.getRegisteredObject(StrategyBackTestingController.class);
+            strategyBackTestingController.showData(strateyChoosed,strategyConditionVO,stockPoolConditionVO,
+                    stockPickIndexList,traceBackVO,from.getValue(),to.getValue(),mixedStrategyVOList);
         });
     }
 

@@ -20,13 +20,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="500" direction="TOP">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="500" direction="TOP" style="-fx-background-color: WHITE">
         <styleClass>
             <String fx:value="body" />
         </styleClass>
         <content>
             <AnchorPane  style="-fx-background-color: WHITE">
-                <ScrollPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToWidth="true">
+                <ScrollPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToWidth="true" style="-fx-background-color: WHITE">
                     <content>
                         <VBox fx:id="viewsBox" alignment="CENTER"  >
                             <padding>

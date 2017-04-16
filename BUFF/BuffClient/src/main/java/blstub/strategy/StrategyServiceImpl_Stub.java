@@ -124,7 +124,7 @@ public class StrategyServiceImpl_Stub implements StrategyService{
 
     @Override
     public StrategyScoreVO getStrategyEstimateResult() {
-        return null;
+        return new StrategyScoreVO(20, 21, 22, 23, 16, 92);
     }
 
     @Override

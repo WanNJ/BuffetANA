@@ -16,6 +16,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <JFXDrawer fx:id="drawer" defaultDrawerSize="500" direction="TOP">
         <styleClass>
@@ -44,4 +47,24 @@
             </AnchorPane>
         </content>
     </JFXDrawer>
+
+    <StackPane fx:id="spinnerPane" visible="false">
+        <children>
+            <JFXSpinner startingAngle="-40" styleClass="materialDesign-purple, first-spinner" />
+            <JFXSpinner startingAngle="-90" styleClass="materialDesign-blue, second-spinner" />
+            <JFXSpinner startingAngle="-120" styleClass="materialDesign-cyan, third-spinner" />
+            <JFXSpinner startingAngle="-150" styleClass="materialDesign-green, fourth-spinner" />
+            <JFXSpinner startingAngle="-180" styleClass="materialDesign-yellow, fifth-spinner" />
+            <JFXSpinner startingAngle="-210" styleClass="materialDesign-orange, sixth-spinner" />
+            <JFXSpinner startingAngle="-240" styleClass="materialDesign-red, seventh-spinner" />
+            <Label text="计算中..." textFill="darkslateblue" StackPane.alignment="CENTER" >
+                <StackPane.margin>
+                    <Insets top="250.0" />
+                </StackPane.margin>
+                <font>
+                    <Font name="System Bold" size="30.0" />
+                </font>
+            </Label>
+        </children>
+    </StackPane>
 </StackPane>

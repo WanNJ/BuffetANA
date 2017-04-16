@@ -9,6 +9,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import gui.RadarChart.MySpiderChart;
 import gui.utils.TreeTableViewUtil;
 import gui.utils.TreeTableViewValue;
+import gui.utils.Updatable;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
  */
 
 @FXMLController(value = "/resources/fxml/ui/EstimateResult.fxml" , title = "EstimateResult")
-public class EstimateResultController {
+public class EstimateResultController implements Updatable{
 
     @FXMLViewFlowContext private ViewFlowContext context;
 
@@ -48,33 +49,14 @@ public class EstimateResultController {
     @FXML HBox hBox;
     @FXML Label scoreLabel;
 
+    private StackPane spiderChartScene;//雷达图的面板
     private ObservableList<Record> records;//所有持仓记录列表项的集合，动态绑定JFXTreeTableView的显示
     private int recordIndex=1;
 
     @PostConstruct
     public void init() throws FlowException {
-        StrategyScoreVO fakeVo = new StrategyScoreVO(20, 21, 22, 23, 16, 92);
-        StackPane spiderChartScene = null;
-        try {
-            spiderChartScene = MySpiderChart.getMySpiderChart(fakeVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        spiderChartScene.setStyle("-fx-background-color: WHITE;");
-        scoreLabel.setText(String.valueOf(fakeVo.strategyScore));
-        hBox.getChildren().add(spiderChartScene);
-        System.out.println("Bingo!");
 
-        StrategyService strategyService=new StrategyServiceImpl_Stub();
         records = FXCollections.observableArrayList();
-        records.addAll(strategyService.getPickleData().stream().map(pickleData -> new Record(getRecordIndex(),
-                pickleData.beginDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                pickleData.endDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                pickleData.baseProfitRate+"",
-                pickleData.getProfitPercent(),
-                pickleData.getProfit_1000(),
-                pickleData.getStockCodes_String()))
-                .collect(Collectors.toList()));  //添加行
 
         String titles[]={"时间段编号","开始日期","结束日期","持仓期内的基准收益率","收益率","1000元收益"};
         TreeTableViewUtil.initTreeTableView(treeTableView,records,titles);
@@ -120,6 +102,36 @@ public class EstimateResultController {
 
     private String getRecordIndex(){
         return (recordIndex++)+"";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateData() {
+        StrategyService strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
+
+        StrategyScoreVO fakeVo = strategyService.getStrategyEstimateResult();
+        try {
+            hBox.getChildren().remove(spiderChartScene);
+            spiderChartScene = MySpiderChart.getMySpiderChart(fakeVo);
+            spiderChartScene.setStyle("-fx-background-color: WHITE;");
+            hBox.getChildren().add(spiderChartScene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        scoreLabel.setText(String.valueOf(fakeVo.strategyScore));
+
+        records.clear();
+        records.addAll(strategyService.getPickleData().stream().map(pickleData -> new Record(getRecordIndex(),
+                pickleData.beginDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                pickleData.endDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                pickleData.baseProfitRate+"",
+                pickleData.getProfitPercent(),
+                pickleData.getProfit_1000(),
+                pickleData.getStockCodes_String()))
+                .collect(Collectors.toList()));  //添加TreeTableView的行
     }
 
     /**

@@ -37,28 +37,18 @@ public class AccumulatedIncomeController {
 
     @FXMLViewFlowContext private ViewFlowContext context;
 
-    @FXML
-    private VBox vBox;
-    @FXML
-    private Label annualizedReturn;//年化收益率
-    @FXML
-    private Label baseAnnualizedReturn;//基准年化收益率
-    @FXML
-    private Label alpha;//阿尔法
-    @FXML
-    private Label beta;//贝塔
-    @FXML
-    private Label sharpeRatio;//夏普比率
-    @FXML
-    private Label returnVolatility;//收益波动率
-    @FXML
-    private Label informationRatio;//信息比率
-    @FXML
-    private Label maximumRetracement;//最大回撤
-    @FXML
-    private Label turnoverRate;//换手率
-    @FXML
-    private LineChart chart;
+    @FXML private VBox vBox;
+    @FXML private VBox chartBox;
+    @FXML private Label annualizedReturn;//年化收益率
+    @FXML private Label baseAnnualizedReturn;//基准年化收益率
+    @FXML private Label alpha;//阿尔法
+    @FXML private Label beta;//贝塔
+    @FXML private Label sharpeRatio;//夏普比率
+    @FXML private Label returnVolatility;//收益波动率
+    @FXML private Label informationRatio;//信息比率
+    @FXML private Label maximumRetracement;//最大回撤
+    @FXML private Label turnoverRate;//换手率
+    @FXML private LineChart chart;
 
     private BlFactoryService factory;
     private StrategyService strategyService;
@@ -85,8 +75,9 @@ public class AccumulatedIncomeController {
         list_2.add(new DayRatePieceVO(LocalDate.of(2000, 3, 1), 0.2));
         list_2.add(new DayRatePieceVO(LocalDate.of(2000, 4, 1), 0.5));
 
+        chartBox.getChildren().remove(chart);
         chart = AccumulatedIncomeChart.createChart(getDayRatePieceObserverable(list_1), getDayRatePieceObserverable(list_2));
-        vBox.getChildren().set(2, chart);
+        chartBox.getChildren().add(chart);
     }
 
     private void setBackDetailVO() {

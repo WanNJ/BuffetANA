@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefWidth="900.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="vBox">
          <children>
@@ -21,51 +20,55 @@
                   <Insets left="50.0" />
                </VBox.margin>
             </Label>
-            <GridPane hgap="10.0">
-              <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="10.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <VBox fx:id="chartBox" alignment="CENTER">
                <children>
-                  <Label text="年化收益率" />
-                  <Label text="基准年化收益率" GridPane.columnIndex="1" />
-                  <Label text="阿尔法" GridPane.columnIndex="2" />
-                  <Label text="贝塔" GridPane.columnIndex="3" />
-                  <Label text="夏普比率" GridPane.columnIndex="4" />
-                  <Label text="收益波动率" GridPane.columnIndex="5" />
-                  <Label text="信息比率" GridPane.columnIndex="6" />
-                  <Label text="最大回撤" GridPane.columnIndex="7" />
-                  <Label text="换手率" GridPane.columnIndex="8" />
-                  <Label fx:id="annualizedReturn" GridPane.rowIndex="1" />
-                  <Label fx:id="baseAnnualizedReturn" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="alpha" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="beta" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="sharpeRatio" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Label fx:id="returnVolatility" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                  <Label fx:id="informationRatio" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Label fx:id="maximumRetracement" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                  <Label fx:id="turnoverRate" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+                  <GridPane hgap="10.0" maxWidth="700.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="年化收益率" />
+                        <Label text="基准年化收益率" GridPane.columnIndex="1" />
+                        <Label text="阿尔法" GridPane.columnIndex="2" />
+                        <Label text="贝塔" GridPane.columnIndex="3" />
+                        <Label text="夏普比率" GridPane.columnIndex="4" />
+                        <Label text="收益波动率" GridPane.columnIndex="5" />
+                        <Label text="信息比率" GridPane.columnIndex="6" />
+                        <Label text="最大回撤" GridPane.columnIndex="7" />
+                        <Label text="换手率" GridPane.columnIndex="8" />
+                        <Label fx:id="annualizedReturn" GridPane.rowIndex="1" />
+                        <Label fx:id="baseAnnualizedReturn" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="alpha" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="beta" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="sharpeRatio" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label fx:id="returnVolatility" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                        <Label fx:id="informationRatio" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                        <Label fx:id="maximumRetracement" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                        <Label fx:id="turnoverRate" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+                  <LineChart fx:id="chart">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
                </children>
-            </GridPane>
-            <LineChart fx:id="chart">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
+            </VBox>
          </children>
       </VBox>
    </children>

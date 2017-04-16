@@ -6,6 +6,7 @@ import blservice.singlestock.*;
 import blservice.statistics.IndustryCorrelationService;
 import blservice.statistics.SingleCodePredictService;
 import blservice.strategy.IndustryAndBoardService;
+import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 
@@ -39,4 +40,6 @@ public interface BlFactoryService {
     IndustryAndBoardService createIndustryAndBoardService();
 
     SingleCodePredictService createSingleCodePredictService();
+
+    StrategyHistoryService createStrategyHistoryService();
 }

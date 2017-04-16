@@ -1,5 +1,6 @@
 package gui.functions;
 
+import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import com.jfoenix.controls.*;
 import exception.WrongValueException;
@@ -12,7 +13,9 @@ import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -35,6 +38,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 /**
  * @author zjy
@@ -63,16 +67,23 @@ public class StockChooseController {
     @FXML private JFXTextField numOfShares;//持股数（持股比例）
     @FXML private JFXButton start;//开始回测
     @FXML private JFXButton save;//保存策略
+    @FXML private JFXButton load;//加载策略
     @FXML private JFXDialog stockDialog;//显示股票池的Dialog
+    @FXML private JFXDialog saveDialog;//显示保存框的Dialog
+    @FXML private JFXDialog loadDialog;//显示加载框的Dialog
     @FXML private Label stocks;//显示股票池的Label
     @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
+    @FXML private JFXButton acceptSave;//显示保存框的Dialog的确认Button
+    @FXML private JFXButton acceptLoad;//显示保存框的Dialog的确认Button
     @FXML private JFXDialog industryDialog;//显示板块选择的Dialog
     @FXML private JFXListView unselectedList;//用户未选择的板块的ListView
     @FXML private JFXListView selectedList;//用户已选择的板块的ListView,用getItem方法能获得用户选择的所有板块
+    @FXML private JFXListView<String> strategyNameList;//加载框的Dialog的策略名字列表
+    @FXML private JFXTextField strategyName;//保存框的Dialog的用户保存的策略名称
+    @FXML private Label noStrategyLabel;//保存框的Dialog的"没有保存的策略"的Label
 
 
     private StrategyService strategyService;
-
     private BlFactoryService blFactoryService;
 
     /**
@@ -136,6 +147,7 @@ public class StockChooseController {
         //初始化界面用到的各种控件
         acceptButton.setOnAction(e->stockDialog.close());
         initIndustry();
+        initSaveAndLoad();
         from.setDialogParent(root);
         to.setDialogParent(root);
         //为日期选择器加上可选范围的控制
@@ -450,6 +462,77 @@ public class StockChooseController {
 
             }
         });
+    }
+
+    /**
+     * 初始化保存、加载策略的组件
+     */
+    private void initSaveAndLoad(){
+        StrategyHistoryService strategyHistoryService = blFactoryService.createStrategyHistoryService();
+
+        save.setOnAction(event -> saveDialog.show(root));
+        load.setOnAction(event -> loadDialog.show(root));
+        //打开loadDialog时加载strategyNameList的内容
+        loadDialog.setOnDialogOpened(event -> {
+            strategyNameList.getItems().setAll(strategyHistoryService.getHistoryList());//TODO:
+        });
+
+        acceptSave.setOnAction(event -> {
+            if("".equals(strategyName.getText())){
+                Dialogs.showMessage("啊哦","名字不能为空哦");
+                return;
+            }
+            //保存信息
+            try {
+                collectCurrentData();
+            } catch (WrongValueException e) {
+                //策略没填完或者填写非法值也能保存
+            }
+            StrategySaveVO strategySaveVO=new StrategySaveVO(strategyName.getText(),"自定义策略".equals(
+                    strategyType.getValue()), stockPoolConditionVO,mixedStrategyVOList,stockPickIndexList,
+                    strategyConditionVO,traceBackVO,from.getValue(),to.getValue());
+            strategyHistoryService.saveStrategy(strategySaveVO,true);//暂时默认强制覆盖
+
+            saveDialog.close();
+        });
+        acceptLoad.setOnAction(event -> {
+            String strategyName=strategyNameList.getSelectionModel().getSelectedItem();
+            if("".equals(strategyName)){//如果用户没有选择，那么当做其取消加载
+                return;
+            }
+            //加载策略
+            StrategySaveVO strategySaveVO=strategyHistoryService.getStrategyHistory(strategyName);
+            from.setValue(strategySaveVO.begin);
+            to.setValue(strategySaveVO.end);
+            stockPool.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.stockPool.toString());
+            plate.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.block.stream().collect(Collectors.toList()).get(0));//默认板块是单选
+            selectedList.getItems().setAll(strategySaveVO.stockPoolConditionVO.industry);
+            ST.setSelected(strategySaveVO.stockPoolConditionVO.excludeST);
+            if(strategySaveVO.userMode){
+                strategyType.getSelectionModel().select("自定义策略");
+                numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+            }else {
+                if(StrategyType.MA.equals(strategySaveVO.strategyConditionVO.strategyType)){//回归策略
+                    numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+                }else if(StrategyType.MOM.equals(strategySaveVO.strategyConditionVO.strategyType)){//动量策略
+                    numOfShares.setText(strategySaveVO.traceBackVO.holdingRate+"");
+                }
+                formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
+            }
+            holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
+            //TODO:还差排名条件和筛选条件没有添加
+
+            loadDialog.close();
+        });
+        //控制noStrategyLabel的显示
+        strategyNameList.getItems().addListener((ListChangeListener) c -> {
+            if (strategyNameList.getItems().isEmpty()) {
+                noStrategyLabel.setVisible(true);
+            } else {
+                noStrategyLabel.setVisible(false);
+            }
+        });
+
     }
 
 

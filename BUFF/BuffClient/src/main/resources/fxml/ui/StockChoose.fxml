@@ -222,8 +222,9 @@
             </VBox>
             <HBox alignment="CENTER" spacing="50.0" GridPane.rowIndex="4">
                <children>
-                  <JFXButton fx:id="start" buttonType="RAISED" ripplerFill="#4a2dd6" styleClass="custom-jfx-button-green" text="开始回测" />
+                  <JFXButton fx:id="start" buttonType="RAISED" ripplerFill="#4a2dd6" styleClass="custom-jfx-button-purple" text="开始回测" />
                   <JFXButton fx:id="save" buttonType="RAISED" ripplerFill="#4a2dd6" styleClass="custom-jfx-button-green" text="保存策略" />
+                  <JFXButton fx:id="load" buttonType="RAISED" ripplerFill="#4a2dd6" styleClass="custom-jfx-button-green" text="加载策略" />
                </children>
             </HBox>
          </children>
@@ -274,5 +275,44 @@
             </body>
          </JFXDialogLayout>
       </JFXDialog>
+
+      <JFXDialog fx:id="saveDialog" transitionType="CENTER">
+         <JFXDialogLayout>
+            <heading>
+               <Label>请输入保存的名称（如果有同名的策略则会覆盖）</Label>
+            </heading>
+            <body>
+               <JFXTextField promptText="策略名称" fx:id="strategyName">
+                  <font>
+                     <Font size="30"/>
+                  </font>
+               </JFXTextField>
+            </body>
+            <actions>
+               <JFXButton fx:id="acceptSave" styleClass="dialog-accept" text="确定">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </JFXButton>
+            </actions>
+         </JFXDialogLayout>
+      </JFXDialog>
+
+      <JFXDialog fx:id="loadDialog" transitionType="CENTER">
+         <JFXDialogLayout prefWidth="300">
+            <body>
+               <JFXListView fx:id="strategyNameList" maxWidth="300" prefHeight="300" style="-fx-border-color: #523bd7"/>
+               <Label text="没有保存的策略" alignment="CENTER" fx:id="noStrategyLabel"/>
+            </body>
+            <actions>
+               <JFXButton fx:id="acceptLoad" styleClass="dialog-accept" text="确定">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </JFXButton>
+            </actions>
+         </JFXDialogLayout>
+      </JFXDialog>
+
    </children>
 </StackPane>

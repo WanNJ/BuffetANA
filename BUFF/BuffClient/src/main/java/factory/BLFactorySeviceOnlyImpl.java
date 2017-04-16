@@ -7,6 +7,7 @@ import blservice.singlestock.*;
 import blservice.statistics.IndustryCorrelationService;
 import blservice.statistics.SingleCodePredictService;
 import blservice.strategy.IndustryAndBoardService;
+import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 
@@ -77,6 +78,11 @@ public class BLFactorySeviceOnlyImpl implements BlFactoryService {
     @Override
     public SingleCodePredictService createSingleCodePredictService() {
         return SingleBlService.SINGLE_BL_SERVICE.getSingleCodePredictService();
+    }
+
+    @Override
+    public StrategyHistoryService createStrategyHistoryService() {
+        return SingleBlService.SINGLE_BL_SERVICE.getStrategyHistoryService();
     }
 
 

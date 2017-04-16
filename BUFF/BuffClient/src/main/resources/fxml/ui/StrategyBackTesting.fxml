@@ -57,7 +57,7 @@
             <JFXSpinner startingAngle="-180" styleClass="materialDesign-yellow, fifth-spinner" />
             <JFXSpinner startingAngle="-210" styleClass="materialDesign-orange, sixth-spinner" />
             <JFXSpinner startingAngle="-240" styleClass="materialDesign-red, seventh-spinner" />
-            <Label text="计算中..." textFill="darkslateblue" StackPane.alignment="CENTER" >
+            <Label text="计算中..." textFill="darkblue" StackPane.alignment="CENTER" >
                 <StackPane.margin>
                     <Insets top="250.0" />
                 </StackPane.margin>

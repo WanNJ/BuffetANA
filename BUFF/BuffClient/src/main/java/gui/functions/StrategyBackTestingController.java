@@ -99,6 +99,17 @@ public class StrategyBackTestingController {
         //showData();
     }
 
+    /**
+     * 更新各界面的数据
+     * @param strateyChoosed 用于标记  均值策略和动量策略 是否已经被选中
+     * @param strategyConditionVO 策略的基本信息
+     * @param stockPoolConditionVO 记录股票池的选择信息
+     * @param stockPickIndexList 选股条件的列表
+     * @param traceBackVO 形成期、均线期、持仓期、持有股票数、动量策略中的取前百分之多少的股票等信息
+     * @param from 开始日期
+     * @param to 结束日期
+     * @param mixedStrategyVOList 排名条件的列表
+     */
     public void showData(boolean strateyChoosed, StrategyConditionVO strategyConditionVO,
                          StockPoolConditionVO stockPoolConditionVO, List<StockPickIndexVO> stockPickIndexList,
                          TraceBackVO traceBackVO, LocalDate from,LocalDate to,

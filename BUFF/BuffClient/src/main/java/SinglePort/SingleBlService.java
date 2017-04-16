@@ -6,6 +6,7 @@ import blservice.singlestock.*;
 import blservice.statistics.IndustryCorrelationService;
 import blservice.statistics.SingleCodePredictService;
 import blservice.strategy.IndustryAndBoardService;
+import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 import blserviceimpl.comparison.ComparisonImpl;
@@ -14,6 +15,7 @@ import blserviceimpl.singlestock.*;
 import blserviceimpl.statistics.IndustryCorrelationServiceImpl;
 import blserviceimpl.statistics.SingleCodePredictServiceImpl;
 import blserviceimpl.strategy.IndustryAndBoardServiceImpl;
+import blserviceimpl.strategy.StrategyHistoryServiceImpl;
 import blserviceimpl.strategy.StrategyServiceImpl;
 import blserviceimpl.thermometer.ThermometerServiceImpl;
 
@@ -73,5 +75,9 @@ public enum SingleBlService {
 
     public SingleCodePredictService getSingleCodePredictService(){
         return SingleCodePredictServiceImpl.SINGLE_CODE_PREDICT;
+    }
+
+    public StrategyHistoryService getStrategyHistoryService() {
+        return StrategyHistoryServiceImpl.STRATEGY_HISTORY_SERVICE;
     }
 }

@@ -6,6 +6,7 @@ import blservice.singlestock.*;
 import blservice.statistics.IndustryCorrelationService;
 import blservice.statistics.SingleCodePredictService;
 import blservice.strategy.IndustryAndBoardService;
+import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import blservice.thermometer.ThermometerService;
 import blstub.marketstub.MarketServiceImpl_Stub;
@@ -65,6 +66,11 @@ public class BlFactoryServiceStub implements BlFactoryService {
 
     @Override
     public SingleCodePredictService createSingleCodePredictService() {
+        return null;
+    }
+
+    @Override
+    public StrategyHistoryService createStrategyHistoryService() {
         return null;
     }
 

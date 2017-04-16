@@ -6,12 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import vo.PriceIncomeVO;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wshwbluebird on 2017/4/15.
  */
-public class DotChartController {
+public class DotChartController implements Serializable{
 
     private  DotChart dotChart;
 

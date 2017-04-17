@@ -376,12 +376,14 @@ public class StockChooseController {
             JFXButton button=new JFXButton(stockPickIndex.toString());
             filterButtons[stockPickIndex.ordinal()] = button;
             button.setFont(Font.font(25));
+            button.getStyleClass().add("custom-jfx-button-options");
             setButtonListener(button);//设置监听
         }
         for (StrategyType strategyType : StrategyType.values()){
             JFXButton button=new JFXButton(strategyType.toString());
             rankButtons[strategyType.ordinal()] = button;
             button.setFont(Font.font(25));
+            button.getStyleClass().add("custom-jfx-button-options");
             setButtonListener(button);//设置监听
         }
 
@@ -442,6 +444,7 @@ public class StockChooseController {
                 //添加次序ComboBox、范围ComboBox和权重TextField
                 JFXComboBox order=new JFXComboBox();
                 order.setValue("从小到大");
+                order.setMinWidth(150);
                 order.getItems().addAll("从小到大","从大到小");
                 order.setMaxWidth(130);
 
@@ -554,6 +557,7 @@ public class StockChooseController {
         //添加次序ComboBox、范围ComboBox和权重TextField
         JFXComboBox order=new JFXComboBox();
         order.getItems().addAll("从小到大","从大到小");
+        order.setMinWidth(150);
         order.getSelectionModel().select(comparison);
         order.setMaxWidth(130);
 
@@ -697,6 +701,7 @@ public class StockChooseController {
 
         //TODO:还差排名条件和筛选条件没有添加
         filterCondition.getChildren().clear();
+        filterCondition.getRowConstraints().clear();
         strategySaveVO.stockPickIndexList.stream().forEach(stockPickIndexVO -> {
             addFilterConditionRow(stockPickIndexVO.stockPickIndex.toString(),stockPickIndexVO.lowerBound==null?"小于":"大于",
                     stockPickIndexVO.lowerBound==null?
@@ -705,6 +710,7 @@ public class StockChooseController {
 
         //TODO 添加排名条件
         rankingCondition.getChildren().clear();
+        rankingCondition.getRowConstraints().clear();
         if(strategySaveVO.userMode){
             strategySaveVO.mixedStrategyVOList.stream().forEach(mixedStrategyVO->{
                 addRankConditionRow(mixedStrategyVO.strategyType.toString()

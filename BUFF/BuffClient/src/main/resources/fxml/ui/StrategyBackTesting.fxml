@@ -20,7 +20,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
 <StackPane fx:id="root" style="-fx-background-color: WHITE" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="500" direction="TOP" style="-fx-background-color: WHITE">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="550" direction="TOP" style="-fx-background-color: WHITE">
         <styleClass>
             <String fx:value="body" />
         </styleClass>

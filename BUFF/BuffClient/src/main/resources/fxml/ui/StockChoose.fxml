@@ -117,11 +117,11 @@
                                           <children>
                                              <GridPane>
                                                 <columnConstraints>
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
                                                 </columnConstraints>
                                                 <rowConstraints>
                                                    <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
@@ -159,11 +159,11 @@
                                              </GridPane>
                                              <GridPane fx:id="filterCondition">
                                                 <columnConstraints>
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
                                                 </columnConstraints>
                                                 <padding>
                                                    <Insets top="10.0" />
@@ -185,11 +185,11 @@
                                           <children>
                                              <GridPane>
                                                 <columnConstraints>
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
                                                 </columnConstraints>
                                                 <rowConstraints>
                                                    <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
@@ -227,11 +227,11 @@
                                              </GridPane>
                                              <GridPane fx:id="rankingCondition">
                                                 <columnConstraints>
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
-                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
+                                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0" />
                                                 </columnConstraints>
                                                 <padding>
                                                    <Insets top="10.0" />

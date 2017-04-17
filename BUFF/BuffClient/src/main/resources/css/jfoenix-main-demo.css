@@ -393,6 +393,12 @@
 	-fx-font-weight: bold;
 }
 
+.custom-jfx-button-options{
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	/*-fx-text-fill: BLUE;*/
+}
+
 /*******************************************************************************
 *                                                                              *
 * JFX Check Box                                                                *

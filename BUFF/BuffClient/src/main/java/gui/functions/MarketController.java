@@ -243,10 +243,12 @@ public class MarketController {
                         } else {
                             super.setText(var1.toString());
                             super.setGraphic((Node)null);
-                            if(getTreeTableRow().getItem().rise.get().startsWith("+")){
-                                setTextFill(Color.RED);
-                            }else {
-                                setTextFill(Color.GREEN);
+                            if (getTreeTableRow().getItem() != null) {
+                                if(getTreeTableRow().getItem().rise.get().startsWith("+")){
+                                    setTextFill(Color.RED);
+                                }else {
+                                    setTextFill(Color.GREEN);
+                                }
                             }
                         }
                     }

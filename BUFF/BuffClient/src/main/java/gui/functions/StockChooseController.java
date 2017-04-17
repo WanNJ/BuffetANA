@@ -464,6 +464,44 @@ public class StockChooseController {
         });
     }
 
+    private void addFilterConditionRow(String name,String comparison,String conditionValue){
+        RowConstraints rowConstraints=new RowConstraints();
+        rowConstraints.setValignment(VPos.CENTER);
+        filterCondition.getRowConstraints().add(rowConstraints);
+
+        //添加指标名称Label
+        Label conditionName=new Label(name);
+        conditionName.setFont(Font.font(20));
+
+        //添加删除按钮
+        JFXButton delete=new JFXButton("");
+        ImageView imageView=new ImageView(new Image("/resources/images/delete.png"));
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        delete.setGraphic(imageView);
+
+        int row=filterCondition.getRowConstraints().size()-1;//行坐标
+
+        filterCondition.add(conditionName,0,row);
+
+        //添加比较符ComboBox和值TextField
+        JFXComboBox comparisonCharacter=new JFXComboBox();
+        comparisonCharacter.setValue("小于");
+        comparisonCharacter.getItems().addAll("小于","大于");
+        comparisonCharacter.getSelectionModel().select(comparison);
+        comparisonCharacter.setMaxWidth(100);
+        JFXTextField value=new JFXTextField(conditionValue);
+        value.setMaxWidth(100);
+        filterCondition.add(comparisonCharacter,1,row);
+        filterCondition.add(value,3,row);
+
+        delete.setOnAction(event1 -> {
+            filterCondition.getRowConstraints().remove(rowConstraints);
+            filterCondition.getChildren().removeAll(conditionName,comparisonCharacter,value,delete);
+        });
+        filterCondition.add(delete,4,row);
+    }
+
     /**
      * 初始化保存、加载策略的组件
      */
@@ -502,25 +540,7 @@ public class StockChooseController {
             }
             //加载策略
             StrategySaveVO strategySaveVO=strategyHistoryService.getStrategyHistory(strategyName);
-            from.setValue(strategySaveVO.begin);
-            to.setValue(strategySaveVO.end);
-            stockPool.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.stockPool.toString());
-            plate.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.block.stream().collect(Collectors.toList()).get(0));//默认板块是单选
-            selectedList.getItems().setAll(strategySaveVO.stockPoolConditionVO.industry);
-            ST.setSelected(strategySaveVO.stockPoolConditionVO.excludeST);
-            if(strategySaveVO.userMode){
-                strategyType.getSelectionModel().select("自定义策略");
-                numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
-            }else {
-                if(StrategyType.MA.equals(strategySaveVO.strategyConditionVO.strategyType)){//回归策略
-                    numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
-                }else if(StrategyType.MOM.equals(strategySaveVO.strategyConditionVO.strategyType)){//动量策略
-                    numOfShares.setText(strategySaveVO.traceBackVO.holdingRate+"");
-                }
-                formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
-            }
-            holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
-            //TODO:还差排名条件和筛选条件没有添加
+            setData(strategySaveVO);
 
             loadDialog.close();
         });
@@ -533,6 +553,34 @@ public class StockChooseController {
             }
         });
 
+    }
+
+    private void setData(StrategySaveVO strategySaveVO){
+        from.setValue(strategySaveVO.begin);
+        to.setValue(strategySaveVO.end);
+        stockPool.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.stockPool.toString());
+        plate.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.block.stream().collect(Collectors.toList()).get(0));//默认板块是单选
+        selectedList.getItems().setAll(strategySaveVO.stockPoolConditionVO.industry);
+        ST.setSelected(strategySaveVO.stockPoolConditionVO.excludeST);
+        if(strategySaveVO.userMode){
+            strategyType.getSelectionModel().select("自定义策略");
+            numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+        }else {
+            if(StrategyType.MA.equals(strategySaveVO.strategyConditionVO.strategyType)){//回归策略
+                numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+            }else if(StrategyType.MOM.equals(strategySaveVO.strategyConditionVO.strategyType)){//动量策略
+                numOfShares.setText(strategySaveVO.traceBackVO.holdingRate+"");
+            }
+            formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
+        }
+        holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
+        //TODO:还差排名条件和筛选条件没有添加
+        filterCondition.getChildren().clear();
+        strategySaveVO.stockPickIndexList.stream().forEach(stockPickIndexVO -> {
+            addFilterConditionRow(stockPickIndexVO.stockPickIndex.toString(),stockPickIndexVO.lowerBound==null?"小于":"大于",
+                    stockPickIndexVO.lowerBound==null?
+                            String.format("%.2f",stockPickIndexVO.upBound.doubleValue()):String.format("%.2f",stockPickIndexVO.lowerBound.doubleValue()));
+        });
     }
 
 
@@ -708,16 +756,14 @@ public class StockChooseController {
                 String label = ((Label) node).getText();
                 stockPickIndex  = getStockPickIndexByName(label);
                 if(stockPickIndex!=null)  js = 1;
-            }else
-            if(node instanceof JFXComboBox){
+            }else if(node instanceof JFXComboBox){
                 if(js==1) {
                     String comp = (String) ((JFXComboBox) node).getValue();
                     if(comp.equals("大于")) less = true;
                     else less = false;
                     js++;
                 }
-            }else
-            if(node instanceof JFXTextField){
+            }else if(node instanceof JFXTextField){
                 if(js==2) {
                     String temp = ((JFXTextField) node).getText();
                     if(temp == null || "".equals(temp)){

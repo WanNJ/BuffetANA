@@ -73,11 +73,12 @@ public class StockChooseController {
     @FXML private JFXDialog loadDialog;//显示加载框的Dialog
     @FXML private Label stocks;//显示股票池的Label
     @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
+    @FXML private JFXButton acceptIndustry;//显示行业的Dialog的确认Button
     @FXML private JFXButton acceptSave;//显示保存框的Dialog的确认Button
     @FXML private JFXButton acceptLoad;//显示保存框的Dialog的确认Button
     @FXML private JFXDialog industryDialog;//显示板块选择的Dialog
-    @FXML private JFXListView unselectedList;//用户未选择的板块的ListView
-    @FXML private JFXListView selectedList;//用户已选择的板块的ListView,用getItem方法能获得用户选择的所有板块
+    @FXML private JFXListView<String> unselectedList;//用户未选择的板块的ListView
+    @FXML private JFXListView<String> selectedList;//用户已选择的板块的ListView,用getItem方法能获得用户选择的所有板块
     @FXML private JFXListView<String> strategyNameList;//加载框的Dialog的策略名字列表
     @FXML private JFXTextField strategyName;//保存框的Dialog的用户保存的策略名称
     @FXML private Label noStrategyLabel;//保存框的Dialog的"没有保存的策略"的Label
@@ -275,7 +276,6 @@ public class StockChooseController {
             stocks.setText("stock1\nstock2\n");
             stockDialog.show(root);
 
-            unselectedList.getItems().clear();
             if("全部".equals(stockPool.getValue())){
                 plate.setDisable(true);
                 industry.setDisable(true);
@@ -287,9 +287,6 @@ public class StockChooseController {
 
                 plate.setDisable(false);
                 industry.setDisable(false);
-                unselectedList.getItems().clear();
-                selectedList.getItems().clear();
-                unselectedList.getItems().addAll(industryAndBoardService.getAllIndustries());
             }
         });
 
@@ -322,16 +319,18 @@ public class StockChooseController {
      */
     private void initIndustry(){
         industry.setOnAction(event -> industryDialog.show(root));
+        acceptIndustry.setOnAction(event -> industryDialog.close());
 
         //为行业选择的Dialog的ListView添加双击添加选择行业的监听
         unselectedList.setCellFactory(listView->{
             JFXListCell listCell=new JFXListCell<>();
             listCell.setOnMouseClicked(event -> {
                 synchronized (this){
-                    Object selectedItem=unselectedList.getSelectionModel().getSelectedItem();
+                    String selectedItem=unselectedList.getSelectionModel().getSelectedItem();
                     if(event.getClickCount()==2 && null!=selectedItem){
                         unselectedList.getItems().remove(selectedItem);
                         selectedList.getItems().add(selectedItem);
+                        unselectedList.getSelectionModel().clearSelection();
                     }
                 }
             });
@@ -341,15 +340,20 @@ public class StockChooseController {
             JFXListCell listCell=new JFXListCell<>();
             listCell.setOnMouseClicked(event -> {
                 synchronized (this){
-                    Object selectedItem=selectedList.getSelectionModel().getSelectedItem();
+                    String selectedItem=selectedList.getSelectionModel().getSelectedItem();
                     if(event.getClickCount()==2 && null!=selectedItem){
                         selectedList.getItems().remove(selectedItem);
                         unselectedList.getItems().add(selectedItem);
+                        selectedList.getSelectionModel().clearSelection();
                     }
                 }
             });
             return listCell;
         });
+
+        unselectedList.getItems().clear();
+        selectedList.getItems().clear();
+        unselectedList.getItems().addAll(industryAndBoardService.getAllIndustries());
     }
 
     /**

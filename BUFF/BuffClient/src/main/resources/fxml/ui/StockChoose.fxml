@@ -296,7 +296,7 @@
                <VBox>
                   <HBox>
                      <VBox alignment="CENTER">
-                        <Label maxWidth="80" text="未选板块" textFill="BLUE">
+                        <Label maxWidth="80" text="未选行业" textFill="BLUE">
                            <font>
                               <Font size="20" />
                            </font>
@@ -304,7 +304,7 @@
                         <JFXListView fx:id="unselectedList" prefHeight="300" prefWidth="200" style="-fx-border-color: #ff9936" />
                      </VBox>
                      <VBox alignment="CENTER">
-                        <Label maxWidth="80" text="已选板块" textFill="GREEN">
+                        <Label maxWidth="80" text="已选行业" textFill="GREEN">
                            <font>
                               <Font size="20" />
                            </font>
@@ -315,6 +315,13 @@
                   <Label>双击可添加选择的板块</Label>
                </VBox>
             </body>
+            <actions>
+               <JFXButton fx:id="acceptIndustry" styleClass="dialog-accept" text="确定">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </JFXButton>
+            </actions>
          </JFXDialogLayout>
       </JFXDialog>
 

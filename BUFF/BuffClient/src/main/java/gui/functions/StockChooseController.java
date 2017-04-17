@@ -1,5 +1,6 @@
 package gui.functions;
 
+import blservice.strategy.IndustryAndBoardService;
 import blservice.strategy.StrategyHistoryService;
 import blservice.strategy.StrategyService;
 import com.jfoenix.controls.*;
@@ -15,11 +16,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -30,7 +31,6 @@ import javafx.scene.text.Font;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
-import util.StrategyScoreVO;
 import vo.*;
 
 import javax.annotation.PostConstruct;
@@ -84,6 +84,7 @@ public class StockChooseController {
 
 
     private StrategyService strategyService;
+    private IndustryAndBoardService industryAndBoardService;
     private BlFactoryService blFactoryService;
 
     /**
@@ -100,6 +101,14 @@ public class StockChooseController {
      */
     public void setStrategyService(StrategyService strategyService){
         this.strategyService = strategyService;
+    }
+
+    /**
+     * 外部注入bl
+     * @param industryAndBoardService
+     */
+    public void setIndustryAndBoardService(IndustryAndBoardService industryAndBoardService) {
+        this.industryAndBoardService = industryAndBoardService;
     }
 
     /**
@@ -139,6 +148,7 @@ public class StockChooseController {
     public void init(){
         blFactoryService = new BLFactorySeviceOnlyImpl();
         strategyService = blFactoryService.createStrategyService();
+        industryAndBoardService = blFactoryService.createIndustryAndBoardService();
         //init all the VO value
         stockPoolConditionVO = new StockPoolConditionVO();
         mixedStrategyVOList = new ArrayList<>();
@@ -278,7 +288,7 @@ public class StockChooseController {
                 industry.setDisable(false);
                 unselectedList.getItems().clear();
                 selectedList.getItems().clear();
-                unselectedList.getItems().add("无");
+                unselectedList.getItems().addAll(industryAndBoardService.getAllIndustries());
             }
         });
 

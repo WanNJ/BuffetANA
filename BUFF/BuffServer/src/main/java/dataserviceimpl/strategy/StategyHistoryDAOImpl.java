@@ -49,11 +49,11 @@ public enum StategyHistoryDAOImpl implements StategyHistoryDAO {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File(saveLoc+"single/"+singleStrategyPO.getStrategyName()+".json"), singleStrategyPO);
-            String jsonInString = mapper.writeValueAsString(singleStrategyPO);
-            System.out.println(jsonInString);
-            // Convert object to JSON string and pretty print
-            jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(singleStrategyPO);
-            System.out.println(jsonInString);
+//            String jsonInString = mapper.writeValueAsString(singleStrategyPO);
+//            System.out.println(jsonInString);
+//            // Convert object to JSON string and pretty print
+//            jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(singleStrategyPO);
+//            System.out.println(jsonInString);
             return true;
 
         } catch (IOException e) {
@@ -67,11 +67,11 @@ public enum StategyHistoryDAOImpl implements StategyHistoryDAO {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File(saveLoc+"user/"+userStrategyPO.getStrategyName()+".json"), userStrategyPO);
-            String jsonInString = mapper.writeValueAsString(userStrategyPO);
-            System.out.println(jsonInString);
-            // Convert object to JSON string and pretty print
-            jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userStrategyPO);
-            System.out.println(jsonInString);
+//            String jsonInString = mapper.writeValueAsString(userStrategyPO);
+//            System.out.println(jsonInString);
+//            // Convert object to JSON string and pretty print
+//            jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userStrategyPO);
+//            System.out.println(jsonInString);
             return true;
 
         } catch (IOException e) {

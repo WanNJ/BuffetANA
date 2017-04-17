@@ -31,11 +31,7 @@ public class PeriodRateChart extends AreaChart<Number ,Number> {
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setAutoRanging(true);
         //TODO 将其设为百分比格式
-
-        betterPieceVOObservableList.forEach(t-> System.out.println(t.rate));
-
-
-
+        
         final PeriodRateChart PeriodRateChart = new PeriodRateChart(xAxis, yAxis);
 
 

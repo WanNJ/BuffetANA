@@ -67,23 +67,6 @@ public class BetterStrategyController implements Updatable{
         this.winningStrategies_holdingPeriod.getChildren().add(
                 periodRateChartController.getWinningStrategies_holdingPeriod());
 
-        // 界面端的测试
-//        StrategyService strategyService=new StrategyServiceImpl_Stub();
-//       // PeriodRateChartController periodRateChartController =  PeriodRateChartController.PERIOD_RATE_CHART_CONTROLLER;
-//        periodRateChartController.update(strategyService);
-//        this.excessEarnings_formativePeriod.getChildren().clear();
-//        this.excessEarnings_formativePeriod.getChildren().add
-//                (periodRateChartController.getExcessEarnings_formativePeriod());
-//        this.excessEarnings_holdingPeriod.getChildren().clear();
-//        this.excessEarnings_holdingPeriod.getChildren().add
-//                (periodRateChartController.getExcessEarnings_holdingPeriod());
-//        this.winningStrategies_formativePeriod.getChildren().clear();
-//        this.winningStrategies_formativePeriod.getChildren().add
-//                (periodRateChartController.getWinningStrategies_formativePeriod());
-//
-//        this.winningStrategies_holdingPeriod.getChildren().clear();
-//        this.winningStrategies_holdingPeriod.getChildren().add(
-//                periodRateChartController.getWinningStrategies_holdingPeriod());
 
 
     }

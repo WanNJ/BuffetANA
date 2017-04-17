@@ -502,6 +502,83 @@ public class StockChooseController {
         filterCondition.add(delete,4,row);
     }
 
+
+    /**
+     *
+     * @param name
+     * @param comparison
+     * @param formationDays
+     * @param weightValue
+     * @param isChoosed  true 代表自定义
+     */
+    private void addRankConditionRow(String name,String comparison,String formationDays,double weightValue,boolean isChoosed) {
+        RowConstraints rowConstraints=new RowConstraints();
+        rowConstraints.setValignment(VPos.CENTER);
+        rankingCondition.getRowConstraints().add(rowConstraints);
+
+        rankingCondition.getRowConstraints().add(rowConstraints);
+        int row=rankingCondition.getRowConstraints().size()-1;//行坐标
+
+        //添加指标名称Label
+        Label conditionName=new Label(name);
+        conditionName.setFont(Font.font(20));
+
+        //添加删除按钮
+        JFXButton delete=new JFXButton("");
+        ImageView imageView=new ImageView(new Image("/resources/images/delete.png"));
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        delete.setGraphic(imageView);
+
+        rankingCondition.add(conditionName,0,row);
+
+        //添加次序ComboBox、范围ComboBox和权重TextField
+        JFXComboBox order=new JFXComboBox();
+        order.getItems().addAll("从小到大","从大到小");
+        order.getSelectionModel().select(comparison);
+        order.setMaxWidth(130);
+
+
+//                    JFXComboBox range=new JFXComboBox();
+//                    range.setValue("全部");
+//                    range.getItems().addAll("全部");
+//                    range.setMaxWidth(100);
+
+
+        JFXTextField range=new JFXTextField();
+        range.setMaxWidth(100);
+        range.setPromptText("形成天数");
+        if(isChoosed){
+            range.setVisible(true);
+            range.setText(formationDays);
+        }else{
+            range.setVisible(false);
+        }
+
+        JFXTextField weight=new JFXTextField();
+        if(!isChoosed){
+            weight.setPromptText("1");
+            weight.editableProperty().set(false);
+        }else{
+            weight.setPromptText("权重");
+            weight.setText(String.valueOf(weight));
+        }
+
+        weight.setMaxWidth(100);
+        rankingCondition.add(order,1,row);
+        rankingCondition.add(range,2,row);
+        rankingCondition.add(weight,3,row);
+
+        delete.setOnAction(event1 -> {
+            rankingCondition.getRowConstraints().remove(rowConstraints);
+            rankingCondition.getChildren().removeAll(conditionName,order,range,weight,delete);
+        });
+        rankingCondition.add(delete,4,row);
+
+
+    }
+
+
     /**
      * 初始化保存、加载策略的组件
      */
@@ -562,6 +639,7 @@ public class StockChooseController {
         plate.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.block.stream().collect(Collectors.toList()).get(0));//默认板块是单选
         selectedList.getItems().setAll(strategySaveVO.stockPoolConditionVO.industry);
         ST.setSelected(strategySaveVO.stockPoolConditionVO.excludeST);
+
         if(strategySaveVO.userMode){
             strategyType.getSelectionModel().select("自定义策略");
             numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
@@ -574,6 +652,7 @@ public class StockChooseController {
             formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
+
         //TODO:还差排名条件和筛选条件没有添加
         filterCondition.getChildren().clear();
         strategySaveVO.stockPickIndexList.stream().forEach(stockPickIndexVO -> {
@@ -581,6 +660,20 @@ public class StockChooseController {
                     stockPickIndexVO.lowerBound==null?
                             String.format("%.2f",stockPickIndexVO.upBound.doubleValue()):String.format("%.2f",stockPickIndexVO.lowerBound.doubleValue()));
         });
+
+        //TODO 添加排名条件
+        rankingCondition.getChildren().clear();
+        if(strategySaveVO.userMode){
+            strategySaveVO.mixedStrategyVOList.stream().forEach(mixedStrategyVO->{
+                addRankConditionRow(mixedStrategyVO.strategyType.toString()
+                        ,mixedStrategyVO.asc?"从小到大":"从大到小",String.valueOf(mixedStrategyVO.formationPeriod),mixedStrategyVO.weight,true);
+            });
+        }else{
+            StrategyConditionVO strategyConditionVO = strategySaveVO.strategyConditionVO;
+            addRankConditionRow(strategyConditionVO.strategyType.toString(),
+                    strategyConditionVO.asd?"从小到大":"从大到小",
+                    String.valueOf(strategySaveVO.traceBackVO.formationPeriod),1,false);
+        }
     }
 
 

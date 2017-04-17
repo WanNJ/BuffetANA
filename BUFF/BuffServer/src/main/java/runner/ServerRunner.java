@@ -60,7 +60,7 @@ public class ServerRunner {
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
                 , LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 //        strategyConditionVO1.holdingRate = 0.2;
-        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
+        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.HS300,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
         List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
         mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false,20));

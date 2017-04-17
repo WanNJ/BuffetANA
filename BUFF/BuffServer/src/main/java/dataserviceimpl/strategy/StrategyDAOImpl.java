@@ -377,7 +377,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
     }
 
     private static List<String> readHS300List() {
-        final String pref = "../Data/HS300";
+        final String pref = "../Data/StockMap";
         String pathOfFile = pref + ".csv";
 
         List<String> codeList = new ArrayList<>();
@@ -386,7 +386,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
             codeList = list.parallelStream().map(t -> {
                 String[] codeAndName = t.split(",");
                 return codeAndName[1];
-            }).collect(Collectors.toList());
+            }).filter(t -> t.startsWith("000") || t.startsWith("001")).collect(Collectors.toList());
 
         } catch (IOException e) {
             System.err.println(pathOfFile + " is not exits");

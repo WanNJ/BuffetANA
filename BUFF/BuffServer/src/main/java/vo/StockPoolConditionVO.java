@@ -42,6 +42,7 @@ public class StockPoolConditionVO {
     }
 
     public StockPoolConditionVO(StockPoolConditionPO stockPoolConditionPO) {
+
         this.stockPool = stockPoolConditionPO.getStockPool();
         this.block = stockPoolConditionPO.getBlock();
         this.industry = stockPoolConditionPO.getIndustry();

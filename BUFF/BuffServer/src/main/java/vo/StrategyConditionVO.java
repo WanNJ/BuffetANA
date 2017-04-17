@@ -36,8 +36,8 @@ public class StrategyConditionVO {
 
     public StrategyConditionVO(StrategyConditionPO strategyConditionPO) {
         this.strategyType = strategyConditionPO.getStrategyType();
-        this.beginDate = DateUtil.parseLine(strategyConditionPO.getBeginDate());
-        this.endDate = DateUtil.parseLine(strategyConditionPO.getEndDate());
+        this.beginDate = DateUtil.fromToString(strategyConditionPO.getBeginDate());
+        this.endDate = DateUtil.fromToString(strategyConditionPO.getEndDate());
         this.asd =strategyConditionPO.isAsd();
     }
 }

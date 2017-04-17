@@ -141,6 +141,7 @@ public class StockChooseController {
     private  List<StockPickIndexVO> stockPickIndexList;
     private StrategyConditionVO strategyConditionVO;
     private TraceBackVO traceBackVO;
+    private String currentName; //  保存当前的策略名字
 
 
 
@@ -571,7 +572,7 @@ public class StockChooseController {
             weight.editableProperty().set(false);
         }else{
             weight.setPromptText("权重");
-            weight.setText(String.valueOf(weight));
+            weight.setText(String.valueOf(weightValue));
         }
 
         weight.setMaxWidth(100);
@@ -595,7 +596,18 @@ public class StockChooseController {
     private void initSaveAndLoad(){
         StrategyHistoryService strategyHistoryService = blFactoryService.createStrategyHistoryService();
 
-        save.setOnAction(event -> saveDialog.show(root));
+        save.setOnAction(event -> {
+            if(currentName!=null){
+                strategyName.setText(currentName);
+            }
+            try {
+                collectCurrentData();
+            } catch (WrongValueException e) {
+                Dialogs.showMessage(e.getErr());
+                return;
+            }
+            saveDialog.show(root);
+        });
         load.setOnAction(event -> loadDialog.show(root));
         //打开loadDialog时加载strategyNameList的内容
         loadDialog.setOnDialogOpened(event -> {
@@ -607,15 +619,11 @@ public class StockChooseController {
                 Dialogs.showMessage("啊哦","名字不能为空哦");
                 return;
             }
-            //保存信息
-            try {
-                collectCurrentData();
-            } catch (WrongValueException e) {
-                //策略没填完或者填写非法值也能保存
-            }
+            this.currentName = strategyName.getText();
             StrategySaveVO strategySaveVO=new StrategySaveVO(strategyName.getText(),"自定义策略".equals(
                     strategyType.getValue()), stockPoolConditionVO,mixedStrategyVOList,stockPickIndexList,
                     strategyConditionVO,traceBackVO,from.getValue(),to.getValue());
+            //TODO
             strategyHistoryService.saveStrategy(strategySaveVO,true);//暂时默认强制覆盖
 
             saveDialog.close();
@@ -628,7 +636,7 @@ public class StockChooseController {
             //加载策略
             StrategySaveVO strategySaveVO=strategyHistoryService.getStrategyHistory(strategyName);
             setData(strategySaveVO);
-
+            currentName  =strategyName;
             loadDialog.close();
         });
         //控制noStrategyLabel的显示
@@ -646,19 +654,35 @@ public class StockChooseController {
         from.setValue(strategySaveVO.begin);
         to.setValue(strategySaveVO.end);
         stockPool.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.stockPool.toString());
+        if(strategySaveVO.stockPoolConditionVO.block!=null)
         plate.getSelectionModel().select(strategySaveVO.stockPoolConditionVO.block.stream().collect(Collectors.toList()).get(0));//默认板块是单选
+        if(strategySaveVO.stockPoolConditionVO.industry!=null)
         selectedList.getItems().setAll(strategySaveVO.stockPoolConditionVO.industry);
         ST.setSelected(strategySaveVO.stockPoolConditionVO.excludeST);
 
         if(strategySaveVO.userMode){
+            System.out.println("rrrrrr");
             strategyType.getSelectionModel().select("自定义策略");
             numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+            formativePeriod.setVisible(false);
+            //是用户自定义策略
+            strateyChoosed = false;
         }else {
+            System.out.println("ddddd:   "+strategySaveVO.strategyConditionVO.strategyType);
             if(StrategyType.MA.equals(strategySaveVO.strategyConditionVO.strategyType)){//回归策略
                 numOfShares.setText(strategySaveVO.traceBackVO.holdingNum+"");
+                strategyType.getSelectionModel().select("均值策略");
             }else if(StrategyType.MOM.equals(strategySaveVO.strategyConditionVO.strategyType)){//动量策略
                 numOfShares.setText(strategySaveVO.traceBackVO.holdingRate+"");
+                strategyType.getSelectionModel().select("动量策略");
             }
+            formativePeriod.setVisible(true);
+            //不是用户自定义策略
+            strateyChoosed = true;
+            if("排名条件".equals(pickingConditions.getSelectionModel().getSelectedItem().getText())) {
+                quotaPane.getChildren().clear();
+            }
+            quotaPane.getChildren().clear();
             formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
@@ -845,6 +869,9 @@ public class StockChooseController {
             if(mixedStrategyVOList.size()==0){
                 throw new WrongValueException(" 没有选择排名条件");
             }
+
+            mixedStrategyVOList.stream().forEach(t-> System.out.println(t.strategyType));
+
         }
     }
 

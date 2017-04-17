@@ -94,4 +94,15 @@ public class DateUtil {
     public static boolean isBetween(LocalDate testDate, LocalDate beginDate, LocalDate endDate) {
         return !(testDate.isAfter(endDate) || testDate.isBefore(beginDate));
     }
+
+
+    public static  LocalDate fromToString(String dateString){
+        String[] arrs = dateString.split("-");
+        int year = Integer.parseInt(arrs[0]);
+        int month = Integer.parseInt(arrs[1]);
+        int day = Integer.parseInt(arrs[2]);
+
+        return LocalDate.of(year,month,day);
+
+    }
 }

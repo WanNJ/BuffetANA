@@ -72,6 +72,7 @@ public class StrategySaveVO {
     }
 
     public StrategySaveVO(UserStrategyPO userStrategyPO) {
+        System.out.println("here in save ");
         this.strategyName = userStrategyPO.getStrategyName();
         this.stockPoolConditionVO  = new StockPoolConditionVO(userStrategyPO.getStockPoolConditionPO());
         this.userMode = true;
@@ -79,24 +80,26 @@ public class StrategySaveVO {
                 .stream()
                 .map(t->new MixedStrategyVO(t))
                 .collect(Collectors.toList());
+
         this.traceBackVO = new TraceBackVO(userStrategyPO.getTraceBackPO());
         this.stockPickIndexList = userStrategyPO.getStockPickIndexList()
                 .stream()
                 .map(t->new StockPickIndexVO(t))
                 .collect(Collectors.toList());
         this.strategyConditionVO = new StrategyConditionVO
-                (null, DateUtil.parseLine(userStrategyPO.getBegin())
-                        ,DateUtil.parseLine(userStrategyPO.getEnd()),true);
+                (null, DateUtil.fromToString(userStrategyPO.getBegin())
+                        ,DateUtil.fromToString(userStrategyPO.getEnd()),true);
 
-        this.begin = DateUtil.parseLine(userStrategyPO.getBegin());
-        this.end = DateUtil.parseLine(userStrategyPO.getEnd());
+
+        this.begin = DateUtil.fromToString(userStrategyPO.getBegin());
+        this.end = DateUtil.fromToString(userStrategyPO.getEnd());
 
     }
 
     public StrategySaveVO(SingleStrategyPO singleStrategyPO) {
         this.strategyName = singleStrategyPO.getStrategyName();
         this.stockPoolConditionVO  = new StockPoolConditionVO(singleStrategyPO.getStockPoolConditionPO());
-        this.userMode = true;
+        this.userMode = false;
         this.mixedStrategyVOList = new ArrayList<>();
         this.traceBackVO = new TraceBackVO(singleStrategyPO.getTraceBackPO());
         this.stockPickIndexList = singleStrategyPO.getStockPickIndexList()
@@ -107,6 +110,7 @@ public class StrategySaveVO {
 
         this.begin = strategyConditionVO.beginDate;
         this.end =strategyConditionVO.endDate;
+
     }
 
     /**
@@ -142,10 +146,14 @@ public class StrategySaveVO {
                         .map(t->new StockPickIndexPO(t))
                         .collect(Collectors.toList());
 
+
+
         List<MixedStrategyPO> mixedStrategyPOs =
                 this.mixedStrategyVOList.stream()
                         .map(t->new MixedStrategyPO(t))
                         .collect(Collectors.toList());
+
+       // System.out.println("ddddddd:"+mixedStrategyPOs.size());
 
         UserStrategyPO userStrategyPO = new UserStrategyPO
                 (this.strategyName,begin.toString(),end.toString()

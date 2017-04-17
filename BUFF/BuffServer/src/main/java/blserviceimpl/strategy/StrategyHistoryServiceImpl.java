@@ -39,7 +39,7 @@ public enum  StrategyHistoryServiceImpl implements StrategyHistoryService {
         /**
          * 如果不是强制保存覆盖
          */
-        if(overWrite) {
+        if(!overWrite) {
             if (userMode) {
                 //如果策略已经在同一个要保存的列表的出现过 询问是否覆盖
                 if (isAlready(userList, name))
@@ -88,7 +88,7 @@ public enum  StrategyHistoryServiceImpl implements StrategyHistoryService {
         List<String> userList = stategyHistoryDAO.getUserHistoryList();
         List<String> singleList = stategyHistoryDAO.getSingleHistoryList();
 
-        StrategySaveVO strategySaveVO = new StrategySaveVO();
+        StrategySaveVO strategySaveVO ;
 
         if(isAlready(userList,strategyName)){
             UserStrategyPO userStrategyPO = stategyHistoryDAO.getUserStrategyPO(strategyName);

@@ -316,7 +316,7 @@
 
 .jfx-slider-style .sliderValue {
 	-fx-stroke: WHITE;
-	-fx-font-size: 10.0;
+	-fx-font-size: 20.0;
 }
 
 /******************************************************/
@@ -349,7 +349,7 @@
 
 .custom-jfx-button-raised  {
 	-fx-padding: 0.7em 0.57em;
-	-fx-font-size: 14.0px;
+	-fx-font-size: 24.0px;
 	-fx-button-type: RAISED;
 	-fx-background-color: rgb(102.0,153.0,102.0);
 	-fx-pref-width: 200.0;
@@ -388,6 +388,11 @@
 	-fx-text-fill: WHITE;
 }
 
+.custom-jfx-button-font-size-20{
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
+}
+
 /*******************************************************************************
 *                                                                              *
 * JFX Check Box                                                                *
@@ -395,7 +400,7 @@
 *******************************************************************************/
 
 .jfx-check-box{
-    -fx-font-weight: BOLD;
+    /*-fx-font-weight: BOLD;*/
 	-fx-font-size: 20px;
 }
 
@@ -629,7 +634,7 @@
 }
 
 .toggle-label {
-	-fx-font-size: 14.0px;
+	-fx-font-size: 20.0px;
 }
 
 .toggle-icon1 .icon{

@@ -55,6 +55,7 @@ public class StockChooseController {
     @FXML private JFXComboBox<String> plate;//板块
     @FXML private JFXButton industry;//行业
     @FXML private JFXCheckBox ST;//是否排除ST
+    @FXML private JFXButton showStocks;//显示目前选择的股票
     @FXML private JFXDatePicker from;//开始日期
     @FXML private JFXDatePicker to;//结束日期
     @FXML private FlowPane quotaPane;//选股指标面板
@@ -273,8 +274,6 @@ public class StockChooseController {
          * 股票池选择的监听
          */
         stockPool.setOnAction(event -> {
-            stocks.setText("stock1\nstock2\n");
-            stockDialog.show(root);
 
             if("全部".equals(stockPool.getValue())){
                 plate.setDisable(true);
@@ -290,6 +289,11 @@ public class StockChooseController {
             }
         });
 
+        //显示目前选择的股票
+        showStocks.setOnAction(event -> {
+            stocks.setText("stock1\nstock2\n");
+            stockDialog.show(root);
+        });
 
         /**
          * 开始回测

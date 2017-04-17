@@ -57,13 +57,18 @@
                               </FXCollections>
                            </items>
                         </JFXComboBox>
-                        <JFXButton fx:id="industry" minWidth="110.0" text="选择行业">
+                        <JFXButton fx:id="industry" minWidth="110.0" styleClass="custom-jfx-button-font-size-20" text="选择行业">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </JFXButton>
                         <JFXCheckBox fx:id="ST" text="排除ST">
                         </JFXCheckBox>
+                        <JFXButton fx:id="showStocks" layoutX="130.0" layoutY="10.0" minWidth="130.0" styleClass="custom-jfx-button-font-size-20" text="查看股票池">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </JFXButton>
                         <JFXDatePicker fx:id="from" maxWidth="170.0" overLay="true" promptText="开始日期" />
                         <Label scaleX="2.0" text="-">
                            <font>

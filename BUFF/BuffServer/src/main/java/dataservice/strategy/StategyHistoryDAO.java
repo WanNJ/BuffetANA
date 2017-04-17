@@ -40,8 +40,15 @@ public interface StategyHistoryDAO {
     public UserStrategyPO getUserStrategyPO(String name);
 
     /**
-     * 获取所有信息的历史
+     * 获取所有自定义策略的历史
      * @return
      */
-    public List<String>  getHistoryList();
+    public List<String>  getUserHistoryList();
+
+
+    /**
+     * 获取所有均值或动量策略的历史
+     * @return
+     */
+    public List<String>  getSingleHistoryList();
 }

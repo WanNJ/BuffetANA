@@ -9,13 +9,19 @@ import util.SaveResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/4/16.
  */
 public enum StategyHistoryDAOImpl implements StategyHistoryDAO {
-    STATEGY_HISTORY_DAO ;
+    STATEGY_HISTORY_DAO;
+
+
     /**
      *
      */
@@ -105,7 +111,33 @@ public enum StategyHistoryDAOImpl implements StategyHistoryDAO {
     }
 
     @Override
-    public List<String> getHistoryList() {
-        return null;
+    public List<String> getUserHistoryList() {
+        try {
+            List<String> list = Files.list(Paths.get(saveLoc+"user/"))
+                    .map(t->t.getFileName().toString())
+                    .map(t->t.substring(0,t.length()-5))
+                    .collect(Collectors.toList());
+
+            return  list;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return  new ArrayList<>();
+        }
     }
+
+    @Override
+    public List<String> getSingleHistoryList() {
+        try {
+            List<String> list = Files.list(Paths.get(saveLoc+"single/"))
+                    .map(t->t.getFileName().toString())
+                    .map(t->t.substring(0,t.length()-5))
+                    .collect(Collectors.toList());
+
+            return  list;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return  new ArrayList<>();
+        }
+    }
+
 }

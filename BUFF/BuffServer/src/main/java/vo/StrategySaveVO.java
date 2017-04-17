@@ -1,9 +1,12 @@
 package vo;
 
+import po.*;
+import stockenum.StockPickIndex;
 import stockenum.StrategyType;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wshwbluebird on 2017/4/16.
@@ -62,5 +65,22 @@ public class StrategySaveVO {
         this.end = end;
     }
 
+
+    public SingleStrategyPO toSingleStrategyPO(){
+
+        List<StockPickIndexPO> stockPickIndexPOs =
+                this.stockPickIndexList.stream()
+                        .map(t->new StockPickIndexPO(t))
+                        .collect(Collectors.toList());
+
+        SingleStrategyPO singleStrategyPO = new SingleStrategyPO
+                (this.strategyName
+                        , new StockPoolConditionPO(this.stockPoolConditionVO)
+                        , stockPickIndexPOs
+                        ,new StrategyConditionPO(this.strategyConditionVO)
+                         ,new TraceBackPO(this.traceBackVO));
+
+        return singleStrategyPO;
+    }
 
 }

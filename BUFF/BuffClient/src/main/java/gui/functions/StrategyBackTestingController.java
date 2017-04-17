@@ -165,4 +165,8 @@ public class StrategyBackTestingController {
         });
         updateDataService.start();
     }
+
+    public StackPane getRoot() {
+        return root;
+    }
 }

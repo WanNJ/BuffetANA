@@ -55,7 +55,7 @@ public class StockChooseController {
     @FXML private JFXComboBox<String> plate;//板块
     @FXML private JFXButton industry;//行业
     @FXML private JFXCheckBox ST;//是否排除ST
-    @FXML private JFXButton showStocks;//显示目前选择的股票
+    //@FXML private JFXButton showStocks;//显示目前选择的股票
     @FXML private JFXDatePicker from;//开始日期
     @FXML private JFXDatePicker to;//结束日期
     @FXML private FlowPane quotaPane;//选股指标面板
@@ -69,11 +69,11 @@ public class StockChooseController {
     @FXML private JFXButton start;//开始回测
     @FXML private JFXButton save;//保存策略
     @FXML private JFXButton load;//加载策略
-    @FXML private JFXDialog stockDialog;//显示股票池的Dialog
+    //@FXML private JFXDialog stockDialog;//显示股票池的Dialog
     @FXML private JFXDialog saveDialog;//显示保存框的Dialog
     @FXML private JFXDialog loadDialog;//显示加载框的Dialog
     @FXML private Label stocks;//显示股票池的Label
-    @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
+    //@FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
     @FXML private JFXButton acceptIndustry;//显示行业的Dialog的确认Button
     @FXML private JFXButton acceptSave;//显示保存框的Dialog的确认Button
     @FXML private JFXButton acceptLoad;//显示保存框的Dialog的确认Button
@@ -158,7 +158,6 @@ public class StockChooseController {
         stockPickIndexList = new ArrayList<>();
 
         //初始化界面用到的各种控件
-        acceptButton.setOnAction(e->stockDialog.close());
         initIndustry();
         initSaveAndLoad();
         from.setDialogParent(root);
@@ -289,11 +288,6 @@ public class StockChooseController {
             }
         });
 
-        //显示目前选择的股票
-        showStocks.setOnAction(event -> {
-            stocks.setText("stock1\nstock2\n");
-            stockDialog.show(root);
-        });
 
         /**
          * 开始回测

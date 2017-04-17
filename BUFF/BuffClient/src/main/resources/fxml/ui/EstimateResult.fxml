@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox fx:id="vBox">
             <children>
@@ -35,13 +39,46 @@
                   </HBox>
                </children>
             </HBox>
-                <Label styleClass="title-label" text="持仓历史">
-                    <VBox.margin>
-                        <Insets left="50.0" />
-                    </VBox.margin>
-                </Label>
+            <HBox alignment="CENTER_LEFT">
+               <VBox.margin>
+                  <Insets left="50.0" />
+               </VBox.margin>
+                <children>
+                    <Label styleClass="title-label" text="持仓历史" />
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <children>
+                          <JFXButton fx:id="showStocks" styleClass="custom-jfx-button-green" text="显示股票池">
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                          </JFXButton>
+                     </children>
+                  </HBox>
+                </children>
+            </HBox>
                 <JFXTreeTableView fx:id="treeTableView" showRoot="false" />
             </children>
         </VBox>
+
+        <JFXDialog fx:id="stockDialog" transitionType="CENTER">
+            <JFXDialogLayout >
+                <heading>
+                    <Label>股票池</Label>
+                </heading>
+                <body>
+                    <JFXListView fx:id="stockList" />
+                </body>
+                <actions>
+                    <JFXButton fx:id="acceptButton" styleClass="dialog-accept" text="确定">
+                        <font>
+                            <Font size="24.0" />
+                        </font>
+                    </JFXButton>
+                </actions>
+            </JFXDialogLayout>
+        </JFXDialog>
     </children>
 </StackPane>

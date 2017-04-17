@@ -64,11 +64,6 @@
                         </JFXButton>
                         <JFXCheckBox fx:id="ST" text="排除ST">
                         </JFXCheckBox>
-                        <JFXButton fx:id="showStocks" layoutX="130.0" layoutY="10.0" minWidth="130.0" styleClass="custom-jfx-button-font-size-20" text="查看股票池">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </JFXButton>
                         <JFXDatePicker fx:id="from" maxWidth="170.0" overLay="true" promptText="开始日期" />
                         <Label scaleX="2.0" text="-">
                            <font>
@@ -277,23 +272,6 @@
          </children>
       </GridPane>
 
-      <JFXDialog fx:id="stockDialog" transitionType="CENTER">
-         <JFXDialogLayout>
-            <heading>
-               <Label>股票池</Label>
-            </heading>
-            <body>
-               <Label fx:id="stocks" />
-            </body>
-            <actions>
-               <JFXButton fx:id="acceptButton" styleClass="dialog-accept" text="确定">
-                  <font>
-                     <Font size="24.0" />
-                  </font>
-               </JFXButton>
-            </actions>
-         </JFXDialogLayout>
-      </JFXDialog>
 
       <JFXDialog fx:id="industryDialog" transitionType="CENTER">
          <JFXDialogLayout>

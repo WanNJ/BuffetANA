@@ -20,8 +20,7 @@ public class EstimateStrategyController {
     @FXMLViewFlowContext
     private ViewFlowContext context;
 
-    @FXML
-    BorderPane winRateCalBorder;  //画固定形成期  算最佳持有期的四张图
+    @FXML BorderPane winRateCalBorder;  //画固定形成期  算最佳持有期的四张图
 
     private FlowHandler betterStrategyHandler; //画固定形成期  算最佳持有期的四张图的handler
 

@@ -2,10 +2,10 @@ package gui.functions;
 
 import blservice.strategy.StrategyService;
 import blstub.strategy.StrategyServiceImpl_Stub;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import factory.BLFactorySeviceOnlyImpl;
+import factory.BlFactoryService;
 import gui.RadarChart.MySpiderChart;
 import gui.utils.TreeTableViewUtil;
 import gui.utils.TreeTableViewValue;
@@ -43,6 +43,11 @@ import java.util.stream.Collectors;
 public class EstimateResultController implements Updatable{
     @FXMLViewFlowContext private ViewFlowContext context;
 
+    @FXML private StackPane root;
+    @FXML private JFXButton showStocks;//显示股票池
+    @FXML private JFXDialog stockDialog;//显示股票池的Dialog
+    @FXML private JFXListView<String> stockList;//显示股票池的listview
+    @FXML private JFXButton acceptButton;//显示股票池的Dialog的确认Button
     @FXML JFXTreeTableView<Record> treeTableView; //持仓历史
     @FXML VBox vBox;
     @FXML HBox hBox;
@@ -52,9 +57,26 @@ public class EstimateResultController implements Updatable{
     private ObservableList<Record> records;//所有持仓记录列表项的集合，动态绑定JFXTreeTableView的显示
     private int recordIndex=1;
 
+    private BlFactoryService blFactoryService= new BLFactorySeviceOnlyImpl();
+
     @PostConstruct
     public void init() throws FlowException {
         context.register(this);
+
+        acceptButton.setOnAction(e->stockDialog.close());
+        //显示目前选择的股票
+        showStocks.setOnAction(event -> {
+            blFactoryService = new BLFactorySeviceOnlyImpl();
+            StrategyService strategyService = blFactoryService.createStrategyService();
+            try {
+                stockList.getItems().setAll(strategyService.getAllStocksInPool().stream()
+                        .map(stockNameAndCodeVO -> (stockNameAndCodeVO.code+"    "+stockNameAndCodeVO.name))
+                        .collect(Collectors.toList()));
+            }catch (Exception e){
+                //return;
+            }
+            stockDialog.show(context.getRegisteredObject(StrategyBackTestingController.class).getRoot());
+        });
 
         //初始化TreeTableView
         records = FXCollections.observableArrayList();

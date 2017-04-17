@@ -14,18 +14,16 @@ public interface StategyHistoryDAO {
     /**
      * 用于保存动量策略或者均值策略的持久化PO
      * @param singleStrategyPO
-     * @param overWrite
      * @return
      */
-    public SaveResult saveSingle(SingleStrategyPO singleStrategyPO , boolean overWrite);
+    public boolean saveSingle(SingleStrategyPO singleStrategyPO);
 
     /**
      * 用于保存用户自定义策略的持久化PO
      * @param userStrategyPO
-     * @param overWrite
      * @return
      */
-    public SaveResult saveUser(UserStrategyPO userStrategyPO , boolean overWrite);
+    public boolean saveUser(UserStrategyPO userStrategyPO);
 
     /**
      * 获取动量策略或者均值策略的持久化PO

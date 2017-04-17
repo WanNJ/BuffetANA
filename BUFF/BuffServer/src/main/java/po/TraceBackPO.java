@@ -25,6 +25,11 @@ public class TraceBackPO {
      */
     private double holdingRate;
 
+
+    public  TraceBackPO(){
+
+    }
+
      /**
      * @param formationPeriod
      * @param holdingPeriod

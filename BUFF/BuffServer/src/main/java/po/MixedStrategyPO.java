@@ -21,6 +21,10 @@ public class MixedStrategyPO {
      */
     private int formationPeriod;
 
+    public MixedStrategyPO(){
+
+    }
+
     /**
      *
      * @param strategyType
@@ -66,4 +70,6 @@ public class MixedStrategyPO {
     public void setFormationPeriod(int formationPeriod) {
         this.formationPeriod = formationPeriod;
     }
+
+
 }

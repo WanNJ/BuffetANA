@@ -14,14 +14,14 @@ public class UserStrategyPO {
     /**
      * 开始日期
      */
-    private LocalDate begin;
+    private String begin;
 
 
     /**
      * 结束日期
      */
 
-    private LocalDate end;
+    private String end;
 
     /**
      * 股票池的选择 存储
@@ -48,6 +48,10 @@ public class UserStrategyPO {
      */
     private TraceBackPO traceBackPO;
 
+    public UserStrategyPO(){
+
+    }
+
     /**
      * 混合策略类型的保存 持久化
      * @param strategyName
@@ -58,7 +62,7 @@ public class UserStrategyPO {
      * @param stockPickIndexList
      * @param traceBackPO
      */
-    public UserStrategyPO(String strategyName, LocalDate begin, LocalDate end,
+    public UserStrategyPO(String strategyName, String begin, String end,
                           StockPoolConditionPO stockPoolConditionPO,
                           List<MixedStrategyPO> mixedStrategyPOList,
                           List<StockPickIndexPO> stockPickIndexList,
@@ -80,19 +84,19 @@ public class UserStrategyPO {
         this.strategyName = strategyName;
     }
 
-    public LocalDate getBegin() {
+    public String getBegin() {
         return begin;
     }
 
-    public void setBegin(LocalDate begin) {
+    public void setBegin(String begin) {
         this.begin = begin;
     }
 
-    public LocalDate getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

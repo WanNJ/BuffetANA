@@ -13,13 +13,17 @@ public class StrategyConditionPO {
      * 策略类型
      */
     private StrategyType strategyType;
-    private LocalDate beginDate;
-    private LocalDate endDate;
+    private String beginDate;
+    private String endDate;
     /**
      * 是否升序排列
      */
     private boolean asd;
 
+
+    public StrategyConditionPO(){
+
+    }
 
     /**
      *
@@ -29,7 +33,7 @@ public class StrategyConditionPO {
      * @param asd
      */
     public StrategyConditionPO(StrategyType strategyType
-                              , LocalDate beginDate, LocalDate endDate
+                              , String beginDate, String endDate
                                 , boolean asd) {
         this.strategyType = strategyType;
         this.beginDate = beginDate;
@@ -46,19 +50,19 @@ public class StrategyConditionPO {
         this.strategyType = strategyType;
     }
 
-    public LocalDate getBeginDate() {
+    public String getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(LocalDate beginDate) {
+    public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

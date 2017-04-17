@@ -11,7 +11,7 @@ import java.util.List;
  * Created by wshwbluebird on 2017/4/16.
  */
 public class SingleStrategyPO {
-    private   String strategyName; //策略的名字
+    private  String strategyName; //策略的名字
     private  StockPoolConditionPO stockPoolConditionPO;
 
     /**
@@ -29,6 +29,7 @@ public class SingleStrategyPO {
      * 两个都存
      */
     private  TraceBackPO traceBackPO;
+
 
     /**
      * 均值策略或者动量策略的选择持久化
@@ -49,4 +50,48 @@ public class SingleStrategyPO {
         this.strategyName  =strategyName;
     }
 
+    public SingleStrategyPO(){
+
+    }
+
+
+    public String getStrategyName() {
+        return strategyName;
+    }
+
+    public void setStrategyName(String strategyName) {
+        this.strategyName = strategyName;
+    }
+
+    public StockPoolConditionPO getStockPoolConditionPO() {
+        return stockPoolConditionPO;
+    }
+
+    public void setStockPoolConditionPO(StockPoolConditionPO stockPoolConditionPO) {
+        this.stockPoolConditionPO = stockPoolConditionPO;
+    }
+
+    public List<StockPickIndexPO> getStockPickIndexList() {
+        return stockPickIndexList;
+    }
+
+    public void setStockPickIndexList(List<StockPickIndexPO> stockPickIndexList) {
+        this.stockPickIndexList = stockPickIndexList;
+    }
+
+    public StrategyConditionPO getStrategyConditionVO() {
+        return strategyConditionVO;
+    }
+
+    public void setStrategyConditionVO(StrategyConditionPO strategyConditionVO) {
+        this.strategyConditionVO = strategyConditionVO;
+    }
+
+    public TraceBackPO getTraceBackPO() {
+        return traceBackPO;
+    }
+
+    public void setTraceBackPO(TraceBackPO traceBackPO) {
+        this.traceBackPO = traceBackPO;
+    }
 }

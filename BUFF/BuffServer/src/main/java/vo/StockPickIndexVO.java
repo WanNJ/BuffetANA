@@ -1,5 +1,6 @@
 package vo;
 
+import po.StockPickIndexPO;
 import stockenum.StockPickIndex;
 
 /**
@@ -28,5 +29,11 @@ public class StockPickIndexVO {
         this.stockPickIndex = stockPickIndex;
         this.lowerBound = lowerBound;
         this.upBound = upBound;
+    }
+
+    public StockPickIndexVO(StockPickIndexPO stockPickIndexPO) {
+        this.stockPickIndex = stockPickIndexPO.getStockPickIndex();
+        this.lowerBound = stockPickIndexPO.getLowerBound();
+        this.upBound = stockPickIndexPO.getUpBound();
     }
 }

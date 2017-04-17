@@ -1,5 +1,6 @@
 package vo;
 
+import po.StockPoolConditionPO;
 import stockenum.StockPool;
 
 import java.util.Set;
@@ -38,5 +39,12 @@ public class StockPoolConditionVO {
         this.block = block;
         this.industry = industry;
         this.excludeST = excludeST;
+    }
+
+    public StockPoolConditionVO(StockPoolConditionPO stockPoolConditionPO) {
+        this.stockPool = stockPoolConditionPO.getStockPool();
+        this.block = stockPoolConditionPO.getBlock();
+        this.industry = stockPoolConditionPO.getIndustry();
+        this.excludeST = stockPoolConditionPO.isExcludeST();
     }
 }

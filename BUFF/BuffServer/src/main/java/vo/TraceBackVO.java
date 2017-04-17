@@ -1,5 +1,7 @@
 package vo;
 
+import po.TraceBackPO;
+
 /**
  * Created by slow_time on 2017/4/7.
  */
@@ -51,5 +53,12 @@ public class TraceBackVO {
         this.holdingPeriod = holdingPeriod;
         this.holdingNum = holdingNum;
         this.holdingRate = holdingRate;
+    }
+
+    public TraceBackVO(TraceBackPO traceBackPO) {
+        this.formationPeriod = traceBackPO.getFormationPeriod();
+        this.holdingPeriod = traceBackPO.getHoldingPeriod();
+        this.holdingNum = traceBackPO.getHoldingNum();
+        this.holdingRate = traceBackPO.getHoldingRate();
     }
 }

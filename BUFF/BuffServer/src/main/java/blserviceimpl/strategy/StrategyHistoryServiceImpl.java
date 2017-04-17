@@ -91,12 +91,13 @@ public enum  StrategyHistoryServiceImpl implements StrategyHistoryService {
         StrategySaveVO strategySaveVO = new StrategySaveVO();
 
         if(isAlready(userList,strategyName)){
-
-
-
-
-
-
+            UserStrategyPO userStrategyPO = stategyHistoryDAO.getUserStrategyPO(strategyName);
+            strategySaveVO = new StrategySaveVO(userStrategyPO);
+            return strategySaveVO;
+        }else if (isAlready(singleList,strategyName)){
+            SingleStrategyPO singleStrategyPO = stategyHistoryDAO.getSingleStrategyPO(strategyName);
+            strategySaveVO = new StrategySaveVO(singleStrategyPO);
+            return strategySaveVO;
         }
         return null;
     }

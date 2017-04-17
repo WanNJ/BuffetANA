@@ -1,5 +1,6 @@
 package vo;
 
+import po.MixedStrategyPO;
 import stockenum.StrategyType;
 
 /**
@@ -26,5 +27,12 @@ public class MixedStrategyVO {
         this.weight = weight;
         this.asc = asc;
         this.formationPeriod = formationPeriod;
+    }
+
+    public MixedStrategyVO(MixedStrategyPO mixedStrategyPO) {
+        this.strategyType = mixedStrategyPO.getStrategyType();
+        this.weight = mixedStrategyPO.getWeight();
+        this.asc = mixedStrategyPO.isAsc();
+        this.formationPeriod = mixedStrategyPO.getFormationPeriod();
     }
 }

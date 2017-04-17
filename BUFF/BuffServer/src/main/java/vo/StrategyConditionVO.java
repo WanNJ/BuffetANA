@@ -1,6 +1,8 @@
 package vo;
 
+import po.StrategyConditionPO;
 import stockenum.StrategyType;
+import util.DateUtil;
 
 import java.time.LocalDate;
 
@@ -30,5 +32,12 @@ public class StrategyConditionVO {
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.asd =asd;
+    }
+
+    public StrategyConditionVO(StrategyConditionPO strategyConditionPO) {
+        this.strategyType = strategyConditionPO.getStrategyType();
+        this.beginDate = DateUtil.parseLine(strategyConditionPO.getBeginDate());
+        this.endDate = DateUtil.parseLine(strategyConditionPO.getEndDate());
+        this.asd =strategyConditionPO.isAsd();
     }
 }

@@ -1,9 +1,10 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableView;
+import factory.BLFactorySeviceOnlyImpl;
+import factory.BlFactoryService;
 import gui.ChartController.controller.PeriodRateChartController;
 import gui.utils.TreeTableViewUtil;
 import gui.utils.TreeTableViewValue;
@@ -42,6 +43,9 @@ public class BetterStrategyController implements Updatable{
 
     private ObservableList<Peroid> peroids_formativePeriod;//所有固定形成期列表项的集合，动态绑定JFXTreeTableView的显示
     private ObservableList<Peroid> peroids_holdingPeriod;//所有固定持有期列表项的集合，动态绑定JFXTreeTableView的显示
+
+    private BlFactoryService factory=new BLFactorySeviceOnlyImpl();
+    private StrategyService strategyService=factory.createStrategyService();
     @PostConstruct
     public void init(){
         context.register(this);
@@ -76,7 +80,6 @@ public class BetterStrategyController implements Updatable{
      */
     @Override
     public void updateData(){
-        StrategyService strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
         //必须先更新TreeTableView的数据再更新图标的数据
         updateTreeTableView(strategyService);
         updateChart(strategyService);

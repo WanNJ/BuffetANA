@@ -1,7 +1,6 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import factory.BLFactorySeviceOnlyImpl;
@@ -57,7 +56,8 @@ public class EstimateResultController implements Updatable{
     private ObservableList<Record> records;//所有持仓记录列表项的集合，动态绑定JFXTreeTableView的显示
     private int recordIndex=1;
 
-    private BlFactoryService blFactoryService= new BLFactorySeviceOnlyImpl();
+    private BlFactoryService factory=new BLFactorySeviceOnlyImpl();
+    private StrategyService strategyService=factory.createStrategyService();
 
     @PostConstruct
     public void init() throws FlowException {
@@ -66,8 +66,6 @@ public class EstimateResultController implements Updatable{
         acceptButton.setOnAction(e->stockDialog.close());
         //显示目前选择的股票
         showStocks.setOnAction(event -> {
-            blFactoryService = new BLFactorySeviceOnlyImpl();
-            StrategyService strategyService = blFactoryService.createStrategyService();
             try {
                 stockList.getItems().setAll(strategyService.getAllStocksInPool().stream()
                         .map(stockNameAndCodeVO -> (stockNameAndCodeVO.code+"    "+stockNameAndCodeVO.name))
@@ -132,7 +130,6 @@ public class EstimateResultController implements Updatable{
      */
     @Override
     public void updateData() {
-        StrategyService strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
 
         StrategyScoreVO strategyScoreVO = strategyService.getStrategyEstimateResult();
         try {

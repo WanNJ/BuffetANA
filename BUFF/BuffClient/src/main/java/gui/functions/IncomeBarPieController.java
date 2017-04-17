@@ -1,7 +1,6 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import blstub.strategy.StrategyServiceImpl_Stub;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
 import gui.JavaFxHistogram.MyHistogram;
@@ -34,8 +33,8 @@ public class IncomeBarPieController implements Updatable{
     @FXML private StackPane barChartPane;
     @FXML private PieChart pieChart;
 
-    private BlFactoryService factoryService;
-    private StrategyService strategyService;
+    private BlFactoryService factory=new BLFactorySeviceOnlyImpl();
+    private StrategyService strategyService=factory.createStrategyService();
 
 
     @PostConstruct
@@ -162,7 +161,6 @@ public class IncomeBarPieController implements Updatable{
      */
     @Override
     public void updateData() {
-        strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
         setPieChart();
         setBarChartPane();
     }

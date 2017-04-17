@@ -1,7 +1,6 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -125,7 +124,7 @@ public class StrategyBackTestingController {
                     @Override
                     protected Void call() throws Exception {
                         BlFactoryService blFactoryService = new BLFactorySeviceOnlyImpl();
-                        StrategyService strategyService=blFactoryService.createStrategyService();//TODO:待将stub换成真正的实现
+                        StrategyService strategyService=blFactoryService.createStrategyService();
                         if(strateyChoosed){
                             strategyService.init(strategyConditionVO,stockPoolConditionVO,stockPickIndexList);
                             strategyService.calculate(traceBackVO);

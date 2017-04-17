@@ -1,7 +1,6 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import blstub.strategy.StrategyServiceImpl_Stub;
 import com.jfoenix.controls.JFXTreeTableView;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
@@ -51,8 +50,8 @@ public class AccumulatedIncomeController implements Updatable{
     @FXML private Label turnoverRate;//换手率
     @FXML private LineChart chart;
 
-    private BlFactoryService factory;
-    private StrategyService strategyService;
+    private BlFactoryService factory=new BLFactorySeviceOnlyImpl();
+    private StrategyService strategyService=factory.createStrategyService();
 //    private BackDetailVO backDetailVO;
 
     @PostConstruct
@@ -129,7 +128,6 @@ public class AccumulatedIncomeController implements Updatable{
      */
     @Override
     public void updateData() {
-        strategyService=new StrategyServiceImpl_Stub();//TODO:待将stub换成真正的实现
         setBackDetailVO();
         setChart();
     }

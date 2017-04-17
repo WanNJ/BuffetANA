@@ -49,6 +49,10 @@ public class StrategySaveVO {
     public TraceBackVO traceBackVO;
 
 
+    public StrategySaveVO(){
+
+    }
+
     public StrategySaveVO(String strategyName, boolean userMode,StockPoolConditionVO stockPoolConditionVO,
                           List<MixedStrategyVO> mixedStrategyVOList
                         , List<StockPickIndexVO> stockPickIndexList
@@ -65,7 +69,10 @@ public class StrategySaveVO {
         this.end = end;
     }
 
-
+    /**
+     * 提取策略中 均值或者动量的保存信息
+     * @return
+     */
     public SingleStrategyPO toSingleStrategyPO(){
 
         List<StockPickIndexPO> stockPickIndexPOs =
@@ -82,5 +89,34 @@ public class StrategySaveVO {
 
         return singleStrategyPO;
     }
+
+
+    /**
+     * 提取策略中 用户自定义部分的保存信息
+     * @return
+     */
+    public UserStrategyPO toUserStrategyPO(){
+
+        List<StockPickIndexPO> stockPickIndexPOs =
+                this.stockPickIndexList.stream()
+                        .map(t->new StockPickIndexPO(t))
+                        .collect(Collectors.toList());
+
+        List<MixedStrategyPO> mixedStrategyPOs =
+                this.mixedStrategyVOList.stream()
+                        .map(t->new MixedStrategyPO(t))
+                        .collect(Collectors.toList());
+
+        UserStrategyPO userStrategyPO = new UserStrategyPO
+                (this.strategyName,begin.toString(),end.toString()
+                        , new StockPoolConditionPO(this.stockPoolConditionVO)
+                        ,mixedStrategyPOs
+                        , stockPickIndexPOs
+                        ,new TraceBackPO(this.traceBackVO));
+
+        return userStrategyPO;
+    }
+
+
 
 }

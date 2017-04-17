@@ -4,6 +4,8 @@ import blservice.strategy.StrategyHistoryService;
 import dataservice.strategy.StategyHistoryDAO;
 import dataservice.strategy.StrategyDAO;
 import dataserviceimpl.strategy.StategyHistoryDAOImpl;
+import po.SingleStrategyPO;
+import po.UserStrategyPO;
 import util.SaveResult;
 import vo.StrategySaveVO;
 
@@ -56,11 +58,21 @@ public enum  StrategyHistoryServiceImpl implements StrategyHistoryService {
         }
 
         //如果是要保存的
+        boolean result;
+        if(userMode){
+            UserStrategyPO userStrategyPO = strategySaveVO.toUserStrategyPO();
+            result = stategyHistoryDAO.saveUser(userStrategyPO);
+        }else{
+            SingleStrategyPO singleStrategyPO = strategySaveVO.toSingleStrategyPO();
+            result = stategyHistoryDAO.saveSingle(singleStrategyPO);
+        }
 
+        if(!result){
+            return SaveResult.fail;
+        }else{
+            return overWrite?SaveResult.Modify:SaveResult.Success;
+        }
 
-
-
-        return null;
     }
 
     @Override
@@ -73,6 +85,19 @@ public enum  StrategyHistoryServiceImpl implements StrategyHistoryService {
 
     @Override
     public StrategySaveVO getStrategyHistory(String strategyName) {
+        List<String> userList = stategyHistoryDAO.getUserHistoryList();
+        List<String> singleList = stategyHistoryDAO.getSingleHistoryList();
+
+        StrategySaveVO strategySaveVO = new StrategySaveVO();
+
+        if(isAlready(userList,strategyName)){
+
+
+
+
+
+
+        }
         return null;
     }
 

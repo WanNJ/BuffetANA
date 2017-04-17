@@ -25,7 +25,7 @@ public enum StategyHistoryDAOImpl implements StategyHistoryDAO {
     /**
      *
      */
-    final String saveLoc = "text/historyStrategy";
+    final String saveLoc = "text/historyStrateg/";
 
     StategyHistoryDAOImpl(){
         File file  = new File(saveLoc);

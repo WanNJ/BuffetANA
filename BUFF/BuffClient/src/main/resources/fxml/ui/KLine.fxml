@@ -12,26 +12,6 @@
                   <BorderPane fx:id="DayLinePane" stylesheets="@../../css/candle.css" />
                </content>
             </Tab>
-            <Tab text="周K">
-               <content>
-                  <AnchorPane blendMode="EXCLUSION" />
-               </content>
-            </Tab>
-            <Tab text="月K">
-               <content>
-                  <AnchorPane />
-               </content>
-            </Tab>
-            <Tab text="季K">
-               <content>
-                  <AnchorPane minHeight="0.0" />
-               </content>
-            </Tab>
-            <Tab text="年K">
-               <content>
-                  <AnchorPane minWidth="0.0" />
-               </content>
-            </Tab>
          </tabs>
       </JFXTabPane>
    </content>

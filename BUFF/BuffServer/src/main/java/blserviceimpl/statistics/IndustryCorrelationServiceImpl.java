@@ -47,7 +47,6 @@ public enum IndustryCorrelationServiceImpl implements IndustryCorrelationService
     public IndustryCorrelationVO getInIndustryCorrelationResult(String code, int holdingPeriod) {
         IndustryCorrelationVO industryCorrelationVO = null;
         String industry = industryDAO.getIndustryByCode(code);
-        System.out.println(industry);
         stockNameAndCodePOs = stockNameToCodeDAO.getSameIndustryStocks(industry);
         List<StockPO> base = stockDAO.getStockInfoByCode(code);
         // 原本是按日期从小到大，现在调整成从大到小
@@ -58,7 +57,6 @@ public enum IndustryCorrelationServiceImpl implements IndustryCorrelationService
             return null;
         double maxCorrelation = 0.0;
 
-        stockNameAndCodePOs.forEach(t -> System.out.println(t.getCode()));
         for(StockNameAndCodePO stock : stockNameAndCodePOs) {
             if(stock.getCode().equals(code))
                 continue;

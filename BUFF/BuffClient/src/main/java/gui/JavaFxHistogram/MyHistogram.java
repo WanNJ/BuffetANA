@@ -32,6 +32,7 @@ public class MyHistogram {
         NumberAxis xAxis = new NumberAxis(xaxis);
         xAxis.setAutoRangeIncludesZero(false);
         ValueAxis yAxis = new NumberAxis(yaxis);
+        yAxis.setAutoRangeMinimumSize(1);
         XYItemRenderer renderer = new NegativeBarRenderer();
 
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, renderer);
@@ -55,12 +56,12 @@ public class MyHistogram {
         };
         HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.FREQUENCY);
-        dataset.addSeries("分布", value, 100);
+        dataset.addSeries("分布", value, 80);
 
         return dataset;
     }
 
-    public static StackPane getMySpiderChart(List<Double> data) throws NoValidValueException {
+    public static StackPane getMyChart(List<Double> data) throws NoValidValueException {
         HistogramDataset dataset = createDataset(data);
         JFreeChart chart = createChart(dataset);
         ChartCanvas canvas = new ChartCanvas(chart);

@@ -90,18 +90,18 @@ public class IncomeBarPieController implements Updatable{
 //        peiChartPane.getChildren().set(0, pieChart);
 //    }
 
-    @FXML
-    private void setFakeBarChartPane() throws Exception {
-        List<Double> value = new ArrayList<>();
-        Random generator = new Random();
-        for (int i=1; i < 1000; i++) {
-            value.add(generator.nextDouble() * Math.pow(-1, i));
-        }
-        StackPane pane = MyHistogram.getMySpiderChart(value);
-        pane.setMinWidth(800);
-        pane.setMinHeight(400);
-        barChartPane.getChildren().set(0, pane);
-    }
+//    @FXML
+//    private void setFakeBarChartPane() throws Exception {
+//        List<Double> value = new ArrayList<>();
+//        Random generator = new Random();
+//        for (int i=1; i < 1000; i++) {
+//            value.add(generator.nextDouble() * Math.pow(-1, i));
+//        }
+//        StackPane pane = MyHistogram.getMyChart(value);
+//        pane.setMinWidth(800);
+//        pane.setMinHeight(400);
+//        barChartPane.getChildren().set(0, pane);
+//    }
 
     @FXML
     private void setPieChart() {
@@ -155,7 +155,7 @@ public class IncomeBarPieController implements Updatable{
         List<Double> value = strategyService.getProfitDistributeBar();
         StackPane pane = null;
         try {
-            pane = MyHistogram.getMySpiderChart(value);
+            pane = MyHistogram.getMyChart(value);
         } catch (NoValidValueException e) {
             //TODO 界面提示没有符合要求的数据
             return;

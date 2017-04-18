@@ -48,48 +48,47 @@ public class IncomeBarPieController implements Updatable{
 //        setFakeBarChartPane();
     }
 
-    private void setFakePieChart() {
-        ProfitDistributionPieVO fakeVO = new ProfitDistributionPieVO(20, 20, 25, 55, 10,40);
-        List<String> colorArray = new ArrayList<String>();
-        colorArray.add("-fx-pie-color: #006400;");
-        colorArray.add("-fx-pie-color: #33FF33;");
-        colorArray.add("-fx-pie-color: #99FF99;");
-        colorArray.add("-fx-pie-color: #FFCCCC;");
-        colorArray.add("-fx-pie-color: #FF7777;");
-        colorArray.add("-fx-pie-color: #FF0000;");
-
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("小于 -7.5%", fakeVO.green75),
-                        new PieChart.Data("-3.5% ~ -7.5%", fakeVO.green35),
-                        new PieChart.Data("-3.5% ~ 0", fakeVO.green0),
-                        new PieChart.Data("0 ~ 3.5%", fakeVO.red0),
-                        new PieChart.Data("3.5% ~ 7.5%", fakeVO.red35),
-                        new PieChart.Data("大于 7.5%", fakeVO.red75));
-        pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("相对收益分布");
-
-        final Label caption = new Label("");
-        caption.setTextFill(Color.BLACK);
-        caption.setStyle("-fx-font: 25 arial;");
-
-        //TODO 解决显示不了百分比的问题
-
-        for (int i = 0; i < pieChart.getData().size(); i++) {
-            PieChart.Data data = pieChart.getData().get(i);
-            data.getNode().setStyle(colorArray.get(i));
-            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e -> {
-                        caption.setTranslateX(e.getSceneX());
-                        caption.setTranslateY(e.getSceneY());
-                        caption.setText(String.valueOf(data.getPieValue()) + "%");
-                        caption.setVisible(true);
-                    });
-        }
-
-        pieChart.setLegendVisible(false);
-        peiChartPane.getChildren().set(0, pieChart);
-    }
+//    private void setFakePieChart() {
+//        ProfitDistributionPieVO fakeVO = new ProfitDistributionPieVO(20, 20, 25, 55, 10,40);
+//        List<String> colorArray = new ArrayList<String>();
+//        colorArray.add("-fx-pie-color: #006400;");
+//        colorArray.add("-fx-pie-color: #33FF33;");
+//        colorArray.add("-fx-pie-color: #99FF99;");
+//        colorArray.add("-fx-pie-color: #FFCCCC;");
+//        colorArray.add("-fx-pie-color: #FF7777;");
+//        colorArray.add("-fx-pie-color: #FF0000;");
+//
+//        ObservableList<PieChart.Data> pieChartData =
+//                FXCollections.observableArrayList(
+//                        new PieChart.Data("小于 -7.5%", fakeVO.green75),
+//                        new PieChart.Data("-3.5% ~ -7.5%", fakeVO.green35),
+//                        new PieChart.Data("-3.5% ~ 0", fakeVO.green0),
+//                        new PieChart.Data("0 ~ 3.5%", fakeVO.red0),
+//                        new PieChart.Data("3.5% ~ 7.5%", fakeVO.red35),
+//                        new PieChart.Data("大于 7.5%", fakeVO.red75));
+//        pieChart = new PieChart(pieChartData);
+//        pieChart.setTitle("相对收益分布");
+//
+//        final Label caption = new Label("");
+//        caption.setTextFill(Color.BLACK);
+//        caption.setStyle("-fx-font: 25 arial;");
+//
+//
+//        for (int i = 0; i < pieChart.getData().size(); i++) {
+//            PieChart.Data data = pieChart.getData().get(i);
+//            data.getNode().setStyle(colorArray.get(i));
+//            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+//                    e -> {
+//                        caption.setTranslateX(e.getSceneX());
+//                        caption.setTranslateY(e.getSceneY());
+//                        caption.setText(String.valueOf(data.getPieValue()) + "%");
+//                        caption.setVisible(true);
+//                    });
+//        }
+//
+//        pieChart.setLegendVisible(false);
+//        peiChartPane.getChildren().set(0, pieChart);
+//    }
 
     @FXML
     private void setFakeBarChartPane() throws Exception {
@@ -123,6 +122,7 @@ public class IncomeBarPieController implements Updatable{
                         new PieChart.Data("0 ~ 3.5%", vo.red0),
                         new PieChart.Data("3.5% ~ 7.5%", vo.red35),
                         new PieChart.Data("大于 7.5%", vo.red75));
+
         pieChart = new PieChart(pieChartData);
         pieChart.setTitle("相对收益分布");
 
@@ -134,6 +134,8 @@ public class IncomeBarPieController implements Updatable{
         for (int i = 0; i < pieChart.getData().size(); i++) {
             //设置颜色
             PieChart.Data data = pieChart.getData().get(i);
+            if(data.getPieValue() == 0)
+                data.getNode().setVisible(false);
             data.getNode().setStyle(colorArray.get(i));
             data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
                     e -> {

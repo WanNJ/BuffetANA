@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
+import gui.utils.Dialogs;
 import io.datafx.controller.FXMLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,7 +65,19 @@ public class IndustryCorrelationController {
         factory = new BLFactorySeviceOnlyImpl();
         setIndustryCorrelationService(factory.createIndustryCorrelationService());
 
-        button.setOnAction((ActionEvent event) -> showCorrelationResult(Integer.valueOf(holdingPeriodTextField.getText())));
+        button.setOnAction((ActionEvent event) -> {
+            if (holdingPeriodTextField.getText().length() == 0) {
+                Dialogs.showMessage("错误", "持仓期不能为空");
+            }
+            else {
+                if (holdingPeriodTextField.getText().startsWith("-")) {
+                    Dialogs.showMessage("错误", "持仓期不能为负");
+                }
+                else {
+                    showCorrelationResult(Integer.valueOf(holdingPeriodTextField.getText()));
+                }
+            }
+        });
     }
 
     private void showCorrelationResult(int holdingPeriod) {

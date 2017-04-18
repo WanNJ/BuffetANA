@@ -92,7 +92,7 @@ public class PickleData {
             double quantity=principal_each/backData.firstDayOpen;//所得到的股票数量
             profit+=quantity*backData.lastDayClose-principal_each;//减去本金
         }
-        return (profit>=0?"+":"-")+String.format("%.2f",profit);
+        return (profit>=0?"+":"")+String.format("%.2f",profit);
     }
 
 }

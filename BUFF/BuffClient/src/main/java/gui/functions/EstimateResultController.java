@@ -67,11 +67,12 @@ public class EstimateResultController implements Updatable{
         //显示目前选择的股票
         showStocks.setOnAction(event -> {
             try {
-                stockList.getItems().setAll(strategyService.getAllStocksInPool().stream()
+                stockList.getItems().clear();
+                stockList.getItems().addAll(strategyService.getAllStocksInPool().stream()
                         .map(stockNameAndCodeVO -> (stockNameAndCodeVO.code+"    "+stockNameAndCodeVO.name))
                         .collect(Collectors.toList()));
             }catch (Exception e){
-                //return;
+                return;//如果获取不到数据或者获取的数据有异常，则不显示股票池
             }
             stockDialog.show(context.getRegisteredObject(StrategyBackTestingController.class).getRoot());
         });

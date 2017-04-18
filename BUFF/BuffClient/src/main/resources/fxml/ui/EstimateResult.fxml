@@ -21,18 +21,18 @@
                         <Insets left="50.0" />
                     </VBox.margin>
                 </Label>
-            <HBox fx:id="hBox" alignment="CENTER">
+            <HBox fx:id="hBox" alignment="CENTER" spacing="50.0">
                <children>
                   <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="110.0">
                      <children>
                         <Label fx:id="scoreLabel" text="--" textFill="#ffac3f">
                            <font>
-                              <Font size="80.0" />
+                              <Font size="120.0" />
                            </font>
                         </Label>
                         <Label text="分" textFill="#ffac3f">
                            <font>
-                              <Font size="25.0" />
+                              <Font size="35.0" />
                            </font>
                         </Label>
                      </children>
@@ -64,7 +64,7 @@
         </VBox>
 
         <JFXDialog fx:id="stockDialog" transitionType="CENTER">
-            <JFXDialogLayout >
+            <JFXDialogLayout>
                 <heading>
                     <Label>股票池</Label>
                 </heading>

@@ -636,7 +636,8 @@ public class StockChooseController {
         });
         acceptLoad.setOnAction(event -> {
             String strategyName=strategyNameList.getSelectionModel().getSelectedItem();
-            if("".equals(strategyName)){//如果用户没有选择，那么当做其取消加载
+            if(strategyName==null || "".equals(strategyName)){//如果用户没有选择，那么当做其取消加载
+                loadDialog.close();
                 return;
             }
             //加载策略

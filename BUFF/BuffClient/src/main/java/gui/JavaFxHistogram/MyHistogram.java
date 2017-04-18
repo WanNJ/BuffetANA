@@ -1,5 +1,6 @@
 package gui.JavaFxHistogram;
 
+import exceptions.NoValidValueException;
 import gui.RadarChart.ChartCanvas;
 import javafx.scene.layout.StackPane;
 import org.jfree.chart.ChartTheme;
@@ -44,8 +45,10 @@ public class MyHistogram {
 
     }
 
-    private static HistogramDataset createDataset(List<Double> data) {
+    private static HistogramDataset createDataset(List<Double> data) throws NoValidValueException {
         final int size = data.size();
+        if(size == 0)
+            throw new NoValidValueException();
         double[] value = new double[size];
         for(int i = 0; i < size; i++) {
             value[i] = data.get(i);
@@ -57,7 +60,7 @@ public class MyHistogram {
         return dataset;
     }
 
-    public static StackPane getMySpiderChart(List<Double> data) {
+    public static StackPane getMySpiderChart(List<Double> data) throws NoValidValueException {
         HistogramDataset dataset = createDataset(data);
         JFreeChart chart = createChart(dataset);
         ChartCanvas canvas = new ChartCanvas(chart);

@@ -1,6 +1,7 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
+import exceptions.NoValidValueException;
 import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
 import gui.JavaFxHistogram.MyHistogram;
@@ -150,7 +151,13 @@ public class IncomeBarPieController implements Updatable{
     @FXML
     private void setBarChartPane() {
         List<Double> value = strategyService.getProfitDistributeBar();
-        StackPane pane = MyHistogram.getMySpiderChart(value);
+        StackPane pane = null;
+        try {
+            pane = MyHistogram.getMySpiderChart(value);
+        } catch (NoValidValueException e) {
+            //TODO 界面提示没有符合要求的数据
+            return;
+        }
         pane.setMinWidth(800);
         pane.setMinHeight(400);
         barChartPane.getChildren().set(0, pane);

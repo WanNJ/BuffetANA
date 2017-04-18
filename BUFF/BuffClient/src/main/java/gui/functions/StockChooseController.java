@@ -777,7 +777,7 @@ public class StockChooseController {
             stockPoolConditionVO.block = new HashSet<>();
             stockPoolConditionVO.industry = new HashSet<>();
             String block = plate.getValue();
-            System.out.println(block);
+
             stockPoolConditionVO.block.add(block);
             stockPoolConditionVO.industry
                     .addAll(selectedList.getItems().stream().collect(Collectors.toList()));
@@ -809,11 +809,11 @@ public class StockChooseController {
                     if (((Label) node).getText().endsWith("动量策略")) {
                         strategyType = StrategyType.MOM;
                         js = 1;
-                        //System.out.println(((Label) node).getText());
+
                     } else if (((Label) node).getText().endsWith("均线偏离")) {
                         strategyType = StrategyType.MA;
                         js = 1;
-                        // System.out.println(((Label) node).getText());
+
                     }
                 } else if (node instanceof JFXComboBox) {
                     if (js == 1) {
@@ -824,8 +824,7 @@ public class StockChooseController {
 
                         strategyConditionVO  = new StrategyConditionVO
                                 (strategyType,from.getValue(),to.getValue(), asc);
-                        System.out.println("Ranking save:   "
-                                +strategyConditionVO.strategyType.toString());
+
                     }
                 }
             }
@@ -841,11 +840,11 @@ public class StockChooseController {
                     if(((Label) node).getText().endsWith("动量策略")){
                         strategyType = StrategyType.MOM;
                         js = 1;
-                        //System.out.println(((Label) node).getText());
+
                     }else if(((Label) node).getText().endsWith("均线偏离")){
                         strategyType = StrategyType.MA;
                         js = 1;
-                        // System.out.println(((Label) node).getText());
+
                     }
                 }else
                 if(node instanceof JFXComboBox){
@@ -876,10 +875,6 @@ public class StockChooseController {
                         //System.out.println(temp);
                         MixedStrategyVO mixedStrategyVO =  new MixedStrategyVO(strategyType,weight,asc,formationPeriod);
                         mixedStrategyVOList.add(mixedStrategyVO);
-                        System.out.println("Ranking save:   "+
-                                mixedStrategyVO.strategyType.toString()+"   形成期:"+
-                                mixedStrategyVO.formationPeriod+"   权重: "+
-                                mixedStrategyVO.weight);
 
                         js=0;
                     }
@@ -891,7 +886,7 @@ public class StockChooseController {
                 throw new WrongValueException(" 没有选择排名条件");
             }
 
-            mixedStrategyVOList.stream().forEach(t-> System.out.println(t.strategyType));
+
 
         }
     }
@@ -1012,9 +1007,6 @@ public class StockChooseController {
 
                 stockPickIndexVOs.add(stockPickIndexVO);
 
-                System.out.println("FIlter:    "+stockPickIndexVO.stockPickIndex.toString()+
-                "上限:   "+ (stockPickIndexVO.upBound==null?"null":stockPickIndexVO.upBound)+
-                "   下限:   "+ (stockPickIndexVO.lowerBound==null?"null":stockPickIndexVO.lowerBound));
             }
         }
         return stockPickIndexVOs;

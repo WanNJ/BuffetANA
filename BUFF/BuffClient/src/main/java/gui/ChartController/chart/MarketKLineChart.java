@@ -236,7 +236,7 @@ public class MarketKLineChart extends KLineChart {
         }
         // 根据序列数据的数量 在图上画点
         int xx =  getData().size();
-        System.out.println("size:   "+xx);
+
         for (int seriesIndex = 0; seriesIndex < getData().size(); seriesIndex++) {
             Series<String, Number> series = getData().get(seriesIndex);
             Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);
@@ -244,7 +244,7 @@ public class MarketKLineChart extends KLineChart {
             // 作折线图
             Path seriesPath = null;
             if (series.getNode() instanceof Path) {
-                // System.out.println("clear path");
+
                 seriesPath = (Path) series.getNode();
                 seriesPath.getElements().clear();
             }
@@ -264,7 +264,7 @@ public class MarketKLineChart extends KLineChart {
 
                 //  实体化 自定义的组件图像
                 if (itemNode instanceof Candle && extra != null) {
-                    // System.out.println("iam a candle");
+
                     Candle candle = (Candle) itemNode;
 
                     double close = getYAxis().getDisplayPosition(extra.getClosePrice());
@@ -310,7 +310,7 @@ public class MarketKLineChart extends KLineChart {
      */
     public static MarketKLineChart createChart(ObservableList<KLinePieceVO> kLinePieceVOs){
         length = kLinePieceVOs.size();
-        System.out.println("List of Observe:  "+kLinePieceVOs.size());
+
         //获取图像最大值
         double max=getMax(kLinePieceVOs);
         //获取图像最小值
@@ -356,13 +356,13 @@ public class MarketKLineChart extends KLineChart {
         }
         kLineChart.setData(data);
 
-        //System.out.println("datasize:   "+data.size());
+
         double curWidth = HpixelPerValue*kLinePieceVOs .size();
         if(curWidth<Width){
             curWidth=Width;
         }
         kLineChart.setPrefSize(curWidth,Height*0.95);
-        System.out.println("K:   "+curWidth);
+
 
         return kLineChart;
     }

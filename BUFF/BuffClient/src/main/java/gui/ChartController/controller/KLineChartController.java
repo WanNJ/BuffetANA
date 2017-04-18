@@ -131,7 +131,6 @@ public class KLineChartController implements Initializable {
             List<KLinePieceVO> dayList = new ArrayList<KLinePieceVO>();
             try {
                 //TODO  delete
-                System.out.println(stockCode+" "+startDate+ "  "+endDate);
                 dayList = marketService.getMarketDailyKLine(startDate,endDate);
             } catch (DateIndexException e) {
                 e.printStackTrace();
@@ -149,7 +148,6 @@ public class KLineChartController implements Initializable {
                 List<KLinePieceVO> dayList = new ArrayList<KLinePieceVO>();
                 try {
                     //TODO  delete
-                    System.out.println(stockCode+" "+startDate+ "  "+endDate);
                     dayList = kLineService.getDailyKLine(stockCode,startDate,endDate);
                 } catch (DateIndexException e) {
                     e.printStackTrace();

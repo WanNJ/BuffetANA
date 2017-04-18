@@ -75,10 +75,10 @@ public class UpDownChart extends BarChart<String,Number> {
             curWidth=Width;
         }
         upDownChart.setPrefSize(curWidth,Height*0.95);
-        System.out.println("MA:   "+curWidth);
+
 
         double bargap = 100/length;
-        System.out.println("bargap:  "+bargap);
+
         upDownChart.setBarGap(0);
         //upDownChart.setB
         upDownChart.setCategoryGap(5*bargap);

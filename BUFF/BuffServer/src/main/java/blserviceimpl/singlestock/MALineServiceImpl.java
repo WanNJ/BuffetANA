@@ -55,7 +55,6 @@ public enum MALineServiceImpl implements MALineService {
     public List<MAPieceVO> getMAInfo(String code, LocalDate beginDate, LocalDate endDate) throws RemoteException {
 
         //TODO delete
-        System.out.println("code in server  : "+code );
         if(!code.equals(this.code)){
             this.code = code;
             this.stockPOs = stockDAO.getStockInfoByCode(code);
@@ -63,14 +62,12 @@ public enum MALineServiceImpl implements MALineService {
 
 
         //TODO delete
-        System.out.println("stockPOs.size() : "+stockPOs.size());
         double sum5 = 0 , sum10 = 0, sum30 = 0,sum60 = 0;
         int none = 0;
         List<MAPieceVO> maPieceVOs = new ArrayList<>();
         for(int i = 0; i<stockPOs.size() && !stockPOs.get(i).getDate().isAfter(endDate);i++){
             StockPO stockPO  = stockPOs.get(i);
             //
-            // System.out.println(stockPO.getVolume());
             if(stockPO.getVolume()!=0){
                 sum5+= stockPO.getClose_Price();
                 sum10+= stockPO.getClose_Price();

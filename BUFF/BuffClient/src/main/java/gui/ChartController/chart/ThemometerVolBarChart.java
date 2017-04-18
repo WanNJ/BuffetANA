@@ -230,7 +230,7 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
                     volBar.setLayoutY(y);
                 }
 
-                System.out.println(extra.volume);
+
                 if (seriesPath != null) {
                     if (seriesPath.getElements().isEmpty()) {
                         seriesPath.getElements().add(new MoveTo(x, getYAxis().getDisplayPosition(extra.volume)));

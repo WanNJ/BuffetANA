@@ -42,8 +42,6 @@ public class KlineController {
         KLineChartController kLineChartController = ChartController.INSTANCE.getKLineChartController();
         kLineChartController.setStockCode(code);
 
-        //TODO delete
-        //System.out.println("first:   "+first);
 
         kLineChartController.setStartDate(first);
         kLineChartController.setEndDate(second);

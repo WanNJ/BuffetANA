@@ -34,14 +34,6 @@ public enum IndustryCorrelationServiceImpl implements IndustryCorrelationService
         stockDAO = factory.createStockDAO();
     }
 
-//    public static void main(String[] args) {
-//        IndustryCorrelationService industryCorrelationService = IndustryCorrelationServiceImpl.INDUSTRY_CORRELATION_SERVICE;
-//        IndustryCorrelationVO industryCorrelationVO = industryCorrelationService.getInIndustryCorrelationResult("000002", 5);
-//        System.out.println("code: " + industryCorrelationVO.code);
-//        System.out.println("name: " + industryCorrelationVO.name);
-//        System.out.println("correlation: " + industryCorrelationVO.correlation);
-//        System.out.println("profitRate: " + industryCorrelationVO.profitRate);
-//    }
 
     @Override
     public IndustryCorrelationVO getInIndustryCorrelationResult(String code, int holdingPeriod) {

@@ -249,26 +249,14 @@ public enum StrategyDAOImpl implements StrategyDAO {
                 LocalDate begin = pickleData.beginDate;
                 LocalDate end = pickleData.endDate;
                 holdingNum = (int)Math.ceil(holdingRate * pickleData.stockCodes.size());
-//                if(i == 0) {
-//                    System.out.println(pickleData.stockCodes.size());
-//                    for(BackData backData : pickleData.stockCodes) {
-//                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-//                        System.out.println(backData.code + "   " + backData.rankValue);
-//                    }
-//                }
+//
                 pickleData.stockCodes = pickleData.stockCodes.stream()
                         .filter(getPredictAll(stockPickIndexVOs, begin, end)) //根据所有条件过滤
                         .sorted(strategyType            //根据rank模式进行排序
                                 .getCompareRank(asd))
                         .limit(holdingNum)
                         .collect(Collectors.toList());
-//                if(i == 0) {
-//                    System.out.println(pickleData.stockCodes.size());
-//                    for(BackData backData : pickleData.stockCodes) {
-//                        System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-//                        System.out.println(backData.code + "   " + backData.rankValue);
-//                    }
-//                }
+//
             }
 
         }
@@ -407,7 +395,7 @@ public enum StrategyDAOImpl implements StrategyDAO {
     private Predicate<BackData> getPredictAll(List<StockPickIndexVO> stockPickIndexVOs
             , LocalDate begindate, LocalDate endDate) {
 
-        //System.out.println(stockPickIndexVOs.size());
+
 
         Predicate<BackData> predicateAll = new Predicate<BackData>() {
             @Override
@@ -452,7 +440,6 @@ public enum StrategyDAOImpl implements StrategyDAO {
                 max = doubleSummaryStatistics.getMax();
                 min = doubleSummaryStatistics.getMin();
 
-                //doubleSummaryStatistics.andThen(t-> System.out.println(t));
 
 
 
@@ -470,27 +457,5 @@ public enum StrategyDAOImpl implements StrategyDAO {
     }
 
 
-
-    /**
-     * 偷偷用来做测试的东西 233333
-     */
-//    public static void main(String[] args)  {
-////
-//        Set<String> block =  new HashSet<>();
-//        block.add("LED");
-//        block.add("LED");
-//        //block.add("IPV6");
-//
-//
-//        Set<String>  ind =  new HashSet<>();
-//        //ind.add("电子元器件");
-//        //ind.add("电子设备");
-//        StockPoolConditionPO stockPoolConditionPO  =  new StockPoolConditionPO(StockPool.UserMode,
-//                block,ind,true);
-//
-//        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(stockPoolConditionPO).
-//                stream().forEach(t-> System.out.println(t));
-//
-//    }
 
 }

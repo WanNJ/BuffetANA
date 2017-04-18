@@ -87,15 +87,7 @@ public class NormHistChartController implements Initializable {
      * 根据已经存储的值获取数据
      */
     private void getData(){
-//        if( singleCodePredictService == null ){
-//            System.err.println("没有KLineService的实现传入");
-//            return ;
-//        }
-//
-//        if(stockCode==null){
-//            System.err.println("没有传入stockcode");
-//            return ;
-//        }
+
 
         if(guassLineVOs!=null)
         this.guassLineVOObservableList = getObeservableListLine(this.guassLineVOs);

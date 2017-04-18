@@ -97,7 +97,7 @@ public class UpDownLineChart extends LineChart<String, Number> {
             curWidth=Width;
         }
         upDownLineChart.setPrefSize(curWidth,Height*0.95);
-        System.out.println("MA:   "+curWidth);
+
 
         return upDownLineChart;
     }

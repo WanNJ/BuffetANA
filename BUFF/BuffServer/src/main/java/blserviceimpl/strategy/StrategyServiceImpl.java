@@ -122,12 +122,7 @@ public enum StrategyServiceImpl implements StrategyService {
             double sellMoney = 0;
 
             for(BackData backData : pickleData.stockCodes) {
-//                System.out.println(backData.code);
-//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-//                System.out.println(backData.lastDayClose);
-//                System.out.println(backData.firstDayOpen);
-//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
-//                System.out.println();
+
                 double cnt = 100/ backData.firstDayOpen;
                 buyMoney+=100;
                 sellMoney+= cnt * backData.lastDayClose;
@@ -165,12 +160,7 @@ public enum StrategyServiceImpl implements StrategyService {
             double sellMoney = 0;
 
             for(BackData backData : pickleData.stockCodes) {
-//                System.out.println(backData.code);
-//                System.out.println(pickleData.beginDate + "   " + pickleData.endDate);
-//                System.out.println(backData.lastDayClose);
-//                System.out.println(backData.firstDayOpen);
-//                System.out.println((backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen);
-//                System.out.println();
+
                 double cnt = 100/ backData.firstDayOpen;
                 buyMoney+=100;
                 sellMoney+= cnt * backData.lastDayClose;

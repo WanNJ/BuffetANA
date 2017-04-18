@@ -97,7 +97,6 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
 
         double bias = parameters[2];
 
-        System.out.println("loc:  "+loc);
 
         NormalDistribution normal = new NormalDistribution(loc, bias);
 
@@ -147,7 +146,7 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
             incomeVOList.add(new PriceIncomeVO(list.get(i).getAdjCloseIndex()
                     ,cur));
         }
-        incomeVOList.forEach(t-> System.out.println(t.price+"  "+t.incomeRate));
+
         incomeVOList = incomeVOList.stream().sorted((a,b)->a.price>b.price?1:-1).collect(Collectors.toList());
         return incomeVOList;
     }
@@ -187,7 +186,7 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
         for(;end<=max; beg = end ,end+=iterval){
             rangeFList.add(new RangeF(beg,end));
         }
-        //System.out.println(rangeFList.size());
+
 
 
         rangeFList = rangeFList.stream().map(t->{
@@ -197,7 +196,6 @@ public enum SingleCodePredictServiceImpl implements SingleCodePredictService {
         }).collect(Collectors.toList());
 
 
-        //rangeFList.stream().forEach(t-> System.out.println(t.small+"  "+t.big+"  "+t.cnt));
 
 
         return rangeFList;

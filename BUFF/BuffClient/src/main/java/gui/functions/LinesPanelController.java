@@ -66,31 +66,7 @@ public class LinesPanelController {
     //存储当前要显示的code
     private String code = "";
 
-//        @FXML
-//        private void initialize() {
-//        try {
-//            System.out.println("加载四条信息");
-//            //加载四条线的节点信息
-//            KLineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/ui/KLine.fxml"));
-//            MALineChild = (Parent) FXMLLoader.load(getClass().getResource("/resources/fxml/ui/MALine.fxml"));
-//            VOLLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/ui/VOLLine.fxml"));
-//            KDJLineChild = (Parent)  FXMLLoader.load(getClass().getResource("/resources/fxml/ui/KDJLine.fxml"));
-//
-//
-//            gridPane.setRowIndex(KLineChild,1);
-//            gridPane.setRowIndex(MALineChild,2);
-//            gridPane.setRowIndex(VOLLineChild,3);
-//            gridPane.setRowIndex(KDJLineChild,4);
-//
-//            //默认设置可以打开K线
-//            KLinetoggle.selectedProperty().set(true);
-//            gridPane.getChildren().add(KLineChild);
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
     @PostConstruct
     public void init() throws FlowException, VetoException {

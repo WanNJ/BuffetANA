@@ -211,7 +211,6 @@ public class MarketController {
         //为treeTableView加上双击跳转的监听
         treeTableView.setOnMouseClicked(event -> {
             if(event.getClickCount()==2 && null!=treeTableView.getSelectionModel().getSelectedItem()){
-                //System.out.println("change:"+treeTableView.getSelectionModel().getSelectedItem().getValue().ID.get());
                 //跳转界面
                 SideMenuController sideMenuController = (SideMenuController) context.getRegisteredObject(SideMenuController.class);
                 Label SingleStock=((Label)context.getRegisteredObject("SingleStock"));

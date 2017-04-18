@@ -49,8 +49,7 @@ public class LRChart extends LineChart<String, Number> {
     public static LRChart createChart(ObservableList<DailyLogReturnVO> mainDailyLogReturnVOS,
                                ObservableList<DailyLogReturnVO> deputyDailyLogReturnVOS){
 
-//        mainDailyLogReturnVOS.forEach(t-> System.out.println(t.logReturnIndex));
-//        deputyDailyLogReturnVOS.forEach(t-> System.out.println(t.logReturnIndex));
+
 
         //X轴
         final CategoryAxis xAxis = new CategoryAxis ();

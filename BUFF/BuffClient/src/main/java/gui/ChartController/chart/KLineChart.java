@@ -237,7 +237,7 @@ public class KLineChart extends XYChart<String, Number> {
         }
         // 根据序列数据的数量 在图上画点
         int xx =  getData().size();
-        System.out.println("size:   "+xx);
+
         for (int seriesIndex = 0; seriesIndex < getData().size(); seriesIndex++) {
             Series<String, Number> series = getData().get(seriesIndex);
             Iterator<Data<String, Number>> iter = getDisplayedDataIterator(series);

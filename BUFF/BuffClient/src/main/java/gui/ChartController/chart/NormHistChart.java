@@ -300,7 +300,7 @@ public class NormHistChart extends XYChart<String,Number> {
             , ObservableList<GuassLineVO> guassLineVOObservableList){
 
         length = rangeFObservableList.size();
-        System.out.println("List of Observe:  "+rangeFObservableList.size());
+
         //获取柱状图的最高点
         double max=getMax(rangeFObservableList);
 

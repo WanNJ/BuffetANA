@@ -38,10 +38,14 @@ public class TooltipMAContentStick extends GridPane {
     }
 
     public void update(double open, double close, double high, double low) {
-        MA5Value.setText(Double.toString(open).substring(0,5));
-        MA10Value.setText(Double.toString(close).substring(0,5));
-        MA30Value.setText(Double.toString(high).substring(0,5));
-        MA60Value.setText(Double.toString(low).substring(0,5));
+        String str = Double.toString(open);
+        MA5Value.setText(str.length()>5? str.substring(0,5):str);
+         str = Double.toString(close);
+        MA10Value.setText(str.length()>5? str.substring(0,5):str);
+        str = Double.toString(high);
+        MA30Value.setText(str.length()>5? str.substring(0,5):str);
+        str = Double.toString(low);
+        MA60Value.setText(str.length()>5? str.substring(0,5):str);
     }
 }
 

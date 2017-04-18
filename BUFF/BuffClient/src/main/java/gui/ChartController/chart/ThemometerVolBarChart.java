@@ -292,7 +292,7 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
     public static ThemometerVolBarChart createChart(ObservableList<StockVolVO> stockVolVOs){
 
         length = stockVolVOs.size();
-        System.out.println("List of Observe:  "+stockVolVOs.size());
+
         //获取柱状图的最高点
         double max=getMax(stockVolVOs);
         //获取柱状图的最低点
@@ -361,12 +361,12 @@ public class ThemometerVolBarChart extends XYChart<String,Number> {
 
         //仿照  确定显示界面的大小
         double curWidth = HpixelPerValue*stockVolVOs .size();
-        System.out.println("Bar:   "+curWidth);
+
 
         if(curWidth<Width){
             curWidth=Width;
         }
-        System.out.println("Bar:   "+curWidth);
+
         volBarChart.setPrefSize(curWidth,Height*0.95);
 
 

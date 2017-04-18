@@ -1,7 +1,6 @@
 package gui.functions;
 
 import blservice.strategy.StrategyService;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXRippler;
@@ -30,7 +29,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author zjy
@@ -93,8 +91,8 @@ public class StrategyBackTestingController {
         viewList.addAll(Arrays.asList(
                 context.getRegisteredObject(EstimateResultController.class),
                 context.getRegisteredObject(AccumulatedIncomeController.class),
-                context.getRegisteredObject(IncomeBarPieController.class),
-                context.getRegisteredObject(BetterStrategyController.class)
+                context.getRegisteredObject(IncomeBarPieController.class)
+//                context.getRegisteredObject(BetterStrategyController.class)
         ));
 
         //showData();
@@ -162,11 +160,11 @@ public class StrategyBackTestingController {
         if(strateyChoosed){
             if(!viewsBox.getChildren().contains(betterStrategy)){
                 viewsBox.getChildren().add(betterStrategy);
-                viewList.add(context.getRegisteredObject(BetterStrategyController.class));
+//                viewList.add(context.getRegisteredObject(BetterStrategyController.class));
             }
         }else {
             viewsBox.getChildren().remove(betterStrategy);
-            viewList.remove(context.getRegisteredObject(BetterStrategyController.class));
+//            viewList.remove(context.getRegisteredObject(BetterStrategyController.class));
         }
 
         //加载完成时，恢复界面，分别更新每张图的数据

@@ -7,13 +7,13 @@
 
 
 .label-gray {
-    -fx-background-color: rgba(25,25,25,0.70);
+    -fx-background-color: #FFFFFF;
 }
 
 .axis {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-color: #FFFFFF;
-    -fx-tick-label-fill: #FFFFFF;
+    -fx-text-fill: rgba(25,25,25,0.70);
+    -fx-font-color: rgba(25,25,25,0.70);
+    -fx-tick-label-fill: rgba(25,25,25,0.70);
     -fx-font-size: 18pt;
     -fx-font-family: "Segoe UI Light";
     -fx-tick-length: 20;

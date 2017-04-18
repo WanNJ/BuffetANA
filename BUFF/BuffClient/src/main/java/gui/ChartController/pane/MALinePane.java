@@ -35,8 +35,8 @@ public class MALinePane extends StackPane {
         getChildren().add(maLineChart);
 
 
-        xLine.setStroke(Color.PINK);;
-        yLine.setStroke(Color.PINK);
+        xLine.setStroke(Color.BLACK);;
+        yLine.setStroke(Color.BLACK);
 
 
         if (strokWidth != null) {

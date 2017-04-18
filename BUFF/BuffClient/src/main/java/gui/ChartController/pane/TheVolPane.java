@@ -36,8 +36,8 @@ public class TheVolPane extends StackPane {
         getChildren().add(themometerVolBarChart);
 
 
-        xLine.setStroke(Color.WHITE);;
-        yLine.setStroke(Color.WHITE);
+        xLine.setStroke(Color.BLACK);;
+        yLine.setStroke(Color.BLACK);
 
 
         if (strokWidth != null) {

@@ -53,8 +53,8 @@ public class MutiChartPane extends StackPane {
         getChildren().addAll(this.upDownChart,this.upDownLineChart);
 
 
-        xLine.setStroke(Color.WHITE);
-        yLine.setStroke(Color.WHITE);
+        xLine.setStroke(Color.BLACK);
+        yLine.setStroke(Color.BLACK);
 
 
         if (strokWidth != null) {

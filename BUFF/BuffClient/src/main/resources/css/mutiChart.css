@@ -13,9 +13,9 @@
 }
 
 .axis {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-color: #FFFFFF;
-    -fx-tick-label-fill: #FFFFFF;
+    -fx-text-fill: black;
+    -fx-font-color: black;
+    -fx-tick-label-fill: black;
     -fx-font-size: 18pt;
     -fx-font-family: "Segoe UI Light";
     -fx-tick-length: 20;
@@ -47,13 +47,13 @@
 .chart {
     -fx-alternative-column-fill-visible : false;
     -fx-vertical-grid-lines-visible: false;
-    -fx-background-color: #000000;
+    -fx-background-color: white;
 }
 .fx-background-color {
     -fx-background-color: red;
 }
 .chart-plot-background { /*图表的背景*/
-    -fx-background-color: rgba(0, 0, 0, 0.77);
+    -fx-background-color: white;
 }
 
 .default-color0.chart-bar { -fx-bar-fill: red; }

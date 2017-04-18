@@ -8,7 +8,7 @@
 
 
 .MA5-line {   /**/
-    -fx-stroke: ghostwhite;
+    -fx-stroke: black;
     -fx-stroke-width: 3px;
 }
 
@@ -53,13 +53,13 @@
 .chart {
     -fx-alternative-column-fill-visible : false;
     -fx-vertical-grid-lines-visible: false;
-    -fx-background-color: #000000;
+    -fx-background-color: white;
 }
 .fx-background-color {
     -fx-background-color: red;
 }
 .chart-plot-background { /*图表的背景*/
-    -fx-background-color: rgba(0, 0, 0, 0.12);
+    -fx-background-color: white;
 }
 
 .chart-series-line {
@@ -74,7 +74,7 @@
     -fx-stroke-width: 0;
 }
 
-.default-color0.chart-series-line { -fx-stroke: whitesmoke; }
+.default-color0.chart-series-line { -fx-stroke: black; }
 .default-color1.chart-series-line { -fx-stroke: yellow; }
 .default-color2.chart-series-line { -fx-stroke: greenyellow; }
 .default-color3.chart-series-line { -fx-stroke: blue; }

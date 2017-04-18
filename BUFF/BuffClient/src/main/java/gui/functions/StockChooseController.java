@@ -36,6 +36,7 @@ import vo.*;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
@@ -603,14 +604,15 @@ public class StockChooseController {
         StrategyHistoryService strategyHistoryService = blFactoryService.createStrategyHistoryService();
 
         save.setOnAction(event -> {
-            if(currentName!=null){
-                strategyName.setText(currentName);
-            }
             try {
                 collectCurrentData();
             } catch (WrongValueException e) {
                 Dialogs.showMessage(e.getErr());
                 return;
+            }
+
+            if(currentName!=null){
+                strategyName.setText(currentName);
             }
             saveDialog.show(root);
         });
@@ -625,6 +627,8 @@ public class StockChooseController {
                 Dialogs.showMessage("啊哦","名字不能为空哦");
                 return;
             }
+
+
             this.currentName = strategyName.getText();
             StrategySaveVO strategySaveVO=new StrategySaveVO(strategyName.getText(),"自定义策略".equals(
                     strategyType.getValue()), stockPoolConditionVO,mixedStrategyVOList,stockPickIndexList,
@@ -770,7 +774,15 @@ public class StockChooseController {
         }else if("自选股票池".equals(pool)) {
             stockPoolConditionVO.stockPool = StockPool.UserMode;
             stockPoolConditionVO.excludeST = ST.isSelected();
-            //TODO 其余多选属性
+            stockPoolConditionVO.block = new HashSet<>();
+            stockPoolConditionVO.industry = new HashSet<>();
+            String block = plate.getValue();
+            System.out.println(block);
+            stockPoolConditionVO.block.add(block);
+            stockPoolConditionVO.industry
+                    .addAll(selectedList.getItems().stream().collect(Collectors.toList()));
+
+
 
         }else{
             throw new WrongValueException("股票池没有选择");

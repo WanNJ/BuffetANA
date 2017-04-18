@@ -160,10 +160,10 @@ public class StrategyBackTestingController {
 
         //如果是自定义策略就不显示betterStrategy，否则显示betterStrategy
         if(strateyChoosed){
-            viewsBox.getChildren().add(betterStrategy);
-            viewsBox.getChildren().setAll(viewsBox.getChildren().stream().distinct().collect(Collectors.toList()));
-            viewList.add(context.getRegisteredObject(BetterStrategyController.class));
-            viewList=viewList.stream().distinct().collect(Collectors.toList());
+            if(!viewsBox.getChildren().contains(betterStrategy)){
+                viewsBox.getChildren().add(betterStrategy);
+                viewList.add(context.getRegisteredObject(BetterStrategyController.class));
+            }
         }else {
             viewsBox.getChildren().remove(betterStrategy);
             viewList.remove(context.getRegisteredObject(BetterStrategyController.class));

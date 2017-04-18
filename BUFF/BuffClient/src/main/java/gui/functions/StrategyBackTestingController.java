@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zjy
@@ -46,6 +47,7 @@ public class StrategyBackTestingController {
     @FXML private VBox viewsBox;
     @FXML private StackPane spinnerPane;
 
+    private StackPane betterStrategy;//如果是自定义策略，则不显示
     private List<Updatable> viewList=new ArrayList<>();
 
     @PostConstruct
@@ -86,7 +88,7 @@ public class StrategyBackTestingController {
         viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(AccumulatedIncomeController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
-        viewsBox.getChildren().addAll(new Flow(BetterStrategyController.class).createHandler(context).start());
+        viewsBox.getChildren().addAll(betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start());
         //将界面添加到待更新数据的集合里，将来若要更新数据，会依次调用这些类的updateData()方法
         viewList.addAll(Arrays.asList(
                 context.getRegisteredObject(EstimateResultController.class),
@@ -155,6 +157,18 @@ public class StrategyBackTestingController {
                 };
             }
         };
+
+        //如果是自定义策略就不显示betterStrategy，否则显示betterStrategy
+        if(strateyChoosed){
+            viewsBox.getChildren().add(betterStrategy);
+            viewsBox.getChildren().setAll(viewsBox.getChildren().stream().distinct().collect(Collectors.toList()));
+            viewList.add(context.getRegisteredObject(BetterStrategyController.class));
+            viewList=viewList.stream().distinct().collect(Collectors.toList());
+        }else {
+            viewsBox.getChildren().remove(betterStrategy);
+            viewList.remove(context.getRegisteredObject(BetterStrategyController.class));
+        }
+
         //加载完成时，恢复界面，分别更新每张图的数据
         updateDataService.setOnSucceeded(event -> {
             viewList.stream().forEach(Updatable::updateData);

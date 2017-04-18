@@ -233,8 +233,10 @@ public enum StrategyServiceImpl implements StrategyService {
     @Override
     public List<DayRatePieceVO> getStrategyDayRatePieceVO() {
         List<DayRatePieceVO> dayRatePieceVOS = new ArrayList<>();
+        double sum = 0.0;
         for(int i = 0; i < pickleDatas.size(); i++) {
-            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, strategyRates.get(i));
+            sum += strategyRates.get(i);
+            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, sum * 100);
             dayRatePieceVOS.add(dayRatePieceVO);
         }
         return dayRatePieceVOS;
@@ -243,8 +245,10 @@ public enum StrategyServiceImpl implements StrategyService {
     @Override
     public List<DayRatePieceVO> getBaseDayRatePieceVO() {
         List<DayRatePieceVO> dayRatePieceVOS = new ArrayList<>();
+        double sum = 0.0;
         for(int i = 0; i < pickleDatas.size(); i++) {
-            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, baseRates.get(i));
+            sum += baseRates.get(i);
+            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, sum * 100);
             dayRatePieceVOS.add(dayRatePieceVO);
         }
         return dayRatePieceVOS;

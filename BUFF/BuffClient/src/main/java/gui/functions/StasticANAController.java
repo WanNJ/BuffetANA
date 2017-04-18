@@ -56,6 +56,9 @@ public class StasticANAController {
     private StackPane normPane;//存储加载线程时 生成的容器
     private FlowHandler correlationHandler;
     private StackPane correlationPane;
+
+
+
     private String code; //股票代码
 
     @PostConstruct
@@ -102,6 +105,7 @@ public class StasticANAController {
              *  加载流控制
              */
             vBox.getChildren().remove(normPane);
+            vBox.getChildren().remove(correlationPane);
             Flow normFlow = new Flow(NormANAController.class);
             normHandler = normFlow.createHandler(context);
             try {
@@ -126,6 +130,8 @@ public class StasticANAController {
             /**
              *  加载流控制
              */
+            vBox.getChildren().remove(normPane);
+            vBox.getChildren().remove(correlationPane);
             vBox.getChildren().remove(correlationPane);
             Flow correlationFlow = new Flow(IndustryCorrelationController.class);
             correlationHandler = correlationFlow.createHandler(context);

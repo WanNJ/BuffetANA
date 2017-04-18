@@ -2,8 +2,6 @@ package runner;
 
 import blservice.strategy.StrategyService;
 import blserviceimpl.strategy.StrategyServiceImpl;
-import dataserviceimpl.strategy.StrategyDAOImpl;
-import po.StockPoolConditionPO;
 import stockenum.StockPickIndex;
 import stockenum.StockPool;
 import stockenum.StrategyType;
@@ -53,37 +51,39 @@ public class ServerRunner {
 //            System.out.println();
 //        }
 
-//        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
-//                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
+                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 
 
-        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
-                , LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+//        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
+//                , LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 //        strategyConditionVO1.holdingRate = 0.2;
-        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.HS300,null,null,false);
+        StockPoolConditionVO stockPoolConditionVO1  =new StockPoolConditionVO(StockPool.All,null,null,false);
         List<StockPickIndexVO> stockPickIndexVOs1 = new ArrayList<>();
-        List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
-        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false,20));
+//        List<MixedStrategyVO> mixedStrategyVOs = new ArrayList<>();
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,10,false,20));
 //        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MOM,1,false,20));
-        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,9,false,18));
-
-        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,8,false,16));
-
-        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,7,false,14));
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,9,false,18));
+//
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,8,false,16));
+//
+//        mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,7,false,14));
 
       //  mixedStrategyVOs.add(new MixedStrategyVO(StrategyType.MA,-1,false,60));
 
 
 		stockPickIndexVOs1.add(new StockPickIndexVO(StockPickIndex.CHANGE_RATE,0.02,4.0));
-        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
+//        StrategyDAOImpl.STRATEGY_DAO.getStocksInPool(new StockPoolConditionPO(stockPoolConditionVO1));
 
 
         StrategyService strategyService =  StrategyServiceImpl.STRATEGY_SERVICE;
-//        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
-        strategyService.initMixed( LocalDate.of(2013,1,1)
-                ,LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
-       ,mixedStrategyVOs);
-//        strategyService.calculate(new TraceBackVO(20,10,10));
+        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
+//        strategyService.initMixed( LocalDate.of(2013,1,1)
+//                ,LocalDate.of(2014,1,1),stockPoolConditionVO1,stockPickIndexVOs1,new TraceBackVO(20,10,10)
+//       ,mixedStrategyVOs);
+
+
+        strategyService.calculate(new TraceBackVO(10,5,10));
 //        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
 //        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,
 //                stockPickIndexVOs1,new TraceBackVO(20,10,200)
@@ -111,8 +111,10 @@ public class ServerRunner {
         System.out.println("抗风险能力: " + strategyScoreVO.antiRiskAbility);
         System.out.println("策略总得分: " + strategyScoreVO.strategyScore);
 
-       // List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByHolding(5);
-        //betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));
+
+
+        List<BetterTableVO> betterTableVOS = strategyService.getBetterTableVOByFormation(60);
+        betterTableVOS.forEach(betterTableVO -> System.out.println(betterTableVO.period + "  " + betterTableVO.overProfitRate + "  " + betterTableVO.winRate));
 
 //
 //        PickStockService pickStockService = PickStockServiceImpl.PICK_STOCK_SERVICE;

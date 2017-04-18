@@ -268,7 +268,7 @@ public enum StrategyServiceImpl implements StrategyService {
                     winCount++;
             }
 
-            betterTableVOSByFormation.add(new BetterTableVO(holdingPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size(), winCount / baseRates.size()));
+            betterTableVOSByFormation.add(new BetterTableVO(holdingPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size() * 100, winCount / baseRates.size() * 100));
         }
         return betterTableVOSByFormation;
     }
@@ -287,7 +287,7 @@ public enum StrategyServiceImpl implements StrategyService {
                 }
             }
             double winRate = winCount / baseRates.size();
-            betterTableVOSByHolding.add(new BetterTableVO(formationPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size(), winRate));
+            betterTableVOSByHolding.add(new BetterTableVO(formationPeriod, (yearProfitRate - baseYearProfitRate) / baseRates.size() * 100, winRate * 100));
         }
         return betterTableVOSByHolding;
     }

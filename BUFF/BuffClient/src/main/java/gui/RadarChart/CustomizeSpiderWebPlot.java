@@ -41,7 +41,7 @@ public class CustomizeSpiderWebPlot extends SpiderWebPlot {
     private static final int DEFAULT_GAP = 10;
     private static final double THRESHOLD = 15;
     private static final int DEFAULT_TICKS = 5; //刻度数
-    private static final double DEFAULT_MAX_VALUE = 10; //坐标最大值
+    private static final double DEFAULT_MAX_VALUE = 20; //坐标最大值
     private static final boolean DEFAULT_DRAW_RING = true; //画环默认值
     /**
      * 刻度数/环数

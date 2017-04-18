@@ -31,7 +31,7 @@ public class PeriodRateChart extends AreaChart<Number ,Number> {
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setAutoRanging(true);
         //TODO 将其设为百分比格式
-        
+
         final PeriodRateChart PeriodRateChart = new PeriodRateChart(xAxis, yAxis);
 
 

@@ -93,6 +93,8 @@ public enum StrategyServiceImpl implements StrategyService {
                           TraceBackVO traceBackVO, List<MixedStrategyVO> mixedStrategyVOS) {
 
         //不知道用没用   strategyConditionVO  先将能设好的设好
+
+        System.out.println("begin init mixed");
         this.strategyConditionVO = new StrategyConditionVO(null , beginDate , endDate,false);
         this.stockPoolConditionVO = stockPoolConditionVO;
         this.stockPickIndexVOs = stockPickIndexVOs;

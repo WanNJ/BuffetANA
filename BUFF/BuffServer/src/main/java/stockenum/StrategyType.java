@@ -40,12 +40,17 @@ public enum StrategyType  implements RankMode {
                 @Override
                 public int compare(BackData o1, BackData o2) {
                     if (asd) {
+
                         //System.out.println();
                         if ((double) o1.rankValue > (double) o2.rankValue) return 1;
-                        else return -1;
+                        else if(((double) o1.rankValue < (double) o2.rankValue)) return -1;
+                        return 0;
                     } else {
+                        if(o1.rankValue==null) return 1;
+                        if(o2.rankValue==null) return -1;
                         if ((double) o1.rankValue > (double) o2.rankValue) return -1;
-                        else return 1;
+                        else if(((double) o1.rankValue < (double) o2.rankValue)) return 1;
+                        else return 0;
                     }
                 }
             };

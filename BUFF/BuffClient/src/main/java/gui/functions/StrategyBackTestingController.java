@@ -86,7 +86,7 @@ public class StrategyBackTestingController {
         viewsBox.getChildren().addAll(new Flow(EstimateResultController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(AccumulatedIncomeController.class).createHandler(context).start());
         viewsBox.getChildren().addAll(new Flow(IncomeBarPieController.class).createHandler(context).start());
-        viewsBox.getChildren().addAll(betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start());
+        //viewsBox.getChildren().addAll(betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start());
         //将界面添加到待更新数据的集合里，将来若要更新数据，会依次调用这些类的updateData()方法
         viewList.addAll(Arrays.asList(
                 context.getRegisteredObject(EstimateResultController.class),
@@ -159,12 +159,15 @@ public class StrategyBackTestingController {
         //如果是自定义策略就不显示betterStrategy，否则显示betterStrategy
         if(strateyChoosed){
             if(!viewsBox.getChildren().contains(betterStrategy)){
+                try {
+                    betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start();
+                } catch (FlowException e) {
+                    e.printStackTrace();
+                }
                 viewsBox.getChildren().add(betterStrategy);
-//                viewList.add(context.getRegisteredObject(BetterStrategyController.class));
             }
         }else {
             viewsBox.getChildren().remove(betterStrategy);
-//            viewList.remove(context.getRegisteredObject(BetterStrategyController.class));
         }
 
         //加载完成时，恢复界面，分别更新每张图的数据

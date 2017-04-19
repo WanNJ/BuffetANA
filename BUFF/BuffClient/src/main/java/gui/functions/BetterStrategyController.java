@@ -46,7 +46,7 @@ public class BetterStrategyController implements Updatable{
     private StrategyService strategyService=factory.createStrategyService();
     @PostConstruct
     public void init(){
-        context.register(this);
+        //context.register(this);
 
         days.valueProperty().addListener((observable,oldValue,newValue)-> updateData());
 
@@ -92,6 +92,9 @@ public class BetterStrategyController implements Updatable{
         int days=1;//初始默认值是1
         try{
             days=Integer.parseInt(this.days.getValue());
+            if(days>60){//时间超过60天会抛异常
+                days=60;
+            }
         }catch (NumberFormatException e){
             this.days.setValue("1");
             return;

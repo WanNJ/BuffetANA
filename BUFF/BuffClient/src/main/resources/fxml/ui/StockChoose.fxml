@@ -316,7 +316,7 @@
             <body>
                <JFXTextField fx:id="strategyName" promptText="策略名称">
                   <font>
-                     <Font size="30" />
+                     <Font size="24" />
                   </font>
                </JFXTextField>
             </body>

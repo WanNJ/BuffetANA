@@ -612,6 +612,7 @@ public class StockChooseController {
             if(currentName!=null){
                 strategyName.setText(currentName);
             }
+
             saveDialog.show(root);
         });
         load.setOnAction(event -> loadDialog.show(root));
@@ -625,7 +626,6 @@ public class StockChooseController {
                 Dialogs.showMessage("啊哦","名字不能为空哦");
                 return;
             }
-
 
             this.currentName = strategyName.getText();
             StrategySaveVO strategySaveVO=new StrategySaveVO(strategyName.getText(),"自定义策略".equals(
@@ -695,6 +695,10 @@ public class StockChooseController {
             formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
+
+//        holdingPeriod.requestFocus();
+//        formativePeriod.requestFocus();
+//        numOfShares.requestFocus();
 
         //添加筛选条件
         filterCondition.getChildren().clear();

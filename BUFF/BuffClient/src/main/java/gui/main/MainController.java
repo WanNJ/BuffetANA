@@ -40,6 +40,7 @@ public class MainController {
 	
 	@FXML private JFXDrawer drawer;
 	@FXML private JFXPopup toolbarPopup;
+	@FXML private Label contactUs;
 	@FXML private Label exit;
 
 	@FXML private JFXDialog dialog;
@@ -73,6 +74,12 @@ public class MainController {
 			toolbarPopup.show(PopupVPosition.TOP, PopupHPosition.RIGHT, -12, 15);
 		});
 
+		//设置联系作者信息的显示
+		contactUs.setOnMouseClicked((e) -> Dialogs.showMessage("联系我们",
+				"1395881075@qq.com\n" +
+						"805642794@qq.com\n" +
+						"842631684@qq.com\n" +
+						"1622886549@qq.com\n"));
 		// close application
 		exit.setOnMouseClicked((e) -> {
 			Platform.exit();

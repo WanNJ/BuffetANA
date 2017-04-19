@@ -49,15 +49,15 @@
 
 	<JFXPopup fx:id="toolbarPopup" styleClass="tool-bar-popup">
 		<JFXListView styleClass="option-list-view">
-			<Label>
-				Contact Us
+			<Label fx:id="contactUs">
+				联系我们
 				<graphic>
 					<Icon awesomeIcon="USER" size="1.5em" style=";"
 						styleClass="option-jfx-list-view-icon" />
 				</graphic>
 			</Label>
 			<Label fx:id="exit">
-				Exit
+				退出
 				<graphic>
 					<Icon awesomeIcon="REPLY" size="1.5em" style=";"
 						styleClass="option-jfx-list-view-icon" />

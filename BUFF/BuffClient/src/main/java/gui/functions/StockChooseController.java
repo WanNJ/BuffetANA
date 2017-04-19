@@ -697,7 +697,7 @@ public class StockChooseController {
             formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
-
+        
         //TODO:还差排名条件和筛选条件没有添加
         filterCondition.getChildren().clear();
         filterCondition.getRowConstraints().clear();

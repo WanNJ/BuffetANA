@@ -95,7 +95,9 @@ public class StrategyBackTestingController {
 //                context.getRegisteredObject(BetterStrategyController.class)
         ));
 
-        //showData();
+        //切换到这个界面时，默认下拉选择股票界面
+        drawer.open();
+
     }
 
     /**

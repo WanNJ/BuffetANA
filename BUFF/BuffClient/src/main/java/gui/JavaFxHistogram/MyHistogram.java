@@ -15,6 +15,7 @@ import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -42,6 +43,7 @@ public class MyHistogram {
         JFreeChart chart = new JFreeChart(plotTitle, JFreeChart.DEFAULT_TITLE_FONT, plot, false);
         ChartTheme currentTheme = new StandardChartTheme("JFree");
         currentTheme.apply(chart);
+        chart.setBackgroundPaint(Color.WHITE);
         return chart;
 
     }

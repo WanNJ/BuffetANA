@@ -6,12 +6,18 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 import util.StrategyScoreVO;
 
+import java.awt.*;
+
 public class MySpiderChart {
 
     private static JFreeChart createChart(StrategyScoreVO vo) {
         CustomizeSpiderWebPlot spiderWebPlot = new CustomizeSpiderWebPlot(createDataset(vo));
+        spiderWebPlot.setOutlineVisible(false);
+        spiderWebPlot.setWebFilled(false);
         JFreeChart jfreechart = new JFreeChart("",
                 TextTitle.DEFAULT_FONT, spiderWebPlot, false);
+        jfreechart.setBorderVisible(false);
+        jfreechart.setBackgroundPaint(Color.WHITE);
         return jfreechart;
     }
 

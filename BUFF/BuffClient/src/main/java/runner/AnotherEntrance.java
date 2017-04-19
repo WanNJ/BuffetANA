@@ -10,6 +10,7 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AnotherEntrance extends Task<Integer> {
@@ -17,6 +18,7 @@ public class AnotherEntrance extends Task<Integer> {
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
 	private Stage stage;
+	private Image icon=new Image("/resources/images/logo.png");
 
 
 	public void setStage(Stage stage) {
@@ -45,6 +47,7 @@ public class AnotherEntrance extends Task<Integer> {
                 scene.getStylesheets().add(AnotherEntrance.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
                 //		stage.initStyle(StageStyle.UNDECORATED);
                 //		stage.setFullScreen(true);
+                stage.getIcons().add(icon);
                 stage.setMinWidth(700);
                 stage.setMinHeight(800);
 

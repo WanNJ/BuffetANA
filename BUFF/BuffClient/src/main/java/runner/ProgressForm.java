@@ -4,6 +4,8 @@ import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -37,6 +39,8 @@ public class ProgressForm {
         progressIndicator.setProgress(-1F);
         //progressIndicator.getStyleClass().add("progress-bar-root");
         progressIndicator.progressProperty().bind(task.progressProperty());
+
+        ImageView iconView=new ImageView(new Image("/resources/images/logo.png"));//unused
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);

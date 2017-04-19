@@ -9,6 +9,7 @@ import factory.BLFactorySeviceOnlyImpl;
 import factory.BlFactoryService;
 import gui.utils.DatePickerUtil;
 import gui.utils.Dialogs;
+import gui.utils.WaitingService;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
@@ -16,6 +17,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -696,9 +699,15 @@ public class StockChooseController {
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
 
-//        holdingPeriod.requestFocus();
-//        formativePeriod.requestFocus();
-//        numOfShares.requestFocus();
+        //requestFocus()要等一段时间才能把promptText顶上去，所以加上异步线程
+        holdingPeriod.requestFocus();
+        WaitingService<Void> waitingService=new WaitingService<Void>();
+        waitingService.setOnSucceeded(event -> {
+            formativePeriod.requestFocus();
+            waitingService.setOnSucceeded(event1 -> numOfShares.requestFocus());
+            waitingService.restart();
+        });
+        waitingService.start();
 
         //添加筛选条件
         filterCondition.getChildren().clear();

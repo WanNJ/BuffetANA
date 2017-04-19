@@ -4,6 +4,7 @@ import blservice.singlestock.AllStockService;
 import dataservice.stockmap.StockNameToCodeDAO;
 import factroy.DAOFactoryService;
 import factroy.DAOFactoryServiceImpl;
+import factroy.DAOFactoryServiceImpl_Stub;
 import po.StockNameAndCodePO;
 import vo.StockNameAndCodeVO;
 
@@ -22,7 +23,12 @@ public enum AllStockServiceImpl implements AllStockService {
     private DAOFactoryService factory;
 
     AllStockServiceImpl() {
-        factory = new DAOFactoryServiceImpl();
+        this.factory = null;
+    }
+
+
+    AllStockServiceImpl(DAOFactoryService factory) {
+        this.factory = factory;
         stockNameToCodeDAO = factory.createStockNameToCodeDAO();
         stockNameAndCodePOs = stockNameToCodeDAO.getNameToCodeMap();
     }
@@ -33,12 +39,23 @@ public enum AllStockServiceImpl implements AllStockService {
         stockNameAndCodePOs = stockNameToCodeDAO.getNameToCodeMap();
     }
 
+    private void setNew(){
+        factory = new DAOFactoryServiceImpl();
+        stockNameToCodeDAO = factory.createStockNameToCodeDAO();
+        stockNameAndCodePOs = stockNameToCodeDAO.getNameToCodeMap();
+    }
+
+
     @Override
     public List<StockNameAndCodeVO> getAllStock() throws RemoteException {
+        if(factory==null) setNew();
+
         List<StockNameAndCodeVO> stockNameAndCodeVOs = new ArrayList<>();
         stockNameAndCodePOs.forEach(stockNameAndCodePO -> {
             stockNameAndCodeVOs.add(new StockNameAndCodeVO(stockNameAndCodePO.getName(), stockNameAndCodePO.getCode()));
         });
         return stockNameAndCodeVOs;
     }
+
+
 }

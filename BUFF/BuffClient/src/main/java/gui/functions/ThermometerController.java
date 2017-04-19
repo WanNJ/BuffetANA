@@ -65,12 +65,6 @@ public class ThermometerController {
 		LocalDate first = from.getValue();
 		LocalDate second = to.getValue();
 
-
-//
-//        first =LocalDate.of(2009,12,1);
-//        second =LocalDate.of(2009,12,10);
-//        //TODO delete
-
 		if(first!=null && second!=null && first.isBefore(second)){
 			upDateGraphVol(first,second);
 			upDateGraphLeast(first,second);

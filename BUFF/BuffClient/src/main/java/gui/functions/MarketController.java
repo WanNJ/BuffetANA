@@ -98,7 +98,6 @@ public class MarketController {
         initTreeTableView(recentlySharesList,recentlyShares);
         //给板块选择listview添加监听
         plate.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //TODO:
             if("主板".equals(newValue)){
                 //添加要显示的行的信息
                 List<MarketStockDetailVO> marketStockDetailVOS = benchStockService.getMainBoardStock();

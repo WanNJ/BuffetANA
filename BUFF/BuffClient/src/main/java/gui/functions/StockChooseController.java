@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
  */
 
 
-//TODO 添加数值监听器
 @FXMLController(value = "/resources/fxml/ui/StockChoose.fxml" , title = "StockChoose")
 public class StockChooseController {
     @FXMLViewFlowContext private ViewFlowContext context;
@@ -282,7 +281,6 @@ public class StockChooseController {
                 plate.setDisable(true);
                 industry.setDisable(true);
             }else{
-                //TODO  用户自定义模式   现在不知道 多选怎么实现
 
                 plate.setDisable(false);
                 industry.setDisable(false);
@@ -619,7 +617,7 @@ public class StockChooseController {
         load.setOnAction(event -> loadDialog.show(root));
         //打开loadDialog时加载strategyNameList的内容
         loadDialog.setOnDialogOpened(event -> {
-            strategyNameList.getItems().setAll(strategyHistoryService.getHistoryList());//TODO:
+            strategyNameList.getItems().setAll(strategyHistoryService.getHistoryList());
         });
 
         acceptSave.setOnAction(event -> {
@@ -633,7 +631,7 @@ public class StockChooseController {
             StrategySaveVO strategySaveVO=new StrategySaveVO(strategyName.getText(),"自定义策略".equals(
                     strategyType.getValue()), stockPoolConditionVO,mixedStrategyVOList,stockPickIndexList,
                     strategyConditionVO,traceBackVO,from.getValue(),to.getValue());
-            //TODO
+
             strategyHistoryService.saveStrategy(strategySaveVO,true);//暂时默认强制覆盖
 
             saveDialog.close();
@@ -697,8 +695,8 @@ public class StockChooseController {
             formativePeriod.setText(strategySaveVO.traceBackVO.formationPeriod+"");
         }
         holdingPeriod.setText(strategySaveVO.traceBackVO.holdingPeriod+"");
-        
-        //TODO:还差排名条件和筛选条件没有添加
+
+        //添加筛选条件
         filterCondition.getChildren().clear();
         filterCondition.getRowConstraints().clear();
         strategySaveVO.stockPickIndexList.stream().forEach(stockPickIndexVO -> {
@@ -707,7 +705,7 @@ public class StockChooseController {
                             String.format("%.2f",stockPickIndexVO.upBound.doubleValue()):String.format("%.2f",stockPickIndexVO.lowerBound.doubleValue()));
         });
 
-        //TODO 添加排名条件
+        //添加排名条件
         rankingCondition.getChildren().clear();
         rankingCondition.getRowConstraints().clear();
         if(strategySaveVO.userMode){

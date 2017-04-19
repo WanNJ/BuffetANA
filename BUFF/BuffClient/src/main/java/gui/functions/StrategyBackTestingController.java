@@ -159,17 +159,16 @@ public class StrategyBackTestingController {
         };
 
         //如果是自定义策略就不显示betterStrategy，否则显示betterStrategy
+        viewsBox.getChildren().remove(betterStrategy);
         if(strateyChoosed){
-            if(!viewsBox.getChildren().contains(betterStrategy)){
-                try {
-                    betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start();
-                } catch (FlowException e) {
-                    e.printStackTrace();
-                }
-                viewsBox.getChildren().add(betterStrategy);
+            try {
+                betterStrategy=new Flow(BetterStrategyController.class).createHandler(context).start();
+            } catch (FlowException e) {
+                e.printStackTrace();
             }
+            viewsBox.getChildren().add(betterStrategy);
         }else {
-            viewsBox.getChildren().remove(betterStrategy);
+
         }
 
         //加载完成时，恢复界面，分别更新每张图的数据
@@ -184,5 +183,9 @@ public class StrategyBackTestingController {
 
     public StackPane getRoot() {
         return root;
+    }
+
+    public StackPane getSpinnerPane() {
+        return spinnerPane;
     }
 }

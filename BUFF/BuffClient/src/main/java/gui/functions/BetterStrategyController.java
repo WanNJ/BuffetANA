@@ -16,11 +16,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import vo.BetterTableVO;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -80,7 +84,6 @@ public class BetterStrategyController implements Updatable{
     public void updateData(){
         //必须先更新TreeTableView的数据再更新图标的数据
         updateTreeTableView(strategyService);
-        updateChart(strategyService);
 
     }
 
@@ -99,14 +102,29 @@ public class BetterStrategyController implements Updatable{
             this.days.setValue("1");
             return;
         }
-        peroids_formativePeriod.addAll(strategyService.getBetterTableVOByFormation(days).stream().map(
-                betterTableVO -> new Peroid(betterTableVO.period,betterTableVO.overProfitRate,
-                        betterTableVO.winRate)
-        ).collect(Collectors.toList()));
-        peroids_holdingPeriod.addAll(strategyService.getBetterTableVOByHolding(days).stream().map(
-                betterTableVO -> new Peroid(betterTableVO.period,betterTableVO.overProfitRate,
-                        betterTableVO.winRate)
-        ).collect(Collectors.toList()));
+
+        //显示加载动画，把界面变为不可操作
+        StrategyBackTestingController strategyBackTestingController=context.getRegisteredObject(StrategyBackTestingController.class);
+        strategyBackTestingController.getSpinnerPane().setVisible(true);
+        strategyBackTestingController.getRoot().setDisable(true);
+        //后台线程加载数据
+        UpdateDataService<Void> updateDataService=new UpdateDataService(days);
+        //加载完成时，恢复界面，分别更新每张图的数据
+        updateDataService.setOnSucceeded(event -> {
+            peroids_formativePeriod.addAll(updateDataService.betterTableVOByFormation.stream().map(
+                    betterTableVO -> new Peroid(betterTableVO.period,betterTableVO.overProfitRate,
+                            betterTableVO.winRate)
+            ).collect(Collectors.toList()));
+            peroids_holdingPeriod.addAll(updateDataService.betterTableVOByByHolding.stream().map(
+                    betterTableVO -> new Peroid(betterTableVO.period,betterTableVO.overProfitRate,
+                            betterTableVO.winRate)
+            ).collect(Collectors.toList()));
+            updateChart(strategyService);
+
+            strategyBackTestingController.getSpinnerPane().setVisible(false);
+            strategyBackTestingController.getRoot().setDisable(false);
+        });
+        updateDataService.start();
     }
 
     private void updateChart(StrategyService strategyService){
@@ -125,6 +143,43 @@ public class BetterStrategyController implements Updatable{
         this.winningStrategies_holdingPeriod.getChildren().clear();
         this.winningStrategies_holdingPeriod.getChildren().add(
                 periodRateChartController.getWinningStrategies_holdingPeriod());
+    }
+
+
+    /**
+     * 后台获取TreeTableView线程的数据
+     * @param <V>
+     */
+    private class UpdateDataService<V> extends Service<V> {
+        /**
+         * 用户输入的固定的天数
+         */
+        int days;
+        /**
+         * 返回的VO列表，线程执行完后结果放在这
+         */
+        List<BetterTableVO> betterTableVOByFormation;
+        /**
+         * 返回的VO列表，线程执行完后结果放在这
+         */
+        List<BetterTableVO> betterTableVOByByHolding;
+
+        public UpdateDataService(int days) {
+            super();
+            this.days=days;
+        }
+
+        @Override
+        protected Task<V> createTask() {
+            return new Task<V>() {
+                @Override
+                protected V call() {
+                    betterTableVOByFormation=strategyService.getBetterTableVOByFormation(days);
+                    betterTableVOByByHolding=strategyService.getBetterTableVOByHolding(days);
+                    return null;
+                }
+            };
+        }
     }
 
     /**

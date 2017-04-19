@@ -112,26 +112,32 @@ public enum StrategyServiceImpl implements StrategyService {
         baseRates = new ArrayList<>();
         strategyRates = new ArrayList<>();
         pickleDatas= pickleDatas.stream().filter(t->t.stockCodes.size()>0).collect(Collectors.toList());
+        double sumOfBase = 100000;
+        double sumOfStrategy = 100000;
         for(PickleData pickleData : pickleDatas) {
             double tempRate = 0.0;
+            sumOfBase += sumOfBase * pickleData.baseProfitRate;
             baseRates.add(pickleData.baseProfitRate);
-            baseYearProfitRate += pickleData.baseProfitRate;
+
 
 
             double buyMoney = 0;
             double sellMoney = 0;
 
+            double perStockMoney = sumOfStrategy / pickleData.stockCodes.size();
             for(BackData backData : pickleData.stockCodes) {
 
                 double cnt = 100/ backData.firstDayOpen;
                 buyMoney+=100;
                 sellMoney+= cnt * backData.lastDayClose;
-                tempRate += (sellMoney-buyMoney)/buyMoney ;
+                tempRate += (sellMoney-buyMoney)/buyMoney;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
-            yearProfitRate += tempRate / pickleData.stockCodes.size();
+            sumOfStrategy += sumOfStrategy * (tempRate / pickleData.stockCodes.size());
         }
+        baseYearProfitRate = (sumOfBase - 100000) / 100000;
         baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
+        yearProfitRate = (sumOfStrategy - 100000) / 100000;
         yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
 
 
@@ -150,10 +156,12 @@ public enum StrategyServiceImpl implements StrategyService {
         baseRates = new ArrayList<>();
         strategyRates = new ArrayList<>();
         pickleDatas= pickleDatas.stream().filter(t->t.stockCodes.size()>0).collect(Collectors.toList());
+        double sumOfBase = 100000;
+        double sumOfStrategy = 100000;
         for(PickleData pickleData : pickleDatas) {
             double tempRate = 0.0;
             baseRates.add(pickleData.baseProfitRate);
-            baseYearProfitRate += pickleData.baseProfitRate;
+            sumOfBase += sumOfBase * pickleData.baseProfitRate;
 
 
             double buyMoney = 0;
@@ -167,9 +175,11 @@ public enum StrategyServiceImpl implements StrategyService {
                 tempRate += (sellMoney-buyMoney)/buyMoney ;
             }
             strategyRates.add(tempRate / pickleData.stockCodes.size());
-            yearProfitRate += tempRate / pickleData.stockCodes.size();
+            sumOfStrategy += sumOfStrategy * (tempRate / pickleData.stockCodes.size());
         }
+        baseYearProfitRate = (sumOfBase - 100000) / 100000;
         baseYearProfitRate = baseYearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
+        yearProfitRate = (sumOfStrategy - 100000) / 100000;
         yearProfitRate = yearProfitRate / strategyConditionVO.beginDate.until(strategyConditionVO.endDate, ChronoUnit.DAYS) * 365;
     }
 
@@ -224,10 +234,10 @@ public enum StrategyServiceImpl implements StrategyService {
     @Override
     public List<DayRatePieceVO> getStrategyDayRatePieceVO() {
         List<DayRatePieceVO> dayRatePieceVOS = new ArrayList<>();
-        double sum = 0.0;
+        double sum = 100000.0;
         for(int i = 0; i < pickleDatas.size(); i++) {
-            sum += strategyRates.get(i);
-            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, sum * 100);
+            sum += strategyRates.get(i) * sum;
+            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, (sum - 100000.0) / 100000.0 * 100);
             dayRatePieceVOS.add(dayRatePieceVO);
         }
         return dayRatePieceVOS;
@@ -236,10 +246,10 @@ public enum StrategyServiceImpl implements StrategyService {
     @Override
     public List<DayRatePieceVO> getBaseDayRatePieceVO() {
         List<DayRatePieceVO> dayRatePieceVOS = new ArrayList<>();
-        double sum = 0.0;
+        double sum = 100000.0;
         for(int i = 0; i < pickleDatas.size(); i++) {
-            sum += baseRates.get(i);
-            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, sum * 100);
+            sum += baseRates.get(i) * sum;
+            DayRatePieceVO dayRatePieceVO = new DayRatePieceVO(pickleDatas.get(i).endDate, (sum - 100000.0) / 100000.0 * 100);
             dayRatePieceVOS.add(dayRatePieceVO);
         }
         return dayRatePieceVOS;

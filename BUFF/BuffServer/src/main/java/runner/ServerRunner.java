@@ -52,7 +52,7 @@ public class ServerRunner {
 //        }
 
         StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(StrategyType
-                .MA, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
+                .MOM, LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),true);
 
 
 //        StrategyConditionVO strategyConditionVO1 = new StrategyConditionVO(null
@@ -83,7 +83,7 @@ public class ServerRunner {
 //       ,mixedStrategyVOs);
 
 
-        strategyService.calculate(new TraceBackVO(10,5,10));
+        strategyService.calculate(new TraceBackVO(10,5,10, 0.2));
 //        strategyService.init(strategyConditionVO1, stockPoolConditionVO1, stockPickIndexVOs1);
 //        strategyService.initMixed( LocalDate.of(2013,1,1),LocalDate.of(2014,1,1),stockPoolConditionVO1,
 //                stockPickIndexVOs1,new TraceBackVO(20,10,200)

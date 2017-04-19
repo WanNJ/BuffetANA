@@ -140,6 +140,10 @@ public enum MALineServiceImpl implements MALineService {
         double ma = 0;
         int i;
         for ( i = 0 ; js < days  ;i++){
+            if(i>list.size()-2*days){
+                return new ArrayList<>();
+            }
+
             if(list.get(i).getVolume()!=0){
                 js++;
                 sum+= list.get(i).getAdjCloseIndex();
@@ -147,14 +151,12 @@ public enum MALineServiceImpl implements MALineService {
                 none++;
             }
 
-            if(i==list.size()-2*days){
-                return new ArrayList<>();
-            }
+
         }
 
         js = 0;
         for(;!temp.isBefore(begin);i++){
-            if(i==list.size()-1)  return null;
+            if(i==list.size()-1)  new ArrayList<>();
             if(list.get(i).getVolume()!=0){
                 ma = sum/days;
                 while(list.get(js).getDate().isBefore(temp)){

@@ -23,6 +23,8 @@ public enum StockNameToCodeDAOImpl implements StockNameToCodeDAO {
         List<StockNameAndCodePO> nameToCode = null;
         BufferedReader br = null;
 
+
+
         try {
             InputStreamReader reader = new InputStreamReader(new FileInputStream(MAP_FILENAME), "UTF-8");
             br = new BufferedReader(reader);

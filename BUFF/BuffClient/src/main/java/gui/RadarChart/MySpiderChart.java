@@ -13,7 +13,7 @@ public class MySpiderChart {
     private static JFreeChart createChart(StrategyScoreVO vo) {
         CustomizeSpiderWebPlot spiderWebPlot = new CustomizeSpiderWebPlot(createDataset(vo));
         spiderWebPlot.setOutlineVisible(false);
-        spiderWebPlot.setWebFilled(false);
+        spiderWebPlot.setWebFilled(true);
         JFreeChart jfreechart = new JFreeChart("",
                 TextTitle.DEFAULT_FONT, spiderWebPlot, false);
         jfreechart.setBorderVisible(false);

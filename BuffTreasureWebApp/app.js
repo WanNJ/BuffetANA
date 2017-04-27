@@ -8,6 +8,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
 let index = require('./routes/index');
+let sign_ = require('./routes/sign');
 let users = require('./routes/users');
 
 let app = express();
@@ -31,14 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 加载处理请求的路由模块
 app.use('/', index);
-app.use('/market', index);
-app.use('/single-stock', index);
-app.use('/comparison', index);
-app.use('/marketthermometer', index);
-app.use('/about-us', index);
-app.use('/sign-in', index);
-
 app.use('/users', users);
+
 
 // 404 ERROR
 app.use(function(req, res, next) {

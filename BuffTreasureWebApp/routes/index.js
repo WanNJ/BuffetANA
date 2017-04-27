@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
 /* GET HOME PAGE 'next'在下面的工作中可能会用到 */
 router.get('/', function(req, res, next) {
@@ -29,6 +29,10 @@ router.get('/about-us', function(req, res, next) {
 
 router.get('/sign-in', function (req, res, next) {
     res.render('sign-in');
+});
+
+router.get('/sign-up', function (req, res, next) {
+    res.render('sign-up');
 });
 
 module.exports = router;

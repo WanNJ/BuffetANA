@@ -1,94 +1,119 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <link rel="shortcut icon" type="image/png" href="favicon.ico">
-    
-	<link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" href="./css/animate.css"><link rel="stylesheet" href="./css/font-awesome.min.css"><link rel="stylesheet" href="./css/et-line.min.css"><link rel="stylesheet" href="./css/ionicons.min.css"><link href='https://fonts.googleapis.com/css?family=Josefin+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    
-	<script src="./js/jquery-2.1.0.js"></script>
-	<script src="./js/bootstrap.js"></script>
-	<script src="./js/blocs.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="./css/animate.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/et-line.min.css">
+    <link rel="stylesheet" href="./css/ionicons.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans&subset=latin,latin-ext' rel='stylesheet'
+          type='text/css'>
+
+    <script src="./js/jquery-2.1.0.js"></script>
+    <script src="./js/bootstrap.js"></script>
+    <script src="./js/blocs.js"></script>
     <title>SignIn</title>
 </head>
 
 <body>
 <!-- Main container -->
 <div class="page-container">
-    
-<!-- bloc-7 -->
-<div class="bloc bgc-white l-bloc" id="bloc-7">
-	<div class="container bloc-sm">
-		<div class="row">
-			<div class="col-sm-2 col-sm-offset-5 col-xs-6 col-xs-offset-3">
-				<img src="img/question.png" class="img-responsive img-circle" />
-			</div>
-			<div class="col-xs-12 col-md-8 col-md-offset-2">
-				<h3 class="statement-bloc-text ">
-					"人生就像滚雪球，重要的是发现够湿的雪，和一道够长的山坡。如果你所处正确的雪中，雪球自然会滚起来，我就是如此。"
-				</h3>
-				<p class="text-center">
-					<strong>沃伦·巴菲特</strong>
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-7 END -->
 
-<!-- bloc-8 -->
-<div class="bloc bgc-white l-bloc" id="bloc-8">
-	<div class="container bloc-md">
-		<div class="row">
-			<div class="col-sm-6">
-				<img src="img/I_want_you.jpeg" class="img-responsive" height="374" width="499" />
-			</div>
-			<div class="col-sm-6">
-				<h2 class="mg-lg text-center">
-					WILL YOU BE THE NEXT?
-				</h2>
-				<p class="mg-lg text-center">
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
-				</p>
-				<div class="text-center">
-					<button type="submit" class="bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black" id="signinbutton">
-						登陆
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-8 END -->
+    <!-- bloc-7 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-7">
+        <div class="container bloc-sm">
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-5 col-xs-6 col-xs-offset-3">
+                    <img src="img/question.png" class="img-responsive img-circle"/>
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <h3 class="statement-bloc-text text-center">
+                        "人生就像滚雪球，重要的是发现够湿的雪，和一道够长的山坡。如果你所处正确的雪中，雪球自然会滚起来，我就是如此。"
+                    </h3>
+                    <p class="text-center">
+                        <strong>沃伦·巴菲特</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bloc-7 END -->
 
-<!-- ScrollToTop Button -->
-<a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span class="fa fa-chevron-up"></span></a>
-<!-- ScrollToTop Button END-->
+    <!-- bloc-8 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-8">
+        <div class="container bloc-md">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img src="img/I_want_you.jpeg" class="img-responsive" height="374" width="499"/>
+                </div>
+                <div class="col-sm-6">
+                    <h2 class="mg-lg text-center">
+                        WILL YOU BE THE NEXT?
+                    </h2>
+
+                    <form action="" method="post" name="signIn" autocomplete="true">
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>用户名</label>
+                                <input type="text" class="form-control" placeholder="Username" id="username_field" name="username" required
+                                       data-validation-required-message="请输入用户名">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>密码</label>
+                                <input type="password" class="form-control" placeholder="Password" id="password_field" name="passworld"
+                                       required data-validation-required-message="请输入密码">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit"
+                                    class="bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black"
+                                    id="signInButton">
+                                登陆
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bloc-8 END -->
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+    <!-- ScrollToTop Button END-->
 
 
-<!-- Footer - bloc-9 -->
-<div class="bloc bgc-white l-bloc" id="bloc-9">
-	<div class="container bloc-md">
-		<div class="row bgc-white">
-			<div class="col-sm-12 text-center">
-				<img src="img/favicon.ico" class="img-responsive center-block mg-sm" height="38" width="98" />
-				<p class="text-center">
-					Co. BUFF TREATURE
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Footer - bloc-9 END -->
+    <!-- Footer - bloc-9 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-9">
+        <div class="container bloc-md">
+            <div class="row bgc-white">
+                <div class="col-sm-12 text-center">
+                    <img src="img/favicon.ico" class="img-responsive center-block mg-sm" height="38" width="98"/>
+                    <p class="text-center">
+                        Co. BUFF TREATURE
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer - bloc-9 END -->
 
 </div>
 <!-- Main container END -->
-    
+
 
 </body>
 </html>

@@ -6,7 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-
 /* GET Other Menu Pages 'next'在下面的工作中可能会用到 */
 router.get('/market', function(req, res, next) {
     res.render('market');
@@ -26,6 +25,10 @@ router.get('/marketthermometer', function(req, res, next) {
 
 router.get('/about-us', function(req, res, next) {
     res.render('about-us');
+});
+
+router.get('/sign-in', function (req, res, next) {
+    res.render('sign-in');
 });
 
 module.exports = router;

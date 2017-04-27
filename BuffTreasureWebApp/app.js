@@ -1,16 +1,16 @@
-var express = require('express');
+let express = require('express');
 // 路径解析器
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
 // Cookie解析器
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+let index = require('./routes/index');
+let users = require('./routes/users');
 
-var app = express();
+let app = express();
 
 // 视图引擎设置
 app.set('views', path.join(__dirname, 'views'));
@@ -36,12 +36,13 @@ app.use('/single-stock', index);
 app.use('/comparison', index);
 app.use('/marketthermometer', index);
 app.use('/about-us', index);
+app.use('/sign-in', index);
 
 app.use('/users', users);
 
 // 404 ERROR
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });

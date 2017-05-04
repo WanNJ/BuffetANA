@@ -1,28 +1,28 @@
 /**
  * Created by slow_time on 2017/5/4.
  */
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 // 建立user模型
-var userSchema = new Schema({
+const userSchema = new Schema({
     username : String,
     password : String,
     email : String
 }, {collection : 'user'});
 
-var User = mongoose.model('user', userSchema);
+const User = mongoose.model('user', userSchema);
 
 exports.userDB = {
     getPasswordByName: (name, callback) => {
-        User.findOne({username : name}, (err, docs) => {
-            callback(err, docs)
+        User.findOne({username : name}, (err, doc) => {
+            callback(err, doc)
         });
     },
 
     registerUser: (user, callback) => {
-        var newUser = new User(user);
+        let newUser = new User(user);
 
         newUser.save((err, data) => {
             callback(err, data);

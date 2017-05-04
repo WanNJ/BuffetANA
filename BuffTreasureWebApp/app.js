@@ -12,6 +12,9 @@ let FileStore = require('session-file-store')(session);
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+// MongoDB
+let mongoose = require('mongoose');
+
 let index = require('./routes/index');
 let sign = require('./routes/sign');
 let users = require('./routes/users');
@@ -69,6 +72,18 @@ app.use(function(err, req, res, next) {
     // 提交错误页
     res.status(err.status || 500);
     res.render('error');
+});
+
+// 数据库连接
+// MongoDB
+mongoose.connect('mongodb://172.26.59.6/formal');
+
+mongoose.connection.on('open', function () {
+    console.log('Connected to Mongoose');
+});
+
+process.on('exit', () => {
+   mongoose.disconnect();
 });
 
 module.exports = app;

@@ -1,31 +1,13 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <link rel="shortcut icon" type="image/png" href="favicon.ico">
-
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="./css/animate.css">
-    <link rel="stylesheet" href="./css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/et-line.min.css">
-    <link rel="stylesheet" href="./css/ionicons.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans&subset=latin,latin-ext' rel='stylesheet'
-          type='text/css'>
-
-    <script src="./js/jquery-2.1.0.js"></script>
-    <script src="./js/bootstrap.js"></script>
-    <script src="./js/blocs.js"></script>
-    <title>SignIn</title>
+    <% include Components/settings.html%>
+    <title>Sign-In</title>
 </head>
 
 <body>
 <!-- Main container -->
 <div class="page-container">
-
     <!-- bloc-7 -->
     <div class="bloc bgc-white l-bloc" id="bloc-7">
         <div class="container bloc-sm">
@@ -80,7 +62,7 @@
 
                         <div class="text-center">
                             <button type="submit"
-                                    class="bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black"
+                                    class="btn-success bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black"
                                     id="signInButton">
                                 登陆
                             </button>
@@ -99,25 +81,11 @@
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
 
-
-    <!-- Footer - bloc-9 -->
-    <div class="bloc bgc-white l-bloc" id="bloc-9">
-        <div class="container bloc-md">
-            <div class="row bgc-white">
-                <div class="col-sm-12 text-center">
-                    <img src="img/favicon.ico" class="img-responsive center-block mg-sm" height="38" width="98"/>
-                    <p class="text-center">
-                        Co. BUFF TREATURE
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer - bloc-9 END -->
-
 </div>
 <!-- Main container END -->
 
 
 </body>
+
+<% include Components/footer.ejs%>
 </html>

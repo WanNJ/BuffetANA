@@ -35,7 +35,7 @@ router.route('/sign-in')
     .post(function(req, res, next){
 
         let sess = req.session;
-        let user = userService.isUserValid(req.body.name, req.body.password);
+        // let user = userService.isUserValid(req.body.name, req.body.password);
 
         if(user){
             req.session.regenerate(function(err) {

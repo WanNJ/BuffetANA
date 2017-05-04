@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Session中间件
 app.use(session({
+    name: 'BuffSession',
     secret: 'JackWan',          // 用来对session id相关的cookie进行签名
     store: new FileStore(),     // 本地存储session（文本文件，也可以选择其他store，比如redis的）
     saveUninitialized: false,   // 是否自动保存未初始化的会话，建议false
@@ -67,8 +68,7 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-// 数据库连接
-// MongoDB
+// 数据库连接 MongoDB
 mongoose.connect('mongodb://172.26.59.6/formal');
 
 mongoose.connection.on('open', function () {

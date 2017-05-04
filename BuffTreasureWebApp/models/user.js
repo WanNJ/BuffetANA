@@ -16,7 +16,7 @@ var User = mongoose.model('user', userSchema);
 
 exports.userDB = {
     getPasswordByName: (name, callback) => {
-        User.find({username : name}, (err, docs) => {
+        User.findOne({username : name}, (err, docs) => {
             callback(err, docs)
         });
     },

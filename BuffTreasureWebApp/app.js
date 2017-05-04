@@ -3,12 +3,17 @@ let express = require('express');
 let path = require('path');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
+
+// session解析
+let session = require('express-session');
+let FileStore = require('session-file-store')(session);
+
 // Cookie解析器
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
 let index = require('./routes/index');
-let sign_ = require('./routes/sign');
+let sign = require('./routes/sign');
 let users = require('./routes/users');
 
 let app = express();
@@ -23,6 +28,20 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Session处理
+let identityKey = 'skey';
+
+app.use(session({
+    name: identityKey,
+    secret: 'JackWan',  // 用来对session id相关的cookie进行签名
+    store: new FileStore(),  // 本地存储session（文本文件，也可以选择其他store，比如redis的）
+    saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
+    resave: false,  // 是否每次都重新保存会话，建议false
+    cookie: {
+        maxAge: 10 * 1000  // 有效期，单位是毫秒
+    }
+}));
 
 // Cookie解析器
 app.use(cookieParser());

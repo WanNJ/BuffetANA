@@ -8,8 +8,6 @@ let logger = require('morgan');
 let session = require('express-session');
 let FileStore = require('session-file-store')(session);
 
-// Cookie解析器
-let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
 // MongoDB
@@ -32,22 +30,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Session处理
-let identityKey = 'skey';
-
+// Session中间件
 app.use(session({
-    name: identityKey,
-    secret: 'JackWan',  // 用来对session id相关的cookie进行签名
-    store: new FileStore(),  // 本地存储session（文本文件，也可以选择其他store，比如redis的）
-    saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
-    resave: false,  // 是否每次都重新保存会话，建议false
+    secret: 'JackWan',          // 用来对session id相关的cookie进行签名
+    store: new FileStore(),     // 本地存储session（文本文件，也可以选择其他store，比如redis的）
+    saveUninitialized: false,   // 是否自动保存未初始化的会话，建议false
+    resave: false,              // 是否每次都重新保存会话，建议false
     cookie: {
-        maxAge: 10 * 1000  // 有效期，单位是毫秒
+        httpOnly: true,         // 是否不允许客户端通过JS访问Cookie
+        maxAge: 10 * 60 * 1000  // 有效期，单位是毫秒
     }
 }));
-
-// Cookie解析器
-app.use(cookieParser());
 
 // 静态文件加载，所有public目录下的文件现在可以访问，访问静态资源文件时，express.static 中间件会根据目录添加的顺序查找所需的文件
 app.use(express.static(path.join(__dirname, 'public')));

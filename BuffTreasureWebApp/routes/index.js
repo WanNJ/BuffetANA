@@ -1,5 +1,5 @@
 let express = require('express');
-let userService = require('models/user');
+let userService = require('../bl/userbl');
 let router = express.Router();
 
 /* GET HOME PAGE 'next'在下面的工作中可能会用到 */
@@ -45,7 +45,7 @@ router.route('/sign-in')
                 }
 
                 //TODO 渲染登录成功页面
-                req.session.loginUser = user.name;
+                req.session.name = user.name;
                 res.json({ret_code: 0, ret_msg: '登录成功'});
             });
         }else{
@@ -66,9 +66,8 @@ router.get('/logout', function(req, res, next){
             return;
         }
 
-        // req.session.loginUser = null;
         //TODO 清空缓存
-        res.clearCookie(identityKey);
+        res.clearCookie(req.session.name);
         res.redirect('/');
     });
 });

@@ -1,0 +1,1 @@
+{"strategyName":"789","begin":"2013-01-01","end":"2014-01-01","stockPoolConditionPO":{"stockPool":"All","block":null,"industry":null,"excludeST":false},"mixedStrategyPOList":[{"strategyType":"MA","weight":13.0,"asc":true,"formationPeriod":8}],"stockPickIndexList":[],"traceBackPO":{"formationPeriod":0,"holdingPeriod":7,"holdingNum":9,"holdingRate":0.0}}

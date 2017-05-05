@@ -16,7 +16,7 @@ let mongoose = require('mongoose');
 let index = require('./routes/index');
 let sign = require('./routes/sign');
 let users = require('./routes/users');
-
+let singleStock = require('./routes/singleStock');
 let app = express();
 
 // 视图引擎设置
@@ -49,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 加载处理请求的路由模块
 app.use('/', index);
 app.use('/users', users);
-
+app.use('/single-stock', singleStock);
 
 // 404 ERROR
 app.use(function(req, res, next) {
@@ -69,14 +69,14 @@ app.use(function(err, req, res, next) {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://172.26.59.6/formal');
-
-mongoose.connection.on('open', function () {
-    console.log('Connected to Mongoose');
-});
-
-process.on('exit', () => {
-   mongoose.disconnect();
-});
+// mongoose.connect('mongodb://172.26.59.6/formal');
+//
+// mongoose.connection.on('open', function () {
+//     console.log('Connected to Mongoose');
+// });
+//
+// process.on('exit', () => {
+//    mongoose.disconnect();
+// });
 
 module.exports = app;

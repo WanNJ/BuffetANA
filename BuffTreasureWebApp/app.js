@@ -69,7 +69,7 @@ app.use(function(err, req, res, next) {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://172.26.59.6/formal');
+mongoose.connect('mongodb://localhost/formal');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

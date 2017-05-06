@@ -69,7 +69,6 @@ app.use(function(err, req, res, next) {
 });
 
 // 数据库连接 MongoDB
-<<<<<<< HEAD
 mongoose.connect('mongodb://localhost/formal');
 
 mongoose.connection.on('open', function () {
@@ -79,7 +78,6 @@ mongoose.connection.on('open', function () {
 process.on('exit', () => {
    mongoose.disconnect();
 });
-=======
 // mongoose.connect('mongodb://172.26.59.6/formal');
 //
 // mongoose.connection.on('open', function () {
@@ -89,6 +87,5 @@ process.on('exit', () => {
 // process.on('exit', () => {
 //    mongoose.disconnect();
 // });
->>>>>>> origin/master
 
 module.exports = app;

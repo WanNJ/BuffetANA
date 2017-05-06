@@ -21,7 +21,9 @@ exports.allStockDB = {
     getAllStockCodeAndName: (callback) => {
         if (typeof allstocks === "undefined") {
             allStock.find({}, ['code', 'name'], (err, docs) => {
-                allstocks = docs;
+                if (!err) {
+                    allstocks = docs;
+                }
                 callback(err, docs);
             });
         }

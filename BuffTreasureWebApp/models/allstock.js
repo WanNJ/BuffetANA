@@ -9,18 +9,25 @@ const stockSchema = mongoose.Schema({
     industry: String,
     bench: Array
 }, {collection: 'allstocks'});
-const Stock = mongoose.model('allstocks', stockSchema);
-
-exports.singleStockDB = {
+const allStock = mongoose.model('allstocks', stockSchema);
+// 储存第一次查询所有股票代码和名称的结果，以便后续调用时直接使用，不用再次查询数据库
+let allstocks;
+exports.allStockDB = {
 
     /**
      * 获得所有股票的代码和名称
      * @param callback
      */
     getAllStockCodeAndName: (callback) => {
-        Stock.find({code: code}, ['code', 'name'], (err, docs) => {
-            callback(err, docs);
-        });
+        if (typeof allstocks === "undefined") {
+            allStock.find({}, ['code', 'name'], (err, docs) => {
+                allstocks = docs;
+                callback(err, docs);
+            });
+        }
+        else {
+            callback(null, allstocks);
+        }
     },
 
     /**
@@ -29,7 +36,7 @@ exports.singleStockDB = {
      * @param callback
      */
     getStocksByIndustry: (industry, callback) => {
-        Stock.find({industry: industry}, ['code', 'name'], (err, docs) => {
+        allStock.find({industry: industry}, ['code', 'name'], (err, docs) => {
             callback(err, docs);
         });
     },
@@ -40,7 +47,7 @@ exports.singleStockDB = {
      * @param callback
      */
     getStocksByBench: (bench, callback)=> {
-        Stock.find({bench : {$all : bench}}, ['code', 'name'], (err, docs) => {
+        allStock.find({bench : {$all : bench}}, ['code', 'name'], (err, docs) => {
             callback(err, docs);
         });
     }

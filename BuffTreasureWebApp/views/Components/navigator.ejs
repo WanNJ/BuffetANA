@@ -2,7 +2,13 @@
     <div class="container">
         <nav class="navbar nav-invert row mini-nav">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/"><img src="img/favicon.ico" alt="logo" height="46"/>BUFF TREATUE</a>
+                <a class="navbar-brand" href="/"><img src="img/favicon.ico" alt="logo" height="46"/>
+                    <% if(typeof user !== "undefined") { %>
+                    <%= user %>
+                    <% }else { %>
+                    BUFF TREASURE
+                    <% } %>
+                </a>
                 <button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle" data-toggle="collapse"
                         data-target=".navbar-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
@@ -29,6 +35,9 @@
                     <li>
                         <a href="about-us">About-Us</a>
                     </li>
+                    <% if(typeof user === "undefined") { %>
+                    <li><a href="sign-in">登录</a></li>
+                    <% } %>
                 </ul>
             </div>
         </nav>

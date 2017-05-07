@@ -58,27 +58,24 @@ router.route('/sign-in')
                 } else {
                     //TODO 渲染登录成功页面
                     req.session.user = req.body.username;
-                    res.locals.message = "您好！" + req.body.username + "\n恭喜您登录成功！";
-                    res.render('simpleHints');
+                    res.redirect('/');
                 }
             }
         });
     });
 
 router.get('/logout', function(req, res, next){
-    // 备注：这里用的 session-file-store 在destroy 方法里，并没有销毁cookie
-    // 所以客户端的 cookie 还是存在，导致的问题 --> 退出登陆后，服务端检测到cookie
-    // 然后去查找对应的 session 文件，报错
-    // session-file-store 本身的bug
-
     req.session.destroy(function(err) {
         if(err){
-            res.json({ret_code: 2, ret_msg: '退出登录失败'});
-            return;
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+            // 提交错误页
+            res.status(err.status || 500);
+            res.render('error');
         }
 
-        //TODO 清空缓存
-        res.clearCookie(req.session.name);
+        res.clearCookie("BuffSession");
         res.redirect('/');
     });
 });

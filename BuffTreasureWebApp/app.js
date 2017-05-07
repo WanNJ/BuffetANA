@@ -6,7 +6,6 @@ let logger = require('morgan');
 
 // session解析
 let session = require('express-session');
-let FileStore = require('session-file-store')(session);
 
 let bodyParser = require('body-parser');
 
@@ -14,7 +13,6 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 
 let index = require('./routes/index');
-let sign = require('./routes/sign');
 let users = require('./routes/users');
 let singleStock = require('./routes/singleStock');
 let app = express();
@@ -44,6 +42,13 @@ app.use(session({
     }
 }));
 
+app.use( (req, res, next) => {
+    if(req.session.user) {
+        res.locals.user = req.session.user;
+    }
+    next();
+});
+
 // 静态文件加载，所有public目录下的文件现在可以访问，访问静态资源文件时，express.static 中间件会根据目录添加的顺序查找所需的文件
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,14 +58,14 @@ app.use('/users', users);
 app.use('/single-stock', singleStock);
 
 // 404 ERROR
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // 错误处理
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 

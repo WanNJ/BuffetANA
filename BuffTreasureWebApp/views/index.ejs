@@ -39,9 +39,11 @@
 					<li>
 						<a href="about-us">About-Us</a>
 					</li>
-					<li>
-						<a href="sign-in">Sign-In</a>
-					</li>
+                    <% if(typeof user === "undefined") { %>
+					<li><a href="sign-in">登录</a></li>
+                    <% } else { %>
+					<li><a href="logout">注销</a></li>
+                    <% } %>
 				</ul>
 			</div>
 		</nav>

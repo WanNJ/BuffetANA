@@ -10,7 +10,7 @@
 
     开始.bat
 
-MaxOS和Linux下运行
+MacOS和Linux下运行
 
     开始.sh
 
@@ -28,3 +28,7 @@ MaxOS和Linux下运行
     BuffClient-2.0.jar
 
 即可开始程序
+
+
+#  迭代三
+开发中...

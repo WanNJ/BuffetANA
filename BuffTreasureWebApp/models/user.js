@@ -28,4 +28,4 @@ exports.userDB = {
             callback(err, data);
         });
     }
-}
+};

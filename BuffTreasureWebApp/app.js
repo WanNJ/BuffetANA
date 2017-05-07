@@ -34,12 +34,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
     name: 'BuffSession',
     secret: 'JackWan',          // 用来对session id相关的cookie进行签名
+    // TODO SESSION的存储方式
     // store: new FileStore(),     // 本地存储session（文本文件，也可以选择其他store，比如redis的）
     saveUninitialized: false,   // 是否自动保存未初始化的会话，建议false
     resave: false,              // 是否每次都重新保存会话，建议false
     cookie: {
         httpOnly: true,         // 是否不允许客户端通过JS访问Cookie
-        maxAge: 10 * 1000  // 有效期，单位是毫秒
+        maxAge: 24 * 60 * 60 * 1000  // 有效期，单位是毫秒
     }
 }));
 

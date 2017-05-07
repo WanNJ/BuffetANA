@@ -6,7 +6,7 @@ let userDB = require('../models/user.js').userDB;
 exports.login = (username, password, callback) => {
   userDB.getPasswordByName(username, (err, doc) => {
       if (doc === null)
-          callback(err, null);
+          callback(err, false);
       else if (doc["password"] !== password)
           callback(err, false);
       else

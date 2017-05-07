@@ -63,6 +63,14 @@ router.route('/sign-in')
                 }
             }
         });
+        require('../models/singleStock.js').singleStockDB.getStockInfoByCode('000001', (err, docs) => {
+           if (err) {
+               console.log(err);
+           }
+           else {
+               console.log(docs.length);
+           }
+        });
     });
 
 router.get('/logout', function(req, res, next){

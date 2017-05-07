@@ -10,7 +10,10 @@ const userSchema = new Schema({
     username : String,
     password : String,
     email : String
-}, {collection : 'user'});
+}, {
+    collection: 'user',
+    versionKey: false
+});
 
 const User = mongoose.model('user', userSchema);
 

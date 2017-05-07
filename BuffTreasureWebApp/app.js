@@ -78,14 +78,5 @@ mongoose.connection.on('open', function () {
 process.on('exit', () => {
    mongoose.disconnect();
 });
-// mongoose.connect('mongodb://172.26.59.6/formal');
-//
-// mongoose.connection.on('open', function () {
-//     console.log('Connected to Mongoose');
-// });
-//
-// process.on('exit', () => {
-//    mongoose.disconnect();
-// });
 
 module.exports = app;

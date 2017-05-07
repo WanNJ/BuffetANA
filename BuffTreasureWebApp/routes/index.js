@@ -47,12 +47,13 @@ router.route('/sign-in')
                 //TODO 渲染密码错误页面
                 res.locals.message = "账号或密码错误！";
                 res.render('simpleHints');
-            }else {
+            } else {
                 //TODO SESSION
                 let sess = req.session;
 
                 if(sess.user){
-                    res.locals.message = req.body.username + "，您已经登录过了！";
+                    console.log(sess);
+                    res.locals.message = sess.user + "，您已经登录过了！";
                     res.render('simpleHints');
                 } else {
                     //TODO 渲染登录成功页面

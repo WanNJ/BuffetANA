@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <% include Components/settings.html%>
+    <title>Sign-In</title>
+</head>
+
+<body>
+<!-- Main container -->
+<div class="page-container">
+    <!-- bloc-7 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-7">
+        <div class="container bloc-sm">
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-5 col-xs-6 col-xs-offset-3">
+                    <img src="img/question.png" class="img-responsive img-circle"/>
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <h3 class="statement-bloc-text text-center">
+                        "没必要是个天才。你不必是一位火箭科学家。投资并不是一场智商160就一定能打败智商130的游戏。"
+                    </h3>
+                    <p class="text-center">
+                        <strong>沃伦·巴菲特</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bloc-7 END -->
+
+    <!-- bloc-8 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-8">
+        <div class="container bloc-md">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img src="img/I_want_you.jpeg" class="img-responsive" height="374" width="499"/>
+                </div>
+                <div class="col-sm-6">
+                    <h2 class="mg-lg text-center">
+                        WILL YOU BE THE NEXT?
+                    </h2>
+
+                    <form action="#" method="post" name="signIn" autocomplete="true">
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>用户名</label>
+                                <input type="text" class="form-control" placeholder="Username" id="username_field"
+                                       name="username" required
+                                       data-validation-required-message="请输入用户名">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>密码</label>
+                                <input type="password" class="form-control" placeholder="Password" id="password_field"
+                                       name="passworld"
+                                       required data-validation-required-message="请输入密码">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit"
+                                    class="btn-success bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black"
+                                    id="signInButton">
+                                登陆
+                            </button>
+                        </div>
+                    </form>
+                    <div class= "text-center"> 还没有账户？<br> <a class="text-info" href="/sign-up"><b>现在注册</b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bloc-8 END -->
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+    <!-- ScrollToTop Button END-->
+
+</div>
+<!-- Main container END -->
+
+
+</body>
+
+<% include Components/footer.ejs%>
+</html>

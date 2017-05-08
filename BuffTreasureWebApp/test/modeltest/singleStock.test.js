@@ -1,6 +1,7 @@
 /**
  * Created by slow_time on 2017/5/7.
  */
+import {describe, it} from "mocha";
 let singleStockDB = require('../../models/singleStock.js').singleStockDB;
 let expect = require('chai').expect;
 

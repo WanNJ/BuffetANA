@@ -1,6 +1,7 @@
 /**
  * Created by slow_time on 2017/5/8.
  */
+import {describe, it} from "mocha";
 let singleStockbl = require('../../bl/singleStockbl');
 let expect = require('chai').expect;
 

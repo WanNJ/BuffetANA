@@ -45,19 +45,21 @@ router.route('/sign-in')
 
             if(status === false) {
                 //TODO 渲染密码错误页面
-                res.locals.message = "账号或密码错误！";
-                res.render('simpleHints');
+                req.locals.alertType = "alert-danger";
+                res.locals.message = "账号或密码错误，请重试";
+                res.redirect('/sign-in');
             } else {
-                //TODO SESSION
                 let sess = req.session;
 
                 if(sess.user){
-                    console.log(sess);
-                    res.locals.message = sess.user + "，您已经登录过了！";
-                    res.render('simpleHints');
+                    req.locals.alertType = "alert-warning";
+                    req.locals.alertMessage = "您已经过了，请勿重复登录。";
+                    res.redirect('/');
                 } else {
                     //TODO 渲染登录成功页面
                     req.session.user = req.body.username;
+                    req.locals.alertType = "alert-success";
+                    req.locals.alertMessage = "恭喜您登录成功！";
                     res.redirect('/');
                 }
             }
@@ -76,6 +78,9 @@ router.get('/logout', function(req, res, next){
         }
 
         res.clearCookie("BuffSession");
+
+        req.locals.alertType = "alert-success";
+        req.locals.alertMessage = "已成功登出！";
         res.redirect('/');
     });
 });
@@ -87,7 +92,6 @@ router.route('/sign-up')
     .post(function (req, res, next) {
         userService.signUp(req.body.username, req.body.password, req.body.email, (err, status) => {
             if(err) {
-                //TODO 数据库链接错误页面渲染
                 res.locals.message = err.message;
                 res.locals.error = req.app.get('env') === 'development' ? err : {};
                 // 提交错误页
@@ -96,12 +100,16 @@ router.route('/sign-up')
             }
             if(status === false) {
                 //TODO 重名渲染页面
-                res.locals.message = "重名！";
-                res.render('simpleHints');
+                req.locals.alertType = "alert-danger";
+                req.locals.alertMessage = "该用户名已存在，请更换您的用户名！";
+                res.redirect('/sign-up');
             }else {
+                req.session.user = req.body.username;
+
                 //TODO 注册成功渲染页面
-                res.locals.message = "恭喜您注册成功！";
-                res.render('simpleHints');
+                req.locals.alertType = "alert-success";
+                res.locals.alertMessage = "恭喜您注册成功！";
+                res.redirect('/');
             }
         });
     });

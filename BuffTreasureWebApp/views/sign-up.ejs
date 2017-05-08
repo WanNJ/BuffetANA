@@ -8,6 +8,7 @@
 <body>
 <!-- Main container -->
 <div class="page-container">
+    <% include Components/navigator.ejs %>
 
     <!-- bloc-7 -->
     <div class="bloc bgc-white l-bloc" id="bloc-7">
@@ -48,7 +49,6 @@
                                 <input type="text" class="form-control" placeholder="Username" id="username_field"
                                        name="username" required
                                        data-validation-required-message="请输入用户名">
-                                <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
@@ -57,7 +57,6 @@
                                 <input type="email" class="form-control" placeholder="Email" id="email_field"
                                        name="email" required
                                        data-validation-required-message="请输入您的E-mail地址">
-                                <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
@@ -66,7 +65,6 @@
                                 <input type="password" class="form-control" placeholder="Password" id="password_field"
                                        name="password"
                                        required data-validation-required-message="请输入密码">
-                                <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
@@ -75,7 +73,6 @@
                                 <input type="password" class="form-control" placeholder="Confirm Password" id="confirm_password_field"
                                        name="confirm_password"
                                        required data-validation-required-message="请输入密码">
-                                <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="text-center">
@@ -97,6 +94,7 @@
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
 
+    <% include Components/bottomAlert.ejs %>
 </div>
 <!-- Main container END -->
 

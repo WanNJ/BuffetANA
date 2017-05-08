@@ -75,7 +75,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://192.168.1.102/formal');
+mongoose.connect('mongodb://192.168.1.103/formal');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

@@ -1,16 +1,15 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-    <% include Components/settings.html%>
+    <% include Components/settings.html %>
     <title>Sign-Up</title>
 </head>
 
 <body>
-<!-- Main container -->
+
 <div class="page-container">
     <% include Components/navigator.ejs %>
 
-    <!-- bloc-7 -->
     <div class="bloc bgc-white l-bloc" id="bloc-7">
         <div class="container bloc-sm">
             <div class="row">
@@ -28,9 +27,7 @@
             </div>
         </div>
     </div>
-    <!-- bloc-7 END -->
 
-    <!-- bloc-8 -->
     <div class="bloc bgc-white l-bloc" id="bloc-8">
         <div class="container bloc-md">
             <div class="row">
@@ -70,7 +67,8 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>请确认密码</label>
-                                <input type="password" class="form-control" placeholder="Confirm Password" id="confirm_password_field"
+                                <input type="password" class="form-control" placeholder="Confirm Password"
+                                       id="confirm_password_field"
                                        name="confirm_password"
                                        required data-validation-required-message="请输入密码">
                             </div>
@@ -81,24 +79,46 @@
                                     id="signInButton">
                                 立即注册
                             </button>
+
+                            <script type="text/javascript">
+                                $(function () {
+
+                                    $("#signInButton").click(function () {
+
+                                        let pwd = $('#password_field').val();
+
+                                        let cpwd = $('#confirm_password_field').val();
+                                        if (pwd !== cpwd) {
+                                            $('.scrollToTop').after("<div id='bottom-alert' class='text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom' style='bottom: -20px;' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Close'><spanaria-hidden='true'>&times;</span></button> <strong>两次输入的密码不一致！</strong> </div>");
+
+                                            window.setTimeout(function () {
+                                                $('#bottom-alert').alert('close');
+                                            }, 2000);
+
+                                            $('#password_field').val("");
+                                            $('#confirm_password_field').val("");
+                                            return false;
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- bloc-8 END -->
 
-    <!-- ScrollToTop Button -->
+
+
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
-    <!-- ScrollToTop Button END-->
+
 
     <% include Components/bottomAlert.ejs %>
 </div>
-<!-- Main container END -->
 
 </body>
 
-<% include Components/footer.ejs%>
+<% include Components/footer.ejs %>
 </html>

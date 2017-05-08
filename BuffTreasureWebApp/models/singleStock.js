@@ -35,7 +35,8 @@ exports.singleStockDB = {
      */
     getStockInfoByCode: function (code, callback) {
         if (preCode === code && preStockList !== null) {
-            callback(null, preStockList);
+            // 防止上层对此数组进行误操作，将数组的拷贝传给上层
+            callback(null, preStockList.slice(0));
         }
         else {
             let Stock = mongoose.model(code, stockSchema);

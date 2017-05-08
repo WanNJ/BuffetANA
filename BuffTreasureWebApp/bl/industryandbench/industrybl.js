@@ -21,6 +21,23 @@ exports.getIndustryByCode = (code, callback) => {
 };
 
 /**
+ * 根据所给的股票代号获得这支股票所在的板块
+ * ！！！一支股票可能从属于多个板块，所以所属板块是一个数组！！！！
+ * @param code
+ * @param callback
+ */
+exports.getBoardsByCode = (code, callback) => {
+    allStockDB.getBoardsByCode(code, (err, doc) => {
+        if (err) {
+            callback(err, null);
+        }
+        else {
+            callback(null, doc['bench']);
+        }
+    });
+};
+
+/**
  * 获得所有的行业
  *
  * ！！！！返回的是一个所有行业名的Set！！！！

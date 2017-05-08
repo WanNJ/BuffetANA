@@ -71,6 +71,18 @@ exports.allStockDB = {
     },
 
     /**
+     * 根据所给的股票代号获得这支股票所在的板块
+     * ！！！一支股票可能从属于多个板块，所以所属板块是一个数组！！！！
+     * @param code
+     * @param callback
+     */
+    getBoardsByCode: (code, callback) => {
+        allStock.findOne({code: code}, ['bench'], (err, doc) => {
+            callback(err, doc);
+        });
+    },
+
+    /**
      * 获得所有行业
      * @param callback
      */

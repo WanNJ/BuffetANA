@@ -1,7 +1,6 @@
 /**
  * Created by wshwbluebird on 2017/5/8.
  */
-import {describe, it} from "mocha";
 let userbl = require('../../bl/userbl');
 let expect = require('chai').expect;
 

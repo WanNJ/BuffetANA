@@ -40,4 +40,17 @@ describe('singleStockbl', function() {
             });
         });
     });
+    describe('#getMonthlyData()', function() {
+        it('should show all information of 000001 per month', function(done) {
+            singleStockbl.getMonthlyData('000001', (err, all_month_data) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(all_month_data.reverse());
+                    done();
+                }
+            });
+        });
+    });
 });

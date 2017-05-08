@@ -8,8 +8,10 @@ let singleStockDB = require('../models/singleStock.js').singleStockDB;
  *
  * ！！！！！！剔除了交易量为0的日期！！！！！！！！
  *
- *      日期，           开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100)，    K   D   J
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23               80  90  70
+ *      日期，           开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100),
+ * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
+ *      K   D   J,      DIF        DEA        MACD
+ * eg:  80  90  70      0.2        0.3        -0.2
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */
@@ -24,18 +26,22 @@ exports.getDailyData = (code, callback) => {
             let beforeD = 50; // 前日D值
             let periodHigh = [];
             let periodLow = [];
+            // 计算MACD所需要的临时数据
+            let beforeEMA12 = 0; // 昨日的12日指数平均值
+            let beforeEMA26 = 0; // 昨日的26日指数平均值
+            let beforeDEA = 0; // 昨日的九日DIF平滑移动平均值
             let all_day_data = docs.filter(data => {
                 return (data["volume"] !== 0);
             }).map(data => {
                 let one_day_data = [];
                 one_day_data.push(data["date"].toISOString().substr(0, 10));
-                one_day_data.push(data["open"].toFixed(2));
-                one_day_data.push(data["close"].toFixed(2));
-                one_day_data.push(data["low"].toFixed(2));
-                one_day_data.push(data["high"].toFixed(2));
-                one_day_data.push(data["changeRate"].toFixed(2));
+                one_day_data.push(parseFloat(data["open"].toFixed(2)));
+                one_day_data.push(parseFloat(data["close"].toFixed(2)));
+                one_day_data.push(parseFloat(data["low"].toFixed(2)));
+                one_day_data.push(parseFloat(data["high"].toFixed(2)));
+                one_day_data.push(parseFloat(data["changeRate"].toFixed(2)));
                 one_day_data.push(data["volume"]);
-                one_day_data.push(data["turnOverRate"].toFixed(2));
+                one_day_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
                 /*
                  * 计算当日KDJ
@@ -62,6 +68,24 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(k);
                 one_day_data.push(d);
                 one_day_data.push(j);
+
+                /*
+                 * 计算当日MACD
+                 */
+                // 由于每日行情震荡波动之大小不同，并不适合以每日之收盘价来计算移动平均值，
+                // 于是有需求指数（Demand Index）之产生，用需求指数代表每日的收盘指数
+                let DI = (data["close"] * 2 + data["high"] + data["low"]) / 4;
+                let EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12;
+                let EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26;
+                let DIF = EMA12 - EMA26;
+                let DEA = DIF * 0.2 + beforeDEA * 0.8;
+                let MACD = 2 * (DIF - DEA);
+                beforeEMA12 = EMA12;
+                beforeEMA26 = EMA26;
+                beforeDEA = DEA;
+                one_day_data.push(DIF);
+                one_day_data.push(DEA);
+                one_day_data.push(MACD);
                 return one_day_data;
             });
             callback(null, all_day_data);
@@ -71,8 +95,13 @@ exports.getDailyData = (code, callback) => {
 
 /**
  * 返回周K数据列表，其中每一个元素也是一个数组，形式如下
- *      日期(Monday)，   开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100)，    K   D   J
- * eg:  '2017-05-08'    10.2       11.5       10.1       11.5      1.275               1232       2.23               80  90  70
+ *
+ * ！！！！！！剔除了交易量为0的日期！！！！！！！！
+ *
+ *      日期，           开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100),
+ * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
+ *      K   D   J,      DIF        DEA        MACD
+ * eg:  80  90  70      0.2        0.3        -0.2
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */
@@ -82,8 +111,13 @@ exports.getWeeklyData = (code, callback) => {
 
 /**
  * 返回月K数据列表，其中每一个元素也是一个数组，形式如下
- *      日期(1st)，    开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100)，    K   D   J
- * eg:  '2017-05-01'  10.2       11.5       10.1       11.5      1.275               1232       2.23               80  90  70
+ *
+ * ！！！！！！剔除了交易量为0的日期！！！！！！！！
+ *
+ *      日期，           开盘价，    收盘价，    最低价，    最高价，    涨跌幅(已乘100)，    成交量，    换手率(已乘100),
+ * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
+ *      K   D   J,      DIF        DEA        MACD
+ * eg:  80  90  70      0.2        0.3        -0.2
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */

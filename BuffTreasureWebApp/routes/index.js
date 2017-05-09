@@ -2,7 +2,6 @@ let express = require('express');
 let userService = require('../bl/userbl');
 let router = express.Router();
 
-/* GET HOME PAGE 'next'在下面的工作中可能会用到 */
 router.use((req, res, next) => {
     if (req.session.alertType !== undefined) {
         res.locals.alertType = req.session.alertType;
@@ -28,11 +27,11 @@ router.get('/single-stock', function (req, res, next) {
 });
 
 router.get('/comparison', function (req, res, next) {
-    res.render('comparison');
+    res.render('User/comparison');
 });
 
 router.get('/marketthermometer', function (req, res, next) {
-    res.render('marketthermometer');
+    res.render('User/marketthermometer');
 });
 
 router.get('/about-us', function (req, res, next) {

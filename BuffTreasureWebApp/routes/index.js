@@ -45,13 +45,8 @@ router.route('/sign-in')
     })
     .post(function (req, res, next) {
         userService.login(req.body.username, req.body.password, (err, status) => {
-            if (err) {
-                res.locals.message = err.message;
-                res.locals.error = req.app.get('env') === 'development' ? err : {};
-                // 提交错误页
-                res.status(err.status || 500);
+            if (err)
                 res.render('error');
-            }
 
             if (status === false) {
                 res.locals.alertType = "alert-danger";
@@ -80,14 +75,8 @@ router.route('/sign-in')
 
 router.get('/logout', function (req, res, next) {
     req.session.destroy(function (err) {
-        if (err) {
-            res.locals.message = err.message;
-            res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-            // 提交错误页
-            res.status(err.status || 500);
+        if (err)
             res.render('error');
-        }
 
         res.clearCookie("BuffSession");
         res.redirect('/');
@@ -107,13 +96,9 @@ router.route('/sign-up')
         }
 
         userService.signUp(req.body.username, req.body.password, req.body.email, (err, status) => {
-            if (err) {
-                res.locals.message = err.message;
-                res.locals.error = req.app.get('env') === 'development' ? err : {};
-                // 提交错误页
-                res.status(err.status || 500);
+            if (err)
                 res.render('error');
-            }
+
             if (status === false) {
                 //重名渲染页面
                 res.locals.alertType = "alert-warning";

@@ -1,3 +1,38 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!doctype html>
+<html>
+<head>
+    <% include Components/settings.html %>
+    <title>ERROR</title>
+</head>
+<body>
+<div class="page-container">
+
+    <div class="bloc bgc-white l-bloc" id="bloc-9">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel blocs-personal-panel">
+                        <div class="panel-body">
+                            <img src="img/sadface.png" class="img-responsive img-circle center-block blocs-panel-avatar " />
+                            <h3 class="mg-clear tc-black">
+                                糟糕，服务器遇到了点麻烦，请稍后再试
+                            </h3>
+                            <div class="text-center">
+                                <a href="#" onClick="history.go(-1);" class="btn btn-xl btn-outer-space">返回上层页面</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<% include Components/footer.ejs %>
+</html>

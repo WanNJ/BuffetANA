@@ -13,7 +13,9 @@ router.post('/search', function(req, res, next) {
         if(err)
             render('error');
 
-
+        res.locals.dailyKLineData = docs;
+        console.log(docs);
+        res.render('single-stock');
     });
 });
 

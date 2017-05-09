@@ -16,9 +16,11 @@ let allstocks;
 let all_industry;
 // 储存第一次查询所有板块的结果，以便后续调用时直接使用，不用再次查询数据库
 let all_benchs;
+// 储存第一次查询沪深300的结果，以便后续调用时直接使用，不用再次查询数据库
+let HS300;
 exports.allStockDB = {
 
-    /**
+    /**s
      * 获得所有股票的代码和名称
      * @param callback
      */
@@ -32,7 +34,18 @@ exports.allStockDB = {
             });
         }
         else {
-            callback(null, allstocks);
+            callback(null, [...allstocks]);
+        }
+    },
+
+    getHS300StockCodeAndName: (callback) => {
+        if (typeof HS300 === "undefined") {
+            allStock.find({bench : {$all : ['沪深300']}}, ['code', 'name'], (err, docs) => {
+                callback(err, docs);
+            });
+        }
+        else {
+            callback(null, [...HS300]);
         }
     },
 
@@ -52,7 +65,7 @@ exports.allStockDB = {
      * @param bench 板块的列表，如果只有一个板块，则是只包含一个元素的列表
      * @param callback
      */
-    getStocksByBench: (bench, callback) => {
+        getStocksByBench: (bench, callback) => {
         allStock.find({bench : {$all : bench}}, ['code', 'name'], (err, docs) => {
             callback(err, docs);
         });
@@ -95,7 +108,7 @@ exports.allStockDB = {
             });
         }
         else
-            callback(null, all_industry);
+            callback(null, [...all_industry]);
     },
 
     /**
@@ -111,6 +124,6 @@ exports.allStockDB = {
             });
         }
         else
-            callback(null, all_benchs);
+            callback(null, [...all_benchs]);
     }
 };

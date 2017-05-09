@@ -33,4 +33,17 @@ describe('singleStockDB', function() {
             });
         });
     });
+    describe('#getStockInfoByDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoByDate(new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
 });

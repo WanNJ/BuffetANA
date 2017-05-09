@@ -56,7 +56,7 @@ exports.singleStockDB = {
      * @param callback
      */
     getStockInfoByDate: function (date, callback) {
-        let Stock = mongoose.model(date.toISOString.substr(0, 10), stockSchema);
+        let Stock = mongoose.model(date.toISOString().substr(0, 10), stockSchema);
         Stock.find({}, function (err, docs) {
             callback(err, docs);
         });

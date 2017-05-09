@@ -82,5 +82,43 @@ exports.singleStockDB = {
                 callback(err, docs);
             });
         }
+    },
+
+
+    /**
+     *
+     * @param date
+     * @param callback
+     */
+    getStockInfoByDateTwo: function (date, callback) {
+
+        const oneDay = 24000*3600;
+        let promises = [date,new Date(date-oneDay),new Date(date-2*oneDay),new Date(date-3*oneDay),new Date(date-4*oneDay)]
+            .map(function (d) {
+            let Stock = mongoose.model(d.toISOString().substr(0, 10), stockSchema);
+            return Stock.find({}, function (err, docs) {
+                return docs;
+            });
+        });
+
+        Promise.all(promises).then(function (posts) {
+            if(posts[0].length === 0 ){
+                callback(null,null,null);
+            }else{
+                let left = posts.slice(1,4).filter((data)=>{return data.length!==0})
+                if(left.length === 0 ){
+                    callback(null,null,null);
+                }else{
+                    callback(null,posts[0],left[0]);
+                }
+
+            }
+
+        })
+
+
+
     }
+
+
 }

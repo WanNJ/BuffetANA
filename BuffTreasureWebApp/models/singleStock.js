@@ -118,7 +118,6 @@ exports.singleStockDB = {
 
 
 
-    }
-
+    },
 
 }

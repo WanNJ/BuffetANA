@@ -2,7 +2,7 @@
  * Created by wshwbluebird on 2017/5/9.
  */
 
-let thermometerbl = require("../../../bl/thermometer/thermometer");
+let thermometerbl = require("../../../bl/thermometer/thermometerbl");
 
 let expect = require('chai').expect;
 
@@ -18,13 +18,13 @@ mongoose.connection.on('open', function () {
 
 describe('#getDailyEnvironment()', function() {
     it('should show all industries', function(done) {
-        thermometerbl.getDailyEnvironment(new Date("2016-01-06"), (err,doc) => {
+        thermometerbl.getDailyEnvironment(new Date("2016-01-21"), (err,data) => {
             if (err) {
-                console.log("not in test")
+                console.log('wrong')
                 done(err);
             }
             else {
-                console.log("finish");
+                console.log(data);
                 done();
             }
         });

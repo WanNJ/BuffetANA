@@ -28,6 +28,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
             if(doc === null){
 
                //获取返回当日信息的Promise
+                console.log('BLThermometer: Calculating')
                function getStockByDate(date){
                    return new Promise(function(resolve, reject){
                        singleStockDB.getStockInfoByDate(date,(err,doc)=>{
@@ -187,7 +188,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                    .catch(()=>callback(err,null));
 
             }else{
-                console.log("BLThermometer:  Not Need Calculate");
+                console.log('BLThermometer:  Not Need Calculate');
                 callback(err, doc)
 
             }

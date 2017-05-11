@@ -5,6 +5,12 @@
 let async = require("async/index.js");
 let singleStockDB = require('../models/singleStock.js').singleStockDB;
 
+/**
+ * 为了测试async写的一个接口
+ * 并没有什么用
+ * @param date
+ * @param callback
+ */
 exports.getTwoDayInfo = (date, callback) => {
     async.parallel([
         function (cb) {
@@ -26,8 +32,8 @@ exports.getTwoDayInfo = (date, callback) => {
  *
  *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
  * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj
- * eg:  80  90  70      0.2        0.3        -0.2       11.0
+ *      K   D   J,      DIF        DEA        MACD       adj       RSI6     RSI12     RSI24
+ * eg:  80  90  70      0.2        0.3        -0.2       11.0      22.42    33.33     44.44
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */
@@ -46,6 +52,10 @@ exports.getDailyData = (code, callback) => {
             let beforeEMA12 = 0; // 昨日的12日指数平均值
             let beforeEMA26 = 0; // 昨日的26日指数平均值
             let beforeDEA = 0; // 昨日的九日DIF平滑移动平均值
+            // 计算RSI所需要的临时数据
+            let changePrice6 = [];
+            let changePrice12 = [];
+            let changePrice24 = [];
             let all_day_data = docs.filter(data => {
                 return (data["volume"] !== 0);
             }).map(data => {
@@ -103,6 +113,49 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(DEA);
                 one_day_data.push(MACD);
                 one_day_data.push(parseFloat(data["adjClose"].toFixed(2)));
+
+                /*
+                 * 计算当日RSI
+                 */
+                changePrice6.push(data["changePrice"]);
+                changePrice12.push(data["changePrice"]);
+                changePrice24.push(data["changePrice"]);
+                if (changePrice6.length > 6)
+                    changePrice6.shift();
+                if (changePrice12.length > 12)
+                    changePrice12.shift();
+                if (changePrice24.length > 24)
+                    changePrice24.shift();
+                let upAverage6 = changePrice6.filter(price => {
+                    return price >= 0;
+                }).reduce((x, y) => { return x + y;}) / 6;
+                let downAverage6 = -changePrice6.filter(price => {
+                        return price <= 0;
+                    }).reduce((x, y) => { return x + y;}) / 6;
+                let upAverage12 = changePrice12.filter(price => {
+                        return price >= 0;
+                    }).reduce((x, y) => { return x + y;}) / 6;
+                let downAverage12 = -changePrice12.filter(price => {
+                        return price <= 0;
+                    }).reduce((x, y) => { return x + y;}) / 6;
+                let upAverage24 = changePrice24.filter(price => {
+                        return price >= 0;
+                    }).reduce((x, y) => { return x + y;}) / 6;
+                let downAverage24 = -changePrice24.filter(price => {
+                        return price <= 0;
+                    }).reduce((x, y) => { return x + y;}) / 6;
+                let RSI6 = 0;
+                let RSI12 = 0;
+                let RSI24 = 0;
+                if ((upAverage6 + downAverage6) !== 0)
+                    RSI6 = upAverage6 / (upAverage6 + downAverage6) * 100;
+                if ((upAverage12 + downAverage12) !== 0)
+                    RSI12 = upAverage12 / (upAverage12 + downAverage12) * 100;
+                if ((upAverage24 + downAverage24) !== 0)
+                    RSI24 = upAverage24 / (upAverage24 + downAverage24) * 100;
+                one_day_data.push(RSI6);
+                one_day_data.push(RSI12);
+                one_day_data.push(RSI24);
                 return one_day_data;
             });
             callback(null, all_day_data);

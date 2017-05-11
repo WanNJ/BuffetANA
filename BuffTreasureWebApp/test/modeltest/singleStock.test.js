@@ -18,62 +18,71 @@ mongoose.connection.on('open', function () {
  * 代码为000001的股票一共有6396条数据
  */
 describe('singleStockDB', function() {
-    // describe('#getStockInfoByCode()', function() {
+
+
+    describe('#getStockInfoInRangeDate()', function() {
+        it('1', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001' ,new Date("2016-01-06"), new Date("2016-01-13"), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('1', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000002' ,new Date("2016-01-06"), new Date("2016-01-13"), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('1', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000004' ,new Date("2016-01-06"), new Date("2016-01-13"), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    // describe('#getStockInfoByDate()', function() {
     //     it('should obtain 6396 records', function(done) {
-    //         singleStockDB.getStockInfoByCode('000001', function (err, docs) {
+    //         singleStockDB.getStockInfoByDate(new Date('2017-04-28'), function (err, docs) {
     //             if (err) {
     //                 done(err);
     //             }
     //             else {
-    //                 // 如果想看docs里面的内容，可以将下面的这条打印语句解注释
-    //                 // console.log(docs);
-    //                 expect(docs.length).to.be.equal(6396);
+    //                 console.log(docs);
     //                 done();
     //             }
     //         });
     //     });
     // });
-
-    describe('#getStockInfoByDateTwo()', function() {
-        it('should log 2  lists', function(done) {
-            singleStockDB.getStockInfoByDateTwo(new Date("2016-01-11"), function (err, docs1, docs2) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    // 如果想看docs里面的内容，可以将下面的这条打印语句解注释
-                    // console.log(docs);
-                    console.log(docs1);
-                    console.log(docs2)
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getStockInfoByDate()', function() {
-        it('should obtain 6396 records', function(done) {
-            singleStockDB.getStockInfoByDate(new Date('2017-04-28'), function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getStocksUntilHavingByDate()', function() {
-        it('should obtain 6396 records', function(done) {
-            singleStockDB.getStocksUntilHavingByDate(new Date('2017-01-01'), function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
-    });
+    // describe('#getStocksUntilHavingByDate()', function() {
+    //     it('should obtain 6396 records', function(done) {
+    //         singleStockDB.getStocksUntilHavingByDate(new Date('2017-01-01'), function (err, docs) {
+    //             if (err) {
+    //                 done(err);
+    //             }
+    //             else {
+    //                 console.log(docs);
+    //                 done();
+    //             }
+    //         });
+    //     });
+    // });
 });

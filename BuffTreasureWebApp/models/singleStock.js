@@ -70,7 +70,7 @@ exports.singleStockDB = {
      * @param endDate
      * @param callback
      */
-    getStockInFoInRangeDate: function (code, beginDate, endDate, callback) {
+    getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
         if (preCode === code && preStockList !== null) {
             callback(null, preStockList.filter((stock) => {
                 return (stock.date - beginDate >= 0 && stock.date - endDate <= 0);
@@ -82,5 +82,21 @@ exports.singleStockDB = {
                 callback(err, docs);
             });
         }
+    },
+
+
+    getStocksUntilHavingByDate: function getStocksUntilHavingByDate (date, callback) {
+        let Stock = mongoose.model(date.toISOString().substr(0, 10), stockSchema);
+        Stock.find({}, function (err, docs) {
+            if (err) {
+                callback(err, null);
+            }
+            else if (docs.length === 0) {
+                getStocksUntilHavingByDate(new Date((date - 1000 * 60 * 60 * 24)), callback);
+            }
+            else {
+                callback(null, docs);
+            }
+        });
     }
-}
+};

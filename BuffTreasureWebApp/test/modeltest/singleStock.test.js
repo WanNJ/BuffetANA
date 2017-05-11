@@ -46,4 +46,17 @@ describe('singleStockDB', function() {
             });
         });
     });
+    describe('#getStocksUntilHavingByDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStocksUntilHavingByDate(new Date('2017-01-01'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
 });

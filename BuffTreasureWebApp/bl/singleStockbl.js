@@ -1,7 +1,23 @@
 /**
  * Created by slow_time on 2017/5/6.
  */
+
+let async = require("async/index.js");
 let singleStockDB = require('../models/singleStock.js').singleStockDB;
+
+exports.getTwoDayInfo = (date, callback) => {
+    async.parallel([
+        function (cb) {
+            singleStockDB.getStockInfoByDate(new Date("2017-04-28"), cb);
+        },
+        function (cb) {
+            singleStockDB.getStockInfoByDate(new Date("2017-04-27"), cb);
+        }
+        ],
+        function (err, results) {
+            callback(err, results);
+        });
+};
 
 /**
  * 返回日K数据列表，其中每一个元素也是一个数组，形式如下

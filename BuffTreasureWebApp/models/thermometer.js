@@ -33,10 +33,11 @@ exports.thermometerDB = {
     },
 
     writeThermometerByDate: function (thermometer, callback){
-        let ThermometerToSave =  new Thermometer(thermometer);
-
-        ThermometerToSave.save((err, data) => {
-            callback(err, data);
-        });
+        if(thermometer!==null) {
+            let ThermometerToSave = new Thermometer(thermometer);
+            ThermometerToSave.save((err, data) => {
+                callback(err, data);
+            });
+        }
     }
 }

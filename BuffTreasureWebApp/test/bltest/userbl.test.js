@@ -30,7 +30,7 @@ describe('userbl', function() {
                 }
                 else {
                     //使用断言
-                    assert.equal(doc,true,'反应不正确');
+                    assert.equal(doc,false,'反应不正确');
                     console.log("correct")
                     done();
                 }

@@ -27,11 +27,6 @@ let yearProfitRate;
  * 最大回撤率
  */
 let largestBackRate;
-/**
- * 回测区间
- */
-let begin;
-let end;
 
 
 /**
@@ -572,8 +567,8 @@ function getHistoryTradeRecord() {
             historyTradeRecord.push({
                 "code" : backData.code,      // 股票代码
                 "name" : backData.name,      // 股票简称
-                "buyTime" : pickleData.begindate,   // 买入时间
-                "sellTime" : pickleData.endDate,  // 卖出时间
+                "buyTime" : pickleData.begindate.toISOString().substr(0, 10),   // 买入时间
+                "sellTime" : pickleData.endDate.toISOString().substr(0, 10),  // 卖出时间
                 "buyPrice" : backData.firstDayOpen,  // 买入价
                 "sellPrice" : backData.lastDayClose, // 卖出价
                 "yieldRate" : (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen  // 单次收益率

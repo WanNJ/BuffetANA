@@ -20,7 +20,7 @@ let all_benchs;
 let HS300;
 exports.allStockDB = {
 
-    /**s
+    /**
      * 获得所有股票的代码和名称
      * @param callback
      */
@@ -38,6 +38,10 @@ exports.allStockDB = {
         }
     },
 
+    /**
+     * 获得沪深300所有股票代码和名称
+     * @param callback
+     */
     getHS300StockCodeAndName: (callback) => {
         if (typeof HS300 === "undefined") {
             allStock.find({bench : {$all : ['沪深300']}}, ['code', 'name'], (err, docs) => {

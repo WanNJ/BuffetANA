@@ -2,10 +2,12 @@
  * Created by wshwbluebird on 2017/5/9.
  */
 
-var async = require('async');
 
-let thrmometerDB = require('../../models/thermometer').thermometerDB;
+let thermometerDB = require('../../models/thermometer').thermometerDB;
 let singleStockDB = require('../../models/singleStock.js').singleStockDB;
+let bl = require('./thermometerbl');
+
+
 
 
 /**
@@ -19,7 +21,7 @@ let singleStockDB = require('../../models/singleStock.js').singleStockDB;
  * @param callback   回调函数 形如 (err, docs) => { }
  */
 exports.getDailyEnvironment  = (date , callback) =>{
-    thrmometerDB.getThermometerByDate(date,(err,doc)=>{
+    thermometerDB.getThermometerByDate(date,(err,doc)=>{
         if(err){
             callback(err,null);
         }else{
@@ -173,7 +175,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                 //获取返回前一日信息的Promise
                 function getWriteToDB(thermometer){
                     return new Promise(function(resolve, reject){
-                        thrmometerDB.writeThermometerByDate(thermometer,(err,doc)=>{
+                        thermometerDB.writeThermometerByDate(thermometer,(err,doc)=>{
                             resolve(thermometer);
                         });
                     })
@@ -196,3 +198,28 @@ exports.getDailyEnvironment  = (date , callback) =>{
         }
     });
 }
+
+
+exports.WriteDailyEnvironmentRange  = (beginDate, endDate , callback) =>{
+    let oneDayTime = 24000*3600;
+    function getWriteOneDayPromise(date) {
+        //date = new Date(date - 24000 * 3600);
+        console.log(date)
+        return new Promise(function(resolve, reject){
+            if(date  < beginDate){
+                reject(new Error('nothing'));
+            }else{
+                bl.getDailyEnvironment(date,(err,doc)=>{
+                    date = new Date(date - 24000 * 3600);
+                    console.log(doc!==null)
+                    console.log(date)
+                    resolve(getWriteOneDayPromise(date));
+                })
+            }
+        });
+    }
+
+    getWriteOneDayPromise(endDate).then(date =>  console.log(date)).catch(err=>callback());
+}
+
+

@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar nav-invert row mini-nav">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/"><img src="img/favicon.ico" alt="logo" height="46"/>
+                <a class="navbar-brand" href="/"><img src="/img/favicon.ico" alt="logo" height="46"/>
                     <% if(typeof user !== "undefined") { %>
                     <%= user %>
                     <% }else { %>
@@ -21,22 +21,22 @@
                         <a href="/">主页</a>
                     </li>
                     <li>
-                        <a href="market">大盘</a>
+                        <a href="/market">大盘</a>
                     </li>
                     <li>
-                        <a href="single-stock">个股</a>
+                        <a href="/single-stock">个股</a>
                     </li>
                     <li>
-                        <a href="comparison">两股对比</a>
+                        <a href="/comparison">两股对比</a>
                     </li>
                     <li>
-                        <a href="marketthermometer">市场温度计</a>
+                        <a href="/marketthermometer">市场温度计</a>
                     </li>
                     <li>
-                        <a href="about-us">About-Us</a>
+                        <a href="/about-us">About-Us</a>
                     </li>
                     <% if(typeof user === "undefined") { %>
-                    <li><a href="sign-in">登录</a></li>
+                    <li><a href="/sign-in">登录</a></li>
                     <% } %>
                 </ul>
             </div>

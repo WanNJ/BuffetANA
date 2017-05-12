@@ -1,5 +1,6 @@
 // 基于准备好的dom，初始化echarts实例
-let myChart = echarts.init(document.getElementById('myChart'));
+let otherChart = echarts.init(document.getElementById('otherChart'), 'shine');
+let kLineChart = echarts.init(document.getElementById('kLineChart'), 'shine');
 
 let rawData = [
     ['1991-02-26',
@@ -228,7 +229,7 @@ function calculateMA(dayCount) {
 }
 
 //TODO ToolTip里显示不了涨跌幅和换手率
-option = {
+kLineChartOption = {
     title: {
         show: false,
         text: '个股',
@@ -240,16 +241,15 @@ option = {
             type: 'cross'
         },
         position: (pos, params, el, elRect, size) => {
-            let obj = {top: 55};
-            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+            let obj = {top: 30};
+            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 200;
             return obj;
         },
         formatter: function (params) {
             let res = '';
-            let count = 0;
             let index = params[0].dataIndex;
-            let turnOverRate = option.series[8].turnOverRates[index];
-            let changeRate = option.series[0].changeRates[index];
+            let turnOverRate = kLineChartOption.series[5].turnOverRates[index];
+            let changeRate = kLineChartOption.series[0].changeRates[index];
 
             for (let i = 0; i < params.length; i++) {
                 let value = params[i].value;
@@ -259,24 +259,26 @@ option = {
                         value = Math.round(params[i].value * 100) / 100;
                     res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
                     res = res + '<br/>换手率' + ': ' + Math.round(turnOverRate * 100) / 100 + '%';
+                    if (i === 0)
+                        res += '<br/>';
                 } else if (params[i].seriesName === '日K') {
-                    res = res + '日K' + '<br/>开盘价: ' + value[0] + '<br/>收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + '<br/>最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100)/100 + '%<br/>';
+                    res = res + '日K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
                 } else {
                     if (value !== '-')
                         value = Math.round(params[i].value * 100) / 100;
                     res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if(i !== params.length - 1 && params[i].seriesName === 'MA30')
+                        res += '<br/>';
                 }
 
-                if(count !== params.length - 1) {
+                if (i !== params.length - 1)
                     res += '<br/>';
-                    count++;
-                }
             }
             return res;
         }
     },
     legend: {
-        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30', 'K值', 'D值', 'J值'],
+        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -285,34 +287,20 @@ option = {
         }
     },
     toolbox: {
+        right: 100,
         feature: {
-            dataZoom: {
-                yAxisIndex: false
-            },
-            brush: {
-                type: ['lineX', 'clear']
-            }
-        }
-    },
-    brush: {
-        xAxisIndex: 'all',
-        brushLink: 'all',
-        outOfBrush: {
-            colorAlpha: 0.1
+            saveAsImage: {},
+            restore: {}
         }
     },
     grid: [
         {
             top: '10%',
-            height: '40%'
-        },
-        {
-            top: '55%',
-            height: '10%'
+            height: '50%'
         },
         {
             top: '65%',
-            height: '13%'
+            height: '20%'
         }
     ],
     xAxis: [
@@ -336,39 +324,20 @@ option = {
             splitLine: {show: false},
             axisLabel: {show: false},
             splitNumber: 20
-        },
-        {
-            type: 'category',
-            gridIndex: 2,
-            data: data.categoryData,
-            scale: true,
-            boundaryGap: false,
-            axisLine: {onZero: false},
-            axisTick: {show: false},
-            splitLine: {show: false},
-            axisLabel: {show: false},
-            splitNumber: 20
         }
     ],
     yAxis: [
         {
+            type : 'value',
             scale: true,
             splitArea: {
-                show: true
+                show: false
             }
         },
         {
+            type : 'value',
             scale: true,
             gridIndex: 1,
-            splitArea: {
-                show: false
-            },
-            splitNumber: 2,
-            splitLine: {show: false}
-        },
-        {
-            scale: true,
-            gridIndex: 2,
             axisLabel: {show: false},
             axisLine: {show: false},
             axisTick: {show: false},
@@ -378,11 +347,12 @@ option = {
     dataZoom: [
         {
             type: 'inside',
-            xAxisIndex: [0, 1, 2],
+            xAxisIndex: [0, 1],
         },
         {
             show: true,
-            xAxisIndex: [0, 1, 2],
+            realtime: true,
+            xAxisIndex: [0, 1],
             type: 'slider',
             startValue: -30,
             endValue: -1
@@ -415,9 +385,6 @@ option = {
                     }
                 ]
             },
-            tooltip: {
-                formatter: '{b0}: {c0}<br />{b1}: {c1}'
-            }
         },
         {
             name: 'MA5',
@@ -456,10 +423,104 @@ option = {
             }
         },
         {
-            name: 'K值',
-            type: 'line',
+            name: '成交量',
+            type: 'bar',
             xAxisIndex: 1,
             yAxisIndex: 1,
+            data: data.volumns,
+            turnOverRates: data.turnOverRates
+        }
+    ]
+};
+
+otherChartOption = {
+    title: {
+        show: false,
+        text: 'KDJ',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        position: (pos, params, el, elRect, size) => {
+            let obj = {top: 30};
+            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+            return obj;
+        },
+        formatter: function (params) {
+            let res = '';
+
+            for (let i = 0; i < params.length; i++) {
+                let value = params[i].value;
+
+                if (value !== '-')
+                    value = Math.round(params[i].value * 100) / 100;
+                res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                if (i !== 2)
+                    res += '<br/>';
+            }
+            return res;
+        }
+    },
+    legend: {
+        data: ['K值', 'D值', 'J值'],
+    },
+    axisPointer: {
+        link: {xAxisIndex: 'all'},
+        label: {
+            backgroundColor: '#777'
+        }
+    },
+    toolBox: {
+        show: false
+    },
+    grid: [
+        {
+            top: '15%',
+            height: '70%'
+        }
+    ],
+    xAxis: [
+        {
+            type: 'category',
+            data: data.categoryData,
+            scale: true,
+            boundaryGap: false,
+            axisLine: {onZero: false},
+            axisTick: {show: false},
+            splitLine: {show: false},
+            axisLabel: {show: false},
+            splitNumber: 20
+        }
+    ],
+    yAxis: [
+        {
+            scale: true,
+            splitArea: {
+                show: false
+            },
+            splitNumber: 2,
+            splitLine: {show: false}
+        }
+    ],
+    dataZoom: [
+        {
+            type: 'inside',
+        },
+        {
+            show: false,
+            realtime: true,
+            type: 'slider',
+            startValue: -30,
+            endValue: -1
+        }
+    ],
+    series: [
+        {
+            name: 'K值',
+            type: 'line',
             data: data.kIndexes,
             itemStyle: {
                 normal: {
@@ -473,8 +534,6 @@ option = {
         {
             name: 'D值',
             type: 'line',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
             data: data.dIndexes,
             itemStyle: {
                 normal: {
@@ -488,8 +547,6 @@ option = {
         {
             name: 'J值',
             type: 'line',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
             data: data.jIndexes,
             itemStyle: {
                 normal: {
@@ -500,16 +557,18 @@ option = {
                 }
             }
         },
-        {
-            name: '成交量',
-            type: 'bar',
-            xAxisIndex: 2,
-            yAxisIndex: 2,
-            data: data.volumns,
-            turnOverRates: data.turnOverRates
-        }
     ]
 };
 
 // 使用刚指定的配置项和数据显示图表
-myChart.setOption(option);
+kLineChart.setOption(kLineChartOption);
+otherChart.setOption(otherChartOption);
+
+echarts.connect([kLineChart, otherChart]);
+
+setTimeout(() => {
+    window.onresize = function () {
+        kLineChart.resize();
+        otherChart.resize();
+    }
+},200);

@@ -5,11 +5,11 @@
     <title>BUFF-个股</title>
 
     <!--echarts dependency-->
-    <script src="/echarts/echarts.js"></script>
+    <script src="/echarts/echarts.min.js"></script>
 
     <!--Jquery-UI-->
-    <link rel="stylesheet" href="css/jquery-ui.css"/>
-    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <script src="/js/jquery-ui.min.js"></script>
     <script type="text/javascript">
         $.widget("ui.autocomplete", $.ui.autocomplete, {
             options: {
@@ -67,9 +67,9 @@
     </div>
 
     <!--Echarts Module-->
-    <div id="myChart" class="center-block col-sm-12" style="height: 600px"></div>
-    <!--<script>-->
-    <!--</script>-->
+    <div id="kLineChart" class="center-block col-sm-12" style="height: 400px"></div>
+    <div id="otherChart" class="center-block col-sm-12" style="height: 120px"></div>
+    <script src="/echarts/shine.js"></script>
     <script src="/echarts/initChart.js"></script>
 
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span

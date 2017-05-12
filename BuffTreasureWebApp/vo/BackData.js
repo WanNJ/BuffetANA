@@ -23,6 +23,7 @@ exports.BackData = class {
         this.filterData = filterData;
         /**
          * 第一天买入时的价格。对应第一天的开盘价
+         * adjust by wsw 也可能是前一天的复权收盘价
          */
         this.firstDayOpen = firstDayOpen;
 

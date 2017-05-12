@@ -83,8 +83,13 @@ exports.singleStockDB = {
             });
         }
     },
+
+
     /**
-     *
+     * 这个方法
+     * 不建议调用
+     * TODO  最后删掉
+     * @deprecated
      * @param date
      * @param callback
      */

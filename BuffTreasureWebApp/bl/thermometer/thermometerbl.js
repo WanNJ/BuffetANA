@@ -10,6 +10,12 @@ let bl = require('./thermometerbl');
 
 
 
+
+
+
+
+
+
 /**
  * 获取某一天的市场温度环境
  * 不是实时的  基于历史的
@@ -200,6 +206,13 @@ exports.getDailyEnvironment  = (date , callback) =>{
 }
 
 
+/**
+ * 一般在测试中运行  将从beginDate 到 endDate 期间 每天的市场温度 计算并写入数据库
+ * @param beginDate
+ * @param endDate
+ * @param callback
+ * @constructor
+ */
 exports.WriteDailyEnvironmentRange  = (beginDate, endDate , callback) =>{
     let oneDayTime = 24000*3600;
     function getWriteOneDayPromise(date) {

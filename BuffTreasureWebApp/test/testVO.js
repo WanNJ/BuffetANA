@@ -1,6 +1,8 @@
 /**
  * Created by slow_time on 2017/5/9.
  */
+var it = require("mocha").it;
+var describe = require("mocha").describe;
 let StockPoolConditionVO = require("../vo/StockPoolConditionVO").StockPoolConditionVO;
 let expect = require('chai').expect;
 

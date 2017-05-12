@@ -70,7 +70,7 @@ exports.singleStockDB = {
      * @param endDate
      * @param callback
      */
-    getStockInFoInRangeDate: function (code, beginDate, endDate, callback) {
+    getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
         if (preCode === code && preStockList !== null) {
             callback(null, preStockList.filter((stock) => {
                 return (stock.date - beginDate >= 0 && stock.date - endDate <= 0);
@@ -83,8 +83,6 @@ exports.singleStockDB = {
             });
         }
     },
-
-
     /**
      *
      * @param date

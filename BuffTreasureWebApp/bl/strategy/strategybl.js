@@ -101,10 +101,22 @@ let end;
 exports.getHighAndSame = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
     strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
         rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-        pickleDatas = docs;
-        initPara(beginDate, endDate);
-        
-    })
+        if (err)
+            callback(err, null);
+        else {
+            pickleDatas = docs;
+            initPara(beginDate, endDate);
+            let result = {
+                "backDetail" : getBackDetail(),
+                "strategyDayRatePiece" : getStrategyDayRatePiece(),
+                "baseDayRatePiece" : getBaseDayRatePiece(),
+                "strategyEstimateResult" : getStrategyEstimateResult(),
+                "profitDistributePie" : getProfitDistributePie(),
+                "historyTradeRecord" : getHistoryTradeRecord()
+            };
+            callback(null, result);
+        }
+    });
 };
 
 /**
@@ -552,6 +564,24 @@ function getStrategyEstimateResult() {
     };
 }
 
+
+function getHistoryTradeRecord() {
+    let historyTradeRecord= [];
+    pickleDatas.forEach(pickleData => {
+        pickleData.backDatas.forEach(backData => {
+            historyTradeRecord.push({
+                "code" : backData.code,      // 股票代码
+                "name" : backData.name,      // 股票简称
+                "buyTime" : pickleData.begindate,   // 买入时间
+                "sellTime" : pickleData.endDate,  // 卖出时间
+                "buyPrice" : backData.firstDayOpen,  // 买入价
+                "sellPrice" : backData.lastDayClose, // 卖出价
+                "yieldRate" : (backData.lastDayClose - backData.firstDayOpen) / backData.firstDayOpen  // 单次收益率
+            });
+        });
+    });
+    return historyTradeRecord;
+}
 
 
 /**

@@ -23,7 +23,9 @@ describe('singleStockbl', function() {
                     done(err);
                 }
                 else {
-                    console.log(all_day_data.reverse());
+                    for (let i = all_day_data.length - 21; i < all_day_data.length; i++) {
+                        console.log(all_day_data[i]);
+                    }
                     done();
                 }
             });

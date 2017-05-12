@@ -126,24 +126,36 @@ exports.getDailyData = (code, callback) => {
                     changePrice12.shift();
                 if (changePrice24.length > 24)
                     changePrice24.shift();
-                let upAverage6 = changePrice6.filter(price => {
+                let upAverage6 = 0;
+                changePrice6.filter(price => {
                     return price >= 0;
-                }).reduce((x, y) => { return x + y;}) / 6;
-                let downAverage6 = -changePrice6.filter(price => {
+                }).forEach(price => upAverage6 += price);
+                upAverage6 /= 6;
+                let downAverage6 = 0;
+                changePrice6.filter(price => {
                         return price <= 0;
-                    }).reduce((x, y) => { return x + y;}) / 6;
-                let upAverage12 = changePrice12.filter(price => {
-                        return price >= 0;
-                    }).reduce((x, y) => { return x + y;}) / 6;
-                let downAverage12 = -changePrice12.filter(price => {
-                        return price <= 0;
-                    }).reduce((x, y) => { return x + y;}) / 6;
-                let upAverage24 = changePrice24.filter(price => {
-                        return price >= 0;
-                    }).reduce((x, y) => { return x + y;}) / 6;
-                let downAverage24 = -changePrice24.filter(price => {
-                        return price <= 0;
-                    }).reduce((x, y) => { return x + y;}) / 6;
+                    }).forEach(price => downAverage6 -= price);
+                downAverage6 /= 6;
+                let upAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage12 += price);
+                upAverage12 /= 12;
+                let downAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage12 -= price);
+                downAverage12 /= 12;
+                let upAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage24 += price);
+                upAverage24 /= 24;
+                let downAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage24 -= price);
+                downAverage24 /= 24;
                 let RSI6 = 0;
                 let RSI12 = 0;
                 let RSI24 = 0;
@@ -191,6 +203,7 @@ exports.getWeeklyData = (code, callback) => {
                 let week_volume = [];
                 let week_adjClose = docs[i]["adjClose"];
                 let week_turnOverRate = [];
+                let week_changePrice = [];
                 let week_changeRate = 0;
                 // 判断有没有到周一
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
@@ -198,6 +211,7 @@ exports.getWeeklyData = (code, callback) => {
                     week_low.push(docs[i]["low"]);
                     week_volume.push(docs[i]["volume"]);
                     week_turnOverRate.push(docs[i]["turnOverRate"]);
+                    week_changePrice.push(docs[i]["changePrice"]);
                     i--;
                 }
                 // 此时i指向的是周一，仍然是这一周的数据，需要加进去
@@ -206,6 +220,7 @@ exports.getWeeklyData = (code, callback) => {
                     week_low.push(docs[i]["low"]);
                     week_volume.push(docs[i]["volume"]);
                     week_turnOverRate.push(docs[i]["turnOverRate"]);
+                    week_changePrice.push(docs[i]["changePrice"]);
                 }
                 if (i < 0)
                     i++;
@@ -219,6 +234,7 @@ exports.getWeeklyData = (code, callback) => {
                     "volume": week_volume.reduce((x, y) => { return x + y; }),
                     "adjClose": week_adjClose,
                     "changeRate": week_changeRate,
+                    "changePrice": week_changePrice.reduce((x, y) => { return x + y; }),
                     "turnOverRate": week_turnOverRate.reduce((x, y) => { return x + y; })
                 };
                 week_docs.unshift(week);
@@ -232,6 +248,12 @@ exports.getWeeklyData = (code, callback) => {
             let beforeEMA12 = 0; // 上周的12周指数平均值
             let beforeEMA26 = 0; // 上周的26周指数平均值
             let beforeDEA = 0; // 上周的九周DIF平滑移动平均值
+
+            // 计算RSI所需要的临时数据
+            let changePrice6 = [];
+            let changePrice12 = [];
+            let changePrice24 = [];
+
             let all_week_data = week_docs.filter(data => {
                 return (data["volume"] !== 0);
             }).map(data => {
@@ -289,6 +311,61 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(DEA);
                 one_week_data.push(MACD);
                 one_week_data.push(parseFloat(data["adjClose"].toFixed(2)));
+
+                /*
+                 * 计算当周RSI
+                 */
+                changePrice6.push(data["changePrice"]);
+                changePrice12.push(data["changePrice"]);
+                changePrice24.push(data["changePrice"]);
+                if (changePrice6.length > 6)
+                    changePrice6.shift();
+                if (changePrice12.length > 12)
+                    changePrice12.shift();
+                if (changePrice24.length > 24)
+                    changePrice24.shift();
+                let upAverage6 = 0;
+                changePrice6.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage6 += price);
+                upAverage6 /= 6;
+                let downAverage6 = 0;
+                changePrice6.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage6 -= price);
+                downAverage6 /= 6;
+                let upAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage12 += price);
+                upAverage12 /= 12;
+                let downAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage12 -= price);
+                downAverage12 /= 12;
+                let upAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage24 += price);
+                upAverage24 /= 24;
+                let downAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage24 -= price);
+                downAverage24 /= 24;
+                let RSI6 = 0;
+                let RSI12 = 0;
+                let RSI24 = 0;
+                if ((upAverage6 + downAverage6) !== 0)
+                    RSI6 = upAverage6 / (upAverage6 + downAverage6) * 100;
+                if ((upAverage12 + downAverage12) !== 0)
+                    RSI12 = upAverage12 / (upAverage12 + downAverage12) * 100;
+                if ((upAverage24 + downAverage24) !== 0)
+                    RSI24 = upAverage24 / (upAverage24 + downAverage24) * 100;
+                one_week_data.push(RSI6);
+                one_week_data.push(RSI12);
+                one_week_data.push(RSI24);
                 return one_week_data;
             });
             callback(null, all_week_data);
@@ -324,6 +401,7 @@ exports.getMonthlyData = (code, callback) => {
                 let month_volume = [];
                 let month_adjClose = docs[i]["adjClose"];
                 let month_turnOverRate = [];
+                let month_changePrice = [];
                 let month_changeRate = 0;
 
                 let now_month = docs[i]["date"].getMonth();
@@ -333,6 +411,7 @@ exports.getMonthlyData = (code, callback) => {
                     month_low.push(docs[i]["low"]);
                     month_volume.push(docs[i]["volume"]);
                     month_turnOverRate.push(docs[i]["turnOverRate"]);
+                    month_changePrice.push(docs[i]["changePrice"]);
                     i--;
                 }
                 // 由于在外层for循环也要进行一次i--，所以在此加1，防止数据丢失
@@ -347,7 +426,8 @@ exports.getMonthlyData = (code, callback) => {
                     "volume": month_volume.reduce((x, y) => { return x + y; }),
                     "adjClose": month_adjClose,
                     "changeRate": month_changeRate,
-                    "turnOverRate": month_turnOverRate.reduce((x, y) => { return x + y; })
+                    "turnOverRate": month_turnOverRate.reduce((x, y) => { return x + y; }),
+                    "changePrice": month_changePrice.reduce((x, y) => { })
                 };
                 month_docs.unshift(month);
             }
@@ -360,6 +440,12 @@ exports.getMonthlyData = (code, callback) => {
             let beforeEMA12 = 0; // 上月的12月指数平均值
             let beforeEMA26 = 0; // 上月的26月指数平均值
             let beforeDEA = 0; // 上月的九个月DIF平滑移动平均值
+
+            // 计算RSI所需要的临时数据
+            let changePrice6 = [];
+            let changePrice12 = [];
+            let changePrice24 = [];
+
             let all_month_data = month_docs.filter(data => {
                 return (data["volume"] !== 0);
             }).map(data => {
@@ -417,6 +503,61 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(DEA);
                 one_month_data.push(MACD);
                 one_month_data.push(parseFloat(data["adjClose"].toFixed(2)));
+
+                /*
+                 * 计算当周RSI
+                 */
+                changePrice6.push(data["changePrice"]);
+                changePrice12.push(data["changePrice"]);
+                changePrice24.push(data["changePrice"]);
+                if (changePrice6.length > 6)
+                    changePrice6.shift();
+                if (changePrice12.length > 12)
+                    changePrice12.shift();
+                if (changePrice24.length > 24)
+                    changePrice24.shift();
+                let upAverage6 = 0;
+                changePrice6.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage6 += price);
+                upAverage6 /= 6;
+                let downAverage6 = 0;
+                changePrice6.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage6 -= price);
+                downAverage6 /= 6;
+                let upAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage12 += price);
+                upAverage12 /= 12;
+                let downAverage12 = 0;
+                changePrice12.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage12 -= price);
+                downAverage12 /= 12;
+                let upAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price >= 0;
+                }).forEach(price => upAverage24 += price);
+                upAverage24 /= 24;
+                let downAverage24 = 0;
+                changePrice24.filter(price => {
+                    return price <= 0;
+                }).forEach(price => downAverage24 -= price);
+                downAverage24 /= 24;
+                let RSI6 = 0;
+                let RSI12 = 0;
+                let RSI24 = 0;
+                if ((upAverage6 + downAverage6) !== 0)
+                    RSI6 = upAverage6 / (upAverage6 + downAverage6) * 100;
+                if ((upAverage12 + downAverage12) !== 0)
+                    RSI12 = upAverage12 / (upAverage12 + downAverage12) * 100;
+                if ((upAverage24 + downAverage24) !== 0)
+                    RSI24 = upAverage24 / (upAverage24 + downAverage24) * 100;
+                one_month_data.push(RSI6);
+                one_month_data.push(RSI12);
+                one_month_data.push(RSI24);
                 return one_month_data;
             });
             callback(null, all_month_data);

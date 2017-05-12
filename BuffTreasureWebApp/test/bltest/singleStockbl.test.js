@@ -7,7 +7,7 @@ let expect = require('chai').expect;
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');
-var describe = require("mocha").describe;
+let describe = require("mocha").describe;
 let it = require("mocha").it;
 mongoose.connect('mongodb://localhost/formal');
 
@@ -55,18 +55,18 @@ describe('singleStockbl', function() {
             });
         });
     });
-    describe('#getTwoDayInfo()', function() {
-        it('should show two day information', function(done) {
-            singleStockbl.getTwoDayInfo(new Date("2017-04-28"), (err, two_month_data) => {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(two_month_data[0].length);
-                    console.log(two_month_data[1].length);
-                    done();
-                }
-            });
-        });
-    });
+    // describe('#getTwoDayInfo()', function() {
+    //     it('should show two day information', function(done) {
+    //         singleStockbl.getTwoDayInfo(new Date("2017-04-28"), (err, two_month_data) => {
+    //             if (err) {
+    //                 done(err);
+    //             }
+    //             else {
+    //                 console.log(two_month_data[0].length);
+    //                 console.log(two_month_data[1].length);
+    //                 done();
+    //             }
+    //         });
+    //     });
+    // });
 });

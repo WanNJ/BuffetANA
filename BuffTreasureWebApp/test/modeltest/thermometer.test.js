@@ -31,7 +31,12 @@ describe('thermometerDB', function() {
                 }
                 else {
                     docs.forEach(doc => {
-                        console.log(doc);
+                        let p = new Date("2014-01-02");
+                        //console.log(doc['date']);
+                        //console.log(doc['date'] - p);
+                        let sd = 'sd';
+                        let temp = `${sd}df`;
+                        console.log(temp);
                     });
                     // expect(docs.length).to.be.equal(299);
                     done();

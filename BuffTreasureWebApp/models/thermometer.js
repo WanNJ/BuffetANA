@@ -58,14 +58,15 @@ exports.thermometerDB = {
     },
 
     /**
-     * 获得日期区间范围内的  市场温度信息列表（按日期的升序排列）
+     * 获得日期区间范围内的  市场温度信息列表（按日期的降序排列）
+     * ATTENTION 注意!!!!!!!    大的日期在前面  小的日期在后面
      * 包含两端
      * @param beginDate   开始日期
      * @param endDate     结束日期
      * @param callback
      */
     getThermometerInRangeDate: function (beginDate, endDate, callback) {
-        Thermometer.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'})
+        Thermometer.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date : 'desc'})
                    .exec(function (err, docs) {
                 callback(err, docs);
          });

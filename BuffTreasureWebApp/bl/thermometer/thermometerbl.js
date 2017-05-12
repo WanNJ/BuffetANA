@@ -8,8 +8,108 @@ let singleStockDB = require('../../models/singleStock.js').singleStockDB;
 let bl = require('./thermometerbl');
 
 
+/**
+ * 根据开始日期，结束日期 和观察期的天数 返回这个期间每一天的市场温度分类列表
+ * TODO 划分参数可能修改!!!!!!
+ * 划分说明    温度高低判断:   0.3 * 市场温度(0~100) + 0.3 * 换手率前50赚钱效应(0~100) + 0.4 * 整体赚钱效应(0~100)
+ *            高温  > 50
+ *            低温  < 50
+ *
+ *            走势趋同性判断   昨日涨停股票今日表现(-10~10) - 昨日跌停股票今日表现(-10~10)
+ *            趋同  > 0
+ *            驱反  < 0
+ *
+ * @param beginDate  开始日期
+ * @param endDate    结束日期
+ * @param formationDays  观察期天数 (所得的新温度进行平均)
+ * @param callback 形如 (err, docs) => { }
+ * docs 形式
+ *     {
+ *    'date':  具体日期（Date 型）
+      'environment': 具体环境类型  （String）   例如： Normal
+      }的列表！！！  按date属性从小到大排序
+
+ */
+exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, callback)=>{
+    //定义 获取从那一天开始调用数据
+    let searchBeginDate = new Date(beginDate - (formationDays * 5 + 5) * 24000 * 3600);
+    console.log(searchBeginDate);
+    thermometerDB.getThermometerInRangeDate(searchBeginDate,endDate, (err, docs)=>{
+        let temp = 0 ;               //温度
+        let earnEffect50 = 0;        //  换手率前50 赚钱效应
+        let earnEffectAll = 0;       //  赚钱效应
+        let lastUpToday = 0 ;        //  昨日涨停股票今日表现
+        let lastDownToday = 0;       //  昨日跌停股票今日表现
+
+        //根据计算的参数 获得分类
+        /**
+         *
+         * @param temp
+         * @param earnEffect50
+         * @param earnEffectAll
+         * @param lastUpToday
+         * @param lastDownToday
+         */
+        let getClassify = function(temp , earnEffect50, earnEffectAll, lastUpToday, lastDownToday) {
+            let w = temp * 0.3 + earnEffect50 *0.3 + earnEffectAll*0.4;
+            let q = lastUpToday - lastDownToday;
+            let strw;
+            let strq;
+            if(w > 50)
+                strw = 'High';
+            else if(w < 50)
+                strw = 'Low';
+            else
+                return 'Normal';
+            if(q > 0)
+                strq = 'Same';
+            else if(q < 0)
+                strq = 'Opposite';
+            else
+                return 'Normal';
+            return `${strw}And${strq}`;
 
 
+        }
+
+        //计算第一个周期
+        for(let i = 0 ; i < formationDays; i++ ){
+            temp += docs[i]['temperature'];               //温度
+            earnEffect50 += docs[i]['lastTurnOver'];       //  换手率前50 赚钱效应
+            earnEffectAll += docs[i]['moneyEffect'];      //  赚钱效应
+            lastUpToday += docs[i]['lastLimitUp'];        //  昨日涨停股票今日表现
+            lastDownToday += docs[i]['lastLimitDown'];      //  昨日跌停股票今日表现
+        }
+
+        let begin = 0 ;
+        let end =  formationDays;
+        let data = [];
+
+        //console.log(docs);
+        docs = Array.from(docs);
+        for(; (docs[begin]['date']-beginDate)>=0 ; begin++){
+            let oneDay = {
+                'date': docs[begin]['date'],
+                'environment':getClassify(temp,earnEffect50/formationDays
+                    ,earnEffectAll/formationDays,lastUpToday/formationDays,lastDownToday/formationDays)
+            };
+
+            data.push(oneDay);
+
+            temp += docs[end]['temperature'] - docs[begin]['temperature'];               //温度
+            earnEffect50 += docs[end]['lastTurnOver'] - docs[begin]['lastTurnOver'];       //  换手率前50 赚钱效应
+            earnEffectAll += docs[end]['moneyEffect']- docs[begin]['moneyEffect'];         //  赚钱效应
+            lastUpToday += docs[end]['lastLimitUp'] - docs[begin]['lastLimitUp'];          //  昨日涨停股票今日表现
+            lastDownToday += docs[end]['lastLimitDown']- docs[begin]['lastLimitDown'];         //  昨日跌停股票今日表现
+            end++;
+        }
+
+        data.reverse();
+        callback(null,data);
+
+    });
+
+}
 
 
 

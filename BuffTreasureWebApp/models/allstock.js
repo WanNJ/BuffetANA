@@ -151,5 +151,33 @@ exports.allStockDB = {
         }
     },
 
+    /**
+     * 获得沪深A股所有股票代码和名称
+     * @param callback
+     */
+    getHSAStockCodeAndName:(callback) => {
+        /**
+         * TODO
+         * 测试用的  真正实现的的时候删掉
+         */
+            callback(null,['00001','hello']);
+    },
+
+    /**
+     * 获得中小板所有股票代码和名称
+     * @param callback
+     */
+    getSMEBoardCodeAndName:(callback) => {
+
+    },
+
+    /**
+     * 获得创业板所有股票代码和名称
+     * @param callback
+     */
+    getGEMBoardStockCodeAndName:(callback) => {
+
+    }
+
 
 };

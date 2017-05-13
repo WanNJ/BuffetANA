@@ -37,6 +37,55 @@ let getHS300 = function () {
 }
 
 
+/**
+ * 沪深A股  promise封装
+ * @returns {Promise}
+ */
+let getHSA = function () {
+    return new Promise(function(resolve, reject){
+        allStockbl.getHSAStockCodeAndName((err,doc)=> {
+            if(err){
+                reject();
+            }else{
+                resolve(doc);
+            }
+        })
+    });
+};
+
+/**
+ * 创业板  promise封装
+ * @returns {Promise}
+ */
+let getGEM = function () {
+    return new Promise(function(resolve, reject){
+        allStockbl.getGEMBoardStockCodeAndName((err,doc)=> {
+            if(err){
+                reject();
+            }else{
+                resolve(doc);
+            }
+        })
+    });
+};
+
+
+/**
+ * 中小板  promise封装
+ * @returns {Promise}
+ */
+let getSME = function () {
+    return new Promise(function(resolve, reject){
+        allStockbl.getSMEBoardCodeAndName((err,doc)=> {
+            if(err){
+                reject();
+            }else{
+                resolve(doc);
+            }
+        })
+    });
+};
+
 
 /**
  * 返回promise类型的注册表
@@ -46,6 +95,9 @@ let getHS300 = function () {
 exports.funtionMap = {
     '随机500' : getRandom500,
     '沪深300' : getHS300,
+    '中小板'  : getSME,
+    '沪深A股' : getHSA,
+    '创业板'  :  getGEM
 
 }
 

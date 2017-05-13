@@ -43,7 +43,7 @@ describe('#divideDaysByThermometer()', function() {
 
 describe('#getChoosedStockList()', function() {
     it('应该正常执行 打印选中的股票列表', function(done) {
-        strategyToolbl.getChoosedStockList(new StockPoolConditionVO("随机500",[],[],false), (err,data) => {
+        strategyToolbl.getChoosedStockList(new StockPoolConditionVO("沪深A股",[],[],false), (err,data) => {
             if (err) {
                 console.log('wrong')
                 done(err);

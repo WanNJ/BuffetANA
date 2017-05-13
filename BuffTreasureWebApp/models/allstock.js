@@ -18,6 +18,12 @@ let all_industry;
 let all_benchs;
 // 储存第一次查询沪深300的结果，以便后续调用时直接使用，不用再次查询数据库
 let HS300;
+// 储存第一次查询沪深A股的结果，以便后续调用时直接使用，不用再次查询数据库
+let HSA;
+// 储存第一次查询中小板的结果，以便后续调用时直接使用，不用再次查询数据库
+let SME_board;
+// 储存第一次查询创业板的结果，以便后续调用时直接使用，不用再次查询数据库
+let GEM_board;
 exports.allStockDB = {
 
     /**
@@ -45,6 +51,9 @@ exports.allStockDB = {
     getHS300StockCodeAndName: (callback) => {
         if (typeof HS300 === "undefined") {
             allStock.find({bench : {$all : ['沪深300']}}, ['code', 'name'], (err, docs) => {
+                if (!err) {
+                    HS300 = docs;
+                }
                 callback(err, docs);
             });
         }
@@ -69,8 +78,8 @@ exports.allStockDB = {
      * @param bench 板块的列表，如果只有一个板块，则是只包含一个元素的列表
      * @param callback
      */
-        getStocksByBench: (bench, callback) => {
-        allStock.find({bench : {$all : bench}}, ['code', 'name'], (err, docs) => {
+    getStocksByBench: (bench, callback) => {
+        allStock.find({bench : {$in : bench}}, ['code', 'name'], (err, docs) => {
             callback(err, docs);
         });
     },
@@ -155,29 +164,65 @@ exports.allStockDB = {
      * 获得沪深A股所有股票代码和名称
      * @param callback
      */
-    getHSAStockCodeAndName:(callback) => {
-        /**
-         * TODO
-         * 测试用的  真正实现的的时候删掉
-         */
-            callback(null,['00001','hello']);
+    getHSAStockCodeAndName: (callback) => {
+        if (typeof HSA === "undefined") {
+            allStock.find({}, ['code', 'name'], (err, docs) => {
+                if (!err) {
+                    HSA = docs.filter(stock => !(stock["code"].startsWith('200') || stock["code"].startsWith('900')));
+                }
+                callback(err, [...HSA]);
+            });
+        }
+        else
+            callback(null, [...HSA]);
     },
 
     /**
      * 获得中小板所有股票代码和名称
      * @param callback
      */
-    getSMEBoardCodeAndName:(callback) => {
-
+    getSMEBoardCodeAndName: (callback) => {
+        if (typeof SME_board === "undefined") {
+            allStock.find({}, ['code', 'name'], (err, docs) => {
+                if (!err) {
+                    SME_board = docs.filter(stock => stock["code"].startsWith('002'));
+                }
+                callback(err, [...SME_board]);
+            });
+        }
+        else
+            callback(null, [...SME_board]);
     },
 
     /**
      * 获得创业板所有股票代码和名称
      * @param callback
      */
-    getGEMBoardStockCodeAndName:(callback) => {
+    getGEMBoardStockCodeAndName: (callback) => {
+        if (typeof GEM_board === "undefined") {
+            allStock.find({}, ['code', 'name'], (err, docs) => {
+                if (!err) {
+                    GEM_board = docs.filter(stock => stock["code"].startsWith('300'));
+                }
+                callback(err, [...GEM_board]);
+            });
+        }
+        else
+            callback(null, [...GEM_board]);
+    },
 
+    /**
+     * 获得自定义股票池的股票代码和名称
+     * @param industries {Array}
+     * @param boards {Array}
+     * @param callback
+     */
+    getDIYStockPool: (industries, boards, callback) => {
+        allStock.find({bench : {$in : boards}, industry : {$in : industries}}, ['code', 'name'], (err, docs) => {
+            if (err)
+                callback(err, null);
+            else
+                callback(null, docs);
+        });
     }
-
-
 };

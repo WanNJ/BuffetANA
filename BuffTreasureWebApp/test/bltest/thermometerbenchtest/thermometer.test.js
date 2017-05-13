@@ -34,7 +34,7 @@ describe('#getDailyEnvironment()', function() {
 
 describe('#getEachDayEnvironmentByFormation()', function() {
     it('print the list', function(done) {
-        thermometerbl.getEachDayEnvironmentByFormation(new Date("2016-01-01"),new Date("2016-04-01"),3 , (err,data) => {
+        thermometerbl.getEachDayEnvironmentByFormation(new Date("2014-01-01"),new Date("2016-04-01"),3 , (err,data) => {
             if (err) {
                 console.log('wrong')
                 done(err);

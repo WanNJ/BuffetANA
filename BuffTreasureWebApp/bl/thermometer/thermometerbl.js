@@ -12,12 +12,13 @@ let bl = require('./thermometerbl');
  * 根据开始日期，结束日期 和观察期的天数 返回这个期间每一天的市场温度分类列表
  * TODO 划分参数可能修改!!!!!!
  * 划分说明    温度高低判断:   0.3 * 市场温度(0~100) + 0.3 * 换手率前50赚钱效应(0~100) + 0.4 * 整体赚钱效应(0~100)
- *            高温  > 50
- *            低温  < 50
+ *            高温  > 65
+ *            低温  < 65
  *
  *            走势趋同性判断   昨日涨停股票今日表现(-10~10) - 昨日跌停股票今日表现(-10~10)
- *            趋同  > 0
- *            驱反  < 0
+ *            趋同  > 3
+ *            驱反  < 3
+ *
  *
  * @param beginDate  开始日期
  * @param endDate    结束日期
@@ -25,15 +26,15 @@ let bl = require('./thermometerbl');
  * @param callback 形如 (err, docs) => { }
  * docs 形式
  *     {
- *    'date':  具体日期（Date 型）
-      'environment': 具体环境类型  （String）   例如： Normal
+ *        'date':  具体日期（Date 型）
+          'environment': 具体环境类型  （String）   例如： Normal
       }的列表！！！  按date属性从小到大排序
 
  */
 exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, callback)=>{
     //定义 获取从那一天开始调用数据
     let searchBeginDate = new Date(beginDate - (formationDays * 5 + 5) * 24000 * 3600);
-    console.log(searchBeginDate);
+
     thermometerDB.getThermometerInRangeDate(searchBeginDate,endDate, (err, docs)=>{
         let temp = 0 ;               //温度
         let earnEffect50 = 0;        //  换手率前50 赚钱效应
@@ -55,15 +56,17 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
             let q = lastUpToday - lastDownToday;
             let strw;
             let strq;
-            if(w > 50)
+
+            //console.log(w)
+            if(w > 65)
                 strw = 'High';
-            else if(w < 50)
+            else if(w < 65)
                 strw = 'Low';
             else
                 return 'Normal';
-            if(q > 0)
+            if(q > 3)
                 strq = 'Same';
-            else if(q < 0)
+            else if(q < 3)
                 strq = 'Opposite';
             else
                 return 'Normal';
@@ -90,7 +93,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
         for(; (docs[begin]['date']-beginDate)>=0 ; begin++){
             let oneDay = {
                 'date': docs[begin]['date'],
-                'environment':getClassify(temp,earnEffect50/formationDays
+                'environment':getClassify(temp/formationDays,earnEffect50/formationDays
                     ,earnEffectAll/formationDays,lastUpToday/formationDays,lastDownToday/formationDays)
             };
 

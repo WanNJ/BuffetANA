@@ -1,0 +1,28 @@
+<div id="weeklyKLineChart" class="center-block col-sm-12" style="height: 400px"></div>
+
+<div class="col-sm-1"></div>
+<div class="col-sm-10">
+    <ul class="nav nav-tabs nav-justified" id="weekly_subTab">
+        <li class="active"><a href="#weekly_KDJChart">KDJ</a></li>
+        <li><a href="#weekly_MACDChart">MACD</a></li>
+        <li><a href="#weekly_RSIChart">RSI</a></li>
+    </ul>
+</div>
+<div class="col-sm-1"></div>
+
+<div class="col-sm-12 tab-content">
+    <div id="weekly_KDJChart" class="tab-pane active" style="height: 120px"></div>
+    <div id="weekly_MACDChart" class="tab-pane" style="height: 120px"></div>
+    <div id="weekly_RSIChart" class="tab-pane" style="height: 120px"></div>
+</div>
+
+<script src="/echarts/theme/shine.js"></script>
+<script src="/echarts/chartsIniters/weeklyKLineIniter.js"></script>
+
+<script>
+    $('#weekly_subTab').find('a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        $(this).resize();
+    });
+</script>

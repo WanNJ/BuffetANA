@@ -37,10 +37,45 @@
                 source: stockList
             });
 
+            let data = [];
+
             $("#stock_form").submit(function (e) {
-                $.post("single-stock/search", $("#stock_form").serialize(), (data, status) => {
-                    //TODO 加载从后台得到的数据入HTML
-                });
+                $.ajax({
+                    type: "post",
+                    async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                    url: "single-stock/search",    //请求发送到TestServlet处
+                    data: $("#stock_form").serialize(),
+                    dataType: "json",        //返回数据形式为json
+                    success: function (result) {
+                        //请求成功时执行该函数内容，result即为服务器返回的json对象
+                        if (result) {
+                            for (let i = 0; i < result.length; i++) {
+                                names.push(result[i].name);    //挨个取出类别并填入类别数组
+                            }
+                            for (let i = 0; i < result.length; i++) {
+                                data.push(result[i].num);    //挨个取出销量并填入销量数组
+                            }
+                            kLineChart.hideLoading();    //隐藏加载动画
+                            kLineChart.setOption({        //加载数据图表
+                                xAxis: {
+                                    data: names
+                                },
+                                series: [{
+                                    // 根据名字对应到相应的系列
+                                    name: '销量',
+                                    data: nums
+                                }]
+                            });
+
+                        }
+
+                    },
+                    error: function (errorMsg) {
+                        //请求失败时执行该函数
+                        alert("图表请求数据失败!");
+                        myChart.hideLoading();
+                    }
+                })
 
                 // Avoid to execute the actual submit of the form.
                 e.preventDefault();
@@ -55,7 +90,8 @@
 
 <br>
 <div class="container">
-    <div class="jumbotron">
+    <!--搜索模块-->
+    <div class="col-md-10 col-md-offset-1 jumbotron">
         <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
             <div class="input-group input-group-lg">
                 <input type="text" class="form-control" name="query" id="search_area" placeholder="搜索个股..." required>
@@ -67,37 +103,68 @@
     </div>
 
 
-    <!--Echarts Module-->
-    <div id="kLineChart" class="center-block col-sm-12" style="height: 400px"></div>
-
-    <div class="col-sm-1"></div>
-    <div class="col-sm-10">
-        <ul class="nav nav-tabs nav-justified" id="myTab">
-            <li class="active"><a href="#KDJChart">KDJ</a></li>
-            <li><a href="#MACDChart">MACD</a></li>
-            <li><a href="#RSIChart">RSI</a></li>
+    <div class="col-md-10 col-md-offset-1">
+        <div class="row">
+            <div class="col-md-4 text-center" style="height: 102px;">
+                <h1 class="display-3">白银有色</h1>
+                <h4>(601212)</h4>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-8 text-right" style="height: 102px;">
+                        <h1 class="display-1" style="height: 102px;">9.11
+                            <sapn class="fa fa-x fa-arrow-up fa-fw text-right"></sapn>
+                        </h1>
+                    </div>
+                    <div class="col-md-4 text-left" style="height: 102px;">
+                        <h3>0.13</h3>
+                        <h3>+1.45%</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12 text-center" style="height: 102px;padding-top:16px;  line-height: 25px;">
+                        <button type="button" class="btn btn-primary btn-lg" style="height: 60px;">
+                            <span class="fa fa-plus"></span> 加入自选股
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="height: 20px;"></div>
+    <div class="col-sm-10 col-sm-offset-1">
+        <ul class="nav nav-tabs nav-justified" id="mainTab">
+            <li class="active"><a href="#timeSharing">分时</a></li>
+            <li><a href="#dailyKLine">日K</a></li>
+            <li><a href="#weeklyKLine">周K</a></li>
+            <li><a href="#monthlyKLine">月K</a></li>
         </ul>
     </div>
-    <div class="col-sm-1"></div>
+    <div class="col-md-12" style="height: 20px;"></div>
 
+
+    <!--Echarts Modules-->
     <div class="col-sm-12 tab-content">
-        <div id="KDJChart" class="col-sm-12 tab-pane active" style="height: 120px"></div>
-        <div id="MACDChart" class="col-sm-12 tab-pane" style="height: 120px"></div>
-        <div id="RSIChart" class="tab-pane" style="height: 120px"></div>
+        <div id="timeSharing" class="tab-pane active">
+            <% include EChartsModule/timeSharingChart.ejs %>
+        </div>
+        <div id="dailyKLine" class="tab-pane">
+        </div>
+        <div id="weeklyKLine" class="tab-pane">
+        </div>
+        <div id="monthlyKLine" class="tab-pane">
+        </div>
     </div>
 
-    <script src="/echarts/shine.js"></script>
-    <script src="/echarts/initChart.js"></script>
-
     <script>
-        $('#myTab').find('a').click(function (e) {
+        $('#mainTab').find('a').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
             $(this).resize();
         });
     </script>
-
-
     <!--scrollToTop按钮-->
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>

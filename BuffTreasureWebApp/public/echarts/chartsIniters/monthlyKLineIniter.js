@@ -1,8 +1,8 @@
 // 基于准备好的dom，初始化echarts实例
-let kLineChart = echarts.init(document.getElementById('kLineChart'), 'shine');
-let KDJChart = echarts.init(document.getElementById('KDJChart'), 'shine');
-let MACDChart = echarts.init(document.getElementById('MACDChart'), 'shine');
-let RSIChart = echarts.init(document.getElementById('RSIChart'), 'shine');
+let kLineChart = echarts.init(document.getElementById('monthlyKLineChart'), 'shine');
+let KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
+let MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
+let RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
 
 let rawData = [
     ['2017-03-29',
@@ -385,12 +385,6 @@ let rawData = [
         37.03703703703704]];
 
 let data = splitData(rawData);
-/**
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj       RSI6     RSI12     RSI24
- * eg:  80  90  70      0.2        0.3        -0.2       11.0      22.42    33.33     44.44
- **/
 
 function splitData(rawData) {
     let categoryData = [];
@@ -493,8 +487,8 @@ kLineChartOption = {
                     res = res + '<br/>换手率' + ': ' + Math.round(turnOverRate * 100) / 100 + '%';
                     if (i === 0)
                         res += '<br/>';
-                } else if (params[i].seriesName === '日K') {
-                    res = res + '日K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
+                } else if (params[i].seriesName === '月K') {
+                    res = res + '月K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
                 } else {
                     if (value !== '-')
                         value = Math.round(params[i].value * 100) / 100;
@@ -510,7 +504,7 @@ kLineChartOption = {
         }
     },
     legend: {
-        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+        data: ['月K', 'MA5', 'MA10', 'MA20', 'MA30'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -582,7 +576,7 @@ kLineChartOption = {
     ],
     series: [
         {
-            name: '日K',
+            name: '月K',
             type: 'candlestick',
             data: data.KLineValue,
             changeRates: data.changeRates,
@@ -679,7 +673,7 @@ KDJChartOption = {
     },
     grid: [
         {
-            top: '15%',
+            top: '25%',
             height: '70%'
         }
     ],
@@ -800,7 +794,7 @@ MACDChartOption = {
     },
     grid: [
         {
-            top: '15%',
+            top: '25%',
             height: '70%'
         }
     ],
@@ -914,7 +908,7 @@ RSIChartOption = {
     },
     grid: [
         {
-            top: '15%',
+            top: '25%',
             height: '70%'
         }
     ],

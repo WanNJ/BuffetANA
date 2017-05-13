@@ -16,6 +16,7 @@ mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
 });
 
+let StockPoolConditionVO = require("../../../vo/StockPoolConditionVO").StockPoolConditionVO;
 
 describe('#divideDaysByThermometer()', function() {
     it('temp', function(done) {
@@ -37,4 +38,59 @@ describe('#divideDaysByThermometer()', function() {
 });
 
 
+
+
+
+describe('#getChoosedStockList()', function() {
+    it('应该正常执行 打印选中的股票列表', function(done) {
+        strategyToolbl.getChoosedStockList(new StockPoolConditionVO("随机500",[],[],false), (err,data) => {
+            if (err) {
+                console.log('wrong')
+                done(err);
+            }
+            else {
+                console.log(data);
+                done();
+            }
+        });
+    });
+
+    it('应该正常执行 打印选中的股票列表2', function(done) {
+        strategyToolbl.getChoosedStockList(new StockPoolConditionVO("自选股票池",['aaa'],['sss'],false), (err,data) => {
+            if (err) {
+                console.log('wrong')
+                done(err);
+            }
+            else {
+                console.log(data);
+                done();
+            }
+        });
+    });
+
+    it('应该抛出异常 wrong1', function(done) {
+        strategyToolbl.getChoosedStockList(['abc'], (err,data) => {
+            if (err) {
+                console.log('wrong1')
+                done();
+            }
+            else {
+                done();
+            }
+        });
+    });
+
+    it('应该抛出异常 wrong2', function(done) {
+        strategyToolbl.getChoosedStockList(new StockPoolConditionVO("xxxxxx0",[],[],false), (err,data) => {
+            if (err) {
+                console.log('wrong2')
+                done();
+            }
+            else {
+                console.log(data);
+                done();
+            }
+        });
+    });
+});
 

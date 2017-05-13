@@ -129,5 +129,27 @@ exports.allStockDB = {
         }
         else
             callback(null, [...all_benchs]);
-    }
+    },
+
+
+    /**
+     * 获得随机(目前就是前500只股票的代码和名称
+     * @param callback
+     */
+    getRandom500StockCodeAndName: (callback) => {
+        if (typeof allstocks === "undefined") {
+            allStock.find({}, ['code', 'name'], (err, docs) => {
+                if (!err) {
+                    allstocks = docs;
+                }
+                callback(err, docs.slice(0,500));
+            });
+        }
+        else {
+            //callback(null,[['100001','qwe'],['100002','qwe'],['100003','qwe']]);
+            callback(null, [...allstocks].slice(0,500));
+        }
+    },
+
+
 };

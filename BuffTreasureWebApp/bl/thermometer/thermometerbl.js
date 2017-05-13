@@ -59,7 +59,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
 
             //console.log(w)
             if(w > 65)
-                strw = 'High';
+                strw = 'High'
             else if(w < 65)
                 strw = 'Low';
             else

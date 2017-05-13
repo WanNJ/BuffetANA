@@ -12,7 +12,63 @@
 
 
 let thermometerbl = require('../thermometer/thermometerbl');
-let PickleDataVO = require("../../vo/PickleData").PickleData;
+let PickleDataVO = require('../../vo/PickleData').PickleData;
+let StockPoolConditionVO = require('../../vo/StockPoolConditionVO').StockPoolConditionVO;
+let stockPoolMap = require('../functionMap/stockPoolMap').funtionMap;
+let benchAndIndustryMap = require('../functionMap/benchAndIndustryMap').funtionMap;
+
+
+//TODO 以后必须改  效率极差的去重排序算法  我自己都受不了!!!!!!!!!
+/**
+ * 合并两个数组的方法
+ * @param arr1
+ * @param arr2
+ * @returns {*}
+ */
+let mergeArray = function(arr1, arr2){
+    for (let i = 0 ; i < arr1.length ; i ++ ){
+        for(let j = 0 ; j < arr2.length ; j ++ ){
+            if (arr1[i][0] === arr2[j][0]){
+                arr1.splice(i,1); //利用splice函数删除元素，从第i个位置，截取长度为1的元素
+            }
+        }
+    }
+    //alert(arr1.length)
+    for(var i = 0; i <arr2.length; i++){
+        arr1.push(arr2[i]);
+    }
+    return arr1;
+}
+
+
+
+exports.getChoosedStockList = (stockPoolConditionVO , callback) =>{
+    if( (stockPoolConditionVO instanceof StockPoolConditionVO) === false){
+        callback(new Error('getChoosedStockList: 参数1  没有实现StockPoolConditionVO'),null);
+    }else{
+        if(stockPoolConditionVO.stockPool === '自选股票池'){
+            let p1 = benchAndIndustryMap['benches'](stockPoolConditionVO.benches,0,[]);
+            let p2 = benchAndIndustryMap['industries'](stockPoolConditionVO.industries,0,[]);
+            /**
+             * TODO 没有解决异常
+             */
+            //noinspection JSIgnoredPromiseFromCall
+            Promise.all([p1,p2]).then((a) => {
+                return mergeArray(a[0],a[1]);
+            })
+                .then(data => callback(null,data));
+
+        }else {
+            let promise = stockPoolMap[stockPoolConditionVO.stockPool];
+            if (typeof promise === 'undefined') {
+                callback(new Error('getChoosedStockList: 传入错误的stockPoolConditionVO.stockPool', null));
+            }
+            promise().then(list => callback(null, list));
+        }
+    }
+
+}
+
 
 /**
  *

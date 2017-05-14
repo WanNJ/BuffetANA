@@ -29,11 +29,11 @@ describe('#divideDaysByThermometer()', function() {
 
         let rank = {
             'MA' : ["asd",   10,     0.4]
-        }
-        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2016-01-01"),
+        };
+        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
             stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {
             if (err) {
-                console.log('wrong')
+                console.log('wrong');
                 done(err);
             }
             else {

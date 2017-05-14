@@ -24,7 +24,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     let getCodeList = function () {
         return new Promise((resolve,reject) => {
             strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
-                console.log(list)
+                //console.log(list)
                 resolve(list);
             })
         })

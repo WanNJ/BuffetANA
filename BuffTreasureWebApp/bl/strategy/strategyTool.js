@@ -300,7 +300,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param endDate
      * @returns {Promise}
      */
-    let setCodeAndName = function (code ,codeAndName , AllDataList , beginDate ,endDate) {
+    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate) {
         return new Promise((resolve,reject)=>{
             setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate, (err,data)=>{
                 resolve(data);
@@ -317,14 +317,15 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @returns {Promise}
      */
     let operatePromise = function (codeList ,codeIndex , listAll){
-        //console.log(listAll)
-        console.log(codeList[codeIndex])
+        //console.log(codeList)
+        console.log('here')
+        //console.log(codeList[codeIndex])
         return new Promise((resolve,reject)=>{
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else
                 resolve(setCodeAndName(codeList[codeIndex] , listAll , beginDate ,endDate)
-                    .then(list => setRankPromise(codeList[codeIndex][0],codeIndex,rank,0,list,beginDate ,endDate))
+                    .then(list => setRankPromise(codeList[codeIndex]['code'],codeIndex,rank,0,list,beginDate ,endDate))
                     .then(list => setFilterPromise(codeIndex,filter,0,list))
                     .then(list => operatePromise(codeList ,codeIndex+1,list)));
 
@@ -348,24 +349,38 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
 
-    singleStockDB.getStockInfoInRangeDate(codeAndName[0],new Date(beginDate- 7*24000*3600),endDate, (err,data)=>{
+    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 7*24000*3600),new Date(endDate+7*24000*3600), (err,data)=>{
+        console.log(codeAndName)
+        console.log(data.length)
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];
             let p = 0 ; //data的指针
             pickleDataList.forEach(pickleData =>{
-                let valid = true;
-                while(data[p]['date'] - pickleData.beginDate !==0){
-                    p++;
+                //console.log(p)
+                //console.log(data[p])
+                if(typeof data[p] !=='undefined') {
+                    let valid = true;
+                    while (typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.beginDate < 0 ) {
+                        p++;
+                    }
+                    let begin = 0;
+                    if (typeof data[p] !== 'undefined')
+                        begin = data[p]['adjClose']; //最后一天收盘价格
+                    while ( typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.endDate < 0 ) {
+                        p++;
+                        //console.log(p)
+                        if (typeof data[p] === 'undefined' || data[p]['volume'] === 0) valid = false;
+                    }
+                    let end = 0;
+                    if (typeof data[p] !== 'undefined')
+                        end = data[p]['adjClose']; //最后一天收盘价格
+                    pickleData.backDatas.push
+                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, [], [], begin, end, valid));
+                }else {
+                    pickleData.backDatas.push
+                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, [], [], 0, 0, false));
                 }
-                let begin = data[p-1]['adjClose']; //第一天买入价格
-                while(data[p]['date'] -  pickleData.endDate !==0){
-                    p++;
-                    if(data[p]['volume']===0) valid  = false;
-                }
-                let end = data[p]['adjClose']; //最后一天收盘价格
-                pickleData.backDatas.push
-                (new BackDataVO(codeAndName[0],codeAndName[1],0,[],[],begin,end,valid));
 
             });
             AllDataList[keys[i]] = pickleDataList;

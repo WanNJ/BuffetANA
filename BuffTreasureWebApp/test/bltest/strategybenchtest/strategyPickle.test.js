@@ -20,7 +20,7 @@ mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
 });
 
-describe('#divideDaysByThermometer()', function() {
+describe('#shiit()', function() {
     it('temp', function(done) {
 
         let stockPoolConditionVO = new StockPoolConditionVO('中小板',[],[],false);

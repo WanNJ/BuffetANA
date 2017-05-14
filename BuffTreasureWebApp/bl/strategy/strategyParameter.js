@@ -43,7 +43,7 @@ let preCode = '';
  */
 exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     // TODO 应该是24000*3600吧？
-    let searchBeginDate = new Date(beginDate-(formationPeriod * 10+20)*24000*3600);
+    let searchBeginDate = new Date(beginDate-(formationPeriod * 15+20)*24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
         doc.reverse();
         let curMASum = 0;
@@ -56,12 +56,12 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
          */
         doc  = doc.filter(data => data["volume"]!==0);
 
-        for(let i = 0; i < formationPeriod ; i++){
+        for(let i = 0; i < doc.length && i < formationPeriod ; i++){
             curMASum+= doc[i]["adjClose"];
         }
 
 
-        for(let i  = 0;  doc[i]["date"] -beginDate >= 0 ; i++){
+        for(let i  = 0;  i+formationPeriod < doc.length && doc[i]["date"] -beginDate >= 0; i++){
 
             let temp = (curMASum - doc[i]["adjClose"])/curMASum;
             let part = {
@@ -453,7 +453,7 @@ exports.calculateKDJ_JValue = function (code ,beginDate , endDate, formationPeri
 function getDailyData(code, beginDate, endDate, callback) {
     if (typeof dailyData === "undefined" || preCode !== code) {
         // 往前推600天计算
-        let searchBeginDate = new Date(beginDate - 600*24000*600);
+        let searchBeginDate = new Date(beginDate - 600*24000*3600);
         singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate, (err, docs) => {
             if (err)
                 callback(err, null);

@@ -74,6 +74,7 @@ exports.singleStockDB = {
      * @param callback
      */
     getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
+        //console.log(code);
         let Stock = mongoose.model(code, stockSchema);
         Stock.find({code : code, date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'}).exec(function (err, docs) {
             callback(err, docs);

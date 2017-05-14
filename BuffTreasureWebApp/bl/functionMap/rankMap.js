@@ -26,9 +26,13 @@ function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begin
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
-                    while(maList[p+1]['date']- pickleData.beginDate < 0) p++;
                     let backData = pickleData.backDatas[codeIndex];
-                    backData.mixRank.push(maList[p]['value']);
+                    if(backData.valid===true) {
+                        while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
+                        backData.mixRank.push(maList[p]['value']);
+                    }else{
+                        backData.mixRank.push(0);
+                    }
                     pickleData.backDatas[rankIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;

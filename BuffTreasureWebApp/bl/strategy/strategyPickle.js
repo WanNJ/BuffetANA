@@ -5,6 +5,17 @@
  */
 let strategyTool  =require('./strategyTool')
 
+/**
+ * 直接返回 5 个 pickleDataList
+ * @param beginDate
+ * @param endDate
+ * @param stockPoolConditionVO
+ * @param rank
+ * @param filter
+ * @param tradeModelVO
+ * @param envSpecDay
+ * @param callback
+ */
 exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) => {
     /**
      *

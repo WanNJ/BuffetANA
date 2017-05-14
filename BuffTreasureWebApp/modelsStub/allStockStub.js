@@ -92,7 +92,17 @@ exports.allStockDB = {
      */
     getDIYStockPool: (industries, boards, callback) => {
         callback(null,[['100001','*STdsfdsf'],['100002','dsfdsf'],['100003','qwe']]);
-    }
+    },
+
+
+    /**
+     * 获得中小板所有股票代码和名称
+     * @param callback
+     */
+    getSMEBoardCodeAndName: (callback) => {
+        console.log('here  getSME')
+        callback(null,[['100001','中国平安']]);
+    },
 
 
 };

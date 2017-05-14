@@ -16,7 +16,8 @@ let PickleDataVO = require('../../vo/PickleData').PickleData;
 let StockPoolConditionVO = require('../../vo/StockPoolConditionVO').StockPoolConditionVO;
 let stockPoolMap = require('../functionMap/stockPoolMap').funtionMap;
 let benchAndIndustryMap = require('../functionMap/benchAndIndustryMap').funtionMap;
-
+let singleStockDB  = require('../../models/singleStock').singleStockDB;
+let BackDataVO  =require('../../vo/BackData').BackData;
 
 //TODO 以后必须改  效率极差的去重排序算法  我自己都受不了!!!!!!!!!
 /**
@@ -219,4 +220,86 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
 }
 
 
-//exports.setcodeToPickleDataLsit = (codeList,   )
+
+
+let filterMap = require('../functionMap/filterMap').funtionMap;
+let rankMap = require('../functionMap/rankMap').funtionMap;
+
+exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
+                                            beginDate, endDate, rank, filter,
+                                            tradeModelVO , callback ) =>{
+
+    let setRankPromise = function (code ,codeIndex ,rank , index , AllPickleDataList ,beginDate ,endDate ) {
+        return new Promise((resolve, reject) =>{
+            let keys = Object.keys(rank);
+            if(index === keys.length) {
+                resolve(AllPickleDataList);
+            }else{
+                let promise = rankMap[keys[index]]
+                    (codeIndex , index,
+                     rank[keys[index]][0][1], AllPickleDataList,beginDate ,endDate)
+                    .then(setRankPromise(codeIndex,rank,index+1,AllPickleDataList));
+                resolve(promise);
+            }
+        });
+
+    }
+
+    let setFilterPromise = function (codeIndex ,filter , index , AllPickleDataList) {
+        return new Promise((resolve, reject) => {
+            let keys = Object.keys(filter);
+            if (index === keys.length) {
+                resolve(AllPickleDataList);
+            } else {
+                let promise = filterMap[keys[index]]
+                    (codeIndex, index , AllPickleDataList)
+                    .then(setRankPromise(codeIndex, rank, index + 1, AllPickleDataList));
+                resolve(promise);
+            }
+        });
+    }
+
+
+    codeList.forEach((codeAndName ,codeIndex) => {
+        setRankPromise(codeAndName[0],codeIndex,rank,0,AllPickleDataList,beginDate ,endDate)
+                .then(list => setFilterPromise(codeIndex,filter,0,list))
+                .then(list => callback(null,list));
+    });
+}
+
+
+/**
+ * 向5个pickledata中注入 股票的名字 代码  以及每个阶段的开盘价和收盘价
+ * @param codeAndName
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @param callback (err,docs)={}
+ */
+function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
+    singleStockDB.getStockInfoInRangeDate(codeAndName[0],new Date(beginDate- 7*24000*3600),endDate, (err,data)=>{
+        let keys = Object.keys(AllDataList);
+        for(let i = 0 ; i < 5 ; i++){
+            let pickleDataList =  AllDataList[keys[i]];
+            let p = 0 ; //data的指针
+            pickleDataList.forEach(pickleData =>{
+                let valid = true;
+                while(data[p]['date'] - beginDate !==0){
+                    p++;
+                }
+                let begin = data[p-1]['adjClose']; //第一天买入价格
+                while(data[p]['date'] - endDate !==0){
+                    p++;
+                    if(data[p]['volume']===0) valid  = false;
+                }
+                let end = data[p]['adjClose']; //最后一天收盘价格
+                pickleData.backDatas.push
+                (new BackDataVO(codeAndName[0],codeAndName[1],0,[],[],begin,end,valid));
+
+            });
+            AllDataList[keys[i]] = pickleDataList;
+        }
+    })
+}
+
+

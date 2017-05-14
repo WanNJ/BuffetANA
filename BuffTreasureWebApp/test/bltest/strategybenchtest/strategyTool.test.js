@@ -94,3 +94,21 @@ describe('#getChoosedStockList()', function() {
     });
 });
 
+describe('#setRankAndFilterToPickleDataList()', function() {
+    it('temp1', function(done) {
+        let p = {
+            'sd':1,
+            'er':4,
+        }
+        strategyToolbl.setRankAndFilterToPickleDataList(['asd','asdasd'],p ,(err,data) => {
+            if (err) {
+                console.log('wrong')
+                done(err);
+            }
+            else {
+
+                done();
+            }
+        });
+    });
+});

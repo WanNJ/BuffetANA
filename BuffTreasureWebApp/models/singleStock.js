@@ -27,9 +27,6 @@ const stockSchema = mongoose.Schema({
 let preCode = null;
 let preStockList = null;
 
-let preRangeCode = null;
-let preRangeStockList = null;
-
 exports.singleStockDB = {
     /**
      * 获得具体某一支股票的每一天的数据（按日期的升序排列）

@@ -229,6 +229,17 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                                             beginDate, endDate, rank, filter,
                                             tradeModelVO , callback ) =>{
 
+    /**
+     *
+     * @param code
+     * @param codeIndex
+     * @param rank
+     * @param index
+     * @param AllPickleDataList
+     * @param beginDate
+     * @param endDate
+     * @returns {Promise}
+     */
     let setRankPromise = function (code ,codeIndex ,rank , index , AllPickleDataList ,beginDate ,endDate ) {
         return new Promise((resolve, reject) =>{
             let keys = Object.keys(rank);
@@ -244,7 +255,30 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
         });
 
     }
+    /**
+     *
+     * @param codeAndName
+     * @param AllDataList
+     * @param beginDate
+     * @param endDate
+     * @returns {Promise}
+     */
+    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate) {
+        return new Promise((resolve,reject)=>{
+            setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate, (err,data)=>{
+                resolve(data);
+            });
+        })
+    }
 
+    /**
+     *
+     * @param codeIndex
+     * @param filter
+     * @param index
+     * @param AllPickleDataList
+     * @returns {Promise}
+     */
     let setFilterPromise = function (codeIndex ,filter , index , AllPickleDataList) {
         return new Promise((resolve, reject) => {
             let keys = Object.keys(filter);
@@ -258,13 +292,29 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
             }
         });
     }
+    /**
+     *
+     * @param codeList
+     * @param codeIndex
+     * @param listAll
+     * @returns {Promise}
+     */
+    let operatePromise = function (codeList ,codeIndex , listAll){
+        return new Promise((resolve,reject)=>{
+            if(codeIndex === codeList.length)
+                resolve (listAll);
+            else
+                let promise = setCodeAndName(codeList[codeIndex] , listAll , beginDate ,endDate)
+                    .then(list => setRankPromise(codeList[codeIndex][0],codeIndex,rank,0,list,beginDate ,endDate))
+                    .then(list => setFilterPromise(codeIndex,filter,0,list))
+                    .then(list => operatePromise(codeList ,codeIndex , list));
+                resolve(promise);
+        })
 
 
-    codeList.forEach((codeAndName ,codeIndex) => {
-        setRankPromise(codeAndName[0],codeIndex,rank,0,AllPickleDataList,beginDate ,endDate)
-                .then(list => setFilterPromise(codeIndex,filter,0,list))
-                .then(list => callback(null,list));
-    });
+    }
+
+    operatePromise(codeList,0,AllPickleDataList).then(list =>callback(err,list));
 }
 
 

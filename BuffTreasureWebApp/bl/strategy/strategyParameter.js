@@ -36,7 +36,8 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
          * added by TY
          * TODO filter方法并不能改变原来的数组，应该需要修改！！！！
          */
-        doc.filter(data => data["volume"]!==0);
+        doc  = doc.filter(data => data["volume"]!==0);
+
         for(let i = 0; i < formationPeriod ; i++){
             curMASum+= doc[i]["adjClose"];
         }

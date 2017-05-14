@@ -37,7 +37,7 @@ describe('#divideDaysByThermometer()', function() {
                 done(err);
             }
             else {
-                console.log(data);
+                console.log(data['Normal']);
                 done();
             }
         });

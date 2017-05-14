@@ -43,12 +43,12 @@ let preCode = '';
  */
 exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     // TODO 应该是24000*3600吧？
-    let searchBeginDate = new Date(beginDate-(formationPeriod * 10+20)*24000*600);
+    let searchBeginDate = new Date(beginDate-(formationPeriod * 10+20)*24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
         doc.reverse();
         let curMASum = 0;
         let MAValue = [];
-        //console.log(doc[0])
+
 
         /**
          * added by TY

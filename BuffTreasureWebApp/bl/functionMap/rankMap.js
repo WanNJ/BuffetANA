@@ -18,7 +18,7 @@ let strategyParam = require('../strategy/strategyParameter');
  * @param callback      形如（err，doc）
  *      doc 为更新后的 AllDataList
  */
-function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate,  callback) {
+function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
             let keys = Object.keys(AllDataList);
@@ -33,7 +33,7 @@ function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begin
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
-
+            //console.log("he")
             resolve(AllDataList);
         });
     })

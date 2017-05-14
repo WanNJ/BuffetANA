@@ -22,10 +22,11 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
      * @returns {Promise}
      */
     let getCodeList = function () {
-        return new Promise((resolve,reject) =>{
-            strategyTool.getChoosedStockList(stockPoolConditionVO),(err,list) =>{
+        return new Promise((resolve,reject) => {
+            strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
+                console.log(list)
                 resolve(list);
-            }
+            })
         })
     }
 
@@ -35,11 +36,17 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
      * @returns {Promise}
      */
     let divideDays = function (stockList) {
+        //console.log(stockList)
         return new Promise((resolve,reject) =>{
             strategyTool.divideDaysByThermometer
-            (beginDate,endDate,tradeModelVO.holdingDays, envSpecDay,callback),(err,list) =>{
-                resolve([stockList,list]);
-            }
+            (beginDate,endDate,tradeModelVO.holdingDays, envSpecDay,(err,list) =>{
+                //console.log(list)
+                let data = {
+                    'code':stockList,
+                    'pickle':list
+                }
+                resolve(data);
+            })
         })
     }
 
@@ -51,8 +58,8 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     let setValue = function (data) {
         return new Promise((resolve,reject) =>{
             strategyTool.setRankAndFilterToPickleDataList
-            (data[0],data[1],beginDate,endDate,rank,filter,(err,list) =>{
-                resolve([list,list]);
+            (data['code'],data['pickle'],beginDate,endDate,rank,filter,(err,list) =>{
+                resolve(list);
             })
         })
     }

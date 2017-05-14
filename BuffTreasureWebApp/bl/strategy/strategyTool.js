@@ -252,35 +252,22 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @returns {Promise}
      */
     let setRankPromise = function (code ,codeIndex ,rank , index , AllPickleDataList ,beginDate ,endDate ) {
+
         return new Promise((resolve, reject) =>{
             let keys = Object.keys(rank);
             if(index === keys.length) {
                 resolve(AllPickleDataList);
             }else{
-                let promise = rankMap[keys[index]]
-                    (codeIndex , index,
-                     rank[keys[index]][0][1], AllPickleDataList,beginDate ,endDate)
-                    .then(setRankPromise(codeIndex,rank,index+1,AllPickleDataList));
-                resolve(promise);
+                console.log(keys.length)
+                resolve(rankMap[keys[index]]
+                    (code ,codeIndex , index,
+                    rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
+                    .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList)));
             }
         });
 
     }
-    /**
-     *
-     * @param codeAndName
-     * @param AllDataList
-     * @param beginDate
-     * @param endDate
-     * @returns {Promise}
-     */
-    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate) {
-        return new Promise((resolve,reject)=>{
-            setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate, (err,data)=>{
-                resolve(data);
-            });
-        })
-    }
+
 
     /**
      *
@@ -303,6 +290,25 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
             }
         });
     }
+
+
+    /**
+     *@param code
+     * @param codeAndName [code,name]
+     * @param AllDataList
+     * @param beginDate
+     * @param endDate
+     * @returns {Promise}
+     */
+    let setCodeAndName = function (code ,codeAndName , AllDataList , beginDate ,endDate) {
+        return new Promise((resolve,reject)=>{
+            setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate, (err,data)=>{
+                resolve(data);
+            });
+        })
+    }
+
+
     /**
      * 全部操作的promise
      * @param codeList
@@ -311,6 +317,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @returns {Promise}
      */
     let operatePromise = function (codeList ,codeIndex , listAll){
+        //console.log(listAll)
         return new Promise((resolve,reject)=>{
             if(codeIndex === codeList.length)
                 resolve (listAll);
@@ -326,7 +333,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
     }
 
-    operatePromise(codeList,0,AllPickleDataList).then(list =>callback(err,list));
+    operatePromise(codeList,0,AllPickleDataList).then(list =>callback(null,list));
 }
 
 
@@ -339,6 +346,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  * @param callback (err,docs)={}
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
+
     singleStockDB.getStockInfoInRangeDate(codeAndName[0],new Date(beginDate- 7*24000*3600),endDate, (err,data)=>{
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){

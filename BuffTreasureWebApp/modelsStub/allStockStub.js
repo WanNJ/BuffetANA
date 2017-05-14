@@ -100,8 +100,7 @@ exports.allStockDB = {
      * @param callback
      */
     getSMEBoardCodeAndName: (callback) => {
-        console.log('here  getSME')
-        callback(null,[['100001','中国平安']]);
+        callback(null,[['000001','中国平安'],['000002','中国平安2']]);
     },
 
 

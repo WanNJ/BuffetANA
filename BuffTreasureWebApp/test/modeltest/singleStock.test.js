@@ -7,6 +7,8 @@ let expect = require('chai').expect;
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');
+var describe = require("mocha").describe;
+var it = require("mocha").it;
 mongoose.connect('mongodb://localhost/formal');
 
 mongoose.connection.on('open', function () {

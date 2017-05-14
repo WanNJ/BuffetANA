@@ -155,10 +155,10 @@ exports.calculateRSIValue = function (code ,beginDate , endDate, formationPeriod
         else {
             let RSIValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     RSIValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["RSI"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["RSI"]
                     });
                 }
             }
@@ -194,10 +194,10 @@ exports.calculateMACD_DIFValue = function (code ,beginDate , endDate, formationP
         else {
             let MACD_DIFValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     MACD_DIFValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["MACD_DIF"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["MACD_DIF"]
                     });
                 }
             }
@@ -233,10 +233,10 @@ exports.calculateMACD_DEAValue = function (code ,beginDate , endDate, formationP
         else {
             let MACD_DEAValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     MACD_DEAValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["MACD_DEA"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["MACD_DEA"]
                     });
                 }
             }
@@ -272,10 +272,10 @@ exports.calculateMACDValue = function (code ,beginDate , endDate, formationPerio
         else {
             let MACDValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     MACDValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["MACD"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["MACD"]
                     });
                 }
             }
@@ -311,10 +311,10 @@ exports.calculateRSVValue = function (code ,beginDate , endDate, formationPeriod
         else {
             let RSVValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     RSVValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["RSV"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["RSV"]
                     });
                 }
             }
@@ -349,10 +349,10 @@ exports.calculateKDJ_KValue = function (code ,beginDate , endDate, formationPeri
         else {
             let KDJ_KValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     KDJ_KValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["KDJ_K"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["KDJ_K"]
                     });
                 }
             }
@@ -388,10 +388,10 @@ exports.calculateKDJ_DValue = function (code ,beginDate , endDate, formationPeri
         else {
             let KDJ_DValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     KDJ_DValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["KDJ_D"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["KDJ_D"]
                     });
                 }
             }
@@ -427,10 +427,10 @@ exports.calculateKDJ_JValue = function (code ,beginDate , endDate, formationPeri
         else {
             let KDJ_JValue = [];
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
-                if (docs.has(i)) {
+                if (docs.has(i.toISOString().substr(0, 10))) {
                     KDJ_JValue.push({
                         "date" : i,
-                        "value" : docs.get(i)["KDJ_J"]
+                        "value" : docs.get(i.toISOString().substr(0, 10))["KDJ_J"]
                     });
                 }
             }
@@ -531,7 +531,7 @@ function getDailyData(code, beginDate, endDate, callback) {
                     let RSI14 = 0;
                     if ((upAverage14 + downAverage14) !== 0)
                         RSI14 = upAverage14 / (upAverage14 + downAverage14) * 100;
-                    dailyData.set(data["date"], {
+                    dailyData.set(data["date"].toISOString().substr(0, 10), {
                         "MACD_DIF" : DIF,
                         "MACD_DEA" : DEA,
                         "MACD" : MACD,

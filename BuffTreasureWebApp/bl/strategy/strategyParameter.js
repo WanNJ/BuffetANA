@@ -44,12 +44,11 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
             let part = {
                 'date' : doc[i]['date'],
                 'value' : temp
-            }
+            };
             MAValue.push(part);
             curMASum += doc[i+formationPeriod]['adjClose'] - doc[i]['adjClose'];
         }
         MAValue.reverse();
         callback(err,MAValue);
-    })
-
-}
+    });
+};

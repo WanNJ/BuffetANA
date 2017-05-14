@@ -225,9 +225,20 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
 let filterMap = require('../functionMap/filterMap').funtionMap;
 let rankMap = require('../functionMap/rankMap').funtionMap;
 
+
+/**
+ * 将参数按照要求注入到 AllPickleDataList  中去
+ * @param codeList
+ * @param AllPickleDataList
+ * @param beginDate
+ * @param endDate
+ * @param rank
+ * @param filter
+ * @param callback
+ */
 exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                                             beginDate, endDate, rank, filter,
-                                            tradeModelVO , callback ) =>{
+                                            callback ) =>{
 
     /**
      *
@@ -350,6 +361,7 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
             });
             AllDataList[keys[i]] = pickleDataList;
         }
+        callback(err,AllDataList);
     })
 }
 

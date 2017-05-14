@@ -33,7 +33,6 @@ function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begin
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
-            //console.log("he")
             resolve(AllDataList);
         });
     })

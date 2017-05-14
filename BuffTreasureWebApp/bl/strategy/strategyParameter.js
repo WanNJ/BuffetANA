@@ -113,7 +113,7 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
         let MOMValue = [];
 
         docs = docs.filter(data => data["volume"] !== 0);
-        for (let i = 1; docs[i]["date"] - beginDate >= 0 && i + formationPeriod < docs.length; i++) {
+        for (let i = 1; i + formationPeriod < docs.length && docs[i]["date"] - beginDate >= 0; i++) {
             endAdj = docs[i]["adjClose"];
             beginAdj = docs[i + formationPeriod]["adjClose"];
             // 该观察内的收益率

@@ -126,9 +126,6 @@ describe('strategyParameter', function() {
         });
     });
     describe('#calculateMOMValue()', function () {
-        it('all GME', function (done) {
-
-        });
         it('000001', function (done) {
             strategyPara.calculateMOMValue('000001', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {

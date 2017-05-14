@@ -258,7 +258,6 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
             if(index === keys.length) {
                 resolve(AllPickleDataList);
             }else{
-                console.log(keys.length)
                 resolve(rankMap[keys[index]]
                     (code ,codeIndex , index,
                     rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
@@ -300,9 +299,10 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param endDate
      * @returns {Promise}
      */
-    let setCodeAndName = function (code ,codeAndName , AllDataList , beginDate ,endDate) {
+    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate) {
         return new Promise((resolve,reject)=>{
             setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate, (err,data)=>{
+                //console.log('data')
                 resolve(data);
             });
         })
@@ -317,12 +317,11 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @returns {Promise}
      */
     let operatePromise = function (codeList ,codeIndex , listAll){
-        //console.log(listAll)
         return new Promise((resolve,reject)=>{
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else
-                resolve(setCodeAndName(codeList[codeIndex] , listAll , beginDate ,endDate)
+                resolve(setCodeAndName( codeList[codeIndex] , listAll , beginDate ,endDate)
                     .then(list => setRankPromise(codeList[codeIndex][0],codeIndex,rank,0,list,beginDate ,endDate))
                     .then(list => setFilterPromise(codeIndex,filter,0,list))
                     .then(list => operatePromise(codeList ,codeIndex+1,list)));
@@ -346,7 +345,8 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  * @param callback (err,docs)={}
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
-
+    //console.log('sdfsdf');
+    //console.log(codeAndName)
     singleStockDB.getStockInfoInRangeDate(codeAndName[0],new Date(beginDate- 7*24000*3600),endDate, (err,data)=>{
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){

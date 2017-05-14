@@ -31,12 +31,13 @@ let largestBackRate;
 
 /**
  * add by  wsw
- * TODO getPickleData需要将那种环境创下来  （这个之后我来改）
+ * modified by ty
+ * TODO 那个环境的参数已经不需要了，直接一次性传上来所有环境的参数
  * TODO 加了一个正常环境下的（就是没有划分市场的环的境）回测情况（同迭代二）
  */
 
 /**
- * 获得市场温度高，趋同性强的回测结果
+ * 获得回测结果
  * @param beginDate {Date} 回测的开始日期
  * @param endDate  {Date} 回测的结束日期
  * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
@@ -54,7 +55,9 @@ let largestBackRate;
  * @param envSpecDay {Number}  市场观察期
  *
  * @param callback 形如 (err, data) => {}
- * ===================callback中的data是JSON格式，内容如下====================
+ * data {Array}  data[0]    data[1]             data[2]             data[3]                data[4]
+ *               normal     市场温度高，趋同性强   市场温度高 趋反性强   市场温度低，趋同性强      市场温度低，趋反性强
+ * ===================callback中的data是一个长度为5的数组，元素的类型为JSON格式，单个元素内容如下====================
  * {
         "backDetail" : {                                     // 回测表结果
                             "yearProfitRate": Number,        // 年化收益率
@@ -99,323 +102,29 @@ let largestBackRate;
                                  }, ...]
   }
  */
-exports.getHighAndSame = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
+exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
     strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
         rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
         if (err)
             callback(err, null);
         else {
-            pickleDatas = docs;
-            initPara(beginDate, endDate);
-            let result = {
-                "backDetail" : getBackDetail(),
-                "strategyDayRatePiece" : getStrategyDayRatePiece(),
-                "baseDayRatePiece" : getBaseDayRatePiece(),
-                "strategyEstimateResult" : getStrategyEstimateResult(),
-                "profitDistributePie" : getProfitDistributePie(),
-                "historyTradeRecord" : getHistoryTradeRecord()
-            };
-            callback(null, result);
+            let results = []
+            docs.forEach(doc => {
+                pickleDatas = docs;
+                initPara(beginDate, endDate);
+                let result = {
+                    "backDetail" : getBackDetail(),
+                    "strategyDayRatePiece" : getStrategyDayRatePiece(),
+                    "baseDayRatePiece" : getBaseDayRatePiece(),
+                    "strategyEstimateResult" : getStrategyEstimateResult(),
+                    "profitDistributePie" : getProfitDistributePie(),
+                    "historyTradeRecord" : getHistoryTradeRecord()
+                };
+                results.add(result);
+            });
+            callback(null, results);
         }
     });
-};
-
-/**
- * 获得市场温度高 趋反性强的回测结果
- * @param beginDate {Date} 回测的开始日期
- * @param endDate  {Date} 回测的结束日期
- * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
- * @param rank {JSON}
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
- *       }
- * @param filter {JSON}
- *        筛选指标          比较符     值
- * eg : { "vol" :          [">",     1000000],
- *        "turnOverrate" : ["<",     0.05]
- *       }
- * @param tradeModelVO {TradeModelVO} 交易模型
- * @param envSpecDay {Number}  市场观察期
- *
- * @param callback 形如 (err, data) => {}
- * ===================callback中的data是JSON格式，内容如下====================
- * {
-        "backDetail" : {                                     // 回测表结果
-                            "yearProfitRate": Number,        // 年化收益率
-                            "baseYearProfitRate": Number,    // 基准年化收益率
-                            "largestBackRate": Number,       // 最大回撤率
-                            "sharpRate": Number,             // 夏普率
-                            "alpha": Number,                 // alpha
-                            "beta": Number                   // beta
-                        },
-        "strategyDayRatePiece" : [{                             // 策略的累计收益折线图数据
-                                      "date" : String,          // x轴的日期
-                                      "profitRate" : Number     // y轴的收益率
-                                  }, ...],
-        "baseDayRatePiece" : [{                             // 基准的累计收益折线图数据
-                                  "date" : String,          // x轴的日期
-                                  "profitRate" : Number     // y轴的收益率
-                              }, ...],
-        "strategyEstimateResult" : {                                    // 策略评估的雷达图数据
-                                        "profitAbility" : Number,       // 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
-                                        "stability" : Number,           // 稳定性：策略的波动越小，该项分值越高
-                                        "chooseStockAbility" : Number,  // 选股能力：策略的成功率越大，该项分值越高
-                                        "absoluteProfit" : Number,      // 绝对收益：策略的年化收益率越大，该项分值越高
-                                        "antiRiskAbility" : Number,     // 抗风险能力：策略的回撤越小，该项分值越高；
-                                        "strategyScore" : Number        // 策略总得分，上面5项得分之和
-                                    },
-        "profitDistributePie" : {                         // 收益分布饼图的数据
-                                    "green0" : Number,    // 收益为-3.5%到0的次数
-                                    "green35" : Number,   // 收益为-3.5%到-7.5%的次数
-                                    "green75" : Number,   // 收益小于-7.5%的次数
-                                    "red0" : Number,      // 收益为0到3.5%的次数
-                                    "red35" : Number,     // 收益为3.5%到7.5%的次数
-                                    "red75" : Number      // 收益大于7.5%的次数
-                                }
-        "historyTradeRecord" : [{                         // 历史交易数据
-                                    "code" : String,      // 股票代码
-                                    "name" : String,      // 股票简称
-                                    "buyTime" : String,   // 买入时间
-                                    "sellTime" : String,  // 卖出时间
-                                    "buyPrice" : Number,  // 买入价
-                                    "sellPrice" : Number, // 卖出价
-                                    "yieldRate" : Number  // 单次收益率
-                                 }, ...]
-  }
- */
-exports.getHighAndOpposite = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
-    strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-            pickleDatas = docs;
-        })
-};
-
-/**
- * 获得市场温度低，趋同性强的回测结果
- * @param beginDate {Date} 回测的开始日期
- * @param endDate  {Date} 回测的结束日期
- * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
- * @param rank {JSON}
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
- *       }
- * @param filter {JSON}
- *        筛选指标          比较符     值
- * eg : { "vol" :          [">",     1000000],
- *        "turnOverrate" : ["<",     0.05]
- *       }
- * @param tradeModelVO {TradeModelVO} 交易模型
- * @param envSpecDay {Number}  市场观察期
- *
- * @param callback 形如 (err, data) => {}
- * ===================callback中的data是JSON格式，内容如下====================
- * {
-        "backDetail" : {                                     // 回测表结果
-                            "yearProfitRate": Number,        // 年化收益率
-                            "baseYearProfitRate": Number,    // 基准年化收益率
-                            "largestBackRate": Number,       // 最大回撤率
-                            "sharpRate": Number,             // 夏普率
-                            "alpha": Number,                 // alpha
-                            "beta": Number                   // beta
-                        },
-        "strategyDayRatePiece" : [{                             // 策略的累计收益折线图数据
-                                      "date" : String,          // x轴的日期
-                                      "profitRate" : Number     // y轴的收益率
-                                  }, ...],
-        "baseDayRatePiece" : [{                             // 基准的累计收益折线图数据
-                                  "date" : String,          // x轴的日期
-                                  "profitRate" : Number     // y轴的收益率
-                              }, ...],
-        "strategyEstimateResult" : {                                    // 策略评估的雷达图数据
-                                        "profitAbility" : Number,       // 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
-                                        "stability" : Number,           // 稳定性：策略的波动越小，该项分值越高
-                                        "chooseStockAbility" : Number,  // 选股能力：策略的成功率越大，该项分值越高
-                                        "absoluteProfit" : Number,      // 绝对收益：策略的年化收益率越大，该项分值越高
-                                        "antiRiskAbility" : Number,     // 抗风险能力：策略的回撤越小，该项分值越高；
-                                        "strategyScore" : Number        // 策略总得分，上面5项得分之和
-                                    },
-        "profitDistributePie" : {                         // 收益分布饼图的数据
-                                    "green0" : Number,    // 收益为-3.5%到0的次数
-                                    "green35" : Number,   // 收益为-3.5%到-7.5%的次数
-                                    "green75" : Number,   // 收益小于-7.5%的次数
-                                    "red0" : Number,      // 收益为0到3.5%的次数
-                                    "red35" : Number,     // 收益为3.5%到7.5%的次数
-                                    "red75" : Number      // 收益大于7.5%的次数
-                                }
-        "historyTradeRecord" : [{                         // 历史交易数据
-                                    "code" : String,      // 股票代码
-                                    "name" : String,      // 股票简称
-                                    "buyTime" : String,   // 买入时间
-                                    "sellTime" : String,  // 卖出时间
-                                    "buyPrice" : Number,  // 买入价
-                                    "sellPrice" : Number, // 卖出价
-                                    "yieldRate" : Number  // 单次收益率
-                                 }, ...]
-  }
- */
-exports.getLowAndSame = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
-    strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-            pickleDatas = docs;
-        })
-};
-
-/**
- * 获得市场温度低，趋反性强的回测结果
- * @param beginDate {Date} 回测的开始日期
- * @param endDate  {Date} 回测的结束日期
- * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
- * @param rank {JSON}
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
- *       }
- * @param filter {JSON}
- *        筛选指标          比较符     值
- * eg : { "vol" :          [">",     1000000],
- *        "turnOverrate" : ["<",     0.05]
- *       }
- * @param tradeModelVO {TradeModelVO} 交易模型
- * @param envSpecDay {Number}  市场观察期
- *
- * @param callback 形如 (err, data) => {}
- * ===================callback中的data是JSON格式，内容如下====================
- * {
-        "backDetail" : {                                     // 回测表结果
-                            "yearProfitRate": Number,        // 年化收益率
-                            "baseYearProfitRate": Number,    // 基准年化收益率
-                            "largestBackRate": Number,       // 最大回撤率
-                            "sharpRate": Number,             // 夏普率
-                            "alpha": Number,                 // alpha
-                            "beta": Number                   // beta
-                        },
-        "strategyDayRatePiece" : [{                             // 策略的累计收益折线图数据
-                                      "date" : String,          // x轴的日期
-                                      "profitRate" : Number     // y轴的收益率
-                                  }, ...],
-        "baseDayRatePiece" : [{                             // 基准的累计收益折线图数据
-                                  "date" : String,          // x轴的日期
-                                  "profitRate" : Number     // y轴的收益率
-                              }, ...],
-        "strategyEstimateResult" : {                                    // 策略评估的雷达图数据
-                                        "profitAbility" : Number,       // 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
-                                        "stability" : Number,           // 稳定性：策略的波动越小，该项分值越高
-                                        "chooseStockAbility" : Number,  // 选股能力：策略的成功率越大，该项分值越高
-                                        "absoluteProfit" : Number,      // 绝对收益：策略的年化收益率越大，该项分值越高
-                                        "antiRiskAbility" : Number,     // 抗风险能力：策略的回撤越小，该项分值越高；
-                                        "strategyScore" : Number        // 策略总得分，上面5项得分之和
-                                    },
-        "profitDistributePie" : {                         // 收益分布饼图的数据
-                                    "green0" : Number,    // 收益为-3.5%到0的次数
-                                    "green35" : Number,   // 收益为-3.5%到-7.5%的次数
-                                    "green75" : Number,   // 收益小于-7.5%的次数
-                                    "red0" : Number,      // 收益为0到3.5%的次数
-                                    "red35" : Number,     // 收益为3.5%到7.5%的次数
-                                    "red75" : Number      // 收益大于7.5%的次数
-                                }
-        "historyTradeRecord" : [{                         // 历史交易数据
-                                    "code" : String,      // 股票代码
-                                    "name" : String,      // 股票简称
-                                    "buyTime" : String,   // 买入时间
-                                    "sellTime" : String,  // 卖出时间
-                                    "buyPrice" : Number,  // 买入价
-                                    "sellPrice" : Number, // 卖出价
-                                    "yieldRate" : Number  // 单次收益率
-                                 }, ...]
-  }
- */
-exports.getLowAndOpposite = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
-    strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-            pickleDatas = docs;
-        })
-};
-
-
-
-
-exports.getLowAndSame = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
-    strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-            pickleDatas = docs;
-        })
-};
-
-/**
- * add by wsw
- * 获得 不划分市场的整体回测结果
- * (我仔细想了想 这个还是有必要的)
- * 1 展现策略的整体水平是有必要的
- * 2 当市场温度不符合4种分类的情况  用整体方法给予划分
- *
- * @param beginDate {Date} 回测的开始日期
- * @param endDate  {Date} 回测的结束日期
- * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
- * @param rank {JSON}
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
- *       }
- * @param filter {JSON}
- *        筛选指标          比较符     值
- * eg : { "vol" :          [">",     1000000],
- *        "turnOverrate" : ["<",     0.05]
- *       }
- * @param tradeModelVO {TradeModelVO} 交易模型
- * @param envSpecDay {Number}  市场观察期
- * @param callback 形如 (err, data) => {}
- * ===================callback中的data是JSON格式，内容如下====================
- * {
-        "backDetail" : {                                     // 回测表结果
-                            "yearProfitRate": Number,        // 年化收益率
-                            "baseYearProfitRate": Number,    // 基准年化收益率
-                            "largestBackRate": Number,       // 最大回撤率
-                            "sharpRate": Number,             // 夏普率
-                            "alpha": Number,                 // alpha
-                            "beta": Number                   // beta
-                        },
-        "strategyDayRatePiece" : [{                             // 策略的累计收益折线图数据
-                                      "date" : String,          // x轴的日期
-                                      "profitRate" : Number     // y轴的收益率
-                                  }, ...],
-        "baseDayRatePiece" : [{                             // 基准的累计收益折线图数据
-                                  "date" : String,          // x轴的日期
-                                  "profitRate" : Number     // y轴的收益率
-                              }, ...],
-        "strategyEstimateResult" : {                                    // 策略评估的雷达图数据
-                                        "profitAbility" : Number,       // 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
-                                        "stability" : Number,           // 稳定性：策略的波动越小，该项分值越高
-                                        "chooseStockAbility" : Number,  // 选股能力：策略的成功率越大，该项分值越高
-                                        "absoluteProfit" : Number,      // 绝对收益：策略的年化收益率越大，该项分值越高
-                                        "antiRiskAbility" : Number,     // 抗风险能力：策略的回撤越小，该项分值越高；
-                                        "strategyScore" : Number        // 策略总得分，上面5项得分之和
-                                    },
-        "profitDistributePie" : {                         // 收益分布饼图的数据
-                                    "green0" : Number,    // 收益为-3.5%到0的次数
-                                    "green35" : Number,   // 收益为-3.5%到-7.5%的次数
-                                    "green75" : Number,   // 收益小于-7.5%的次数
-                                    "red0" : Number,      // 收益为0到3.5%的次数
-                                    "red35" : Number,     // 收益为3.5%到7.5%的次数
-                                    "red75" : Number      // 收益大于7.5%的次数
-                                }
-        "historyTradeRecord" : [{                         // 历史交易数据
-                                    "code" : String,      // 股票代码
-                                    "name" : String,      // 股票简称
-                                    "buyTime" : String,   // 买入时间
-                                    "sellTime" : String,  // 卖出时间
-                                    "buyPrice" : Number,  // 买入价
-                                    "sellPrice" : Number, // 卖出价
-                                    "yieldRate" : Number  // 单次收益率
-                                 }, ...]
-  }
- */
-exports.getNormal = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
-    strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
-            pickleDatas = docs;
-        })
 };
 
 

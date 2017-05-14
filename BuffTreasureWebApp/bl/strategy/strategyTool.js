@@ -293,7 +293,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
         });
     }
     /**
-     *
+     * 全部操作的promise
      * @param codeList
      * @param codeIndex
      * @param listAll
@@ -304,11 +304,12 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else
-                let promise = setCodeAndName(codeList[codeIndex] , listAll , beginDate ,endDate)
+                resolve(setCodeAndName(codeList[codeIndex] , listAll , beginDate ,endDate)
                     .then(list => setRankPromise(codeList[codeIndex][0],codeIndex,rank,0,list,beginDate ,endDate))
                     .then(list => setFilterPromise(codeIndex,filter,0,list))
-                    .then(list => operatePromise(codeList ,codeIndex , list));
-                resolve(promise);
+                    .then(list => operatePromise(codeList ,codeIndex+1,list)));
+
+
         })
 
 
@@ -334,11 +335,11 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
             let p = 0 ; //data的指针
             pickleDataList.forEach(pickleData =>{
                 let valid = true;
-                while(data[p]['date'] - beginDate !==0){
+                while(data[p]['date'] - pickleData.beginDate !==0){
                     p++;
                 }
                 let begin = data[p-1]['adjClose']; //第一天买入价格
-                while(data[p]['date'] - endDate !==0){
+                while(data[p]['date'] -  pickleData.endDate !==0){
                     p++;
                     if(data[p]['volume']===0) valid  = false;
                 }

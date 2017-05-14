@@ -10,7 +10,7 @@ exports.PickleData = class {
      * @param baseProfitRate {Number} 持仓期内的基准收益率
      */
     constructor(beginDate, endDate, backDatas = [], baseProfitRate = 0) {
-        this.begindate = beginDate;
+        this.beginDate = beginDate;
         this.endDate = endDate;
         this.backDatas = backDatas;
         this.baseProfitRate = baseProfitRate;

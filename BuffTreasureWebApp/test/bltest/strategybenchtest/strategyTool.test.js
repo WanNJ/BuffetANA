@@ -20,7 +20,7 @@ let StockPoolConditionVO = require("../../../vo/StockPoolConditionVO").StockPool
 
 describe('#divideDaysByThermometer()', function() {
     it('temp', function(done) {
-        strategyToolbl.divideDaysByThermometer(new Date("2014-01-01"),new Date("2016-02-01"),5,5, (err,data) => {
+        strategyToolbl.divideDaysByThermometer(new Date("2015-01-01"),new Date("2017-02-01"),5,5, (err,data) => {
             if (err) {
                 console.log('wrong')
                 done(err);

@@ -166,9 +166,9 @@ exports.allStockDB = {
      */
     getHSAStockCodeAndName: (callback) => {
         if (typeof HSA === "undefined") {
-            allStock.find({}, ['code', 'name'], (err, docs) => {
+            allStock.find({code : {$regex : /^([360])/}}, ['code', 'name'], (err, docs) => {
                 if (!err) {
-                    HSA = docs.filter(stock => !(stock["code"].startsWith('200') || stock["code"].startsWith('900')));
+                    HSA = docs;
                 }
                 callback(err, [...HSA]);
             });
@@ -183,9 +183,9 @@ exports.allStockDB = {
      */
     getSMEBoardCodeAndName: (callback) => {
         if (typeof SME_board === "undefined") {
-            allStock.find({}, ['code', 'name'], (err, docs) => {
+            allStock.find({code : {$regex : /^002/}}, ['code', 'name'], (err, docs) => {
                 if (!err) {
-                    SME_board = docs.filter(stock => stock["code"].startsWith('002'));
+                    SME_board = docs;
                 }
                 callback(err, [...SME_board]);
             });
@@ -200,9 +200,9 @@ exports.allStockDB = {
      */
     getGEMBoardStockCodeAndName: (callback) => {
         if (typeof GEM_board === "undefined") {
-            allStock.find({}, ['code', 'name'], (err, docs) => {
+            allStock.find({code : {$regex : /^300/}}, ['code', 'name'], (err, docs) => {
                 if (!err) {
-                    GEM_board = docs.filter(stock => stock["code"].startsWith('300'));
+                    GEM_board = docs;
                 }
                 callback(err, [...GEM_board]);
             });

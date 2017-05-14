@@ -16,8 +16,8 @@ let bl = require('./thermometerbl');
  *            低温  < 65
  *
  *            走势趋同性判断   昨日涨停股票今日表现(-10~10) - 昨日跌停股票今日表现(-10~10)
- *            趋同  > 3
- *            驱反  < 3
+ *            趋同  > 4.8
+ *            驱反  < 4.8
  *
  *
  * @param beginDate  开始日期
@@ -58,15 +58,15 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
             let strq;
 
             //console.log(w)
-            if(w > 65)
+            if(w > 69)
                 strw = 'High'
-            else if(w < 65)
+            else if(w < 69)
                 strw = 'Low';
             else
                 return 'Normal';
-            if(q > 3)
+            if(q > 4.8)
                 strq = 'Same';
-            else if(q < 3)
+            else if(q < 4.8)
                 strq = 'Opposite';
             else
                 return 'Normal';

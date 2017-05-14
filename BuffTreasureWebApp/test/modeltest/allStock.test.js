@@ -58,21 +58,7 @@ describe('allStockDB', function() {
                     docs.forEach(doc => {
                         console.log(doc['code']);
                     });
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getHSAStockCodeAndName()', function() {
-        it('should all be A', function(done) {
-            allStockDB.getHSAStockCodeAndName(function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    docs.forEach(doc => {
-                        console.log(doc['code']);
-                    });
+                    console.log(docs.length)
                     done();
                 }
             });
@@ -81,38 +67,6 @@ describe('allStockDB', function() {
     describe('#getSMEBoardCodeAndName()', function() {
         it('should all be SME', function(done) {
             allStockDB.getSMEBoardCodeAndName(function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    docs.forEach(doc => {
-                        console.log(doc['code']);
-                    });
-                    console.log(docs.length);
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getSMEBoardCodeAndName()', function() {
-        it('should all be SME', function(done) {
-            allStockDB.getSMEBoardCodeAndName(function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    docs.forEach(doc => {
-                        console.log(doc['code']);
-                    });
-                    console.log(docs.length);
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getGEMBoardStockCodeAndName()', function() {
-        it('should all be GEM', function(done) {
-            allStockDB.getGEMBoardStockCodeAndName(function (err, docs) {
                 if (err) {
                     done(err);
                 }

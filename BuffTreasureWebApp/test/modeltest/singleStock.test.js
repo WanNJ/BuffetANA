@@ -63,4 +63,160 @@ describe('singleStockDB', function() {
             });
         });
     });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getStockInfoInRangeDate()', function() {
+        it('should obtain 6396 records', function(done) {
+            singleStockDB.getStockInfoInRangeDate('000001', new Date('2015-01-01'), new Date('2017-04-28'), function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    // console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
 });

@@ -27,6 +27,9 @@ const stockSchema = mongoose.Schema({
 let preCode = null;
 let preStockList = null;
 
+let preRangeCode = null;
+let preRangeStockList = null;
+
 exports.singleStockDB = {
     /**
      * 获得具体某一支股票的每一天的数据（按日期的升序排列）
@@ -71,17 +74,10 @@ exports.singleStockDB = {
      * @param callback
      */
     getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
-        if (preCode === code && preStockList !== null) {
-            callback(null, preStockList.filter((stock) => {
-                return (stock.date - beginDate >= 0 && stock.date - endDate <= 0);
-            }));
-        }
-        else {
-            let Stock = mongoose.model(code, stockSchema);
-            Stock.find({code : code, date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'}).exec(function (err, docs) {
-                callback(err, docs);
-            });
-        }
+        let Stock = mongoose.model(code, stockSchema);
+        Stock.find({code : code, date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'}).exec(function (err, docs) {
+            callback(err, docs);
+        });
     },
 
 
@@ -90,7 +86,7 @@ exports.singleStockDB = {
      * 不建议调用
      * TODO  最后删掉
      * @deprecated
-     * @param date
+     * @param date s
      * @param callback
      */
     getStockInfoByDateTwo: function (date, callback) {
@@ -121,6 +117,6 @@ exports.singleStockDB = {
 
 
 
-    },
+    }
 
-}
+};

@@ -1,0 +1,55 @@
+/**
+ * Created by wshwbluebird on 2017/5/14.
+ */
+
+
+let singleStockDB = require('../../models/singleStock').singleStockDB;
+
+/**
+ *
+ * @param code 股票代码
+ * @param beginDate 开始日期
+ * @param endDate  结束日期
+ * @param formationPeriod  形成期(观察期)
+ * @param callback 形如(err,docs);
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *  所有 这个预先计算的部分  返回的数组元素都按照这格式
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *      docs 形式如下
+ *      {
+ *        date:  date
+ *        value  : MA偏离量
+ *      } 的数组
+ *      时间按照从小到大排
+ *      !!!数组中没有value的date 不存在
+ *      比如2014-01-02 没有MA均线  那么返回的数组里面没有 date 2014-01-02 就根本不会出现
+ */
+exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
+    let searchBeginDate = new Date(beginDate-(formationPeriod * 10+20)*24000*600);
+    singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
+        doc.reverse();
+        let curMASum = 0;
+        let MAValue = [];
+        //console.log(doc[0])
+
+        doc.filter(data => data['volume']!==0);
+        for(let i = 0; i < formationPeriod ; i++){
+            curMASum+= doc[i]['adjClose'];
+        }
+
+
+        for(let i  = 0;  doc[i]['date'] -beginDate >= 0 ; i++){
+
+            let temp = (curMASum - doc[i]['adjClose'])/curMASum;
+            let part = {
+                'date' : doc[i]['date'],
+                'value' : temp
+            }
+            MAValue.push(part);
+            curMASum += doc[i+formationPeriod]['adjClose'] - doc[i]['adjClose'];
+        }
+        MAValue.reverse();
+        callback(err,MAValue);
+    })
+
+}

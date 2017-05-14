@@ -217,3 +217,6 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
 
         });
 }
+
+
+//exports.setcodeToPickleDataLsit = (codeList,   )

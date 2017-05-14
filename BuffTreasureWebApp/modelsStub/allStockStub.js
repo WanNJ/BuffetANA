@@ -84,5 +84,15 @@ exports.allStockDB = {
         callback(null,[['100001','qwe'],['100002','qwe'],['100003','qwe']]);
     },
 
+    /**
+     * 获得自定义股票池的股票代码和名称
+     * @param industries {Array}
+     * @param boards {Array}
+     * @param callback
+     */
+    getDIYStockPool: (industries, boards, callback) => {
+        callback(null,[['100001','*STdsfdsf'],['100002','dsfdsf'],['100003','qwe']]);
+    }
+
 
 };

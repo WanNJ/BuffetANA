@@ -34,11 +34,20 @@ let mergeArray = function(arr1, arr2){
         }
     }
     //alert(arr1.length)
-    for(var i = 0; i <arr2.length; i++){
+    for(let i = 0; i <arr2.length; i++){
         arr1.push(arr2[i]);
     }
     return arr1;
 }
+
+/**
+ * 不知道是不是有用写了
+ * @param arr [code , name】  数组  去掉ST 真的有必要吗??????
+ * @param isExclude  是否排除ST股，排除为true，不排除为false
+ */
+let excludeST = function (arr ,  isExclude){
+    return   !isExclude? arr: arr.filter(t => !(t[1].substring(0,3)==='*ST'));
+};
 
 
 
@@ -46,25 +55,15 @@ exports.getChoosedStockList = (stockPoolConditionVO , callback) =>{
     if( (stockPoolConditionVO instanceof StockPoolConditionVO) === false){
         callback(new Error('getChoosedStockList: 参数1  没有实现StockPoolConditionVO'),null);
     }else{
-        if(stockPoolConditionVO.stockPool === '自选股票池'){
-            let p1 = benchAndIndustryMap['benches'](stockPoolConditionVO.benches,0,[]);
-            let p2 = benchAndIndustryMap['industries'](stockPoolConditionVO.industries,0,[]);
-            /**
-             * TODO 没有解决异常
-             */
-            //noinspection JSIgnoredPromiseFromCall
-            Promise.all([p1,p2]).then((a) => {
-                return mergeArray(a[0],a[1]);
-            })
-                .then(data => callback(null,data));
-
-        }else {
-            let promise = stockPoolMap[stockPoolConditionVO.stockPool];
-            if (typeof promise === 'undefined') {
-                callback(new Error('getChoosedStockList: 传入错误的stockPoolConditionVO.stockPool', null));
-            }
-            promise().then(list => callback(null, list));
+       // console.log(stockPoolConditionVO.stockPool)
+        let promise = stockPoolMap[stockPoolConditionVO.stockPool];
+        if (typeof promise === 'undefined') {
+            callback(new Error('getChoosedStockList: 传入错误的stockPoolConditionVO.stockPool', null));
         }
+        promise(stockPoolConditionVO.industries ,stockPoolConditionVO.benches)
+            .then(list => excludeST(list ,stockPoolConditionVO.excludeST))
+            .then(list => callback(null, list));
+
     }
 
 }

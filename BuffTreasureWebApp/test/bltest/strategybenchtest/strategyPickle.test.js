@@ -31,14 +31,14 @@ describe('#shiit()', function() {
         let rank = {
             'MA' : ["asd",   10,     0.4]
         };
-        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
+        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-01-01"),
             stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {
             if (err) {
                 console.log('wrong');
                 done(err);
             }
             else {
-                //console.log(data['Normal'][0].backDatas);
+                //console.log(data['Normal']);
                 done();
             }
         });

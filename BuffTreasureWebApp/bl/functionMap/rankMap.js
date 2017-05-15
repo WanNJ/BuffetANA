@@ -31,6 +31,7 @@ function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begin
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
                         backData.mixRank.push(maList[p]['value']);
                     }else{
+                       // console.log('here')
                         backData.mixRank.push(0);
                     }
                     pickleData.backDatas[rankIndex] = backData;

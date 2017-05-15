@@ -4,7 +4,6 @@ let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'sh
 let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
 let daily_RSIChart = echarts.init(document.getElementById('daily_RSIChart'), 'shine');
 
-
 let daily_rawData = [
     ['2017-03-29',
         9.13,
@@ -456,7 +455,7 @@ function calculateMA(dayCount) {
     return result;
 }
 
-daily_kLineChartOption = {
+daily_KLineChartOption = {
     title: {
         show: false,
         text: '个股',
@@ -475,8 +474,8 @@ daily_kLineChartOption = {
         formatter: function (params) {
             let res = '';
             let index = params[0].dataIndex;
-            let turnOverRate = daily_kLineChartOption.series[5].turnOverRates[index];
-            let changeRate = daily_kLineChartOption.series[0].changeRates[index];
+            let turnOverRate = daily_KLineChartOption.series[5].turnOverRates[index];
+            let changeRate = daily_KLineChartOption.series[0].changeRates[index];
 
             for (let i = 0; i < params.length; i++) {
                 let value = params[i].value;
@@ -505,7 +504,7 @@ daily_kLineChartOption = {
         }
     },
     legend: {
-        daily_data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -533,13 +532,13 @@ daily_kLineChartOption = {
     xAxis: [
         {
             type: 'category',
-            daily_data: daily_data.categoryData,
+            data: daily_data.categoryData,
             splitNumber: 20
         },
         {
             type: 'category',
             gridIndex: 1,
-            daily_data: daily_data.categoryData,
+            data: daily_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -579,13 +578,13 @@ daily_kLineChartOption = {
         {
             name: '日K',
             type: 'candlestick',
-            daily_data: daily_data.KLineValue,
+            data: daily_data.KLineValue,
             changeRates: daily_data.changeRates,
         },
         {
             name: 'MA5',
             type: 'line',
-            daily_data: calculateMA(5),
+            data: calculateMA(5),
             smooth: true,
             lineStyle: {
                 normal: {opacity: 0.5}
@@ -594,7 +593,7 @@ daily_kLineChartOption = {
         {
             name: 'MA10',
             type: 'line',
-            daily_data: calculateMA(10),
+            data: calculateMA(10),
             smooth: true,
             lineStyle: {
                 normal: {opacity: 0.5}
@@ -603,7 +602,7 @@ daily_kLineChartOption = {
         {
             name: 'MA20',
             type: 'line',
-            daily_data: calculateMA(20),
+            data: calculateMA(20),
             smooth: true,
             lineStyle: {
                 normal: {opacity: 0.5}
@@ -612,7 +611,7 @@ daily_kLineChartOption = {
         {
             name: 'MA30',
             type: 'line',
-            daily_data: calculateMA(30),
+            data: calculateMA(30),
             smooth: true,
             lineStyle: {
                 normal: {opacity: 0.5}
@@ -623,7 +622,7 @@ daily_kLineChartOption = {
             type: 'bar',
             xAxisIndex: 1,
             yAxisIndex: 1,
-            daily_data: daily_data.volumns,
+            data: daily_data.volumns,
             turnOverRates: daily_data.turnOverRates
         }
     ]
@@ -661,7 +660,7 @@ daily_KDJChartOption = {
         }
     },
     legend: {
-        daily_data: ['K值', 'D值', 'J值'],
+        data: ['K值', 'D值', 'J值'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -681,7 +680,7 @@ daily_KDJChartOption = {
     xAxis: [
         {
             type: 'category',
-            daily_data: daily_data.categoryData,
+            data: daily_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -711,7 +710,7 @@ daily_KDJChartOption = {
         {
             name: 'K值',
             type: 'line',
-            daily_data: daily_data.kIndexes,
+            data: daily_data.kIndexes,
             itemStyle: {
                 normal: {
                     color: 'grey',
@@ -724,7 +723,7 @@ daily_KDJChartOption = {
         {
             name: 'D值',
             type: 'line',
-            daily_data: daily_data.dIndexes,
+            data: daily_data.dIndexes,
             itemStyle: {
                 normal: {
                     color: 'orange',
@@ -737,7 +736,7 @@ daily_KDJChartOption = {
         {
             name: 'J值',
             type: 'line',
-            daily_data: daily_data.jIndexes,
+            data: daily_data.jIndexes,
             itemStyle: {
                 normal: {
                     color: 'purple',
@@ -782,7 +781,7 @@ daily_MACDChartOption = {
         }
     },
     legend: {
-        daily_data: ['MACD', 'DIF', 'DEA'],
+        data: ['MACD', 'DIF', 'DEA'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -802,7 +801,7 @@ daily_MACDChartOption = {
     xAxis: [
         {
             type: 'category',
-            daily_data: daily_data.categoryData,
+            data: daily_data.categoryData,
             axisLabel: {show: false},
             splitNumber: 20
         }
@@ -836,7 +835,7 @@ daily_MACDChartOption = {
         {
             name: 'MACD',
             type: 'bar',
-            daily_data: daily_data.macds,
+            data: daily_data.macds,
             itemStyle: {
                 normal: {
                     color: function (params) {
@@ -854,12 +853,12 @@ daily_MACDChartOption = {
         {
             name: 'DIF',
             type: 'line',
-            daily_data: daily_data.difs
+            data: daily_data.difs
         },
         {
             name: 'DEA',
             type: 'line',
-            daily_data: daily_data.deas
+            data: daily_data.deas
         }
     ]
 };
@@ -896,7 +895,7 @@ daily_RSIChartOption = {
         }
     },
     legend: {
-        daily_data: ['RSI6', 'RSI12', 'RSI24'],
+        data: ['RSI6', 'RSI12', 'RSI24'],
     },
     axisPointer: {
         link: {xAxisIndex: 'all'},
@@ -916,7 +915,7 @@ daily_RSIChartOption = {
     xAxis: [
         {
             type: 'category',
-            daily_data: daily_data.categoryData,
+            data: daily_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -946,7 +945,7 @@ daily_RSIChartOption = {
         {
             name: 'RSI6',
             type: 'line',
-            daily_data: daily_data.rsi6s,
+            data: daily_data.rsi6s,
             itemStyle: {
                 normal: {
                     color: 'grey',
@@ -959,7 +958,7 @@ daily_RSIChartOption = {
         {
             name: 'RSI12',
             type: 'line',
-            daily_data: daily_data.rsi12s,
+            data: daily_data.rsi12s,
             itemStyle: {
                 normal: {
                     color: 'orange',
@@ -972,7 +971,7 @@ daily_RSIChartOption = {
         {
             name: 'RSI24',
             type: 'line',
-            daily_data: daily_data.rsi24s,
+            data: daily_data.rsi24s,
             itemStyle: {
                 normal: {
                     color: 'purple',
@@ -985,19 +984,23 @@ daily_RSIChartOption = {
     ]
 };
 
-// 使用刚指定的配置项和数据显示图表
-daily_KLineChart.setOption(daily_kLineChartOption);
-daily_KDJChart.setOption(daily_KDJChartOption);
-daily_MACDChart.setOption(daily_MACDChartOption);
-daily_RSIChart.setOption(daily_RSIChartOption);
+function loadDailyKLineChart() {
+    // 使用刚指定的配置项和数据显示图表
+    daily_KLineChart.setOption(daily_KLineChartOption);
+    daily_KDJChart.setOption(daily_KDJChartOption);
+    daily_MACDChart.setOption(daily_MACDChartOption);
+    daily_RSIChart.setOption(daily_RSIChartOption);
 
-echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
+    echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
 
-setTimeout(() => {
-    window.onresize = function () {
-        daily_KLineChart.resize();
-        daily_KDJChart.resize();
-        daily_MACDChart.resize();
-        daily_RSIChart.resize();
-    }
-}, 200);
+    setTimeout(() => {
+        window.onresize = function () {
+            daily_KLineChart.resize();
+            daily_KDJChart.resize();
+            daily_MACDChart.resize();
+            daily_RSIChart.resize();
+        }
+    }, 200);
+}
+
+loadDailyKLineChart();

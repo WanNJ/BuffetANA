@@ -103,28 +103,28 @@
     </div>
 
 
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-sm-10 col-sm-offset-1">
         <div class="row">
-            <div class="col-md-4 text-center" style="height: 102px;">
+            <div class="col-sm-4 text-center" style="height: 102px;">
                 <h1 class="display-3">白银有色</h1>
                 <h4>(601212)</h4>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-5">
                 <div class="row">
-                    <div class="col-md-8 text-right" style="height: 102px;">
+                    <div class="col-sm-8 text-right" style="height: 102px;">
                         <h1 class="display-1" style="height: 102px;">9.11
                             <sapn class="fa fa-x fa-arrow-up fa-fw text-right"></sapn>
                         </h1>
                     </div>
-                    <div class="col-md-4 text-left" style="height: 102px;">
+                    <div class="col-sm-4 text-left" style="height: 102px;">
                         <h3>0.13</h3>
                         <h3>+1.45%</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3">
                 <div class="row">
-                    <div class="col-md-12 text-center" style="height: 102px;padding-top:16px;  line-height: 25px;">
+                    <div class="col-sm-12 text-center" style="height: 102px;padding-top:16px;  line-height: 25px;">
                         <button type="button" class="btn btn-primary btn-lg" style="height: 60px;">
                             <span class="fa fa-plus"></span> 加入自选股
                         </button>
@@ -133,7 +133,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12" style="height: 20px;"></div>
+
+    <div class="col-sm-12" style="height: 20px;"></div>
     <div class="col-sm-10 col-sm-offset-1">
         <ul class="nav nav-tabs nav-justified" id="mainTab">
             <li class="active"><a href="#timeSharing">分时</a></li>
@@ -142,8 +143,7 @@
             <li><a href="#monthlyKLine">月K</a></li>
         </ul>
     </div>
-    <div class="col-md-12" style="height: 20px;"></div>
-
+    <div class="col-sm-12" style="height: 20px;"></div>
 
     <!--Echarts Modules-->
     <div class="col-sm-12 tab-content">
@@ -151,10 +151,12 @@
             <% include EChartsModule/timeSharingChart.ejs %>
         </div>
         <div id="dailyKLine" class="tab-pane">
+            <% include EChartsModule/dailyKLineChart.ejs %>
         </div>
         <div id="weeklyKLine" class="tab-pane">
         </div>
         <div id="monthlyKLine" class="tab-pane">
+            <% include EChartsModule/monthlyKLIneChart.ejs %>
         </div>
     </div>
 
@@ -163,6 +165,12 @@
             e.preventDefault();
             $(this).tab('show');
             $(this).resize();
+            if($(this).attr('href') === '#timeSharing')
+                timeSharingChart.resize();
+            if($(this).attr('href') === '#dailyKLine') {
+                daily_KLineChart.resize();
+                daily_KDJChart.resize();
+            }
         });
     </script>
     <!--scrollToTop按钮-->

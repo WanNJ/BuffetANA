@@ -1,10 +1,10 @@
 // 基于准备好的dom，初始化echarts实例
-let kLineChart = echarts.init(document.getElementById('monthlyKLineChart'), 'shine');
-let KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
-let MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
-let RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
+let monthly_KLineChart = echarts.init(document.getElementById('monthlyKLineChart'), 'shine');
+let monthly_KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
+let monthly_MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
+let monthly_RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
 
-let rawData = [
+let monthly_rawData = [
     ['2017-03-29',
         9.13,
         9.11,
@@ -384,9 +384,9 @@ let rawData = [
         36.17021276595745,
         37.03703703703704]];
 
-let data = splitData(rawData);
+let monthly_data = splitData(monthly_rawData);
 
-function splitData(rawData) {
+function splitData(monthly_rawData) {
     let categoryData = [];
     let values = [];
     let changeRates = [];
@@ -402,22 +402,22 @@ function splitData(rawData) {
     let rsi6s = [];
     let rsi12s = [];
     let rsi24s = [];
-    for (let i = 0; i < rawData.length; i++) {
-        categoryData.push(rawData[i].splice(0, 1)[0]);
-        values.push(rawData[i].splice(0, 4));
-        changeRates.push(rawData[i].splice(0, 1)[0]);
-        volumns.push(rawData[i].splice(0, 1)[0]);
-        kIndexes.push(rawData[i].splice(0, 1)[0]);
-        dIndexes.push(rawData[i].splice(0, 1)[0]);
-        jIndexes.push(rawData[i].splice(0, 1)[0]);
-        turnOverRates.push(rawData[i].splice(0, 1)[0]);
-        difs.push(rawData[i].splice(0, 1)[0]);
-        deas.push(rawData[i].splice(0, 1)[0]);
-        macds.push(rawData[i].splice(0, 1)[0]);
-        adjs.push(rawData[i].splice(0, 1)[0]);
-        rsi6s.push(rawData[i].splice(0, 1)[0]);
-        rsi12s.push(rawData[i].splice(0, 1)[0]);
-        rsi24s.push(rawData[i].splice(0, 1)[0]);
+    for (let i = 0; i < monthly_rawData.length; i++) {
+        categoryData.push(monthly_rawData[i].splice(0, 1)[0]);
+        values.push(monthly_rawData[i].splice(0, 4));
+        changeRates.push(monthly_rawData[i].splice(0, 1)[0]);
+        volumns.push(monthly_rawData[i].splice(0, 1)[0]);
+        kIndexes.push(monthly_rawData[i].splice(0, 1)[0]);
+        dIndexes.push(monthly_rawData[i].splice(0, 1)[0]);
+        jIndexes.push(monthly_rawData[i].splice(0, 1)[0]);
+        turnOverRates.push(monthly_rawData[i].splice(0, 1)[0]);
+        difs.push(monthly_rawData[i].splice(0, 1)[0]);
+        deas.push(monthly_rawData[i].splice(0, 1)[0]);
+        macds.push(monthly_rawData[i].splice(0, 1)[0]);
+        adjs.push(monthly_rawData[i].splice(0, 1)[0]);
+        rsi6s.push(monthly_rawData[i].splice(0, 1)[0]);
+        rsi12s.push(monthly_rawData[i].splice(0, 1)[0]);
+        rsi24s.push(monthly_rawData[i].splice(0, 1)[0]);
     }
     return {
         categoryData: categoryData,
@@ -440,7 +440,7 @@ function splitData(rawData) {
 
 function calculateMA(dayCount) {
     let result = [];
-    let len = data.adjs.length;
+    let len = monthly_data.adjs.length;
     for (let i = 0; i < len; i++) {
         if (i < dayCount) {
             result.push('-');
@@ -448,14 +448,14 @@ function calculateMA(dayCount) {
         }
         let sum = 0;
         for (let j = 0; j < dayCount; j++) {
-            sum += data.adjs[i - j];
+            sum += monthly_data.adjs[i - j];
         }
         result.push(sum / dayCount);
     }
     return result;
 }
 
-kLineChartOption = {
+monthly_KLineChartOption = {
     title: {
         show: false,
         text: '个股',
@@ -474,8 +474,8 @@ kLineChartOption = {
         formatter: function (params) {
             let res = '';
             let index = params[0].dataIndex;
-            let turnOverRate = kLineChartOption.series[5].turnOverRates[index];
-            let changeRate = kLineChartOption.series[0].changeRates[index];
+            let turnOverRate = monthly_KLineChartOption.series[5].turnOverRates[index];
+            let changeRate = monthly_KLineChartOption.series[0].changeRates[index];
 
             for (let i = 0; i < params.length; i++) {
                 let value = params[i].value;
@@ -532,13 +532,13 @@ kLineChartOption = {
     xAxis: [
         {
             type: 'category',
-            data: data.categoryData,
+            data: monthly_data.categoryData,
             splitNumber: 20
         },
         {
             type: 'category',
             gridIndex: 1,
-            data: data.categoryData,
+            data: monthly_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -578,8 +578,8 @@ kLineChartOption = {
         {
             name: '月K',
             type: 'candlestick',
-            data: data.KLineValue,
-            changeRates: data.changeRates,
+            data: monthly_data.KLineValue,
+            changeRates: monthly_data.changeRates,
         },
         {
             name: 'MA5',
@@ -622,13 +622,13 @@ kLineChartOption = {
             type: 'bar',
             xAxisIndex: 1,
             yAxisIndex: 1,
-            data: data.volumns,
-            turnOverRates: data.turnOverRates
+            data: monthly_data.volumns,
+            turnOverRates: monthly_data.turnOverRates
         }
     ]
 };
 
-KDJChartOption = {
+monthly_KDJChartOption = {
     title: {
         show: false,
         text: 'KDJ',
@@ -680,7 +680,7 @@ KDJChartOption = {
     xAxis: [
         {
             type: 'category',
-            data: data.categoryData,
+            data: monthly_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -710,7 +710,7 @@ KDJChartOption = {
         {
             name: 'K值',
             type: 'line',
-            data: data.kIndexes,
+            data: monthly_data.kIndexes,
             itemStyle: {
                 normal: {
                     color: 'grey',
@@ -723,7 +723,7 @@ KDJChartOption = {
         {
             name: 'D值',
             type: 'line',
-            data: data.dIndexes,
+            data: monthly_data.dIndexes,
             itemStyle: {
                 normal: {
                     color: 'orange',
@@ -736,7 +736,7 @@ KDJChartOption = {
         {
             name: 'J值',
             type: 'line',
-            data: data.jIndexes,
+            data: monthly_data.jIndexes,
             itemStyle: {
                 normal: {
                     color: 'purple',
@@ -749,7 +749,7 @@ KDJChartOption = {
     ]
 };
 
-MACDChartOption = {
+monthly_MACDChartOption = {
     title: {
         show: false,
         text: 'MACD',
@@ -801,7 +801,7 @@ MACDChartOption = {
     xAxis: [
         {
             type: 'category',
-            data: data.categoryData,
+            data: monthly_data.categoryData,
             axisLabel: {show: false},
             splitNumber: 20
         }
@@ -835,7 +835,7 @@ MACDChartOption = {
         {
             name: 'MACD',
             type: 'bar',
-            data: data.macds,
+            data: monthly_data.macds,
             itemStyle: {
                 normal: {
                     color: function (params) {
@@ -853,17 +853,17 @@ MACDChartOption = {
         {
             name: 'DIF',
             type: 'line',
-            data: data.difs
+            data: monthly_data.difs
         },
         {
             name: 'DEA',
             type: 'line',
-            data: data.deas
+            data: monthly_data.deas
         }
     ]
 };
 
-RSIChartOption = {
+monthly_RSIChartOption = {
     title: {
         show: false,
         text: 'RSI',
@@ -915,7 +915,7 @@ RSIChartOption = {
     xAxis: [
         {
             type: 'category',
-            data: data.categoryData,
+            data: monthly_data.categoryData,
             axisLabel: {show: false},
         }
     ],
@@ -945,7 +945,7 @@ RSIChartOption = {
         {
             name: 'RSI6',
             type: 'line',
-            data: data.rsi6s,
+            data: monthly_data.rsi6s,
             itemStyle: {
                 normal: {
                     color: 'grey',
@@ -958,7 +958,7 @@ RSIChartOption = {
         {
             name: 'RSI12',
             type: 'line',
-            data: data.rsi12s,
+            data: monthly_data.rsi12s,
             itemStyle: {
                 normal: {
                     color: 'orange',
@@ -971,7 +971,7 @@ RSIChartOption = {
         {
             name: 'RSI24',
             type: 'line',
-            data: data.rsi24s,
+            data: monthly_data.rsi24s,
             itemStyle: {
                 normal: {
                     color: 'purple',
@@ -985,18 +985,18 @@ RSIChartOption = {
 };
 
 // 使用刚指定的配置项和数据显示图表
-kLineChart.setOption(kLineChartOption);
-KDJChart.setOption(KDJChartOption);
-MACDChart.setOption(MACDChartOption);
-RSIChart.setOption(RSIChartOption);
+monthly_KLineChart.setOption(monthly_KLineChartOption);
+monthly_KDJChart.setOption(monthly_KDJChartOption);
+monthly_MACDChart.setOption(monthly_MACDChartOption);
+monthly_RSIChart.setOption(monthly_RSIChartOption);
 
-echarts.connect([kLineChart, KDJChart, MACDChart, RSIChart]);
+echarts.connect([monthly_KLineChart, monthly_KDJChart, monthly_MACDChart, monthly_RSIChart]);
 
 setTimeout(() => {
     window.onresize = function () {
-        kLineChart.resize();
-        KDJChart.resize();
-        MACDChart.resize();
-        RSIChart.resize();
+        monthly_KLineChart.resize();
+        monthly_KDJChart.resize();
+        monthly_MACDChart.resize();
+        monthly_RSIChart.resize();
     }
 }, 200);

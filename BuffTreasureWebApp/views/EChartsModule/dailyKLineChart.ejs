@@ -21,7 +21,14 @@
 
 <script>
     $('#daily_subTab').find('a').click(function (e) {
+        e.preventDefault();
         $(this).tab('show');
         $(this).resize();
+        if($(this).attr('href') === '#daily_KDJChart')
+            daily_KDJChart.resize();
+        if($(this).attr('href') === '#daily_MACDChart')
+            daily_MACDChart.resize();
+        if($(this).attr('href') === '#daily_RSIChart')
+            daily_RSIChart.resize();
     });
 </script>

@@ -1,8 +1,8 @@
 // 基于准备好的dom，初始化echarts实例
 let timeSharingChart = echarts.init(document.getElementById('timeSharingChart'), 'shine');
-let KDJChart = echarts.init(document.getElementById('timeSharing_KDJChart'), 'shine');
-let MACDChart = echarts.init(document.getElementById('timeSharing_MACDChart'), 'shine');
-let RSIChart = echarts.init(document.getElementById('timeSharing_RSIChart'), 'shine');
+let timeSharing_KDJChart = echarts.init(document.getElementById('timeSharing_KDJChart'), 'shine');
+let timeSharing_MACDChart = echarts.init(document.getElementById('timeSharing_MACDChart'), 'shine');
+let timeSharing_RSIChart = echarts.init(document.getElementById('timeSharing_RSIChart'), 'shine');
 
 let rawData = [
     ['2017-03-29',
@@ -385,12 +385,6 @@ let rawData = [
         37.03703703703704]];
 
 let data = splitData(rawData);
-/**
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj       RSI6     RSI12     RSI24
- * eg:  80  90  70      0.2        0.3        -0.2       11.0      22.42    33.33     44.44
- **/
 
 function splitData(rawData) {
     let categoryData = [];
@@ -635,7 +629,7 @@ timeSharingOption = {
     ]
 };
 
-KDJChartOption = {
+timeSharing_KDJChartOption = {
     title: {
         show: false,
         text: 'KDJ',
@@ -756,7 +750,7 @@ KDJChartOption = {
     ]
 };
 
-MACDChartOption = {
+timeSharing_MACDChartOption = {
     title: {
         show: false,
         text: 'MACD',
@@ -870,7 +864,7 @@ MACDChartOption = {
     ]
 };
 
-RSIChartOption = {
+timeSharing_RSIChartOption = {
     title: {
         show: false,
         text: 'RSI',
@@ -991,19 +985,35 @@ RSIChartOption = {
     ]
 };
 
+
+function loadTimeSharingChart() {
+
 // 使用刚指定的配置项和数据显示图表
-timeSharingChart.setOption(timeSharingOption);
-KDJChart.setOption(KDJChartOption);
-MACDChart.setOption(MACDChartOption);
-RSIChart.setOption(RSIChartOption);
+    timeSharingChart.setOption(timeSharingOption);
+    timeSharing_KDJChart.setOption(timeSharing_KDJChartOption);
+    timeSharing_MACDChart.setOption(timeSharing_MACDChartOption);
+    timeSharing_RSIChart.setOption(timeSharing_RSIChartOption);
 
-echarts.connect([timeSharingChart, KDJChart, MACDChart, RSIChart]);
+    echarts.connect([timeSharingChart, timeSharing_KDJChart, timeSharing_MACDChart, timeSharing_RSIChart]);
 
-setTimeout(() => {
-    window.onresize = function () {
-        timeSharingChart.resize();
-        KDJChart.resize();
-        MACDChart.resize();
-        RSIChart.resize();
-    }
-}, 200);
+    setTimeout(() => {
+        window.onresize = function () {
+            timeSharingChart.resize();
+            timeSharing_KDJChart.resize();
+            timeSharing_MACDChart.resize();
+            timeSharing_RSIChart.resize();
+        }
+    }, 200);
+}
+
+// function loadTimeSharingKDJ() {
+//
+// }
+//
+// function loadTimeSharingMACD() {
+//     let timeSharing_KDJChart = echarts.init(document.getElementById('timeSharing_KDJChart'), 'shine');
+//     timeSharing_MACDChart.setOption(timeSharing_MACDChartOption);
+// }
+
+
+loadTimeSharingChart();

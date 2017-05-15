@@ -21,7 +21,14 @@
 
 <script>
     $('#timeSharing_subTab').find('a').click(function (e) {
+        e.preventDefault();
         $(this).tab('show');
         $(this).resize();
+        if($(this).attr('href') === '#timeSharing_KDJChart')
+            timeSharing_KDJChart.resize();
+        if($(this).attr('href') === '#timeSharing_MACDChart')
+            timeSharing_MACDChart.resize();
+        if($(this).attr('href') === '#timeSharing_RSIChart')
+            timeSharing_RSIChart.resize();
     });
 </script>

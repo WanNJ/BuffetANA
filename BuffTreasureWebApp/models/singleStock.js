@@ -81,8 +81,8 @@ exports.singleStockDB = {
         }else{
             console.time('hereRead');
             let Stock = mongoose.model(code, stockSchema);
-            Stock.find({ date : {$gte : beginDate, $lte : endDate}})
-                .select('adjClose date volume').exec(function (err, docs) {
+            Stock.find({ date : {$gte : beginDate, $lte : endDate},volume:{$gte: 0.1}})
+                .select('adjClose date').exec(function (err, docs) {
                     console.timeEnd('hereRead');
                     preRangeStockList = docs;
                     preRangeCode = code;

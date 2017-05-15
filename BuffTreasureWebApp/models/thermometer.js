@@ -66,7 +66,8 @@ exports.thermometerDB = {
      * @param callback
      */
     getThermometerInRangeDate: function (beginDate, endDate, callback) {
-        Thermometer.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date : 'desc'})
+        Thermometer.find({ date : {$gte : beginDate, $lte : endDate}})
+            .select('date temp earnEffect50 earnEffectAll lastUpToday lastDownToday').sort({date : 'desc'})
                    .exec(function (err, docs) {
                 callback(err, docs);
          });

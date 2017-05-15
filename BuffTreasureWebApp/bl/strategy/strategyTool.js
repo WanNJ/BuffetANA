@@ -363,13 +363,8 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
     console.time('set Name');
-    console.time('begin Name');
     singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 50*24000*3600),new Date(endDate), (err,data)=>{
-        console.timeEnd('begin Name');
-        // console.log(codeAndName)
-        // console.log(data.length)
         let keys = Object.keys(AllDataList);
-
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];
             let p = 0 ; //data的指针
@@ -382,17 +377,19 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                         p++;
                     }
                     let begin = 0;
-                    if (typeof data[p] !== 'undefined')
+
+                    if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] === 0) {
                         begin = data[p]['adjClose']; //最后一天收盘价格
+                    }
                     else
                         valid = false;
                     while ( typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.endDate < 0 ) {
                         p++;
                         //console.log(p)
-                        if (typeof data[p] === 'undefined' || data[p]['volume'] === 0) valid = false;
+
                     }
                     let end = 0;
-                    if (typeof data[p] !== 'undefined')
+                    if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date']=== 0 )
                         end = data[p]['adjClose']; //最后一天收盘价格
                     else
                         valid = false;

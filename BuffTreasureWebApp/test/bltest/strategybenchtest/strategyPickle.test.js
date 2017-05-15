@@ -23,10 +23,10 @@ mongoose.connection.on('open', function () {
 describe('#shiit()', function() {
     it('temp', function(done) {
 
-        let stockPoolConditionVO = new StockPoolConditionVO('中小板',[],[],false);
+        let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
 
         let tradeModelVO  = new TradeModelVO(10,10);
-        console.log(new Date())
+        // console.log(new Date())
 
         let rank = {
             'MA' : ["asd",   10,     0.4]

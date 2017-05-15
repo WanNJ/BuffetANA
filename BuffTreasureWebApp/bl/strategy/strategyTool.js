@@ -206,18 +206,18 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
 
 
 
-            })
+            });
             let ReturnValue = {
                 'Normal' : normalPickleList,
                 'HighAndOpposite':HighAndOppositePickleList,
                 'HighAndSame':HighAndSamePickleList,
                 'LowAndSame':LowAndSamePickleList,
                 'LowAndOpposite':LowAndOppositePickleList
-            }
+            };
             callback(null,ReturnValue);
 
         });
-}
+};
 
 
 

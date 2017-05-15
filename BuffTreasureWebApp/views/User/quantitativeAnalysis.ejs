@@ -9,12 +9,23 @@
 
     <% include ../Components/navigator.ejs %>
 
-    <p class="text-center">ssss</p>
-    <button type="submit"
-            class="btn-success bloc-button btn flipInY btn-lg btn-block btn-clean shake-hvr animated btn-black"
-            id="signInButton">
-        登陆
-    </button>
+    <div class="center-block text-center" style="max-width: 500px;">
+        <button type="submit"
+                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
+                id="quickAnalysis" >
+            快速回测（推荐）
+        </button>
+        <button type="submit"
+                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
+                id="predefinedAnalysis" >
+            预定义回测
+        </button>
+        <button type="submit"
+                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
+                id="customAnalysis" >
+            自定义回测
+        </button>
+    </div>
 
     <!-- ScrollToTop Button -->
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span

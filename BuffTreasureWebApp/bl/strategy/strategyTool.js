@@ -67,7 +67,7 @@ exports.getChoosedStockList = (stockPoolConditionVO , callback) =>{
 
     }
 
-}
+};
 
 
 /**
@@ -290,7 +290,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 resolve(promise);
             }
         });
-    }
+    };
 
 
     /**
@@ -318,23 +318,23 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @returns {Promise}
      */
     let operatePromise = function (codeList ,codeIndex , listAll){
-        console.log('start' + new Date())
+        // console.log('start' + new Date())
         //console.log(codeList)
-        console.log('here')
+        // console.log('here')
         //console.log(codeList[codeIndex])
         return new Promise((resolve,reject)=>{
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else {
-                console.time('set name' + codeList[codeIndex])
+                // console.time('set name' + codeList[codeIndex])
                 resolve(setCodeAndName(codeList[codeIndex], listAll, beginDate, endDate)
                     .then(list => {
-                        console.timeEnd('set name' + codeList[codeIndex])
-                        console.time('set rank'+codeList[codeIndex])
+                        // console.timeEnd('set name' + codeList[codeIndex])
+                        // console.time('set rank'+codeList[codeIndex])
                         return setRankPromise(codeList[codeIndex]['code'], codeIndex, rank, 0, list, beginDate, endDate)
                     })
                     .then(list => {
-                        console.timeEnd('set rank' + codeList[codeIndex])
+                        // console.timeEnd('set rank' + codeList[codeIndex]);
                         //console.time(codeList[codeIndex])
                         return setFilterPromise(codeIndex, filter, 0, list)
                     })
@@ -345,11 +345,11 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
         })
 
 
-    }
+    };
 
     operatePromise(codeList,0,AllPickleDataList).then(list =>callback(null,list));
 
-}
+};
 
 
 

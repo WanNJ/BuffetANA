@@ -50,7 +50,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
                 resolve(data);
             })
         })
-    }
+    };
 
     /**
      *
@@ -64,7 +64,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
                 resolve(list);
             })
         })
-    }
+    };
 
     getCodeList()
         .then(list=>divideDays(list))

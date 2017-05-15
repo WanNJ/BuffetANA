@@ -81,12 +81,11 @@ exports.singleStockDB = {
         }else{
             // console.time('hereRead');
             let Stock = mongoose.model(code, stockSchema);
-            Stock.find({ date : {$gte : beginDate, $lte : endDate}})
-                .select('adjClose date volume').exec(function (err, docs) {
-                    // console.timeEnd('hereRead');
-                    preRangeStockList = docs;
-                    preRangeCode = code;
-                    callback(err, docs.reverse());
+            Stock.find({ date : {$gte : beginDate, $lte : endDate}}, {_id : 0, adjClose : 1, date : 1, volume : 1}, function (err, docs) {
+                // console.timeEnd('hereRead');
+                preRangeStockList = docs;
+                preRangeCode = code;
+                callback(err, docs.reverse());
             });
             // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
             //     console.timeEnd('hereRead');

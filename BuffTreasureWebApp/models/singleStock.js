@@ -74,21 +74,28 @@ exports.singleStockDB = {
      * @param callback
      */
     getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
-        //console.log(code);
-        let Stock = mongoose.model(code, stockSchema);
-        Stock.find({code : code, date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'}).exec(function (err, docs) {
-            callback(err, docs);
-        });
-        // if (preRangeCode === code && preRangeStockList !== null) {
-        //     callback(null, preRangeStockList);
-        // }
-        // else {
-        //     let Stock = mongoose.model(code, stockSchema);
-        //     Stock.find({code : code, date : {$gte : beginDate, $lte : endDate}}).sort({date : 'asc'}).exec(function (err, docs) {
-        //         preRangeStockList = docs;
-        //         callback(err, docs);
-        //     });
-        // }
+        console.log(code)
+        if (preRangeCode === code && preRangeStockList !== null) {
+            callback(null, preRangeStockList);
+            //console.time('hereRead');
+        }else{
+            console.time('hereRead');
+            let Stock = mongoose.model(code, stockSchema);
+            Stock.find({ date : {$gte : beginDate, $lte : endDate}})
+                .select('adjClose date volume').exec(function (err, docs) {
+                    console.timeEnd('hereRead');
+                    preRangeStockList = docs;
+                    preRangeCode = code;
+                    callback(err, docs.reverse());
+            });
+            // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
+            //     console.timeEnd('hereRead');
+            //     preRangeStockList = docs;
+            //     preRangeCode = code;
+            //     callback(err,docs);
+            // });
+
+        }
     },
 
     /**

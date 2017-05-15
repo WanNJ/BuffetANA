@@ -32,20 +32,20 @@ mongoose.connection.on('open', function () {
 //     });
 // });
 
-// describe('#getEachDayEnvironmentByFormation()', function() {
-//     it('print the list', function(done) {
-//         thermometerbl.getEachDayEnvironmentByFormation(new Date("2014-01-01"),new Date("2016-04-01"),3 , (err,data) => {
-//             if (err) {
-//                 console.log('wrong')
-//                 done(err);
-//             }
-//             else {
-//                 console.log(data);
-//                 done();
-//             }
-//         });
-//     });
-// });
+describe('#getEachDayEnvironmentByFormation()', function() {
+    it('print the list', function(done) {
+        thermometerbl.getEachDayEnvironmentByFormation(new Date("2010-01-01"),new Date("2016-04-01"),10 , (err,data) => {
+            if (err) {
+                console.log('wrong')
+                done(err);
+            }
+            else {
+                console.log(data);
+                done();
+            }
+        });
+    });
+});
 
 /**
  * 提示  在命令行里输入 测试  mocha -t 300000 thermometer.test.js

@@ -26,6 +26,7 @@ describe('#shiit()', function() {
         let stockPoolConditionVO = new StockPoolConditionVO('中小板',[],[],false);
 
         let tradeModelVO  = new TradeModelVO(10,10);
+        console.log(new Date())
 
         let rank = {
             'MA' : ["asd",   10,     0.4]
@@ -37,7 +38,7 @@ describe('#shiit()', function() {
                 done(err);
             }
             else {
-                console.log(data['Normal']);
+                //console.log(data['Normal'][0].backDatas);
                 done();
             }
         });

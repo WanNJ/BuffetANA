@@ -38,9 +38,11 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     let divideDays = function (stockList) {
         //console.log(stockList)
         return new Promise((resolve,reject) =>{
+            console.time('divide');
             strategyTool.divideDaysByThermometer
             (beginDate,endDate,tradeModelVO.holdingDays, envSpecDay,(err,list) =>{
                 //console.log(list)
+                console.timeEnd('divide');
                 let data = {
                     'code':stockList,
                     'pickle':list

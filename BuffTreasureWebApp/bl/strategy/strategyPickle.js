@@ -105,11 +105,46 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
         return AllDataList;
     }
 
+    /**
+     *  计算基础收益率  每个基础收益率的结果为 < 1 的值
+     * @param AllDataList
+     * @returns {*}
+     */
+    let caculateBase = function (AllDataList) {
+        //console.log(AllDataList['Normal'][0])
+        let keys = Object.keys(AllDataList);
+        for(let i = 0 ; i < 5 ; i++){
+            let pickleDataList =  AllDataList[keys[i]];
+            let p = 0 ; //data的指针
+            pickleDataList.forEach(pickleData =>{
+                let num = 0;
+                let moneySum = 0;
+                pickleData.backDatas
+                    .filter(t=>t.valid)
+                    .forEach(data=>{
+                        num++;
+                        moneySum+= ((100/data.firstDayOpen)*data.lastDayClose-100)/100;
+                    })
+                if(num!==0)
+                pickleData.baseProfitRate = moneysum/num
+            });
+            AllDataList[keys[i]] = pickleDataList;
+        }
+
+        return AllDataList;
+    }
+
+
 
     getCodeList()
         .then(list=>divideDays(list))
+        .catch(e => console.log('wrong in divideDays:   '+e))
         .then(data=>setValue(data))
+        .catch(e => console.log('wrong in setValue:   '+e))
+        .then(data=>caculateBase(data))
+        .catch(e => console.log('wrong in calculateValue:   '+e))
         .then(data=>filterAndRank(data,tradeModelVO.holdingNums))
+        .catch(e => console.log('wrong in filterAndRank:   '+e))
         .then(allList=>callback(null,allList));
 };
 

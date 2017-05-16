@@ -347,7 +347,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
     };
 
-    operatePromise(codeList,0,AllPickleDataList,projection).then(list =>callback(null,list));
+    operatePromise(codeList,0,AllPickleDataList,projection).catch(e=>console.log(e)).then(list =>callback(null,list));
 
 };
 

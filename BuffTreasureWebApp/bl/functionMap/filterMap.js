@@ -3,7 +3,11 @@
  */
 
 
+function setVolume (codeIndex, isBigger , value , AllPickleDataList) {
+    return new
 
+        
+}
 
 exports.funtionMap = {
 

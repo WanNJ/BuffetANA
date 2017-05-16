@@ -44,7 +44,7 @@ describe('#shiit()', function() {
             }
             else {
                 //console.log();
-                data['Normal'].forEach(t => console.log(t.backDatas))
+                console.log(data['Normal'])
                 console.log('\n');
                 done();
             }

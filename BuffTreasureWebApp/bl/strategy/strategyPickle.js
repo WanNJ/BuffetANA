@@ -136,7 +136,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
                         moneySum+= ((100/data.firstDayOpen)*data.lastDayClose-100)/100;
                     })
                 if(num!==0)
-                pickleData.baseProfitRate = moneysum/num
+                pickleData.baseProfitRate = moneySum/num
             });
             AllDataList[keys[i]] = pickleDataList;
         }

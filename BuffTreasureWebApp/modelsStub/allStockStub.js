@@ -101,9 +101,7 @@ exports.allStockDB = {
      */
     getSMEBoardCodeAndName: (callback) => {
         callback(null,[
-            {'code':'000001','name':'中国平安'}
-        ,{'code':'000002','name':'中国平安'}
-        ,{'code':'000014','name':'中国平安'}
+          {'code':'000014','name':'中国平安'}
          ,{'code':'000544','name':'中国平安'},{'code':'000548','name':'中国平安'}
             ,{'code':'000006','name':'中国平安'},{'code':'000007','name':'中国平安'}
             ,{'code':'000008','name':'中国平安'},{'code':'000009','name':'中国平安'}

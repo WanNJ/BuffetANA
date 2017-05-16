@@ -44,7 +44,7 @@ describe('#shiit()', function() {
             }
             else {
                 //console.log();
-                console.log(data['Normal'])
+                console.log(data['HighAndOpposite'])
                 console.log('\n');
                 done();
             }

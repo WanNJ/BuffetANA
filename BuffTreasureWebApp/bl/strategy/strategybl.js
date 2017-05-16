@@ -41,12 +41,12 @@ let largestBackRate;
  * @param beginDate {Date} 回测的开始日期
  * @param endDate  {Date} 回测的结束日期
  * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
- * @param rank {JSON}
+ * @param rank
  *       策略名称   升序／降序   观察期   权重
  * eg : { "MA" :  ["asd",      10,     0.4],
  *        "MOM" : ["des",      20,     0.6]
  *       }
- * @param filter {JSON}
+ * @param filter
  *        筛选指标          比较符     值
  * eg : { "vol" :          [">",     1000000],
  *        "turnOverrate" : ["<",     0.05]
@@ -112,6 +112,8 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             let keys = Object.keys(docs);
             for (let i = 0; i < 5; i++) {
                 pickleDatas =  docs[keys[i]];
+                console.log(keys[i])
+                console.log(pickleDatas.length)
                 initPara(beginDate, endDate);
                 let result = {
                     "backDetail" : getBackDetail(),
@@ -121,7 +123,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                     "profitDistributePie" : getProfitDistributePie(),
                     "historyTradeRecord" : getHistoryTradeRecord()
                 };
-                results.add(result);
+                results.push(result);
             }
             callback(null, results);
         }
@@ -145,6 +147,7 @@ function initPara(beginDate, endDate) {
     pickleDatas = pickleDatas.filter(t => t.backDatas.length > 0);
     let sumOfBase = 100000;
     let sumOfStrategy = 100000;
+    //console.log(pickleDatas.length === 0);
     pickleDatas.forEach(pickleData => {
         let tempRate = 0.0;
         sumOfBase += sumOfBase * pickleData.baseProfitRate;
@@ -326,7 +329,7 @@ function getStrategyEstimateResult() {
         else if(strategyRates[i] < maxLoseRate)
             maxLoseRate = strategyRates[i];
     }
-    let chooseStockAbility = Math.round(winCount / baseRates.size() * 20);
+    let chooseStockAbility = Math.round(winCount / baseRates.length * 20);
     if(chooseStockAbility > 20)
         chooseStockAbility = 20;
     else if (chooseStockAbility < 0)
@@ -369,7 +372,7 @@ function getHistoryTradeRecord() {
             historyTradeRecord.push({
                 "code" : backData.code,      // 股票代码
                 "name" : backData.name,      // 股票简称
-                "buyTime" : pickleData.begindate.toISOString().substr(0, 10),   // 买入时间
+                "buyTime" : pickleData.beginDate.toISOString().substr(0, 10),   // 买入时间
                 "sellTime" : pickleData.endDate.toISOString().substr(0, 10),  // 卖出时间
                 "buyPrice" : backData.firstDayOpen,  // 买入价
                 "sellPrice" : backData.lastDayClose, // 卖出价
@@ -403,6 +406,7 @@ function getCOV(a, b) {
  * @returns {number}
  */
 function getAverage(a) {
+    console.log(a);
     return a.reduce((x, y) => { return x + y; }) / a.length;
 }
 

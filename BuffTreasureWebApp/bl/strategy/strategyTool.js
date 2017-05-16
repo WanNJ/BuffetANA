@@ -128,6 +128,7 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
              * forEach 顺序执行 给出分割日期的方法
              */
             doc.forEach(dd=>{
+                //console.log(dd)
                 //console.log(dd['environment']);
 
                 /**
@@ -365,7 +366,9 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,projection, callback){
     console.time('set Name');
 
+    console.time('set Read');
     singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate),projection, (err,data)=>{
+        console.timeEnd('set Read');
         //data.reverse();
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){

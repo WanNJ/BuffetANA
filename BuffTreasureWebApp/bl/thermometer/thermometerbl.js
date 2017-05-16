@@ -36,6 +36,8 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
     let searchBeginDate = new Date(beginDate - (formationDays * 5 + 5) * 24000 * 3600);
 
     thermometerDB.getThermometerInRangeDate(searchBeginDate,endDate, (err, docs)=>{
+
+       // console.log(docs)
         let temp = 0 ;               //温度
         let earnEffect50 = 0;        //  换手率前50 赚钱效应
         let earnEffectAll = 0;       //  赚钱效应
@@ -56,6 +58,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
             let q = lastUpToday - lastDownToday;
             let strw;
             let strq;
+           // console.log(w)
 
             //console.log(w)
             if(w > 69)
@@ -98,6 +101,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
             };
 
             data.push(oneDay);
+            //console.log(oneDay)
 
             temp += docs[end]['temperature'] - docs[begin]['temperature'];               //温度
             earnEffect50 += docs[end]['lastTurnOver'] - docs[begin]['lastTurnOver'];       //  换手率前50 赚钱效应
@@ -108,6 +112,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
         }
 
         data.reverse();
+        //console.log(data)
         callback(null,data);
 
     });

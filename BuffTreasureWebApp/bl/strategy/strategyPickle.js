@@ -78,6 +78,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
                     'code':stockList,
                     'pickle':list
                 };
+                console.log(data)
                 resolve(data);
             })
         })

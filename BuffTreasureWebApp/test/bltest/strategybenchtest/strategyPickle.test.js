@@ -41,8 +41,6 @@ describe('#shiit()', function() {
                 //console.log();
                 data['Normal'].forEach(t => console.log(t.backDatas))
                 console.log('\n');
-               // console.log('asdsasssasdsasssasdsasssasdsasssasdsasss')
-               // console.log(data['Normal'][1]);
                 done();
             }
         });

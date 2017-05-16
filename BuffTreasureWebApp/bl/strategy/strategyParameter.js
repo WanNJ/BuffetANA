@@ -45,29 +45,28 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
     // TODO 应该是24000*3600吧？
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
-        doc.reverse();
+        //doc.reverse();
         let curMASum = 0;
         let MAValue = [];
 
-        //
-        if(doc.length < formationPeriod){
-            console.log(code)
-        }
-        //console.log(doc)
+        console.log(doc[0])
 
         for(let i = 1; i < doc.length && i <= formationPeriod ; i++){
+
             curMASum+= doc[i]["adjClose"];
+           // console.log(curMASum)
         }
-        //console.log('df')
 
-        for(let i  = 0;  i+formationPeriod +1< doc.length && doc[i]["date"] -beginDate >= 0; i++){
-
+        for(let i  = 0;  (i+formationPeriod +1)< doc.length && doc[i]["date"] -beginDate >= 0; i++){
             let temp = (curMASum/formationPeriod - doc[i]["adjClose"])/(curMASum/formationPeriod);
+            //console.log(temp)
             let part = {
                 "date" : doc[i]["date"],
                 "value" : temp
             };
+            //console.log('part:  '+part['value'])
             MAValue.push(part);
+            //console.log(MAValue.length)
             /**
              * added by TY
              * TODO 此处的 i+formationPeriod 有可能存在数组下标越界的可能，应该加一个判断
@@ -75,7 +74,9 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
             curMASum += doc[i+formationPeriod+1]["adjClose"] - doc[i]["adjClose"];
             //console.log(curMASum)
         }
-        MAValue.reverse();
+        console.log( code+'    '+MAValue.length)
+        MAValue.reverse()
+        //if(MAValue.length ===0)console.log(code)
         callback(err,MAValue);
     });
 };
@@ -112,7 +113,8 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
 
         let MOMValue = [];
 
-        docs = docs.filter(data => data["volume"] !== 0);
+        // 数据层已经过滤掉了交易量为0的数据
+        // docs = docs.filter(data => data["volume"] !== 0);
         for (let i = 1; i + formationPeriod < docs.length && docs[i]["date"] - beginDate >= 0; i++) {
             endAdj = docs[i]["adjClose"];
             beginAdj = docs[i + formationPeriod]["adjClose"];
@@ -124,6 +126,8 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
             });
         }
         MOMValue.reverse();
+        // 归一化
+        MOMValue = normalize(MOMValue);
         callback(err, MOMValue);
     });
 };
@@ -162,6 +166,8 @@ exports.calculateRSIValue = function (code ,beginDate , endDate, formationPeriod
                     });
                 }
             }
+            // 归一化
+            RSIValue = normalize(RSIValue);
             callback(null, RSIValue);
         }
     });
@@ -196,12 +202,12 @@ exports.calculateMACD_DIFValue = function (code ,beginDate , endDate, formationP
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
                 if (docs.has(i.toISOString().substr(0, 10))) {
                     MACD_DIFValue.push({
-                        "date" : i,
-                        "value" : docs.get(i.toISOString().substr(0, 10))["MACD_DIF"]
+                        "date": i,
+                        "value": docs.get(i.toISOString().substr(0, 10))["MACD_DIF"]
                     });
                 }
             }
-            callback(null, MACD_DIFValue);
+            callback(null, normalize(MACD_DIFValue));
         }
     });
 };
@@ -240,7 +246,7 @@ exports.calculateMACD_DEAValue = function (code ,beginDate , endDate, formationP
                     });
                 }
             }
-            callback(null, MACD_DEAValue);
+            callback(null, normalize(MACD_DEAValue));
         }
     });
 };
@@ -279,7 +285,7 @@ exports.calculateMACDValue = function (code ,beginDate , endDate, formationPerio
                     });
                 }
             }
-            callback(null, MACDValue);
+            callback(null, normalize(MACDValue));
         }
     });
 };
@@ -318,7 +324,7 @@ exports.calculateRSVValue = function (code ,beginDate , endDate, formationPeriod
                     });
                 }
             }
-            callback(null, RSVValue);
+            callback(null, normalize(RSVValue));
         }
     });
 };
@@ -356,7 +362,7 @@ exports.calculateKDJ_KValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_KValue);
+            callback(null, normalize(KDJ_KValue));
         }
     });
 };
@@ -395,7 +401,7 @@ exports.calculateKDJ_DValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_DValue);
+            callback(null, normalize(KDJ_DValue));
         }
     });
 };
@@ -434,7 +440,7 @@ exports.calculateKDJ_JValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_JValue);
+            callback(null, normalize(KDJ_JValue));
         }
     });
 };
@@ -548,4 +554,32 @@ function getDailyData(code, beginDate, endDate, callback) {
     }
     else
         callback(null, dailyData);
+}
+
+
+/**
+ * 归一化处理
+ * @param array
+ */
+function normalize(array) {
+    //console.log(array)
+    if(array.length ===0)  return array
+    let numArray =  array.map(t=>t['value']);
+    console.log(numArray)
+    let min = Math.min.apply(null, numArray);
+    let max = Math.max.apply(null, numArray);
+    console.log(max)
+    console.log(min)
+    if (max - min !== 0) {
+        array = array.forEach(ma => {
+            ma['value'] =  ( ma['value'] - min) / max - min;
+        });
+    }
+    else {
+
+        array = array.map(ma => {
+            ma['value'] = 1;
+        });
+    }
+    return array;
 }

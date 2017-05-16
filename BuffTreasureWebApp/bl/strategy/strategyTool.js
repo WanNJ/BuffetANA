@@ -363,7 +363,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
     console.time('set Name');
-    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 100*24000*3600),new Date(endDate), (err,data)=>{
+    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate), (err,data)=>{
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];

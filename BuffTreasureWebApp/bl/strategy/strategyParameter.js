@@ -77,7 +77,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
         console.log( code+'    '+MAValue.length)
         MAValue.reverse()
         //if(MAValue.length ===0)console.log(code)
-        callback(err,MAValue);
+        callback(err,normalize(MAValue));
     });
 };
 

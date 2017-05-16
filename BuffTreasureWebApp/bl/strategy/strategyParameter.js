@@ -102,9 +102,9 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
  *      比如2014-01-02 没有MOM值  那么返回的数组里面没有 date 2014-01-02 就根本不会出现
  */
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
-    let searchBeginDate = new Date(beginDate-(formationPeriod * 10+20)*24000*3600);
+    let searchBeginDate = new Date(beginDate-600*24000*3600);
     singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate, (err, docs) => {
-        docs.reverse();
+        // docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量
          */
@@ -562,23 +562,17 @@ function getDailyData(code, beginDate, endDate, callback) {
  * @param array
  */
 function normalize(array) {
-    //console.log(array)
-    if(array.length ===0)  return array
-    let numArray =  array.map(t=>t['value']);
-    console.log(numArray)
-    let min = Math.min.apply(null, numArray);
-    let max = Math.max.apply(null, numArray);
-    console.log(max)
-    console.log(min)
+    let valueArray = array.map(t => t["value"]);
+    let min = Math.min.apply(null, valueArray);
+    let max = Math.max.apply(null, valueArray);
     if (max - min !== 0) {
-        array = array.forEach(ma => {
-            ma['value'] =  ( ma['value'] - min) / max - min;
+        array.forEach(t => {
+             t["value"] = (t["value"] - min) / (max - min);
         });
     }
     else {
-
-        array = array.map(ma => {
-            ma['value'] = 1;
+        array.forEach(t => {
+            t["value"] = 1;
         });
     }
     return array;

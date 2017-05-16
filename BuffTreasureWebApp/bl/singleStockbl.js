@@ -37,6 +37,59 @@ exports.getTwoDayInfo = (date, callback) => {
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */
+
+function splitData(daily_rawData) {
+    let categoryData = [];
+    let values = [];
+    let changeRates = [];
+    let volumns = [];
+    let turnOverRates = [];
+    let kIndexes = [];
+    let dIndexes = [];
+    let jIndexes = [];
+    let difs = [];
+    let deas = [];
+    let macds = [];
+    let adjs = [];
+    let rsi6s = [];
+    let rsi12s = [];
+    let rsi24s = [];
+    for (let i = 0; i < daily_rawData.length; i++) {
+        categoryData.push(daily_rawData[i].splice(0, 1)[0]);
+        values.push(daily_rawData[i].splice(0, 4));
+        changeRates.push(daily_rawData[i].splice(0, 1)[0]);
+        volumns.push(daily_rawData[i].splice(0, 1)[0]);
+        kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        dIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        jIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
+        difs.push(daily_rawData[i].splice(0, 1)[0]);
+        deas.push(daily_rawData[i].splice(0, 1)[0]);
+        macds.push(daily_rawData[i].splice(0, 1)[0]);
+        adjs.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
+    }
+    return {
+        categoryData: categoryData,
+        KLineValue: values,
+        changeRates: changeRates,
+        volumns: volumns,
+        turnOverRates: turnOverRates,
+        kIndexes: kIndexes,
+        dIndexes: dIndexes,
+        jIndexes: jIndexes,
+        difs: difs,
+        deas: deas,
+        macds: macds,
+        adjs: adjs,
+        rsi6s: rsi6s,
+        rsi12s: rsi12s,
+        rsi24s: rsi24s
+    };
+}
+
 exports.getDailyData = (code, callback) => {
     singleStockDB.getStockInfoByCode(code, (err, docs) => {
         if (err) {
@@ -168,7 +221,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI6);
                 one_day_data.push(RSI12);
                 one_day_data.push(RSI24);
-                return one_day_data;
+                return splitData(one_day_data);
             });
             callback(null, all_day_data);
         }

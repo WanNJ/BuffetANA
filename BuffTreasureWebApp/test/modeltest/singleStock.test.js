@@ -72,7 +72,7 @@ describe('singleStockDB', function() {
                     done(err);
                 }
                 else {
-                    // console.log(docs);
+                    console.log(docs);
                     done();
                 }
             });

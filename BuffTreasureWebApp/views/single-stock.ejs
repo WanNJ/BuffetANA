@@ -5,6 +5,7 @@
     <title>BUFF-个股</title>
 
     <!--echarts dependency-->
+    <script src-="/js/vue.js"></script>
     <script src="/echarts/echarts.min.js"></script>
 
     <!--Jquery-UI-->
@@ -37,8 +38,6 @@
                 source: stockList
             });
 
-            let data = [];
-
             $("#stock_form").submit(function (e) {
                 $.ajax({
                     type: "post",
@@ -48,36 +47,18 @@
                     dataType: "json",        //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
+                        console.log(result);
                         if (result) {
-                            for (let i = 0; i < result.length; i++) {
-                                names.push(result[i].name);    //挨个取出类别并填入类别数组
-                            }
-                            for (let i = 0; i < result.length; i++) {
-                                data.push(result[i].num);    //挨个取出销量并填入销量数组
-                            }
-                            kLineChart.hideLoading();    //隐藏加载动画
-                            kLineChart.setOption({        //加载数据图表
-                                xAxis: {
-                                    data: names
-                                },
-                                series: [{
-                                    // 根据名字对应到相应的系列
-                                    name: '销量',
-                                    data: nums
-                                }]
-                            });
-
+                            daily_data = result;
                         }
-
+                        loadDailyKLineChart();
                     },
                     error: function (errorMsg) {
                         //请求失败时执行该函数
-                        alert("图表请求数据失败!");
-                        myChart.hideLoading();
+                        alert("图表请求数据失败!\n" + errorMsg);
                     }
                 })
 
-                // Avoid to execute the actual submit of the form.
                 e.preventDefault();
             });
         });
@@ -145,6 +126,25 @@
     </div>
     <div class="col-sm-12" style="height: 20px;"></div>
 
+
+    <script type="text/javascript">
+        function calculateMA(dayCount) {
+            let result = [];
+            let len = daily_data.adjs.length;
+            for (let i = 0; i < len; i++) {
+                if (i < dayCount) {
+                    result.push('-');
+                    continue;
+                }
+                let sum = 0;
+                for (let j = 0; j < dayCount; j++) {
+                    sum += daily_data.adjs[i - j];
+                }
+                result.push(sum / dayCount);
+            }
+            return result;
+        }
+    </script>
     <!--Echarts Modules-->
     <div class="col-sm-12 tab-content">
         <div id="timeSharing" class="tab-pane active">

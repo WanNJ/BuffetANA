@@ -66,9 +66,28 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
         })
     };
 
+    let filterAndRank = function (AllDataList,holdNumber) {
+        let keys = Object.keys(AllDataList);
+        for(let i = 0 ; i < 5 ; i++){
+            let pickleDataList =  AllDataList[keys[i]];
+            let p = 0 ; //data的指针
+            pickleDataList.forEach(pickleData =>{
+                pickleData.backDatas = pickleData.backDatas
+                    .filter(t=>t.valid && t.filterValue)
+                    .sort((a,b)=>b.rankValue-a.rankValue)
+                    .slice(0,holdNumber);
+            });
+            AllDataList[keys[i]] = pickleDataList;
+        }
+
+        return AllDataList;
+    }
+
+
     getCodeList()
         .then(list=>divideDays(list))
         .then(data=>setValue(data))
+        .then(data=>filterAndRank(data,tradeModelVO.holdingNums))
         .then(allList=>callback(null,allList));
 };
 

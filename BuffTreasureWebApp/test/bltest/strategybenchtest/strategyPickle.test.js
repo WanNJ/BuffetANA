@@ -23,13 +23,13 @@ mongoose.connection.on('open', function () {
 describe('#shiit()', function() {
     it('temp', function(done) {
 
-        let stockPoolConditionVO = new StockPoolConditionVO('沪深300',[],[],false);
+        let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
 
-        let tradeModelVO  = new TradeModelVO(10,10);
+        let tradeModelVO  = new TradeModelVO(20,2);
         // console.log(new Date())
 
         let rank = {
-            'MA' : ["asd",   10,     0.4]
+            'MA' : ["asd",   1, 3]
         };
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-01-01"),
             stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {
@@ -38,7 +38,11 @@ describe('#shiit()', function() {
                 done(err);
             }
             else {
-                //console.log(data['Normal']);
+                //console.log();
+                data['Normal'].forEach(t => console.log(t.backDatas))
+                console.log('\n');
+               // console.log('asdsasssasdsasssasdsasssasdsasssasdsasss')
+               // console.log(data['Normal'][1]);
                 done();
             }
         });

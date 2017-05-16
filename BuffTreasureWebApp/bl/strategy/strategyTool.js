@@ -261,7 +261,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 //console.log(keys)
                 //console.log('length:' +keys.length)
                 resolve(rankMap[keys[index]]
-                    (code ,codeIndex , index,
+                    (code ,codeIndex , rank[keys[index]][0],rank[keys[index]][2],
                     rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
                     .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList)));
             }
@@ -363,7 +363,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
  */
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
     console.time('set Name');
-    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 50*24000*3600),new Date(endDate), (err,data)=>{
+    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 100*24000*3600),new Date(endDate), (err,data)=>{
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];
@@ -394,10 +394,10 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                     else
                         valid = false;
                     pickleData.backDatas.push
-                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, [], [], begin, end, valid));
+                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,begin, end, valid));
                 }else {
                     pickleData.backDatas.push
-                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, [], [], 0, 0, false));
+                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true ,0, 0, false));
                 }
 
             });
@@ -407,5 +407,7 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
         callback(err,AllDataList);
     })
 }
+
+
 
 

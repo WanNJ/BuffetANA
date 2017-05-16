@@ -43,22 +43,26 @@ let preCode = '';
  */
 exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     // TODO 应该是24000*3600吧？
-    let searchBeginDate = new Date(beginDate-(formationPeriod * 15+20)*24000*3600);
+    let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
         doc.reverse();
         let curMASum = 0;
         let MAValue = [];
 
-
         //
-        for(let i = 0; i < doc.length && i < formationPeriod ; i++){
+        if(doc.length < formationPeriod){
+            console.log(code)
+        }
+        //console.log(doc)
+
+        for(let i = 1; i < doc.length && i <= formationPeriod ; i++){
             curMASum+= doc[i]["adjClose"];
         }
         //console.log('df')
 
-        for(let i  = 0;  i+formationPeriod < doc.length && doc[i]["date"] -beginDate >= 0; i++){
+        for(let i  = 0;  i+formationPeriod +1< doc.length && doc[i]["date"] -beginDate >= 0; i++){
 
-            let temp = (curMASum - doc[i]["adjClose"])/curMASum;
+            let temp = (curMASum/formationPeriod - doc[i]["adjClose"])/(curMASum/formationPeriod);
             let part = {
                 "date" : doc[i]["date"],
                 "value" : temp
@@ -68,7 +72,8 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
              * added by TY
              * TODO 此处的 i+formationPeriod 有可能存在数组下标越界的可能，应该加一个判断
              */
-            curMASum += doc[i+formationPeriod]["adjClose"] - doc[i]["adjClose"];
+            curMASum += doc[i+formationPeriod+1]["adjClose"] - doc[i]["adjClose"];
+            //console.log(curMASum)
         }
         MAValue.reverse();
         callback(err,MAValue);

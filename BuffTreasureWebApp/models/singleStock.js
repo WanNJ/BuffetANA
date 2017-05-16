@@ -106,10 +106,11 @@ exports.singleStockDB = {
             callback(null, preRangeStockList);
 
         }else{
+            //console.log('sd')
              console.time('hereRead');
             let Stock = mongoose.model(code, stockSchema);
             Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
-                // , {_id: 0, adjClose: 1, date: 1}
+                 , {_id: 0, adjClose: 1, date: 1}
                 , function (err, docs) {
 
                     console.timeEnd('hereRead');// console.timeEnd('hereRead');

@@ -49,12 +49,9 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
         let curMASum = 0;
         let MAValue = [];
 
-
-        //
         for(let i = 0; i < doc.length && i < formationPeriod ; i++){
             curMASum+= doc[i]["adjClose"];
         }
-        //console.log('df')
 
         for(let i  = 0;  i+formationPeriod < doc.length && doc[i]["date"] -beginDate >= 0; i++){
 
@@ -70,7 +67,6 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
              */
             curMASum += doc[i+formationPeriod]["adjClose"] - doc[i]["adjClose"];
         }
-        MAValue.reverse();
         callback(err,MAValue);
     });
 };
@@ -107,7 +103,8 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
 
         let MOMValue = [];
 
-        docs = docs.filter(data => data["volume"] !== 0);
+        // 数据层已经过滤掉了交易量为0的数据
+        // docs = docs.filter(data => data["volume"] !== 0);
         for (let i = 1; i + formationPeriod < docs.length && docs[i]["date"] - beginDate >= 0; i++) {
             endAdj = docs[i]["adjClose"];
             beginAdj = docs[i + formationPeriod]["adjClose"];
@@ -119,6 +116,8 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
             });
         }
         MOMValue.reverse();
+        // 归一化
+        MOMValue = normalize(MOMValue);
         callback(err, MOMValue);
     });
 };
@@ -157,6 +156,8 @@ exports.calculateRSIValue = function (code ,beginDate , endDate, formationPeriod
                     });
                 }
             }
+            // 归一化
+            RSIValue = normalize(RSIValue);
             callback(null, RSIValue);
         }
     });
@@ -191,12 +192,12 @@ exports.calculateMACD_DIFValue = function (code ,beginDate , endDate, formationP
             for (let i = beginDate; i <= endDate; i = new Date(i.getTime() + 24000 * 3600)) {
                 if (docs.has(i.toISOString().substr(0, 10))) {
                     MACD_DIFValue.push({
-                        "date" : i,
-                        "value" : docs.get(i.toISOString().substr(0, 10))["MACD_DIF"]
+                        "date": i,
+                        "value": docs.get(i.toISOString().substr(0, 10))["MACD_DIF"]
                     });
                 }
             }
-            callback(null, MACD_DIFValue);
+            callback(null, normalize(MACD_DIFValue));
         }
     });
 };
@@ -235,7 +236,7 @@ exports.calculateMACD_DEAValue = function (code ,beginDate , endDate, formationP
                     });
                 }
             }
-            callback(null, MACD_DEAValue);
+            callback(null, normalize(MACD_DEAValue));
         }
     });
 };
@@ -274,7 +275,7 @@ exports.calculateMACDValue = function (code ,beginDate , endDate, formationPerio
                     });
                 }
             }
-            callback(null, MACDValue);
+            callback(null, normalize(MACDValue));
         }
     });
 };
@@ -313,7 +314,7 @@ exports.calculateRSVValue = function (code ,beginDate , endDate, formationPeriod
                     });
                 }
             }
-            callback(null, RSVValue);
+            callback(null, normalize(RSVValue));
         }
     });
 };
@@ -351,7 +352,7 @@ exports.calculateKDJ_KValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_KValue);
+            callback(null, normalize(KDJ_KValue));
         }
     });
 };
@@ -390,7 +391,7 @@ exports.calculateKDJ_DValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_DValue);
+            callback(null, normalize(KDJ_DValue));
         }
     });
 };
@@ -429,7 +430,7 @@ exports.calculateKDJ_JValue = function (code ,beginDate , endDate, formationPeri
                     });
                 }
             }
-            callback(null, KDJ_JValue);
+            callback(null, normalize(KDJ_JValue));
         }
     });
 };
@@ -543,4 +544,25 @@ function getDailyData(code, beginDate, endDate, callback) {
     }
     else
         callback(null, dailyData);
+}
+
+
+/**
+ * 归一化处理
+ * @param array
+ */
+function normalize(array) {
+    let min = Math.min.apply(null, array);
+    let max = Math.max.apply(null, array);
+    if (max - min !== 0) {
+        array = array.map(ma => {
+            return (ma - min) / max - min;
+        });
+    }
+    else {
+        array = array.map(ma => {
+            return 1;
+        });
+    }
+    return array;
 }

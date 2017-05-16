@@ -44,7 +44,7 @@ let preCode = '';
 exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     // TODO 应该是24000*3600吧？
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
-    singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
+    singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate,[] ,(err,doc) => {
         doc.reverse();
         let curMASum = 0;
         let MAValue = [];
@@ -103,7 +103,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
  */
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     let searchBeginDate = new Date(beginDate-600*24000*3600);
-    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate, (err, docs) => {
+    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,[], (err, docs) => {
         docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量
@@ -460,7 +460,7 @@ function getDailyData(code, beginDate, endDate, callback) {
     if (typeof dailyData === "undefined" || preCode !== code) {
         // 往前推600天计算
         let searchBeginDate = new Date(beginDate - 600*24000*3600);
-        singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate, (err, docs) => {
+        singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,[], (err, docs) => {
             if (err)
                 callback(err, null);
             else {

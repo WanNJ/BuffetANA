@@ -74,13 +74,14 @@ exports.singleStockDB = {
      * @param p {Array} 投影参数
      * @param callback
      */
-    getStrategyStockInfoInRangeDate: function (code, beginDate, endDate, p, callback) {
+    getStockInfoInRangeDate: function (code, beginDate, endDate, p=['adjClose'], callback) {
         // console.log(code)
         if (preRangeCode === code && preRangeStockList !== null) {
             callback(null, preRangeStockList);
             //console.time('hereRead');
         }else{
             // console.time('hereRead');
+            //console.log(p)
             let Stock = mongoose.model(code, stockSchema);
             Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
             , p
@@ -100,33 +101,33 @@ exports.singleStockDB = {
         }
     },
 
-    getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
-        // console.log(code)
-        if (preRangeCode === code && preRangeStockList !== null) {
-            callback(null, [...preRangeStockList]);
-
-        }else{
-            //console.log('sd')
-             console.time('hereRead');
-            let Stock = mongoose.model(code, stockSchema);
-            Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
-                 , {_id: 0, adjClose: 1, date: 1}
-                , function (err, docs) {
-
-                    console.timeEnd('hereRead');// console.timeEnd('hereRead');
-                    preRangeStockList = docs;
-                    preRangeCode = code;
-                    callback(err, docs);
-            });
-            // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
-            //     console.timeEnd('hereRead');
-            //     preRangeStockList = docs;
-            //     preRangeCode = code;
-            //     callback(err,docs);
-            // });
-
-        }
-    },
+    // getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
+    //     // console.log(code)
+    //     if (preRangeCode === code && preRangeStockList !== null) {
+    //         callback(null, [...preRangeStockList]);
+    //
+    //     }else{
+    //         //console.log('sd')
+    //          console.time('hereRead');
+    //         let Stock = mongoose.model(code, stockSchema);
+    //         Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
+    //              , {_id: 0, adjClose: 1, date: 1}
+    //             , function (err, docs) {
+    //
+    //                 console.timeEnd('hereRead');// console.timeEnd('hereRead');
+    //                 preRangeStockList = docs;
+    //                 preRangeCode = code;
+    //                 callback(err, docs);
+    //         });
+    //         // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
+    //         //     console.timeEnd('hereRead');
+    //         //     preRangeStockList = docs;
+    //         //     preRangeCode = code;
+    //         //     callback(err,docs);
+    //         // });
+    //
+    //     }
+    // },
 
     /**
      * 获得某一支股票某一天的数据

@@ -28,14 +28,15 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     for(let i = 0 ; i < rankKeys.length;i++){
         let cont = proMap[rankKeys[i]];
         for(let j = 0 ; j < cont.length; j++)
-            set.add(cont[i]);
+            set.add(cont[j]);
     }
     for(let i = 0 ; i < filterKeys.length;i++){
         let cont = proMap[filterKeys[i]];
         for(let j = 0 ; j < cont.length; j++)
-            set.add(cont[i]);
+            set.add(cont[j]);
     }
     set.add('date');
+    //set.add('date');
     console.log(set)
     let pro = [...set]
     console.log(pro)

@@ -364,6 +364,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate , callback){
     console.time('set Name');
     singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate), (err,data)=>{
+        data.reverse();
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];
@@ -377,8 +378,9 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                         p++;
                     }
                     let begin = 0;
-
-                    if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] === 0) {
+                    //console.log(data[p]['date'])
+                    //console.log('ppppp:    '+pickleData.beginDate)
+                    if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] ===0){
                         begin = data[p]['adjClose']; //最后一天收盘价格
                     }
                     else
@@ -389,7 +391,7 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
 
                     }
                     let end = 0;
-                    if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date']=== 0 )
+                    if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date'] === 0 )
                         end = data[p]['adjClose']; //最后一天收盘价格
                     else
                         valid = false;

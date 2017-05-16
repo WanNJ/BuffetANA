@@ -25,11 +25,11 @@ describe('#shiit()', function() {
 
         let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
 
-        let tradeModelVO  = new TradeModelVO(20,2);
+        let tradeModelVO  = new TradeModelVO(10,3);
         // console.log(new Date())
 
         let rank = {
-            'MA' : ["asd",   1, 3]
+            'MA' : ["asd",   10, 1]
         };
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-01-01"),
             stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {

@@ -67,6 +67,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     };
 
     let filterAndRank = function (AllDataList,holdNumber) {
+        //console.log(AllDataList['Normal'][0])
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];

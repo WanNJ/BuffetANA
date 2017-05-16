@@ -59,10 +59,10 @@ function splitData(daily_rawData) {
         values.push(daily_rawData[i].splice(0, 4));
         changeRates.push(daily_rawData[i].splice(0, 1)[0]);
         volumns.push(daily_rawData[i].splice(0, 1)[0]);
+        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
         kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
         dIndexes.push(daily_rawData[i].splice(0, 1)[0]);
         jIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
         difs.push(daily_rawData[i].splice(0, 1)[0]);
         deas.push(daily_rawData[i].splice(0, 1)[0]);
         macds.push(daily_rawData[i].splice(0, 1)[0]);
@@ -221,7 +221,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI6);
                 one_day_data.push(RSI12);
                 one_day_data.push(RSI24);
-                return splitData(one_day_data);
+                return one_day_data;
             });
             callback(null, all_day_data);
         }

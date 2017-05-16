@@ -48,4 +48,4 @@ function setMA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begin
 
 exports.funtionMap = {
     'MA':setMA
-}
+};

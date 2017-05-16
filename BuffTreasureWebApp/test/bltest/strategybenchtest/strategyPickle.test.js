@@ -23,7 +23,7 @@ mongoose.connection.on('open', function () {
 describe('#shiit()', function() {
     it('temp', function(done) {
 
-        let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
+        let stockPoolConditionVO = new StockPoolConditionVO('沪深300',[],[],false);
 
         let tradeModelVO  = new TradeModelVO(10,10);
         // console.log(new Date())
@@ -43,4 +43,5 @@ describe('#shiit()', function() {
             }
         });
     });
+
 });

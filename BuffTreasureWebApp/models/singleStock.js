@@ -71,9 +71,10 @@ exports.singleStockDB = {
      * @param code
      * @param beginDate
      * @param endDate
+     * @param p {Array} 投影参数
      * @param callback
      */
-    getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
+    getStrategyStockInfoInRangeDate: function (code, beginDate, endDate, p, callback) {
         // console.log(code)
         if (preRangeCode === code && preRangeStockList !== null) {
             callback(null, preRangeStockList);
@@ -81,11 +82,40 @@ exports.singleStockDB = {
         }else{
             // console.time('hereRead');
             let Stock = mongoose.model(code, stockSchema);
-            Stock.find({ date : {$gte : beginDate, $lte : endDate}}, {_id: 0, adjClose: 1, date: 1, volume: 1}, function (err, docs) {
-                // console.timeEnd('hereRead');
+            Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
+            , p
+            , function (err, docs) {
+              //   console.timeEnd('hereRead');
                 preRangeStockList = docs;
                 preRangeCode = code;
                 callback(err, docs.reverse());
+            });
+            // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
+            //     console.timeEnd('hereRead');
+            //     preRangeStockList = docs;
+            //     preRangeCode = code;
+            //     callback(err,docs);
+            // });
+
+        }
+    },
+
+    getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
+        // console.log(code)
+        if (preRangeCode === code && preRangeStockList !== null) {
+            callback(null, preRangeStockList);
+
+        }else{
+             console.time('hereRead');
+            let Stock = mongoose.model(code, stockSchema);
+            Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
+                // , {_id: 0, adjClose: 1, date: 1}
+                , function (err, docs) {
+
+                    console.timeEnd('hereRead');// console.timeEnd('hereRead');
+                    preRangeStockList = docs;
+                    preRangeCode = code;
+                    callback(err, docs.reverse());
             });
             // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
             //     console.timeEnd('hereRead');

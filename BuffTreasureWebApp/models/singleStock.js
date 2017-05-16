@@ -103,7 +103,7 @@ exports.singleStockDB = {
     getStockInfoInRangeDate: function (code, beginDate, endDate, callback) {
         // console.log(code)
         if (preRangeCode === code && preRangeStockList !== null) {
-            callback(null, preRangeStockList);
+            callback(null, [...preRangeStockList]);
 
         }else{
             //console.log('sd')
@@ -116,7 +116,7 @@ exports.singleStockDB = {
                     console.timeEnd('hereRead');// console.timeEnd('hereRead');
                     preRangeStockList = docs;
                     preRangeCode = code;
-                    callback(err, docs.reverse());
+                    callback(err, docs);
             });
             // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
             //     console.timeEnd('hereRead');

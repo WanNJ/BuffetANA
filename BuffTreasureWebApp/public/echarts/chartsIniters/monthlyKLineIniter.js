@@ -384,6 +384,8 @@ let monthly_rawData = [
         36.17021276595745,
         37.03703703703704]];
 
+let monthly_data = splitData(monthly_rawData);
+
 function splitData(monthly_rawData) {
     let categoryData = [];
     let values = [];

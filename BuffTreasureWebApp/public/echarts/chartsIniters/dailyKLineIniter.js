@@ -1,12 +1,29 @@
 // 基于准备好的dom，初始化echarts实例
-let daily_data = [];
+let objData = [];
+
+function calculateMA(dayCount, srcData) {
+    let result = [];
+    let len = srcData.adjs.length;
+    for (let i = 0; i < len; i++) {
+        if (i < dayCount) {
+            result.push('-');
+            continue;
+        }
+        let sum = 0;
+        for (let j = 0; j < dayCount; j++) {
+            sum += objData.adjs[i - j];
+        }
+        result.push(sum / dayCount);
+    }
+    return result;
+}
 
 let daily_KLineChart = echarts.init(document.getElementById('dailyKLineChart'), 'shine');
 let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'shine');
 let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
 let daily_RSIChart = echarts.init(document.getElementById('daily_RSIChart'), 'shine');
 
-function loadDailyKLineChart() {
+function loadDailyKLineChart(objData) {
     let daily_KLineChartOption = {
         title: {
             show: false,
@@ -84,13 +101,13 @@ function loadDailyKLineChart() {
         xAxis: [
             {
                 type: 'category',
-                data: daily_data.categoryData,
+                data: objData.categoryData,
                 splitNumber: 20
             },
             {
                 type: 'category',
                 gridIndex: 1,
-                data: daily_data.categoryData,
+                data: objData.categoryData,
                 axisLabel: {show: false},
             }
         ],
@@ -130,13 +147,13 @@ function loadDailyKLineChart() {
             {
                 name: '日K',
                 type: 'candlestick',
-                data: daily_data.KLineValue,
-                changeRates: daily_data.changeRates,
+                data: objData.KLineValue,
+                changeRates: objData.changeRates,
             },
             {
                 name: 'MA5',
                 type: 'line',
-                data: calculateMA(5),
+                data: calculateMA(5, objData),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -145,7 +162,7 @@ function loadDailyKLineChart() {
             {
                 name: 'MA10',
                 type: 'line',
-                data: calculateMA(10),
+                data: calculateMA(10, objData),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -154,7 +171,7 @@ function loadDailyKLineChart() {
             {
                 name: 'MA20',
                 type: 'line',
-                data: calculateMA(20),
+                data: calculateMA(20, objData),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -163,7 +180,7 @@ function loadDailyKLineChart() {
             {
                 name: 'MA30',
                 type: 'line',
-                data: calculateMA(30),
+                data: calculateMA(30, objData),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -174,8 +191,8 @@ function loadDailyKLineChart() {
                 type: 'bar',
                 xAxisIndex: 1,
                 yAxisIndex: 1,
-                data: daily_data.volumns,
-                turnOverRates: daily_data.turnOverRates
+                data: objData.volumns,
+                turnOverRates: objData.turnOverRates
             }
         ]
     };
@@ -231,7 +248,7 @@ function loadDailyKLineChart() {
         xAxis: [
             {
                 type: 'category',
-                data: daily_data.categoryData,
+                data: objData.categoryData,
                 axisLabel: {show: false},
             }
         ],
@@ -261,7 +278,7 @@ function loadDailyKLineChart() {
             {
                 name: 'K值',
                 type: 'line',
-                data: daily_data.kIndexes,
+                data: objData.kIndexes,
                 itemStyle: {
                     normal: {
                         color: 'grey',
@@ -274,7 +291,7 @@ function loadDailyKLineChart() {
             {
                 name: 'D值',
                 type: 'line',
-                data: daily_data.dIndexes,
+                data: objData.dIndexes,
                 itemStyle: {
                     normal: {
                         color: 'orange',
@@ -287,7 +304,7 @@ function loadDailyKLineChart() {
             {
                 name: 'J值',
                 type: 'line',
-                data: daily_data.jIndexes,
+                data: objData.jIndexes,
                 itemStyle: {
                     normal: {
                         color: 'purple',
@@ -351,7 +368,7 @@ function loadDailyKLineChart() {
         xAxis: [
             {
                 type: 'category',
-                data: daily_data.categoryData,
+                data: objData.categoryData,
                 axisLabel: {show: false},
                 splitNumber: 20
             }
@@ -385,7 +402,7 @@ function loadDailyKLineChart() {
             {
                 name: 'MACD',
                 type: 'bar',
-                data: daily_data.macds,
+                data: objData.macds,
                 itemStyle: {
                     normal: {
                         color: function (params) {
@@ -403,12 +420,12 @@ function loadDailyKLineChart() {
             {
                 name: 'DIF',
                 type: 'line',
-                data: daily_data.difs
+                data: objData.difs
             },
             {
                 name: 'DEA',
                 type: 'line',
-                data: daily_data.deas
+                data: objData.deas
             }
         ]
     };
@@ -464,7 +481,7 @@ function loadDailyKLineChart() {
         xAxis: [
             {
                 type: 'category',
-                data: daily_data.categoryData,
+                data: objData.categoryData,
                 axisLabel: {show: false},
             }
         ],
@@ -494,7 +511,7 @@ function loadDailyKLineChart() {
             {
                 name: 'RSI6',
                 type: 'line',
-                data: daily_data.rsi6s,
+                data: objData.rsi6s,
                 itemStyle: {
                     normal: {
                         color: 'grey',
@@ -507,7 +524,7 @@ function loadDailyKLineChart() {
             {
                 name: 'RSI12',
                 type: 'line',
-                data: daily_data.rsi12s,
+                data: objData.rsi12s,
                 itemStyle: {
                     normal: {
                         color: 'orange',
@@ -520,7 +537,7 @@ function loadDailyKLineChart() {
             {
                 name: 'RSI24',
                 type: 'line',
-                data: daily_data.rsi24s,
+                data: objData.rsi24s,
                 itemStyle: {
                     normal: {
                         color: 'purple',
@@ -538,17 +555,14 @@ function loadDailyKLineChart() {
     daily_KDJChart.setOption(daily_KDJChartOption);
     daily_MACDChart.setOption(daily_MACDChartOption);
     daily_RSIChart.setOption(daily_RSIChartOption);
-
-    echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
-
-    setTimeout(() => {
-        window.onresize = function () {
-            daily_KLineChart.resize();
-            daily_KDJChart.resize();
-            daily_MACDChart.resize();
-            daily_RSIChart.resize();
-        }
-    }, 200);
 }
 
-loadDailyKLineChart();
+echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
+setTimeout(() => {
+    window.onresize = function () {
+        daily_KLineChart.resize();
+        daily_KDJChart.resize();
+        daily_MACDChart.resize();
+        daily_RSIChart.resize();
+    }
+}, 200);

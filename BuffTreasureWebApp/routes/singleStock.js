@@ -436,20 +436,17 @@ function splitData(daily_rawData) {
 
 /* GET users listing. */
 router.post('/search', function(req, res, next) {
-    console.log('THIS WORKS!');
-
     let re = /(.*)\(([0-9]+)\)/;
     let result = re.exec(req.body.query);
-    let stockCode = result[1];
+    let stockCode = result[2];
 
     console.log(stockCode);
-    // singleStockService.getDailyData(stockCode, (err, docs) => {
-    //     if(err)
-    //         render('error');
+    singleStockService.getDailyData(stockCode, (err, docs) => {
+        if(err)
+            render('error');
 
-        let daily_data = splitData(daily_rawData);
-        res.send(daily_data);
-    // });
+        res.send(docs);
+    });
 });
 
 router.post('/ajax/getSearchResult', function(req, res, next) {

@@ -4,6 +4,7 @@
  * 将获取pickle data放在这里了   放在models里 会造成循环依赖
  */
 let strategyTool  =require('./strategyTool')
+let proMap  =require('../functionMap/projectionMap').proMap;
 
 /**
  * 直接返回 5 个 pickleDataList
@@ -21,6 +22,25 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
      *
      * @returns {Promise}
      */
+    let set = new Set();
+    let rankKeys =  Object.keys(rank);
+    let filterKeys =  Object.keys(filter);
+    for(let i = 0 ; i < rankKeys.length;i++){
+        let cont = proMap[rankKeys[i]];
+        for(let j = 0 ; j < cont.length; j++)
+            set.add(cont[i]);
+    }
+    for(let i = 0 ; i < filterKeys.length;i++){
+        let cont = proMap[filterKeys[i]];
+        for(let j = 0 ; j < cont.length; j++)
+            set.add(cont[i]);
+    }
+    set.add('date');
+    console.log(set)
+    let pro = [...set]
+    console.log(pro)
+
+
     let getCodeList = function () {
         return new Promise((resolve,reject) => {
             strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
@@ -60,7 +80,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     let setValue = function (data) {
         return new Promise((resolve,reject) =>{
             strategyTool.setRankAndFilterToPickleDataList
-            (data['code'],data['pickle'],beginDate,endDate,rank,filter,(err,list) =>{
+            (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,(err,list) =>{
                 resolve(list);
             })
         })

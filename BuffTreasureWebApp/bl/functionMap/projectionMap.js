@@ -1,0 +1,17 @@
+/**
+ * Created by wshwbluebird on 2017/5/16.
+ */
+
+
+exports.proMap = {
+    "MA" :['adjClose'],
+    "MOM" : ['adjClose'],
+    "RSI" : ['high','low' ,'close','changePrice'],
+    "MACD_DIF" : ['high','low' ,'close','changePrice'],
+    "MACD_DEA" : ['high','low' ,'close','changePrice'],
+    "MACD" : ['high','low' ,'close','changePrice'],
+    "RSV" : ['high','low' ,'close','changePrice'],
+    "KDJ_K" : ['high','low' ,'close','changePrice'],
+    "KDJ_D" : ['high','low' ,'close','changePrice'],
+    "KDJ_J" : ['high','low' ,'close','changePrice']
+}

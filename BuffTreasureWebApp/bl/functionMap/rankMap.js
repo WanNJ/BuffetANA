@@ -50,31 +50,38 @@ function setMA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,b
 
 
 /**
- * 注入MOM的Promise方法
+ *
  * @param code
  * @param codeIndex
- * @param rankIndex
+ * @param desc
+ * @param weight
  * @param formationPeriod
  * @param AllDataList
  * @param beginDate
  * @param endDate
+ * @returns {Promise}
  */
-function setMOM(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+function setMOM(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMOMValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
-                let pickleDataList = AllDataList[keys[i]];
+                let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
                     let backData = pickleData.backDatas[codeIndex];
-                    if(backData.valid === true && typeof maList[p] !== 'undefined') {
+                    if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
-                        backData.mixRank.push(0);
+                        // console.log('here')
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -84,9 +91,22 @@ function setMOM(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begi
 }
 
 
-function setRSI(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setRSI(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateRSIValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -95,12 +115,15 @@ function setRSI(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begi
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -110,9 +133,22 @@ function setRSI(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begi
 }
 
 
-function setMACD_DIF(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setMACD_DIF(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMACD_DIFValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -121,12 +157,15 @@ function setMACD_DIF(code , codeIndex, rankIndex ,formationPeriod , AllDataList 
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -136,9 +175,22 @@ function setMACD_DIF(code , codeIndex, rankIndex ,formationPeriod , AllDataList 
 }
 
 
-function setMACD_DEA(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setMACD_DEA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMACD_DEAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -147,12 +199,15 @@ function setMACD_DEA(code , codeIndex, rankIndex ,formationPeriod , AllDataList 
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -162,9 +217,22 @@ function setMACD_DEA(code , codeIndex, rankIndex ,formationPeriod , AllDataList 
 }
 
 
-function setMACD(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setMACD(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMACDValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -173,12 +241,15 @@ function setMACD(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beg
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -188,9 +259,22 @@ function setMACD(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beg
 }
 
 
-function setRSV(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setRSV(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateRSVValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -199,12 +283,15 @@ function setRSV(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begi
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -214,9 +301,22 @@ function setRSV(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,begi
 }
 
 
-function setKDJ_K(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setKDJ_K(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateKDJ_KValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -225,12 +325,15 @@ function setKDJ_K(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,be
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -240,9 +343,22 @@ function setKDJ_K(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,be
 }
 
 
-function setKDJ_D(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setKDJ_D(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateKDJ_DValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -251,12 +367,15 @@ function setKDJ_D(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,be
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }
@@ -266,9 +385,22 @@ function setKDJ_D(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,be
 }
 
 
-function setKDJ_J(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,beginDate , endDate) {
+/**
+ *
+ * @param code
+ * @param codeIndex
+ * @param desc
+ * @param weight
+ * @param formationPeriod
+ * @param AllDataList
+ * @param beginDate
+ * @param endDate
+ * @returns {Promise}
+ */
+function setKDJ_J(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateKDJ_JValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
+
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -277,12 +409,15 @@ function setKDJ_J(code , codeIndex, rankIndex ,formationPeriod , AllDataList ,be
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
                         while (typeof maList[p + 1] !== 'undefined' && maList[p + 1]['date'] - pickleData.beginDate < 0) p++;
-                        backData.mixRank.push(maList[p]['value']);
+                        let temp = maList[p]['value'];
+                        //判断是否降序排泄
+                        if(!desc)  temp = 1- temp;
+                        backData.rankValue+= temp * weight;
                     }else{
                         // console.log('here')
-                        backData.mixRank.push(0);
+                        backData.rankValue+= 0;
                     }
-                    pickleData.backDatas[rankIndex] = backData;
+                    pickleData.backDatas[codeIndex] = backData;
                 });
                 AllDataList[keys[i]] = pickleDataList;
             }

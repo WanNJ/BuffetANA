@@ -28,7 +28,7 @@ describe('strategyParameter', function() {
                     done(err);
                 }
                 else {
-                    // console.log(docs);
+                    console.log(docs);
                     done();
                 }
             });
@@ -41,7 +41,7 @@ describe('strategyParameter', function() {
                     done(err);
                 }
                 else {
-                    // console.log(docs);
+                    console.log(docs);
                     done();
                 }
             });

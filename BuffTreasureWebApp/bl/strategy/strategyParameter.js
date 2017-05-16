@@ -45,20 +45,20 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
     // TODO 应该是24000*3600吧？
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate ,(err,doc) => {
-        //doc.reverse();
+        doc.reverse();
         let curMASum = 0;
         let MAValue = [];
 
         console.log(doc[0])
 
-        for(let i = 1; i < doc.length && i <= formationPeriod ; i++){
+        for(let i = 2; i < doc.length && i < formationPeriod +2; i++){
 
             curMASum+= doc[i]["adjClose"];
            // console.log(curMASum)
         }
 
-        for(let i  = 0;  (i+formationPeriod +1)< doc.length && doc[i]["date"] -beginDate >= 0; i++){
-            let temp = (curMASum/formationPeriod - doc[i]["adjClose"])/(curMASum/formationPeriod);
+        for(let i  = 0;  (i+formationPeriod +2)< doc.length && doc[i]["date"] -beginDate >= 0; i++){
+            let temp = (curMASum/formationPeriod - doc[i+1]["adjClose"])/(curMASum/formationPeriod);
             //console.log(temp)
             let part = {
                 "date" : doc[i]["date"],
@@ -71,7 +71,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
              * added by TY
              * TODO 此处的 i+formationPeriod 有可能存在数组下标越界的可能，应该加一个判断
              */
-            curMASum += doc[i+formationPeriod+1]["adjClose"] - doc[i]["adjClose"];
+            curMASum += doc[i+formationPeriod+2]["adjClose"] - doc[i+1]["adjClose"];
             //console.log(curMASum)
         }
         console.log( code+'    '+MAValue.length)
@@ -104,7 +104,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     let searchBeginDate = new Date(beginDate-600*24000*3600);
     singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate, (err, docs) => {
-        // docs.reverse();
+        docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量
          */
@@ -477,9 +477,7 @@ function getDailyData(code, beginDate, endDate, callback) {
                 let beforeDEA = 0; // 昨日的九日DIF平滑移动平均值
                 // 计算RSI所需要的临时数据
                 let changePrice14 = [];
-                docs.filter(data => {
-                    return (data["volume"] !== 0);
-                }).forEach(data => {
+                docs.forEach(data => {
                     /*
                      * 计算当日KDJ
                      */

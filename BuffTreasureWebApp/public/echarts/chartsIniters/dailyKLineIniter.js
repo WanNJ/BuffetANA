@@ -1,9 +1,9 @@
 // 基于准备好的dom，初始化echarts实例
 let objData = [];
 
-function calculateMA(dayCount, srcData) {
+function _calculateMA(dayCount, adjDatas) {
     let result = [];
-    let len = srcData.adjs.length;
+    let len = adjDatas.length;
     for (let i = 0; i < len; i++) {
         if (i < dayCount) {
             result.push('-');
@@ -11,7 +11,7 @@ function calculateMA(dayCount, srcData) {
         }
         let sum = 0;
         for (let j = 0; j < dayCount; j++) {
-            sum += objData.adjs[i - j];
+            sum += adjDatas[i - j];
         }
         result.push(sum / dayCount);
     }
@@ -133,14 +133,16 @@ function loadDailyKLineChart(objData) {
             {
                 type: 'inside',
                 xAxisIndex: [0, 1],
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             },
             {
                 show: true,
                 realtime: true,
                 xAxisIndex: [0, 1],
                 type: 'slider',
-                startValue: -30,
-                endValue: -1
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             }
         ],
         series: [
@@ -153,38 +155,42 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MA5',
                 type: 'line',
-                data: calculateMA(5, objData),
+                data: _calculateMA(5, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'MA10',
                 type: 'line',
-                data: calculateMA(10, objData),
+                data: _calculateMA(10, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'MA20',
                 type: 'line',
-                data: calculateMA(20, objData),
+                data: _calculateMA(20, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'MA30',
                 type: 'line',
-                data: calculateMA(30, objData),
+                data: _calculateMA(30, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
-                }
+                },
+                showSymbol: false
             },
             {
                 name: '成交量',
@@ -265,13 +271,15 @@ function loadDailyKLineChart(objData) {
         dataZoom: [
             {
                 type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             },
             {
                 show: false,
                 realtime: true,
                 type: 'slider',
-                startValue: -30,
-                endValue: -1
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             }
         ],
         series: [
@@ -286,7 +294,8 @@ function loadDailyKLineChart(objData) {
                             width: 1,
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'D值',
@@ -299,7 +308,8 @@ function loadDailyKLineChart(objData) {
                             width: 1
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'J值',
@@ -312,7 +322,8 @@ function loadDailyKLineChart(objData) {
                             width: 1
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
         ]
     };
@@ -389,13 +400,15 @@ function loadDailyKLineChart(objData) {
         dataZoom: [
             {
                 type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             },
             {
                 show: false,
                 realtime: true,
                 type: 'slider',
-                startValue: -30,
-                endValue: -1
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             }
         ],
         series: [
@@ -415,17 +428,20 @@ function loadDailyKLineChart(objData) {
                             return colorList;
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'DIF',
                 type: 'line',
-                data: objData.difs
+                data: objData.difs,
+                showSymbol: false
             },
             {
                 name: 'DEA',
                 type: 'line',
-                data: objData.deas
+                data: objData.deas,
+                showSymbol: false
             }
         ]
     };
@@ -498,13 +514,15 @@ function loadDailyKLineChart(objData) {
         dataZoom: [
             {
                 type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             },
             {
                 show: false,
                 realtime: true,
                 type: 'slider',
-                startValue: -30,
-                endValue: -1
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
             }
         ],
         series: [
@@ -519,7 +537,8 @@ function loadDailyKLineChart(objData) {
                             width: 1,
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'RSI12',
@@ -532,7 +551,8 @@ function loadDailyKLineChart(objData) {
                             width: 1
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
             {
                 name: 'RSI24',
@@ -545,7 +565,8 @@ function loadDailyKLineChart(objData) {
                             width: 1
                         }
                     }
-                }
+                },
+                showSymbol: false
             },
         ]
     };

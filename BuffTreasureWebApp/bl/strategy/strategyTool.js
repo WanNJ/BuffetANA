@@ -317,7 +317,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param listAll
      * @returns {Promise}
      */
-    let operatePromise = function (codeList ,codeIndex , listAll,projection){
+    let operatePromise = function (codeList ,codeIndex , listAll, projection){
         // console.log('start' + new Date())
         //console.log(codeList)
         // console.log('here')
@@ -338,7 +338,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                         //console.time(codeList[codeIndex])
                         return setFilterPromise(codeIndex, filter, 0, list)
                     })
-                    .then(list => operatePromise(codeList, codeIndex + 1, list)));
+                    .then(list => operatePromise(codeList, codeIndex + 1, list,projection)));
             }
 
 
@@ -365,8 +365,8 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,projection, callback){
     console.time('set Name');
 
-    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate), (err,data)=>{
-        // data.reverse();
+    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate),projection, (err,data)=>{
+        //data.reverse();
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];

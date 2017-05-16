@@ -28,11 +28,15 @@ describe('#shiit()', function() {
         let tradeModelVO  = new TradeModelVO(10,2);
         // console.log(new Date())
 
+
         let rank = {
             'MA' : ["asd",   10, 1]
             ,'MOM' : ["asd",   10, 1]
+            , 'RSI' : ["asd", 10, 1]
+            , 'KDJ_K' : ["asd", 10, 1]
+            , 'KDJ_D' : ["asd", 10, 1]
         };
-        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-01-01"),
+        strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
             stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {
             if (err) {
                 console.log('wrong');

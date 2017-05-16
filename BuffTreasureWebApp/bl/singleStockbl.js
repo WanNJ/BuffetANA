@@ -141,7 +141,7 @@ exports.getDailyData = (code, callback) => {
                 // K、D的平滑因子分别取1/3和2/3
                 let k = 2 / 3 * beforeK + 1 / 3 * rsv;
                 let d = 2 / 3 * beforeD + 1 / 3 * k;
-                let j = 3 * d - 2 * k;
+                let j = 3 * k - 2 * d;
                 beforeK = k;
                 beforeD = d;
                 one_day_data.push(k);
@@ -339,7 +339,7 @@ exports.getWeeklyData = (code, callback) => {
                 // K、D的平滑因子分别取1/3和2/3
                 let k = 2 / 3 * beforeK + 1 / 3 * rsv;
                 let d = 2 / 3 * beforeD + 1 / 3 * k;
-                let j = 3 * d - 2 * k;
+                let j = 3 * k - 2 * d;
                 beforeK = k;
                 beforeD = d;
                 one_week_data.push(k);
@@ -531,7 +531,7 @@ exports.getMonthlyData = (code, callback) => {
                 // K、D的平滑因子分别取1/3和2/3
                 let k = 2 / 3 * beforeK + 1 / 3 * rsv;
                 let d = 2 / 3 * beforeD + 1 / 3 * k;
-                let j = 3 * d - 2 * k;
+                let j = 3 * k - 2 * d;
                 beforeK = k;
                 beforeD = d;
                 one_month_data.push(k);

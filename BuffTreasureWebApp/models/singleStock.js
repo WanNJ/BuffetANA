@@ -80,6 +80,8 @@ exports.singleStockDB = {
             callback(null, preRangeStockList);
             //console.time('hereRead');
         }else{
+            //console.log("p   " );
+            //console.log(p);
             // console.time('hereRead');
             //console.log(p)
             let Stock = mongoose.model(code, stockSchema);
@@ -89,7 +91,8 @@ exports.singleStockDB = {
               //   console.timeEnd('hereRead');
                 preRangeStockList = docs;
                 preRangeCode = code;
-                callback(err, docs.reverse());
+                //console.log(docs);
+                callback(err, docs);
             });
             // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
             //     console.timeEnd('hereRead');

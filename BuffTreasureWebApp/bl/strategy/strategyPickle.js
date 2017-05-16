@@ -16,12 +16,20 @@ let proMap  =require('../functionMap/projectionMap').proMap;
  * @param tradeModelVO
  * @param envSpecDay
  * @param callback
+ *  {
+ *       'Normal' : normalPickleList,   //正常情况下的 分割日期方法
+            'HighAndOpposite':HighAndOppositePickleList,
+            'HighAndSame':HighAndSamePickleList,
+            'LowAndSame':LowAndSamePickleList,
+            'LowAndOpposite':LowAndOppositePickleList
+         }
  */
 exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) => {
     /**
      *
      * @returns {Promise}
      */
+    console.time('pro')
     let set = new Set();
     let rankKeys =  Object.keys(rank);
     let filterKeys =  Object.keys(filter);
@@ -40,6 +48,8 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     console.log(set)
     let pro = [...set]
     console.log(pro)
+
+    console.timeEnd('pro')
 
 
     let getCodeList = function () {

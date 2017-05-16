@@ -108,9 +108,9 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
         if (err)
             callback(err, null);
         else {
-            let results = []
+            let results = [];
             docs.forEach(doc => {
-                pickleDatas = docs;
+                pickleDatas = doc;
                 initPara(beginDate, endDate);
                 let result = {
                     "backDetail" : getBackDetail(),

@@ -109,8 +109,9 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             callback(err, null);
         else {
             let results = [];
-            docs.forEach(doc => {
-                pickleDatas = doc;
+            let keys = Object.keys(docs);
+            for (let i = 0; i < 5; i++) {
+                pickleDatas =  docs[keys[i]];
                 initPara(beginDate, endDate);
                 let result = {
                     "backDetail" : getBackDetail(),
@@ -121,7 +122,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                     "historyTradeRecord" : getHistoryTradeRecord()
                 };
                 results.add(result);
-            });
+            }
             callback(null, results);
         }
     });

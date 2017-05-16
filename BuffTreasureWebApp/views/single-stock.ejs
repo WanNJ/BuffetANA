@@ -48,10 +48,8 @@
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         console.log(result);
-                        if (result) {
-                            daily_data = result;
-                        }
-                        loadDailyKLineChart();
+                        if (result)
+                            loadDailyKLineChart(result);
                     },
                     error: function (errorMsg) {
                         //请求失败时执行该函数
@@ -126,25 +124,6 @@
     </div>
     <div class="col-sm-12" style="height: 20px;"></div>
 
-
-    <script type="text/javascript">
-        function calculateMA(dayCount) {
-            let result = [];
-            let len = daily_data.adjs.length;
-            for (let i = 0; i < len; i++) {
-                if (i < dayCount) {
-                    result.push('-');
-                    continue;
-                }
-                let sum = 0;
-                for (let j = 0; j < dayCount; j++) {
-                    sum += daily_data.adjs[i - j];
-                }
-                result.push(sum / dayCount);
-            }
-            return result;
-        }
-    </script>
     <!--Echarts Modules-->
     <div class="col-sm-12 tab-content">
         <div id="timeSharing" class="tab-pane active">

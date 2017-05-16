@@ -223,7 +223,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI24);
                 return one_day_data;
             });
-            callback(null, all_day_data);
+            callback(null, splitData(all_day_data));
         }
     });
 };

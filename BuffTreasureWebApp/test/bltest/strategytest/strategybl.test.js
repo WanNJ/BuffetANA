@@ -36,22 +36,22 @@ describe('strategybl', function() {
             // let filter = {
             //     "turnOverRate" : ['<', 1]
             // };
-            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-04-28'), stockPoolConditionVO, rank, {}, tradeModelVO, 10, function (err, docs) {
+            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-05-17'), stockPoolConditionVO, rank, {}, tradeModelVO, 10, function (err, docs) {
                 if (err) {
                     done(err);
                 }
                 else {
                     // console.log(docs[0]["historyTradeRecord"]);
                     console.log(docs[0]["strategyDayRatePiece"]);
-                    console.log(docs[0]["baseDayRatePiece"]);
+                    // console.log(docs[0]["baseDayRatePiece"]);
                     // console.log(docs["historyTradeRecord"][0]);
 
-                    // let i = 1;
-                    // docs.forEach(doc => {
-                    //     console.log(i);
-                    //     console.log(doc["strategyDayRatePiece"]);
-                    //     i++;
-                    // });
+                    let i = 1;
+                    docs.forEach(doc => {
+                        console.log(i);
+                        console.log(doc["strategyDayRatePiece"]);
+                        i++;
+                    });
                     done();
                 }
             });

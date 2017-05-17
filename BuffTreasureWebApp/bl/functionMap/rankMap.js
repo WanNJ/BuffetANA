@@ -20,8 +20,8 @@ let strategyParam = require('../strategy/strategyParameter');
  */
 function setMA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
-        strategyParam.calculateMAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
+        strategyParam.calculateMAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -64,7 +64,6 @@ function setMA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,b
 function setMOM(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMOMValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
-
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -78,7 +77,6 @@ function setMOM(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,
                         if(!desc)  temp = 1- temp;
                         backData.rankValue+= temp * weight;
                     }else{
-                        // console.log('here')
                         backData.rankValue+= 0;
                     }
                     pickleData.backDatas[codeIndex] = backData;

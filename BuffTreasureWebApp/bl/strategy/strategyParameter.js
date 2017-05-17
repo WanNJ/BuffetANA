@@ -74,7 +74,6 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
             curMASum += doc[i+formationPeriod+2]["adjClose"] - doc[i+1]["adjClose"];
             //console.log(curMASum)
         }
-        console.log( code+'    '+MAValue.length)
         MAValue.reverse()
         //if(MAValue.length ===0)console.log(code)
         callback(err,normalize(MAValue));
@@ -103,7 +102,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
  */
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     let searchBeginDate = new Date(beginDate-600*24000*3600);
-    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,[], (err, docs) => {
+    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,["date", "adjClose"], (err, docs) => {
         docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量

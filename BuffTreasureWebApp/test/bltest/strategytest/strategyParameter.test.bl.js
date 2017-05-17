@@ -148,6 +148,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
+        it('000001', function (done) {
+            strategyPara.calculateMOMValue('000001', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
         it('000002', function (done) {
             strategyPara.calculateMOMValue('000002', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -181,17 +192,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000004', function (done) {
-            strategyPara.calculateMOMValue('000004', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000004', function (done) {
+        //     strategyPara.calculateMOMValue('000004', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000005', function (done) {
             strategyPara.calculateMOMValue('000005', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -203,17 +214,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000005', function (done) {
-            strategyPara.calculateMOMValue('000005', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000005', function (done) {
+        //     strategyPara.calculateMOMValue('000005', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000006', function (done) {
             strategyPara.calculateMOMValue('000006', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -225,17 +236,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000006', function (done) {
-            strategyPara.calculateMOMValue('000006', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000006', function (done) {
+        //     strategyPara.calculateMOMValue('000006', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000007', function (done) {
             strategyPara.calculateMOMValue('000007', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -247,17 +258,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000007', function (done) {
-            strategyPara.calculateMOMValue('000007', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000007', function (done) {
+        //     strategyPara.calculateMOMValue('000007', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000008', function (done) {
             strategyPara.calculateMOMValue('000008', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -269,17 +280,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000008', function (done) {
-            strategyPara.calculateMOMValue('000008', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000008', function (done) {
+        //     strategyPara.calculateMOMValue('000008', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000009', function (done) {
             strategyPara.calculateMOMValue('000009', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -291,17 +302,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000009', function (done) {
-            strategyPara.calculateMOMValue('000009', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000009', function (done) {
+        //     strategyPara.calculateMOMValue('000009', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000010', function (done) {
             strategyPara.calculateMOMValue('000010', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -313,17 +324,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000010', function (done) {
-            strategyPara.calculateMOMValue('000010', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000010', function (done) {
+        //     strategyPara.calculateMOMValue('000010', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000011', function (done) {
             strategyPara.calculateMOMValue('000011', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -335,17 +346,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000011', function (done) {
-            strategyPara.calculateMOMValue('000011', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000011', function (done) {
+        //     strategyPara.calculateMOMValue('000011', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000012', function (done) {
             strategyPara.calculateMOMValue('000012', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -357,17 +368,17 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000012', function (done) {
-            strategyPara.calculateMOMValue('000012', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000012', function (done) {
+        //     strategyPara.calculateMOMValue('000012', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
         it('000014', function (done) {
             strategyPara.calculateMOMValue('000014', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
                 if (err) {
@@ -379,16 +390,16 @@ describe('strategyParameter', function() {
                 }
             });
         });
-        it('000014', function (done) {
-            strategyPara.calculateMOMValue('000014', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    console.log(docs);
-                    done();
-                }
-            });
-        });
+        // it('000014', function (done) {
+        //     strategyPara.calculateMOMValue('000014', new Date('2015-01-01'), new Date('2017-04-28'), 20, function (err, docs) {
+        //         if (err) {
+        //             done(err);
+        //         }
+        //         else {
+        //             console.log(docs);
+        //             done();
+        //         }
+        //     });
+        // });
     });
 });

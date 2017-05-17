@@ -27,8 +27,8 @@ describe('strategybl', function() {
 
 
             let rank = {
-                "MA" : ["asd", 10, 1],
-                "MOM" : ["asd", 10, 1]
+                "MA" : ["desc", 10, 1]
+                // "MOM" : ["asc", 10, 1]
                 // ,"RSI" : ["asd", 10, 1],
                 // "KDJ_K" : ["asd", 10, 1],
                 // "KDJ_D" : ["asd", 10, 1]
@@ -38,7 +38,11 @@ describe('strategybl', function() {
                     done(err);
                 }
                 else {
-                    console.log(docs);
+                    console.log(docs[0]["historyTradeRecord"]);
+                    // console.log(docs["strategyDayRatePiece"]);
+                    // console.log(docs["baseDayRatePiece"]);
+                    // console.log(docs["historyTradeRecord"][0]);
+
                     // let i = 1;
                     // docs.forEach(doc => {
                     //     console.log(i);

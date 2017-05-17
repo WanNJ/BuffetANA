@@ -262,9 +262,9 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 //console.log(keys)
                 //console.log('length:' +keys.length)
                 resolve(rankMap[keys[index]]
-                    (code ,codeIndex , rank[keys[index]][0],rank[keys[index]][2],
+                    (code ,codeIndex , rank[keys[index]][0]==='desc',rank[keys[index]][2],
                     rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
-                    .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList)));
+                    .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList,beginDate,endDate)));
             }
         });
 

@@ -75,33 +75,18 @@ exports.singleStockDB = {
      * @param callback
      */
     getStockInfoInRangeDate: function (code, beginDate, endDate, p, callback) {
-        // console.log(code)
         if (preRangeCode === code && preRangeStockList !== null) {
-            callback(null, preRangeStockList);
-            //console.time('hereRead');
+            callback(null, [...preRangeStockList]);
         }else{
-            //console.log("p   " );
-            //console.log(p);
-            // console.time('hereRead');
-           // console.log(p)
             let Stock = mongoose.model(code, stockSchema);
             Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
             , p
             , function (err, docs) {
-              //   console.timeEnd('hereRead');
-                preRangeStockList = docs;
+                preRangeStockList = [...docs];
                 preRangeCode = code;
-                //console.log(docs);
                 callback(err, docs);
 
             });
-            // Stock.find({ date : {$gte : beginDate, $lte : endDate}}).sort({date:'asc'}).exec(function (err, docs) {
-            //     console.timeEnd('hereRead');
-            //     preRangeStockList = docs;
-            //     preRangeCode = code;
-            //     callback(err,docs);
-            // });
-
         }
     },
 

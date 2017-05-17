@@ -575,3 +575,57 @@ function normalize(array) {
     }
     return array;
 }
+
+
+/**
+ * =======================================================================================
+ *                                       Filter
+ * =======================================================================================
+ */
+
+
+
+/**
+ *
+ * @param code 股票代码
+ * @param beginDate 开始日期
+ * @param endDate  结束日期
+ * @param formationPeriod  形成期(观察期)
+ * @param callback 形如(err,docs);
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *  所有 这个预先计算的部分  返回的数组元素都按照这格式
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *      docs 形式如下
+ *      {
+ *        date:  date
+ *        value  : MA偏离量
+ *      } 的数组
+ *      时间按照从小到大排
+ *      !!!数组中没有value的date 不存在
+ *      比如2014-01-02 没有MA均线  那么返回的数组里面没有 date 2014-01-02 就根本不会出现
+ */
+exports.calculateVolValue = function (code ,beginDate , endDate ,callback) {
+    // TODO 应该是24000*3600吧？
+    let searchBeginDate = new Date(beginDate-  600 *24000*3600);
+    singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate,[] ,(err,doc) => {
+        doc.reverse();
+
+        let valueList = [];
+        for(let i  = 0;  i< doc.length && doc[i]["date"] -beginDate >= 0; i++){
+            let part = {
+                "date" : doc[i]["date"],
+                "value" : doc[i]['volume']
+            };
+            //console.log('part:  '+part['value'])
+            valueList.push(part);
+
+        }
+        valueList.reverse()
+        //if(MAValue.length ===0)console.log(code)
+        callback(err,valueList);
+    });
+};
+
+
+
+

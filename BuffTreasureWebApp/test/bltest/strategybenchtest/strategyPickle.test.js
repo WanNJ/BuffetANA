@@ -25,7 +25,7 @@ describe('#shiit()', function() {
 
         let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
 
-        let tradeModelVO  = new TradeModelVO(10,2);
+        let tradeModelVO  = new TradeModelVO(10,4);
         // console.log(new Date())
 
 
@@ -36,8 +36,12 @@ describe('#shiit()', function() {
             , 'KDJ_K' : ["asd", 10, 1]
             , 'KDJ_D' : ["asd", 10, 1]
         };
+
+        let filter = {
+            "volume" :      ["<",     0],
+                   }
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
-            stockPoolConditionVO, rank, {}, tradeModelVO, 3, (err,data) => {
+            stockPoolConditionVO, rank, filter, tradeModelVO, 3, (err,data) => {
             if (err) {
                 console.log('wrong');
                 done(err);

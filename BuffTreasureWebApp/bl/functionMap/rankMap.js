@@ -21,7 +21,6 @@ let strategyParam = require('../strategy/strategyParameter');
 function setMA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,beginDate , endDate) {
     return new Promise((resolve,reject) => {
         strategyParam.calculateMAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
-
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];

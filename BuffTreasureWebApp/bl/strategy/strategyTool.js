@@ -223,7 +223,7 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
 
 
 
-let filterMap = require('../functionMap/filterMap').funtionMap;
+let filterMap = require('../functionMap/filterMap');
 let rankMap = require('../functionMap/rankMap').funtionMap;
 
 
@@ -279,15 +279,18 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param AllPickleDataList
      * @returns {Promise}
      */
-    let setFilterPromise = function (codeIndex ,filter , index , AllPickleDataList) {
+    let setFilterPromise = function (code , codeIndex ,filter , index , AllPickleDataList,beginDate ,endDate) {
         return new Promise((resolve, reject) => {
             let keys = Object.keys(filter);
+            console.log(keys.length)
             if (index === keys.length) {
                 resolve(AllPickleDataList);
             } else {
-                let promise = filterMap[keys[index]]
-                    (codeIndex, index , AllPickleDataList)
-                    .then(setFilterPromise(codeIndex, rank, index + 1, AllPickleDataList));
+                //console.log(filter)
+                //console.log(keys[index])
+                let promise = filterMap.setFilter
+                    (code ,codeIndex,keys[index],filter[keys[index]][0]==='>', filter[keys[index]][1], beginDate ,endDate, AllPickleDataList)
+                    .then(setFilterPromise(code, codeIndex, filter, index + 1,AllPickleDataList,beginDate ,endDate));
                 resolve(promise);
             }
         });
@@ -337,7 +340,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                     .then(list => {
                         // console.timeEnd('set rank' + codeList[codeIndex]);
                         //console.time(codeList[codeIndex])
-                        return setFilterPromise(codeIndex, filter, 0, list)
+                        return setFilterPromise(codeList[codeIndex]['code'],codeIndex, filter, 0, list,beginDate, endDate)
                     })
                     .then(list => operatePromise(codeList, codeIndex + 1, list,projection)));
             }

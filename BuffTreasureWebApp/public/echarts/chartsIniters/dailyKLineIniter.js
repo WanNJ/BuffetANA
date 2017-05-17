@@ -1,23 +1,4 @@
 // 基于准备好的dom，初始化echarts实例
-let objData = [];
-
-function _calculateMA(dayCount, adjDatas) {
-    let result = [];
-    let len = adjDatas.length;
-    for (let i = 0; i < len; i++) {
-        if (i < dayCount) {
-            result.push('-');
-            continue;
-        }
-        let sum = 0;
-        for (let j = 0; j < dayCount; j++) {
-            sum += adjDatas[i - j];
-        }
-        result.push(sum / dayCount);
-    }
-    return result;
-}
-
 let daily_KLineChart = echarts.init(document.getElementById('dailyKLineChart'), 'shine');
 let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'shine');
 let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
@@ -133,7 +114,7 @@ function loadDailyKLineChart(objData) {
             {
                 type: 'inside',
                 xAxisIndex: [0, 1],
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             },
             {
@@ -141,7 +122,7 @@ function loadDailyKLineChart(objData) {
                 realtime: true,
                 xAxisIndex: [0, 1],
                 type: 'slider',
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             }
         ],
@@ -155,7 +136,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MA5',
                 type: 'line',
-                data: _calculateMA(5, objData.adjs),
+                data: calculateMA(5, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -165,7 +146,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MA10',
                 type: 'line',
-                data: _calculateMA(10, objData.adjs),
+                data: calculateMA(10, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -175,7 +156,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MA20',
                 type: 'line',
-                data: _calculateMA(20, objData.adjs),
+                data: calculateMA(20, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -185,7 +166,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MA30',
                 type: 'line',
-                data: _calculateMA(30, objData.adjs),
+                data: calculateMA(30, objData.adjs),
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -271,14 +252,14 @@ function loadDailyKLineChart(objData) {
         dataZoom: [
             {
                 type: 'inside',
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             },
             {
                 show: false,
                 realtime: true,
                 type: 'slider',
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             }
         ],
@@ -400,14 +381,14 @@ function loadDailyKLineChart(objData) {
         dataZoom: [
             {
                 type: 'inside',
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             },
             {
                 show: false,
                 realtime: true,
                 type: 'slider',
-                startValue: objData.categoryData.length - 60,
+                startValue: objData.categoryData.length - dataZoomLength,
                 endValue: objData.categoryData.length - 1
             }
         ],

@@ -6,9 +6,9 @@
     <strong><%= alertMessage%></strong>
 </div>
 <script type="text/javascript">
-    $('#bottom-alert').addClass("<%- alertType%>");
+    $("#bottom-alert").addClass("<%- alertType%>");
     window.setTimeout(function () {
-        $('#bottom-alert').alert('close');
+        $("#bottom-alert").alert("close");
     }, 2000);
 </script>
 <% } %>

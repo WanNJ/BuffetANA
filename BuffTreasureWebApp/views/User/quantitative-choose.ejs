@@ -299,17 +299,17 @@
 
     }
     function start() {
-        $("#stock-pool").val();
-        $("#exclude-ST").val();
-        $("#filter-conditon-lines").val();
-        $("#ranking-conditon-line").val();
-        $("#date-from").val();
-        $("#date-to").val();
-        $("#market-observe").val();
-        $("#reserve-days").val();
-        $("#number-of-stock").val();
-
-        let data;
+        let data={
+            stockPool: $("#stock-pool").val(),
+            excludeST: $("#exclude-ST").val(),
+            filterConditonLines: $("#filter-conditon-lines").val(),
+            rankingConditonLine: $("#ranking-conditon-line").val(),
+            date_from: $("#date-from").val(),
+            date_to: $("#date-to").val(),
+            marketObserve: $("#market-observe").val(),
+            reserveDays: $("#reserve-days").val(),
+            numberOfStock: $("#number-of-stock").val(),
+        };
         function standardPost (url,args)
         {
             var form = $("<form method='post'></form>");

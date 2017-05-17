@@ -30,14 +30,14 @@
         }
         function getFullStockCode(stockCode) {
             let sub = stockCode.substring(0, 3);
-            if (sub === '000' || sub === '200' || sub === '080')
+            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
                 return 'sz' + stockCode;
             else
                 return 'sh' + stockCode;
         }
         function getAnotherFullStockName(stockCode) {
             let sub = stockCode.substring(0, 3);
-            if (sub === '000' || sub === '200' || sub === '080')
+            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
                 return '1' + stockCode;
             else
                 return '0' + stockCode;

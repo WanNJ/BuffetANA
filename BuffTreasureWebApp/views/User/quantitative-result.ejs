@@ -1,2 +1,203 @@
 <!doctype html>
-<p>result-page</p>
+<html>
+<head>
+    <% include ../Components/settings.html %>
+    <script src="/echarts/echarts.min.js"></script>
+    <script src="/echarts/chartsIniters/StrategyResult/accumulatedLineChart.js"></script>
+    <script src="/echarts/chartsIniters/StrategyResult/profitDistributionPieChart.js"></script>
+    <script src="/echarts/chartsIniters/StrategyResult/strategyResultRadarChart.js"></script>
+    <title>BUFF-回测结果</title>
+</head>
+<body>
+<div class="page-container">
+    <% include ../Components/navigator.ejs %>
+
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"><h1 class="display-4">回测分析</h1></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>市场环境</th>
+                            <th>年化收益率</th>
+                            <th>基准年化收益率</th>
+                            <th>最大回撤率</th>
+                            <th>夏普率</th>
+                            <th>Alpha</th>
+                            <th>Beta</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>不择时</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        <tr>
+                            <td>温度高趋反性强</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        <tr>
+                            <td>温度高趋同性强</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        <tr>
+                            <td>温度低趋同性强</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        <tr>
+                            <td>温度低趋反性强</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"><h1 class="display-4">累计收益图</h1></div>
+            </div>
+            <div class="row">
+                <div id="accumulatePaybackChart" class="col-md-8"></div>
+                <div id="strategyEstimateRadarChart" class="col-md-4"></div>
+            </div>
+        </div>
+    </div>
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-12"><h1 class="display-4">收益分布图</h1></div>
+            </div>
+            <div class="row">
+                <div id="profitDistributePies" class="col-md-12">
+
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs nav-justified" id="pieChartTab">
+                    <li class="active"><a href="#normal_pieChart">不择时</a></li>
+                    <li><a href="#highAndOpp_pieChart">温度高趋反性强</a></li>
+                    <li><a href="#highAndSame_pieChart">温度高趋同性强</a></li>
+                    <li><a href="#lowAndSame_pieChart">温度低趋同性强</a></li>
+                    <li><a href="#lowAndOpp_pieChart">温度低趋反性强</a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-12 tab-content">
+                <div id="normal_pieChart" class="tab-pane active"></div>
+                <div id="highAndOpp_pieChart" class="tab-pane"></div>
+                <div id="highAndSame_pieChart" class="tab-pane"></div>
+                <div id="lowAndSame_pieChart" class="tab-pane"></div>
+                <div id="lowAndOpp_pieChart" class="tab-pane"></div>
+            </div>
+
+            <script type="text/javascript">
+                $('#pieChartTab').find('a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                    $(this).resize();
+                    if($(this).attr('href') === '#normal_pieChart')
+                        normal_pieChart.resize();
+                    if($(this).attr('href') === '#highAndOpp_pieChart')
+                        highAndOpp_pieChart.resize();
+                    if($(this).attr('href') === '#highAndSame_pieChart')
+                        highAndSame_pieChart.resize();
+                    if($(this).attr('href') === '#lowAndSame_pieChart')
+                        lowAndSame_pieChart.resize();
+                    if($(this).attr('href') === '#lowAndOpp_pieChart')
+                        lowAndOpp_pieChart.resize();
+                });
+            </script>
+        </div>
+    </div>
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"><h1 class="display-4">历史交易查询</h1></div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>股票代码</th>
+                            <th>股票简称</th>
+                            <th>买入时间</th>
+                            <th>卖出时间</th>
+                            <th>买入价</th>
+                            <th>卖出价</th>
+                            <th>单次收益率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        <tr>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                            <td>XXX</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+
+</div>
+</body>
+
+<% include ../Components/footer.ejs %>
+</html>

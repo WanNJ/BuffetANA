@@ -560,6 +560,7 @@ function loadDailyKLineChart(objData) {
 }
 
 echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
+
 setTimeout(() => {
     window.onresize = function () {
         daily_KLineChart.resize();

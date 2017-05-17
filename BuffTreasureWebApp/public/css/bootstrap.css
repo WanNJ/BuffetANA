@@ -8259,3 +8259,8 @@ button.close {
     font-weight: 300;
     line-height: 1.1;
 }
+
+.sameHeight li a{
+    top: 10px;
+    height: 62px;
+}

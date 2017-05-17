@@ -292,7 +292,7 @@ function getProfitDistributePie() {
 
 
 function getStrategyEstimateResult() {
-    let antiRiskAbility = Math.round(20 - largestBackRate * 20);
+    let antiRiskAbility = Math.round(20 - largestBackRate * 10);
     if (antiRiskAbility > 20)
         antiRiskAbility = 20;
     else if (antiRiskAbility < 0)

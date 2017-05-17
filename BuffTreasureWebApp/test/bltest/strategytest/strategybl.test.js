@@ -22,7 +22,7 @@ describe('strategybl', function() {
         it('should', function (done) {
             let stockPoolConditionVO = new StockPoolConditionVO('沪深300',[],[],false);
 
-            let tradeModelVO  = new TradeModelVO(10,2);
+            let tradeModelVO  = new TradeModelVO(2, 2);
             // console.log(new Date())
 
 
@@ -41,8 +41,8 @@ describe('strategybl', function() {
                     done(err);
                 }
                 else {
-                    console.log(docs[0]);
-                    // console.log(docs[0]["baseDayRatePiece"]);
+                    console.log(docs[3]);
+                    // console.log(docs[0]["strategyEstimateResult"]);
 
                     // let i = 1;
                     // docs.forEach(doc => {

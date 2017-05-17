@@ -128,6 +128,10 @@
                 }
             });
 
+            window.setInterval(function () {
+                //TODO 更新分时图
+            }, 3000);
+            
             $.ajax({
                 type: "post",
                 async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -276,7 +280,7 @@
                             $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请先登录之后再添加！</strong></div>');
                         } else if (result === 'DUPLICATED') {
                             $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>您已经添加过该股票，请勿重复添加！</strong></div>');
-                        } else if (result === 'NOTEXIST') {
+                        } else if (result === 'NOTEXSIT') {
                             $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>错误操作！股票不存在！</strong></div>');
                         }
                         window.setTimeout(function () {

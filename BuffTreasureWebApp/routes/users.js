@@ -25,6 +25,14 @@ router.get('/quantitative-analysis', function (req, res, next) {
     res.render('User/quantitative-analysis');
 });
 
+router.get('/quantitative-analysis/stockRecommend', function (req, res, next) {
+   res.render('User/stockRec');
+});
+
+router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
+    res.render('User/strategyRec');
+});
+
 router.get('/quantitative-analysis/choose', function (req, res, next) {
     res.render('User/quantitative-choose');
 });

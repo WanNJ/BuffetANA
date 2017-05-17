@@ -209,7 +209,7 @@ function getStrategyDayRatePiece() {
     };
     for(let i = 0; i < pickleDatas.length; i++) {
         sum += strategyRates[i] * sum;
-        dayRatePieceVO["date"].push(pickleDatas[i].endDate);
+        dayRatePieceVO["date"].push(pickleDatas[i].endDate.toISOString().substr(0, 10));
         dayRatePieceVO["profitRate"].push((sum - 100000.0) / 100000.0 * 100);
     }
     return dayRatePieceVO;
@@ -228,7 +228,7 @@ function getBaseDayRatePiece() {
     };
     for(let i = 0; i < pickleDatas.length; i++) {
         sum += baseRates[i] * sum;
-        dayRatePieceVO["date"].push(pickleDatas[i].endDate);
+        dayRatePieceVO["date"].push(pickleDatas[i].endDate.toISOString().substr(0, 10));
         dayRatePieceVO["profitRate"].push((sum - 100000.0) / 100000.0 * 100);
     }
     return dayRatePieceVO;

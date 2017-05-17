@@ -81,7 +81,7 @@ exports.singleStockDB = {
         }else{
             let Stock = mongoose.model(code, stockSchema);
             Stock.find({ date : {$gte : beginDate, $lte : endDate}, volume : {$ne : 0}}
-            , p
+            , p ,{sort : {date : 'asc'}}
             , function (err, docs) {
                 preRangeStockList = [...docs];
                 preRangeCode = code;

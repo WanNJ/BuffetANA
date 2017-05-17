@@ -268,6 +268,14 @@ function loadDailyKLineChart(objData) {
                 name: 'K值',
                 type: 'line',
                 data: objData.kIndexes,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
                 itemStyle: {
                     normal: {
                         color: 'grey',
@@ -396,6 +404,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MACD',
                 type: 'bar',
+                barWidth: 1,
                 data: objData.macds,
                 itemStyle: {
                     normal: {
@@ -511,6 +520,14 @@ function loadDailyKLineChart(objData) {
                 name: 'RSI6',
                 type: 'line',
                 data: objData.rsi6s,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
                 itemStyle: {
                     normal: {
                         color: 'grey',
@@ -560,6 +577,7 @@ function loadDailyKLineChart(objData) {
 }
 
 echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
+
 setTimeout(() => {
     window.onresize = function () {
         daily_KLineChart.resize();

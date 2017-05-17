@@ -268,6 +268,14 @@ function loadWeeklyKLineChart(objData) {
                 name: 'K值',
                 type: 'line',
                 data: objData.kIndexes,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
                 itemStyle: {
                     normal: {
                         color: 'grey',
@@ -511,6 +519,14 @@ function loadWeeklyKLineChart(objData) {
                 name: 'RSI6',
                 type: 'line',
                 data: objData.rsi6s,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
                 itemStyle: {
                     normal: {
                         color: 'grey',

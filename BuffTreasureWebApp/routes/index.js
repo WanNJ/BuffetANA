@@ -26,18 +26,6 @@ router.get('/single-stock', function (req, res, next) {
     res.render('single-stock');
 });
 
-router.get('/comparison', function (req, res, next) {
-    res.render('User/comparison');
-});
-
-router.get('/marketthermometer', function (req, res, next) {
-    res.render('User/marketthermometer');
-});
-
-router.get('/quantitative-analysis', function (req, res, next) {
-    res.render('User/quantitative-analysis');
-});
-
 router.get('/about-us', function (req, res, next) {
     res.render('about-us');
 });

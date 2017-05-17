@@ -12,18 +12,13 @@
                     <li>
                         <a href="/single-stock">个股</a>
                     </li>
-                    <li>
-                        <a href="/comparison">两股对比</a>
-                    </li>
-                    <li>
-                        <a href="/marketthermometer">市场温度计</a>
-                    </li>
-                    <li>
-                        <a href="/quantitative-analysis">量化回测</a>
-                    </li>
-                    <li>
-                        <a href="/about-us">关于我们</a>
-                    </li>
+
+                    <% if(typeof user !== "undefined") { %>
+                    <li><a href="user/comparison">两股对比</a></li>
+                    <li><a href="user/marketthermometer">市场温度计</a></li>
+                    <li><a href="user/quantitative-analysis">量化回测</a></li>
+                    <% } %>
+                    <li><a href="/about-us">关于我们</a></li>
                     <% if(typeof user === "undefined") { %>
                     <li><a href="/sign-in">登录</a></li>
                     <% } %>

@@ -24,5 +24,11 @@
         e.preventDefault();
         $(this).tab('show');
         $(this).resize();
+        if($(this).attr('href') === '#weekly_KDJChart')
+            weekly_KDJChart.resize();
+        if($(this).attr('href') === '#weekly_MACDChart')
+            weekly_MACDChart.resize();
+        if($(this).attr('href') === '#weekly_RSIChart')
+            weekly_RSIChart.resize();
     });
 </script>

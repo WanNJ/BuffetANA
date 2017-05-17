@@ -25,6 +25,14 @@ router.get('/quantitative-analysis', function (req, res, next) {
     res.render('User/quantitative-analysis');
 });
 
+router.get('/quantitative-analysis/choose', function (req, res, next) {
+    res.render('User/quantitative-choose');
+});
+
+router.get('/quantitative-analysis/result', function (req, res, next) {
+    res.render('User/quantitative-result');
+});
+
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
     console.log('Request URL:', req.originalUrl);

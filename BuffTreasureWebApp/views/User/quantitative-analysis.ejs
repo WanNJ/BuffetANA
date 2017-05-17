@@ -5,7 +5,7 @@
     <title>BUFF-量化回测</title>
 </head>
 <body>
-<div class="page-container">
+<div class="page-container bloc-fill-screen">
 
     <% include ../Components/navigator.ejs %>
 
@@ -26,14 +26,39 @@
             自定义回测
         </button>
 
+        <div class="bloc bgc-white l-bloc">
+            <div class="container bloc-lg">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="../img/3.jpg" class="img-responsive"/>
+                        <h3 class="mg-md">
+                            快速回测（推荐）
+                        </h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="../img/2.jpg" class="img-responsive"/>
+                        <h3 class="mg-md">
+                            预定义回测
+                        </h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="../img/1.jpg" class="img-responsive"/>
+                        <h3 class="mg-md">
+                            自定义回测
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript">
             $("#quickAnalysis").click(function (){
                 $("#page").empty();
-                $.ajax('/quantitative-analysis',{
+                $.ajax('/user/quantitative-analysis/result',{
                     type: 'GET',
                     dataType: 'html',
                     success: function (result) {
-                        alert(result);
+                        console.log(result);
                         $("#page").append(result);
                     },
                     error: function (errorMsg) {
@@ -43,7 +68,19 @@
                 });
             });
             $("#predefinedAnalysis").click(function (){
-                alert("尚未完成");
+                $("#page").empty();
+                $.ajax('/user/quantitative-analysis/result',{
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        console.log(result);
+                        $("#page").append(result);
+                    },
+                    error: function (errorMsg) {
+                        //请求失败时执行该函数
+                        alert(errorMsg);
+                    }
+                });
             });
             $("#customAnalysis").click(function (){
                 alert("尚未完成");
@@ -55,8 +92,8 @@
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
 
+    <% include ../Components/footer.ejs %>
 </div>
 </body>
 
-<% include ../Components/footer.ejs %>
 </html>

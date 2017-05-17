@@ -67,14 +67,14 @@ let largestBackRate;
                             "alpha": Number,                 // alpha
                             "beta": Number                   // beta
                         },
-        "strategyDayRatePiece" : [{                             // 策略的累计收益折线图数据
-                                      "date" : String,          // x轴的日期
-                                      "profitRate" : Number     // y轴的收益率
-                                  }, ...],
-        "baseDayRatePiece" : [{                             // 基准的累计收益折线图数据
-                                  "date" : String,          // x轴的日期
-                                  "profitRate" : Number     // y轴的收益率
-                              }, ...],
+        "strategyDayRatePiece" : {                             // 策略的累计收益折线图数据
+                                      "date" : Array,          // x轴的日期
+                                      "profitRate" : Array     // y轴的收益率
+                                  },
+        "baseDayRatePiece" : {                             // 基准的累计收益折线图数据
+                                  "date" : Array,          // x轴的日期
+                                  "profitRate" : Array     // y轴的收益率
+                              },
         "strategyEstimateResult" : {                                    // 策略评估的雷达图数据
                                         "profitAbility" : Number,       // 盈利能力：策略的盈亏比(回测期间总利润除以总亏损)越大，该项分值越高；
                                         "stability" : Number,           // 稳定性：策略的波动越小，该项分值越高

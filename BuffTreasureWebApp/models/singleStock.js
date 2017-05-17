@@ -3,7 +3,8 @@
  */
 const mongoose = require('mongoose');
 
-const stockSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+const stockSchema = new Schema({
     "date": Date,
     "open": Number,
     "high": Number,

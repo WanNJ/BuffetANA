@@ -1,17 +1,11 @@
 /**
  * Created by slow_time on 2017/5/5.
  */
-const mongoose = require('mongoose');
 
-const stockSchema = mongoose.Schema({
-    code: String,
-    name: String,
-    industry: String,
-    bench: Array
-}, {collection: 'allstocks'});
-const allStock = mongoose.model('allstocks', stockSchema);
+let allStock = require('./allStockSchema')
+
 // 储存第一次查询所有股票代码和名称的结果，以便后续调用时直接使用，不用再次查询数据库
-let allstocks;
+let allStocks;
 // 储存第一次查询所有行业的结果，以便后续调用时直接使用，不用再次查询数据库
 let all_industry;
 // 储存第一次查询所有板块的结果，以便后续调用时直接使用，不用再次查询数据库
@@ -31,16 +25,16 @@ exports.allStockDB = {
      * @param callback
      */
     getAllStockCodeAndName: (callback) => {
-        if (typeof allstocks === "undefined") {
+        if (typeof allStocks === "undefined") {
             allStock.find({}, ['code', 'name'], (err, docs) => {
                 if (!err) {
-                    allstocks = docs;
+                    allStocks = docs;
                 }
                 callback(err, docs);
             });
         }
         else {
-            callback(null, [...allstocks]);
+            callback(null, [...allStocks]);
         }
     },
 
@@ -158,17 +152,17 @@ exports.allStockDB = {
      * @param callback
      */
     getRandom500StockCodeAndName: (callback) => {
-        if (typeof allstocks === "undefined") {
+        if (typeof allStocks === "undefined") {
             allStock.find({}, ['code', 'name'], (err, docs) => {
                 if (!err) {
-                    allstocks = docs;
+                    allStocks = docs;
                 }
                 callback(err, docs.slice(0,500));
             });
         }
         else {
             //callback(null,[['100001','qwe'],['100002','qwe'],['100003','qwe']]);
-            callback(null, [...allstocks].slice(0,500));
+            callback(null, [...allStocks].slice(0,500));
         }
     },
 

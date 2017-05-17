@@ -1,6 +1,7 @@
 /**
  * Created by slow_time on 2017/5/7.
  */
+console.log('kkkkkk');
 let allStockDB = require('../models/allStock').allStockDB;
 
 /**

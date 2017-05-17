@@ -1,8 +1,7 @@
 /**
  * Created by wshwbluebird on 2017/5/13.
  */
-
- let allStockbl = require('../../models/allstock').allStockDB;
+let allStockbl = require('../../models/allstock').allStockDB;
  // let allStockbl = require('../../modelsStub/allStockStub').allStockDB;
 
 /**

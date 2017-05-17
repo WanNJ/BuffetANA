@@ -16,6 +16,7 @@ mongoose.connection.on('open', function () {
 });
 
 describe('allStockDB', function() {
+
     describe('#getStocksByBench()', function() {
         it('should obtain 299 records', function(done) {
             allStockDB.getStocksByBench(['沪深300'], function (err, docs) {

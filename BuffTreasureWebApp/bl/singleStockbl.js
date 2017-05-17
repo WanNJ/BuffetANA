@@ -263,6 +263,7 @@ exports.getWeeklyData = (code, callback) => {
                 // 判断有没有到周一
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
                     if (docs[i]["volume"] !== 0) {
+                        week_open = docs[i]["open"];
                         week_high.push(docs[i]["high"]);
                         week_low.push(docs[i]["low"]);
                         week_volume.push(docs[i]["volume"]);
@@ -273,6 +274,7 @@ exports.getWeeklyData = (code, callback) => {
                 }
                 // 此时i指向的是周一，仍然是这一周的数据，需要加进去
                 if (i >= 0 && docs[i]["volume"] !== 0) {
+                    week_open = docs[i]["open"];
                     week_high.push(docs[i]["high"]);
                     week_low.push(docs[i]["low"]);
                     week_volume.push(docs[i]["volume"]);
@@ -470,6 +472,7 @@ exports.getMonthlyData = (code, callback) => {
                 // 判断月份有没有改变
                 while (i >= 0 && docs[i]["date"].getMonth() === now_month) {
                     if (docs[i]["volume"] !== 0) {
+                        month_close = docs[i]["close"];
                         month_high.push(docs[i]["high"]);
                         month_low.push(docs[i]["low"]);
                         month_volume.push(docs[i]["volume"]);

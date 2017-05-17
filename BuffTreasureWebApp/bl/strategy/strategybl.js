@@ -112,8 +112,6 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             let keys = Object.keys(docs);
             for (let i = 0; i < 5; i++) {
                 pickleDatas =  docs[keys[i]];
-                console.log(keys[i])
-                console.log(pickleDatas.length)
                 initPara(beginDate, endDate);
                 let result = {
                     "backDetail" : getBackDetail(),
@@ -147,7 +145,6 @@ function initPara(beginDate, endDate) {
     pickleDatas = pickleDatas.filter(t => t.backDatas.length > 0);
     let sumOfBase = 100000;
     let sumOfStrategy = 100000;
-    //console.log(pickleDatas.length === 0);
     pickleDatas.forEach(pickleData => {
         let tempRate = 0.0;
         sumOfBase += sumOfBase * pickleData.baseProfitRate;
@@ -166,9 +163,9 @@ function initPara(beginDate, endDate) {
         sumOfStrategy += sumOfStrategy * (tempRate / pickleData.backDatas.length);
     });
     baseYearProfitRate = (sumOfBase - 100000) / 100000;
-    baseYearProfitRate = baseYearProfitRate / (endDate - beginDate) / (1000*60*60*24) * 365;
+    baseYearProfitRate = baseYearProfitRate / ((endDate - beginDate) / (1000*60*60*24)) * 365;
     yearProfitRate = (sumOfStrategy - 100000) / 100000;
-    yearProfitRate = yearProfitRate / (endDate - beginDate) / (1000*60*60*24) * 365;
+    yearProfitRate = yearProfitRate / ((endDate - beginDate) / (1000*60*60*24)) * 365;
 }
 
 
@@ -406,7 +403,6 @@ function getCOV(a, b) {
  * @returns {number}
  */
 function getAverage(a) {
-    console.log(a);
     return a.reduce((x, y) => { return x + y; }) / a.length;
 }
 

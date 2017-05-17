@@ -39,6 +39,12 @@ describe('strategybl', function() {
                 }
                 else {
                     console.log(docs);
+                    // let i = 1;
+                    // docs.forEach(doc => {
+                    //     console.log(i);
+                    //     console.log(doc["strategyDayRatePiece"]);
+                    //     i++;
+                    // });
                     done();
                 }
             });

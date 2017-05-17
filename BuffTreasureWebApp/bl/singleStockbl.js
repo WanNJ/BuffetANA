@@ -421,7 +421,7 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(RSI24);
                 return one_week_data;
             });
-            callback(null, all_week_data);
+            callback(null, splitData(all_week_data));
         }
     });
 };
@@ -613,7 +613,7 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(RSI24);
                 return one_month_data;
             });
-            callback(null, all_month_data);
+            callback(null, splitData(all_month_data));
         }
     });
 };

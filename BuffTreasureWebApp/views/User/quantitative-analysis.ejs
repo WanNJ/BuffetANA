@@ -5,87 +5,67 @@
     <title>BUFF-量化回测</title>
 </head>
 <body>
-<div class="page-container bloc-fill-screen">
+<div class="page-container">
 
     <% include ../Components/navigator.ejs %>
 
-    <div class="center-block text-center" id="page" style="max-width: 500px;">
-        <button type="submit"
-                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
-                id="quickAnalysis" >
-            快速回测（推荐）
-        </button>
-        <button type="submit"
-                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
-                id="predefinedAnalysis" >
-            预定义回测
-        </button>
-        <button type="submit"
-                class="btn btn-primary btn-lg btn-block flipInY btn-clean shake-hvr animated"
-                id="customAnalysis" >
-            自定义回测
-        </button>
-
-        <div class="bloc bgc-white l-bloc">
-            <div class="container bloc-lg">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <img src="../img/3.jpg" class="img-responsive"/>
-                        <h3 class="mg-md">
-                            快速回测（推荐）
-                        </h3>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="../img/2.jpg" class="img-responsive"/>
-                        <h3 class="mg-md">
-                            预定义回测
-                        </h3>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="../img/1.jpg" class="img-responsive"/>
-                        <h3 class="mg-md">
-                            自定义回测
-                        </h3>
-                    </div>
+    <div class="bloc bgc-white l-bloc " id="bloc-7">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 class="text-center mg-md">
+                        量化回测
+                    </h1>
+                    <p class="sub-heading text-center">
+                        指定属于你的股票投资策略
+                    </p>
+                </div>
+            </div>
+            <div class="row voffset-lg">
+                <div class="col-sm-4">
+                    <a href="quantitative-analysis/result">
+                        <img src="/img/baby.png" class="img-responsive img-circle"/>
+                    </a>
+                    <h3 class="text-center mg-md">
+                        快速回测
+                    </h3>
+                    <p class="text-center">
+                        适合<strong>新手投资者</strong><br>
+                        如果您刚刚接触股票，急于亲自上阵练手，这将是最适合您的选择<br/>
+                        在这里我们将直接为您推荐当前最热门的股票<br/>
+                        如果您相信我们的判断，就大胆买入吧
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <a href="quantitative-analysis">
+                        <img src="/img/man.png" class="img-responsive img-circle"/>
+                    </a>
+                    <h3 class="text-center mg-md">
+                        预定义回测
+                    </h3>
+                    <p class="text-center">
+                        适合<strong>业余投资者</strong><br>
+                        如果您对股票系统有所了解，但对各种指标感到眼花缭乱，这将是最适合您的选择<br/>
+                        在这里我们将为您提供我们的标准预测方案<br/>
+                        您可以选择我们为您提供的各种方案，对您的股票进行回测
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <a href="quantitative-analysis">
+                        <img src="/img/master.png" class="img-responsive img-circle"/>
+                    </a>
+                    <h3 class="text-center mg-md">
+                        自定义回测
+                    </h3>
+                    <p class="text-center">
+                        适合<strong>专业投资者</strong><br>
+                        如果您对股票系统十分了解，对各种指标了如指掌，这将是最适合您的选择<br/>
+                        在这里我们将为您提供多维测度，供您自行掌控<br/>
+                        您可以自定义各种方案，对您的股票进行回测
+                    </p>
                 </div>
             </div>
         </div>
-
-        <script type="text/javascript">
-            $("#quickAnalysis").click(function (){
-                $("#page").empty();
-                $.ajax('/user/quantitative-analysis/result',{
-                    type: 'GET',
-                    dataType: 'html',
-                    success: function (result) {
-                        console.log(result);
-                        $("#page").append(result);
-                    },
-                    error: function (errorMsg) {
-                        //请求失败时执行该函数
-                        alert(errorMsg);
-                    }
-                });
-            });
-            $("#predefinedAnalysis").click(function (){
-                $("#page").empty();
-                $.ajax('/user/quantitative-analysis/result',{
-                    type: 'GET',
-                    dataType: 'html',
-                    success: function (result) {
-                        console.log(result);
-                        $("#page").append(result);
-                    },
-                    error: function (errorMsg) {
-                        //请求失败时执行该函数
-                        alert(errorMsg);
-                    }
-                });
-            });
-            $("#customAnalysis").click(function (){
-                alert("尚未完成");
-            });
-        </script>
     </div>
 
     <!-- ScrollToTop Button -->

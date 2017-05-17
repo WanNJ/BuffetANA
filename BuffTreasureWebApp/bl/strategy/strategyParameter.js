@@ -610,7 +610,7 @@ exports.calculateFilterValue = function (name ,code ,beginDate , endDate ,callba
         doc.reverse();
 
         let valueList = [];
-        for(let i  = 0;  i< doc.length && doc[i]["date"] -beginDate >= 0; i++){
+        for(let i  = 0;  i+1< doc.length && doc[i]["date"] -beginDate >= 0; i++){
             let part = {
                 "date" : doc[i]["date"],
                 "value" : doc[i+1][name]

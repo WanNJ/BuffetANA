@@ -282,7 +282,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
     let setFilterPromise = function (code , codeIndex ,filter , index , AllPickleDataList,beginDate ,endDate) {
         return new Promise((resolve, reject) => {
             let keys = Object.keys(filter);
-            console.log(keys.length)
+            //console.log(keys.length)
             if (index === keys.length) {
                 resolve(AllPickleDataList);
             } else {

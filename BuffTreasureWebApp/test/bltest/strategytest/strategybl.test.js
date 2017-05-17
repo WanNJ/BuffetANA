@@ -33,6 +33,9 @@ describe('strategybl', function() {
                 // "KDJ_K" : ["asd", 10, 1],
                 // "KDJ_D" : ["asd", 10, 1]
             };
+            // let filter = {
+            //     "turnOverRate" : ['<', 1]
+            // };
             strategy.getBackResults(new Date('2015-01-01'), new Date('2017-04-28'), stockPoolConditionVO, rank, {}, tradeModelVO, 10, function (err, docs) {
                 if (err) {
                     done(err);

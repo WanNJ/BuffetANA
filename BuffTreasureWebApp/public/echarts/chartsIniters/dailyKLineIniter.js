@@ -404,6 +404,7 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MACD',
                 type: 'bar',
+                barWidth: 1,
                 data: objData.macds,
                 itemStyle: {
                     normal: {

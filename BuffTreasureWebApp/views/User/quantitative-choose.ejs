@@ -14,7 +14,8 @@
                 <span>股票池：</span>
                 <select class="form-control" style="max-width: 120px;display: inline" id="stock-pool">
                     <option value="asc" selected="selected">沪深300</option>
-                    <option value="des">沪深A股</option>
+                    <option value="des">中小板</option>
+                    <option value="des">创业板</option>
                     <option value="des">自定义</option>
                 </select>
                 排除ST
@@ -40,40 +41,40 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" onclick="addFilterConditon($(this).text())">
                                 股票代码
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" onclick="addFilterConditon('成交量')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" onclick="addFilterConditon($(this).text())">
                                 成交量
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" onclick="addFilterConditon('市值')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" onclick="addFilterConditon($(this).text())">
                                 市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" onclick="addFilterConditon('换手率')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" onclick="addFilterConditon($(this).text())">
                                 换手率
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" onclick="addFilterConditon('收盘价')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" onclick="addFilterConditon($(this).text())">
                                 收盘价
                             </button>
                             <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low" onclick="addFilterConditon($(this).text())">
                                 最低价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" onclick="addFilterConditon($(this).text())">
                                 最高价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" onclick="addFilterConditon($(this).text())">
                                 流通市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" onclick="addFilterConditon($(this).text())">
                                 涨幅
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" onclick="addFilterConditon('股票代码')">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" onclick="addFilterConditon($(this).text())">
                                 复权收盘价
                             </button>
                         </div>
@@ -247,15 +248,15 @@
                 </div>
                 <div>
                     <div style="padding-left: 10px;padding-right: 50px;">
-                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text">
+                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" id="date-from">
+                            <input class="form-control" size="16" type="text" value="2015-01-01">
                             <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <span class="date-txt between"> - </span>
-                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text">
+                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" id="date-to">
+                            <input class="form-control" size="16" type="text" value="2017-05-17">
                             <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -298,15 +299,31 @@
 
     }
     function start() {
-        $("#stock-pool");
-        $("#exclude-ST");
-        $("#filter-conditon-lines");
-        $("#ranking-conditon-line");
-        $("#market-observe");
-        $("#reserve-days");
-        $("#number-of-stock");
+        $("#stock-pool").val();
+        $("#exclude-ST").val();
+        $("#filter-conditon-lines").val();
+        $("#ranking-conditon-line").val();
+        $("#date-from").val();
+        $("#date-to").val();
+        $("#market-observe").val();
+        $("#reserve-days").val();
+        $("#number-of-stock").val();
 
-        $.ajax()
+        let data;
+        function standardPost (url,args)
+        {
+            var form = $("<form method='post'></form>");
+            form.attr({"action":url});
+            for (arg in args)
+            {
+                var input = $("<input type='hidden'>");
+                input.attr({"name":arg});
+                input.val(args[arg]);
+                form.append(input);
+            }
+            form.submit();
+        }("quantitative-analysis/result",data);
+
     }
 </script>
 </body>

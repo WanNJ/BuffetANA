@@ -1,9 +1,36 @@
 <!doctype html>
+<html>
+<head>
+    <% include ../Components/settings.html %>
+    <title>BUFF-量化回测</title>
+</head>
+<body>
 <div class="page-container">
+    <% include ../Components/navigator.ejs %>
+
     <div class="bloc bgc-white l-bloc" id="bloc-1">
-        <div class="container">
-            <div class="row col-xs-6">
-                <div >
+        <div class="container bloc-lg container-fluid">
+            <div class="section-container home-section-wrap clearfix">
+                <span>股票池：</span>
+                <select class="form-control" style="max-width: 120px;display: inline">
+                    <option value="asc" selected="selected">沪深300</option>
+                    <option value="des">沪深A股</option>
+                    <option value="des">自定义</option>
+                </select>
+                排除ST
+                <div class="switch" style="display: inline-block">
+                    <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                    <label for="cmn-toggle-1"></label>
+                </div>
+                <button type="submit" class="btn btn-info btn-clean animated" id="plate" >
+                    板块
+                </button>
+                <button type="submit" class="btn btn-info btn-clean animated" id="industry" >
+                    行业
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
@@ -52,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div >
+                <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
@@ -96,6 +123,130 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#filter-conditons" aria-controls="filter-conditons" role="tab" data-toggle="tab">筛选条件</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active " id="filter-conditons">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>指标</th>
+                                    <th>比较符</th>
+                                    <th>值</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td scope="row">交易天数</td>
+                                    <td>
+                                        <select class="form-control" style="max-width: 120px">
+                                            <option value="asc" selected="selected">小于</option>
+                                            <option value="des">大于</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input style="max-width: 100px"/>
+                                    </td>
+                                    <td>
+                                        <a type="button">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 section-container home-section-wrap clearfix">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#ranking-conditons" aria-controls="ranking-conditons" role="tab" data-toggle="tab">排名条件</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content table-condensed">
+                        <div role="tabpanel" class="tab-pane fade in active " id="ranking-conditons">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>指标</th>
+                                    <th>次序</th>
+                                    <th>观望期</th>
+                                    <th>权重</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td scope="row">交易天数</td>
+                                    <td>
+                                        <select class="form-control" style="max-width: 120px">
+                                            <option value="asc" selected="selected">从小到大</option>
+                                            <option value="des">从大到小</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input style="max-width: 50px"/>
+                                        天
+                                    </td>
+                                    <td>
+                                        <input style="max-width: 50px"/>
+                                    </td>
+                                    <td>
+                                        <a type="button">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-container home-section-wrap clearfix">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#trade-modules" aria-controls="trade-modules" role="tab" data-toggle="tab">交易模型</a>
+                    </li>
+                </ul>
+                <div class="tab-content table-condensed">
+                    <div role="tabpanel" class="tab-pane fade in active" style="padding-top: 20px" id="trade-modules">
+                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                            市场观察期：
+                            <input style="max-width: 50px;"/>
+                            天
+                        </div>
+                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                            持仓期：
+                            <input style="max-width: 50px;"/>
+                            天
+                        </div>
+                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                            持股数：
+                            <input style="max-width: 50px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+</body>
+
+<!-- ScrollToTop Button -->
+<a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+            class="fa fa-chevron-up"></span></a>
+
+<% include ../Components/footer.ejs %>
+</html>

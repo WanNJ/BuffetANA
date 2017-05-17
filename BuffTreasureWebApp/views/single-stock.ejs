@@ -35,6 +35,38 @@
             else
                 return 'sh' + stockCode;
         }
+        function getAnotherFullStockName(stockCode) {
+            let sub = stockCode.substring(0, 3);
+            if (sub === '000' || sub === '200' || sub === '080')
+                return '1' + stockCode;
+            else
+                return '0' + stockCode;
+        }
+        function splitTimeSharingData(rawData) {
+            let stockCode = rawData.symbol;
+            let stockName = rawData.name;
+            let data = rawData.data;
+            let times = [];
+            let prices = [];
+            let avgPrices = [];
+            let volumns = [];
+
+            for (let i = 0; i < data.length; i++) {
+                let rawTime = data[i].splice(0, 1)[0];
+                times.push(rawTime.substring(0, 2) + ':' + rawTime.substring(2));
+                prices.push(data[i].splice(0, 1)[0]);
+                avgPrices.push(data[i].splice(0, 1)[0]);
+                volumns.push(data[i].splice(0, 1)[0]);
+            }
+            return {
+                stockName: stockName,
+                stockCode: stockCode,
+                categoryData: times,
+                prices: prices,
+                avgPrices: avgPrices,
+                volumns: volumns
+            };
+        }
         function getCharts(stockCode) {
             let fullStockCode = getFullStockCode(stockCode);
 
@@ -46,7 +78,6 @@
                 success: () => {
                     let realTimeInfo = [];
                     eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
-                    console.log(realTimeInfo);
                     $('#stock_name').html(realTimeInfo[0]);
                     $('#stock_code').html('(' + fullStockCode + ')');
                     $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
@@ -69,18 +100,40 @@
             });
 
             $.ajax({
+                type: "get",
+                url: 'http://img1.money.126.net/data/hs/time/today/' + getAnotherFullStockName(stockCode) + '.json',
+                dataType: "json",
+                async: true,
+                cache: true,
+                beforeSend: function () {
+                    $('#stockSeg').css('display', 'block');
+                    $('#firstTab').addClass('active');
+                    $('#timeSharing').addClass('active');
+                    $('#timeSharingChart').resize();
+                    timeSharingChart.showLoading();
+                },
+                success: (result) => {
+                    let timeSharingData = splitTimeSharingData(result);
+                    timeSharingChart.hideLoading();
+                    loadTimeSharingChart(timeSharingData);
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求分时图数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            });
+
+            $.ajax({
                 type: "post",
                 async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
                 url: "single-stock/getDailyKLine", //请求发送到TestServlet处
                 data: $("#stock_form").serialize(),
                 dataType: "json", //返回数据形式为json
                 beforeSend: function () {
-                    $('#stockSeg').css('display', 'block');
-                    $('firstTab').addClass('active');
-                    $('dailyKLine').addClass('active');
-                    $('#dailyKLineChart').resize();
-                    daily_KLineChart.resize();
-                    daily_KDJChart.resize();
                     daily_KLineChart.showLoading();
                     daily_KDJChart.showLoading();
                 },
@@ -109,12 +162,13 @@
                 data: $("#stock_form").serialize(),
                 dataType: "json", //返回数据形式为json
                 beforeSend: function (XHR) {
-                    weekly_KLineChart.resize();
                     weekly_KLineChart.showLoading();
+                    weekly_KDJChart.showLoading();
                 },
                 success: function (result) {
                     if (result) {
                         weekly_KLineChart.hideLoading();
+                        weekly_KDJChart.hideLoading();
                         loadWeeklyKLineChart(result);
                     }
                 },
@@ -136,10 +190,12 @@
                 dataType: "json", //返回数据形式为json
                 beforeSend: function (XHR) {
                     monthly_KLineChart.showLoading();
+                    monthly_KDJChart.showLoading();
                 },
                 success: function (result) {
                     if (result) {
                         monthly_KLineChart.hideLoading();
+                        monthly_KDJChart.hideLoading();
                         loadMonthlyKLineChart(result);
                     }
                 },
@@ -299,8 +355,8 @@
         <div class="col-sm-12" style="height: 20px;"></div>
         <div class="col-sm-10 col-sm-offset-1">
             <ul class="nav nav-tabs nav-justified" id="mainTab">
-                <!--<li class="active"><a href="#timeSharing">分时</a></li>-->
-                <li id="firstTab" class="active"><a href="#dailyKLine">日K</a></li>
+                <li id="firstTab" class="active"><a href="#timeSharing">分时</a></li>
+                <li><a href="#dailyKLine">日K</a></li>
                 <li><a href="#weeklyKLine">周K</a></li>
                 <li><a href="#monthlyKLine">月K</a></li>
             </ul>
@@ -309,8 +365,10 @@
 
         <!--Echarts Modules-->
         <div class="col-sm-12 tab-content">
-            <!--<div id="timeSharing" class="tab-pane"></div>-->
-            <div id="dailyKLine" class="tab-pane active">
+            <div id="timeSharing" class="tab-pane active">
+                <% include EChartsModule/timeSharingChart.ejs %>
+            </div>
+            <div id="dailyKLine" class="tab-pane">
                 <% include EChartsModule/dailyKLineChart.ejs %>
             </div>
             <div id="weeklyKLine" class="tab-pane">

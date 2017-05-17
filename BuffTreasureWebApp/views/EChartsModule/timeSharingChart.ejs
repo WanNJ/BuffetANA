@@ -1,34 +1,4 @@
 <div id="timeSharingChart" class="center-block col-sm-12" style="height: 400px"></div>
 
-<div class="col-sm-1"></div>
-<div class="col-sm-10">
-    <ul class="nav nav-tabs nav-justified" id="timeSharing_subTab">
-        <li class="active"><a href="#timeSharing_KDJChart">KDJ</a></li>
-        <li><a href="#timeSharing_MACDChart">MACD</a></li>
-        <li><a href="#timeSharing_RSIChart">RSI</a></li>
-    </ul>
-</div>
-<div class="col-sm-1"></div>
-
-<div class="col-sm-12 tab-content">
-    <div id="timeSharing_KDJChart" class="tab-pane active" style="height: 120px"></div>
-    <div id="timeSharing_MACDChart" class="tab-pane" style="height: 120px"></div>
-    <div id="timeSharing_RSIChart" class="tab-pane" style="height: 120px"></div>
-</div>
-
 <script src="/echarts/theme/shine.js"></script>
 <script src="/echarts/chartsIniters/timeSharingIniter.js"></script>
-
-<script>
-    $('#timeSharing_subTab').find('a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        $(this).resize();
-        if($(this).attr('href') === '#timeSharing_KDJChart')
-            timeSharing_KDJChart.resize();
-        if($(this).attr('href') === '#timeSharing_MACDChart')
-            timeSharing_MACDChart.resize();
-        if($(this).attr('href') === '#timeSharing_RSIChart')
-            timeSharing_RSIChart.resize();
-    });
-</script>

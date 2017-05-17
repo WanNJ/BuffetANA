@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <% include ../Components/settings.html %>
+    <title>BUFF-自选股</title>
+</head>
+<body>
+<div class="page-container">
+
+    <% include ../Components/navigator.ejs %>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">我的自选股</div>
+        <div class="panel-body"></div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>股票代码</th>
+                <th>股票名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(personalStocks) { %>
+            <% for(let i = 0; i < personalStocks.length; i++) { %>
+            <tr>
+                <th scope="row"><%= i %></th>
+                <td><%= personalStocks[i].stockCode %></td>
+                <td><%= personalStocks[i].stockName %></td>
+            </tr>
+            <% } %>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+
+</div>
+</body>
+
+<% include ../Components/footer.ejs %>
+</html>

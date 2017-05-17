@@ -23,6 +23,9 @@ router.get('/market', function (req, res, next) {
 });
 
 router.get('/single-stock', function (req, res, next) {
+    if(req.session.singleStock)
+        res.locals.singleStock = req.session.singleStock;
+
     res.render('single-stock');
 });
 

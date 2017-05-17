@@ -35,6 +35,124 @@
             else
                 return 'sh' + stockCode;
         }
+        function getCharts(stockCode) {
+            let fullStockCode = getFullStockCode(stockCode);
+
+            $.ajax({
+                url: 'http://hq.sinajs.cn/list=' + fullStockCode,
+                dataType: "script",
+                async: false,
+                cache: true,
+                success: () => {
+                    let realTimeInfo = [];
+                    eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
+                    console.log(realTimeInfo);
+                    $('#stock_name').html(realTimeInfo[0]);
+                    $('#stock_code').html('(' + fullStockCode + ')');
+                    $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
+                    $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
+                    $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
+                    if (realTimeInfo[3] - realTimeInfo[2] < 0) {
+                        $("#current_price").css({color: "green"});
+                        $("#chg").css({color: "green"});
+                        $("#chg_p").css({color: "green"});
+                        $("#imp_icon").addClass("fa-arrow-down");
+                        $("#imp_icon").css({color: "green"});
+                    } else {
+                        $("#current_price").css({color: "red"});
+                        $("#chg").css({color: "red"});
+                        $("#chg_p").css({color: "red"});
+                        $("#imp_icon").addClass("fa-arrow-up");
+                        $("#imp_icon").css({color: "red"});
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "single-stock/getDailyKLine", //请求发送到TestServlet处
+                data: $("#stock_form").serialize(),
+                dataType: "json", //返回数据形式为json
+                beforeSend: function () {
+                    $('#stockSeg').css('display', 'block');
+                    $('firstTab').addClass('active');
+                    $('dailyKLine').addClass('active');
+                    $('#dailyKLineChart').resize();
+                    daily_KLineChart.resize();
+                    daily_KDJChart.resize();
+                    daily_KLineChart.showLoading();
+                    daily_KDJChart.showLoading();
+                },
+                success: function (result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        daily_KLineChart.hideLoading();
+                        daily_KDJChart.hideLoading();
+                        loadDailyKLineChart(result);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求日K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+
+            $.ajax({
+                type: "post",
+                async: true,
+                url: "single-stock/getWeeklyKLine",
+                data: $("#stock_form").serialize(),
+                dataType: "json", //返回数据形式为json
+                beforeSend: function (XHR) {
+                    weekly_KLineChart.resize();
+                    weekly_KLineChart.showLoading();
+                },
+                success: function (result) {
+                    if (result) {
+                        weekly_KLineChart.hideLoading();
+                        loadWeeklyKLineChart(result);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求周K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+
+            $.ajax({
+                type: "post",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "single-stock/getMonthlyKLine", //请求发送到TestServlet处
+                data: $("#stock_form").serialize(),
+                dataType: "json", //返回数据形式为json
+                beforeSend: function (XHR) {
+                    monthly_KLineChart.showLoading();
+                },
+                success: function (result) {
+                    if (result) {
+                        monthly_KLineChart.hideLoading();
+                        loadMonthlyKLineChart(result);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求月K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+        }
     </script>
     <script type="text/javascript">
         $.widget("ui.autocomplete", $.ui.autocomplete, {
@@ -81,122 +199,8 @@
                 let re = /([0-9]+)\((.*)\)/;
                 let result = re.exec(query);
                 let stockCode = result[1];
-                let fullStockCode = getFullStockCode(stockCode);
 
-                $.ajax({
-                    url: 'http://hq.sinajs.cn/list=' + fullStockCode,
-                    dataType: "script",
-                    async: false,
-                    cache: true,
-                    success: () => {
-                        let realTimeInfo = [];
-                        eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
-                        console.log(realTimeInfo);
-                        $('#stock_name').html(realTimeInfo[0]);
-                        $('#stock_code').html('(' + fullStockCode + ')');
-                        $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
-                        $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
-                        $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
-                        if (realTimeInfo[3] - realTimeInfo[2] < 0) {
-                            $("#current_price").css({color: "green"});
-                            $("#chg").css({color: "green"});
-                            $("#chg_p").css({color: "green"});
-                            $("#imp_icon").addClass("fa-arrow-down");
-                            $("#imp_icon").css({color: "green"});
-                        } else {
-                            $("#current_price").css({color: "red"});
-                            $("#chg").css({color: "red"});
-                            $("#chg_p").css({color: "red"});
-                            $("#imp_icon").addClass("fa-arrow-up");
-                            $("#imp_icon").css({color: "red"});
-                        }
-                    }
-                });
-
-                $.ajax({
-                    type: "post",
-                    async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: "single-stock/getDailyKLine", //请求发送到TestServlet处
-                    data: $("#stock_form").serialize(),
-                    dataType: "json", //返回数据形式为json
-                    beforeSend: function () {
-                        $('#stockSeg').css('display', 'block');
-                        $('firstTab').addClass('active');
-                        $('dailyKLine').addClass('active');
-                        $('#dailyKLineChart').resize();
-                        daily_KLineChart.resize();
-                        daily_KDJChart.resize();
-                        daily_KLineChart.showLoading();
-                        daily_KDJChart.showLoading();
-                    },
-                    success: function (result) {
-                        //请求成功时执行该函数内容，result即为服务器返回的json对象
-                        if (result) {
-                            daily_KLineChart.hideLoading();
-                            daily_KDJChart.hideLoading();
-                            loadDailyKLineChart(result);
-                        }
-                    },
-                    error: function (errorMsg) {
-                        //请求失败时执行该函数
-                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求日K数据失败，请稍后再试！</strong></div>');
-
-                        window.setTimeout(function () {
-                            $("#bottom-alert").alert("close");
-                        }, 2000);
-                    }
-                })
-
-                $.ajax({
-                    type: "post",
-                    async: true,
-                    url: "single-stock/getWeeklyKLine",
-                    data: $("#stock_form").serialize(),
-                    dataType: "json", //返回数据形式为json
-                    beforeSend: function (XHR) {
-                        weekly_KLineChart.resize();
-                        weekly_KLineChart.showLoading();
-                    },
-                    success: function (result) {
-                        if (result) {
-                            weekly_KLineChart.hideLoading();
-                            loadWeeklyKLineChart(result);
-                        }
-                    },
-                    error: function (errorMsg) {
-                        //请求失败时执行该函数
-                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求周K数据失败，请稍后再试！</strong></div>');
-
-                        window.setTimeout(function () {
-                            $("#bottom-alert").alert("close");
-                        }, 2000);
-                    }
-                })
-
-                $.ajax({
-                    type: "post",
-                    async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: "single-stock/getMonthlyKLine", //请求发送到TestServlet处
-                    data: $("#stock_form").serialize(),
-                    dataType: "json", //返回数据形式为json
-                    beforeSend: function (XHR) {
-                        monthly_KLineChart.showLoading();
-                    },
-                    success: function (result) {
-                        if (result) {
-                            monthly_KLineChart.hideLoading();
-                            loadMonthlyKLineChart(result);
-                        }
-                    },
-                    error: function (errorMsg) {
-                        //请求失败时执行该函数
-                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求月K数据失败，请稍后再试！</strong></div>');
-
-                        window.setTimeout(function () {
-                            $("#bottom-alert").alert("close");
-                        }, 2000);
-                    }
-                })
+                getCharts(stockCode);
             });
 
             $('#addToPersonalStockBtn').click(function (e) {
@@ -234,7 +238,6 @@
 
         });
     </script>
-
 </head>
 <body>
 
@@ -343,6 +346,14 @@
     <!--scrollToTop按钮-->
     <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
+
+    <% if(typeof stockCode !== "undefined") { %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getCharts('<%= stockCode %>');
+        });
+    </script>
+    <% } %>
 </div>
 
 </body>

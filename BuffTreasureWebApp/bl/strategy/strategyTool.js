@@ -262,9 +262,9 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 //console.log(keys)
                 //console.log('length:' +keys.length)
                 resolve(rankMap[keys[index]]
-                    (code ,codeIndex , rank[keys[index]][0],rank[keys[index]][2],
+                    (code ,codeIndex , rank[keys[index]][0]==='desc',rank[keys[index]][2],
                     rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
-                    .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList)));
+                    .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList,beginDate,endDate)));
             }
         });
 
@@ -282,7 +282,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
     let setFilterPromise = function (code , codeIndex ,filter , index , AllPickleDataList,beginDate ,endDate) {
         return new Promise((resolve, reject) => {
             let keys = Object.keys(filter);
-            console.log(keys.length)
+            //console.log(keys.length)
             if (index === keys.length) {
                 resolve(AllPickleDataList);
             } else {

@@ -27,18 +27,25 @@ describe('strategybl', function() {
 
 
             let rank = {
-                "MA" : ["asd", 10, 1],
-                "MOM" : ["asd", 10, 1]
+                "MA" : ["desc", 10, 1]
+                // "MOM" : ["asc", 10, 1]
                 // ,"RSI" : ["asd", 10, 1],
                 // "KDJ_K" : ["asd", 10, 1],
                 // "KDJ_D" : ["asd", 10, 1]
             };
+            // let filter = {
+            //     "turnOverRate" : ['<', 1]
+            // };
             strategy.getBackResults(new Date('2015-01-01'), new Date('2017-04-28'), stockPoolConditionVO, rank, {}, tradeModelVO, 10, function (err, docs) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    console.log(docs);
+                    console.log(docs[0]["historyTradeRecord"]);
+                    // console.log(docs["strategyDayRatePiece"]);
+                    // console.log(docs["baseDayRatePiece"]);
+                    // console.log(docs["historyTradeRecord"][0]);
+
                     // let i = 1;
                     // docs.forEach(doc => {
                     //     console.log(i);

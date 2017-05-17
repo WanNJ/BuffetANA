@@ -38,7 +38,7 @@ describe('#shiit()', function() {
         };
 
         let filter = {
-            "volume" :      ["<",     0],
+            "volume" :      [">",     0],
                    }
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
             stockPoolConditionVO, rank, filter, tradeModelVO, 3, (err,data) => {

@@ -74,7 +74,6 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
             curMASum += doc[i+formationPeriod+2]["adjClose"] - doc[i+1]["adjClose"];
             //console.log(curMASum)
         }
-        console.log( code+'    '+MAValue.length)
         MAValue.reverse()
         //if(MAValue.length ===0)console.log(code)
         callback(err,normalize(MAValue));
@@ -103,7 +102,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
  */
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     let searchBeginDate = new Date(beginDate-600*24000*3600);
-    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,[], (err, docs) => {
+    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,["date", "adjClose"], (err, docs) => {
         docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量
@@ -604,17 +603,17 @@ function normalize(array) {
  *      !!!数组中没有value的date 不存在
  *      比如2014-01-02 没有MA均线  那么返回的数组里面没有 date 2014-01-02 就根本不会出现
  */
-exports.calculateVolValue = function (code ,beginDate , endDate ,callback) {
+exports.calculateFilterValue = function (name ,code ,beginDate , endDate ,callback) {
     // TODO 应该是24000*3600吧？
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate,[] ,(err,doc) => {
         doc.reverse();
 
         let valueList = [];
-        for(let i  = 0;  i< doc.length && doc[i]["date"] -beginDate >= 0; i++){
+        for(let i  = 0;  i+1< doc.length && doc[i]["date"] -beginDate >= 0; i++){
             let part = {
                 "date" : doc[i]["date"],
-                "value" : doc[i]['volume']
+                "value" : doc[i+1][name]
             };
             //console.log('part:  '+part['value'])
             valueList.push(part);

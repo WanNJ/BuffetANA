@@ -75,15 +75,15 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-// mongoose.connect('mongodb://192.168.1.103/formal');
-//
-// mongoose.connection.on('open', function () {
-//     console.log('Connected to Mongoose');
-// });
-//
-// process.on('exit', () => {
-//    mongoose.disconnect();
-// });
+mongoose.connect('mongodb://192.168.1.103/formal');
+
+mongoose.connection.on('open', function () {
+    console.log('Connected to Mongoose');
+});
+
+process.on('exit', () => {
+   mongoose.disconnect();
+});
 
 module.exports = app;
 // var express = require('express');

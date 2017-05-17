@@ -1,23 +1,6 @@
 // 基于准备好的dom，初始化echarts实例
 let timeSharingChart = echarts.init(document.getElementById('timeSharingChart'), 'shine');
 
-function calculateMA(dayCount) {
-    let result = [];
-    let len = data.adjs.length;
-    for (let i = 0; i < len; i++) {
-        if (i < dayCount) {
-            result.push('-');
-            continue;
-        }
-        let sum = 0;
-        for (let j = 0; j < dayCount; j++) {
-            sum += data.adjs[i - j];
-        }
-        result.push(sum / dayCount);
-    }
-    return result;
-}
-
 function loadTimeSharingChart(objData) {
 
     let timeSharingOption = {

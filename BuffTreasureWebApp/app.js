@@ -52,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 加载处理请求的路由模块
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', users);
 app.use('/single-stock', singleStock);
 
 // 404 ERROR

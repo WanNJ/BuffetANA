@@ -102,7 +102,7 @@
             $.ajax({
                 type: "get",
                 url: 'http://img1.money.126.net/data/hs/time/today/' + getAnotherFullStockName(stockCode) + '.json',
-                dataType: "json",
+                dataType: "jsonp",
                 async: true,
                 cache: true,
                 beforeSend: function () {

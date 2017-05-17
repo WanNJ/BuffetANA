@@ -94,20 +94,36 @@ function loadTimeSharingChart(objData) {
                 name: '价格',
                 type: 'line',
                 data: objData.prices,
-                showSymbol: false
+                showSymbol: false,
+                itemStyle: {
+                    normal: {
+                        color: '#337ab7',
+                        lineStyle: {
+                            width: 1.5
+                        }
+                    }
+                },
             },
             {
                 name: '均价',
                 type: 'line',
                 data: objData.avgPrices,
-                showSymbol: false
+                showSymbol: false,
+                itemStyle: {
+                    normal: {
+                        color: 'grey',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
             },
             {
                 name: '成交量',
                 type: 'bar',
                 xAxisIndex: 1,
                 yAxisIndex: 1,
-                data: data.volumns
+                data: objData.volumns
             }
         ]
     };

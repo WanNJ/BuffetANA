@@ -34,8 +34,8 @@ router.get('/marketthermometer', function (req, res, next) {
     res.render('User/marketthermometer');
 });
 
-router.get('/quantitativeAnalysis', function (req, res, next) {
-    res.render('User/quantitativeAnalysis');
+router.get('/quantitative-analysis', function (req, res, next) {
+    res.render('User/quantitative-analysis');
 });
 
 router.get('/about-us', function (req, res, next) {

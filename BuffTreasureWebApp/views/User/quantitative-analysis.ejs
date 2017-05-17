@@ -29,6 +29,18 @@
         <script type="text/javascript">
             $("#quickAnalysis").click(function (){
                 $("#page").empty();
+                $.ajax('/quantitative-analysis',{
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        alert(result);
+                        $("#page").append(result);
+                    },
+                    error: function (errorMsg) {
+                        //请求失败时执行该函数
+                        alert(errorMsg);
+                    }
+                });
             });
             $("#predefinedAnalysis").click(function (){
                 alert("尚未完成");

@@ -2,8 +2,8 @@
  * Created by Accident on 18/05/2017.
  */
 let normal_pieChart = echarts.init(document.getElementById('normal_pieChart'));
-let highAndOpp_pieChart = echarts.init(document.getElementById('highAndOpp_pieChart'));
 let highAndSame_pieChart = echarts.init(document.getElementById('highAndSame_pieChart'));
+let highAndOpp_pieChart = echarts.init(document.getElementById('highAndOpp_pieChart'));
 let lowAndSame_pieChart = echarts.init(document.getElementById('lowAndSame_pieChart'));
 let lowAndOpp_pieChart = echarts.init(document.getElementById('lowAndOpp_pieChart'));
 
@@ -12,9 +12,10 @@ function loadDistributionPieChart(chart, data) {
         title: {
             show: false,
         },
+        color:['#53FF53', '#00EC00','#00BB00','#FF9797', '#FF5151', '#EA0000'],
         tooltip : {
             trigger: 'item',
-            formatter: "{b} : {c} ({d}%)"
+            formatter: "{b}<br/> 数量 : {c} <br/> 比例 : {d}%"
         },
         toolbox: {
             right: 100,
@@ -34,30 +35,26 @@ function loadDistributionPieChart(chart, data) {
                 label: {
                     normal: {
                         textStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: 'black'
                         }
                     }
                 },
                 labelLine: {
                     normal: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: 'black'
                         },
                         smooth: 0.2,
                         length: 10,
                         length2: 20
                     }
                 },
-                itemStyle: {
-                    normal: {
-                        color: '#c23531',
-                        shadowBlur: 200,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                },
 
                 animationType: 'scale',
-                animationEasing: 'elasticOut'
+                animationEasing: 'elasticOut',
+                animationDelay: function (idx) {
+                    return Math.random() * 200;
+                }
             }
         ]
     };

@@ -3,9 +3,6 @@
 <head>
     <% include ../Components/settings.html %>
     <script src="/echarts/echarts.min.js"></script>
-    <script src="/echarts/chartsIniters/StrategyResult/accumulatedLineChart.js"></script>
-    <script src="/echarts/chartsIniters/StrategyResult/profitDistributionPieChart.js"></script>
-    <script src="/echarts/chartsIniters/StrategyResult/strategyResultRadarChart.js"></script>
     <title>BUFF-回测结果</title>
 </head>
 <body>
@@ -15,8 +12,10 @@
     <div class="py-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-12"><h1 class="display-4">回测分析</h1></div>
+                <div class="col-md-12"><h1 class="display-4">回测分析结果</h1></div>
             </div>
+
+            <!--回测结果表-->
             <div class="row">
                 <div class="col-md-12">
                     <table class="table table-bordered">
@@ -29,72 +28,77 @@
                             <th>夏普率</th>
                             <th>Alpha</th>
                             <th>Beta</th>
-
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>不择时</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                        </tr>
-                        <tr>
-                            <td>温度高趋反性强</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
+                            <td><%= Math.round(backDetails[0].yearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[0].baseYearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[0].largestBackRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[0].sharpRate * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[0].alpha * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[0].beta * 100) / 100 %></td>
                         </tr>
                         <tr>
                             <td>温度高趋同性强</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
+                            <td><%= Math.round(backDetails[1].yearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[1].baseYearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[1].largestBackRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[1].sharpRate * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[1].alpha * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[1].beta * 100) / 100 %></td>
+                        </tr>
+                        <tr>
+                            <td>温度高趋反性强</td>
+                            <td><%= Math.round(backDetails[2].yearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[2].baseYearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[2].largestBackRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[2].sharpRate * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[2].alpha * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[2].beta * 100) / 100 %></td>
                         </tr>
                         <tr>
                             <td>温度低趋同性强</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
+                            <td><%= Math.round(backDetails[3].yearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[3].baseYearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[3].largestBackRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[3].sharpRate * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[3].alpha * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[3].beta * 100) / 100 %></td>
                         </tr>
                         <tr>
                             <td>温度低趋反性强</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
+                            <td><%= Math.round(backDetails[4].yearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[4].baseYearProfitRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[4].largestBackRate * 10000) / 100 %>%</td>
+                            <td><%= Math.round(backDetails[4].sharpRate * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[4].alpha * 100) / 100 %></td>
+                            <td><%= Math.round(backDetails[4].beta * 100) / 100 %></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <!--回测结果表-END-->
         </div>
     </div>
+
+    <!--累计收益图-->
     <div class="py-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-12"><h1 class="display-4">累计收益图</h1></div>
             </div>
             <div class="row">
-                <div id="accumulatePaybackChart" class="col-md-8"></div>
-                <div id="strategyEstimateRadarChart" class="col-md-4"></div>
+                <div id="accumulatePaybackChart" class="col-md-8" style="height: 400px"></div>
+                <div id="strategyEstimateRadarChart" class="col-md-4" style="height: 400px"></div>
             </div>
         </div>
     </div>
+    <!--累计收益图-END-->
+
+    <!--收益分布饼图-->
     <div class="py-5">
         <div class="container">
             <div class="row">
@@ -104,28 +108,33 @@
             <div class="row">
                 <div class="col-md-12"><h1 class="display-4">收益分布图</h1></div>
             </div>
-            <div class="row">
-                <div id="profitDistributePies" class="col-md-12">
-
-                </div>
-            </div>
 
             <div class="col-sm-12">
                 <ul class="nav nav-tabs nav-justified" id="pieChartTab">
-                    <li class="active"><a href="#normal_pieChart">不择时</a></li>
-                    <li><a href="#highAndOpp_pieChart">温度高趋反性强</a></li>
-                    <li><a href="#highAndSame_pieChart">温度高趋同性强</a></li>
-                    <li><a href="#lowAndSame_pieChart">温度低趋同性强</a></li>
-                    <li><a href="#lowAndOpp_pieChart">温度低趋反性强</a></li>
+                    <li class="active"><a href="#normal_pie">不择时</a></li>
+                    <li><a href="#highAndSame_pie">温度高趋同性强</a></li>
+                    <li><a href="#highAndOpp_pie">温度高趋反性强</a></li>
+                    <li><a href="#lowAndSame_pie">温度低趋同性强</a></li>
+                    <li><a href="#lowAndOpp_pie">温度低趋反性强</a></li>
                 </ul>
             </div>
 
             <div class="col-sm-12 tab-content">
-                <div id="normal_pieChart" class="tab-pane active"></div>
-                <div id="highAndOpp_pieChart" class="tab-pane"></div>
-                <div id="highAndSame_pieChart" class="tab-pane"></div>
-                <div id="lowAndSame_pieChart" class="tab-pane"></div>
-                <div id="lowAndOpp_pieChart" class="tab-pane"></div>
+                <div id="normal_pie" class="tab-pane active">
+                    <div id="normal_pieChart" class="center-block col-sm-12" style="height: 400px"></div>
+                </div>
+                <div id="highAndSame_pie" class="tab-pane">
+                    <div id="highAndSame_pieChart" class="center-block col-sm-12" style="height: 400px"></div>
+                </div>
+                <div id="highAndOpp_pie" class="tab-pane">
+                    <div id="highAndOpp_pieChart" class="center-block col-sm-12" style="height: 400px"></div>
+                </div>
+                <div id="lowAndSame_pie" class="tab-pane">
+                    <div id="lowAndSame_pieChart" class="center-block col-sm-12" style="height: 400px"></div>
+                </div>
+                <div id="lowAndOpp_pie" class="tab-pane">
+                    <div id="lowAndOpp_pieChart" class="center-block col-sm-12" style="height: 400px"></div>
+                </div>
             </div>
 
             <script type="text/javascript">
@@ -133,69 +142,234 @@
                     e.preventDefault();
                     $(this).tab('show');
                     $(this).resize();
-                    if($(this).attr('href') === '#normal_pieChart')
+                    if ($(this).attr('href') === '#normal_pie') {
                         normal_pieChart.resize();
-                    if($(this).attr('href') === '#highAndOpp_pieChart')
-                        highAndOpp_pieChart.resize();
-                    if($(this).attr('href') === '#highAndSame_pieChart')
+                        loadDistributionPieChart(normal_pieChart, pie_normalData);
+                    }
+                    if ($(this).attr('href') === '#highAndSame_pie')
                         highAndSame_pieChart.resize();
-                    if($(this).attr('href') === '#lowAndSame_pieChart')
+                    if ($(this).attr('href') === '#highAndOpp_pie')
+                        highAndOpp_pieChart.resize();
+                    if ($(this).attr('href') === '#lowAndSame_pie')
                         lowAndSame_pieChart.resize();
-                    if($(this).attr('href') === '#lowAndOpp_pieChart')
+                    if ($(this).attr('href') === '#lowAndOpp_pie')
                         lowAndOpp_pieChart.resize();
                 });
             </script>
         </div>
     </div>
+    <!--收益分布饼图-END-->
+
+    <!--历史交易查询-->
     <div class="py-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-12"><h1 class="display-4">历史交易查询</h1></div>
             </div>
-            <div class="row">
 
-                <div class="col-md-12">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>股票代码</th>
-                            <th>股票简称</th>
-                            <th>买入时间</th>
-                            <th>卖出时间</th>
-                            <th>买入价</th>
-                            <th>卖出价</th>
-                            <th>单次收益率</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                        </tr>
-                        <tr>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                            <td>XXX</td>
-                        </tr>
-                        </tbody>
-                    </table>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="nav nav-tabs nav-justified" id="historyTradeTab">
+                        <li class="active"><a href="#normal_history">不择时</a></li>
+                        <li><a href="#highAndSame_history">温度高趋同性强</a></li>
+                        <li><a href="#highAndOpp_history">温度高趋反性强</a></li>
+                        <li><a href="#lowAndSame_history">温度低趋同性强</a></li>
+                        <li><a href="#lowAndOpp_history">温度低趋反性强</a></li>
+                    </ul>
                 </div>
+                <div class="col-sm-12"></div>
+                <div class="col-sm-12 tab-content">
+                    <div id="normal_history" class=" col-md-12 tab-pane active">
+                        <div style="overflow: scroll; height: 500px">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票简称</th>
+                                    <th>买入时间</th>
+                                    <th>卖出时间</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                    <th>单次收益率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(let i = 0; i < normal_historyDatas.length; i++) { %>
+                                <tr>
+                                    <td><%= normal_historyDatas[i].code %></td>
+                                    <td><%= normal_historyDatas[i].name %></td>
+                                    <td><%= normal_historyDatas[i].buyTime %></td>
+                                    <td><%= normal_historyDatas[i].sellTime %></td>
+                                    <td><%= Math.round(normal_historyDatas[i].buyPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(normal_historyDatas[i].sellPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(normal_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="highAndOpp_history" class="col-md-12 tab-pane">
+                        <div style="overflow: scroll; height: 500px">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票简称</th>
+                                    <th>买入时间</th>
+                                    <th>卖出时间</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                    <th>单次收益率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(let i = 0; i < highAndSame_historyDatas.length; i++) { %>
+                                <tr>
+                                    <td><%= highAndSame_historyDatas[i].code %></td>
+                                    <td><%= highAndSame_historyDatas[i].name %></td>
+                                    <td><%= highAndSame_historyDatas[i].buyTime %></td>
+                                    <td><%= highAndSame_historyDatas[i].sellTime %></td>
+                                    <td><%= Math.round(highAndSame_historyDatas[i].buyPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(highAndSame_historyDatas[i].sellPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(highAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="highAndSame_history" class="col-md-12 tab-pane">
+                        <div style="overflow: scroll; height: 500px">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票简称</th>
+                                    <th>买入时间</th>
+                                    <th>卖出时间</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                    <th>单次收益率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(let i = 0; i < highAndOpp_historyDatas.length; i++) { %>
+                                <tr>
+                                    <td><%= highAndOpp_historyDatas[i].code %></td>
+                                    <td><%= highAndOpp_historyDatas[i].name %></td>
+                                    <td><%= highAndOpp_historyDatas[i].buyTime %></td>
+                                    <td><%= highAndOpp_historyDatas[i].sellTime %></td>
+                                    <td><%= Math.round(highAndOpp_historyDatas[i].buyPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(highAndOpp_historyDatas[i].sellPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(highAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="lowAndSame_history" class="col-md-12 tab-pane">
+                        <div style="overflow: scroll; height: 500px">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票简称</th>
+                                    <th>买入时间</th>
+                                    <th>卖出时间</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                    <th>单次收益率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(let i = 0; i < lowAndSame_historyDatas.length; i++) { %>
+                                <tr>
+                                    <td><%= lowAndSame_historyDatas[i].code %></td>
+                                    <td><%= lowAndSame_historyDatas[i].name %></td>
+                                    <td><%= lowAndSame_historyDatas[i].buyTime %></td>
+                                    <td><%= lowAndSame_historyDatas[i].sellTime %></td>
+                                    <td><%= Math.round(lowAndSame_historyDatas[i].buyPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(lowAndSame_historyDatas[i].sellPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(lowAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="lowAndOpp_history" class="col-md-12 tab-pane">
+                        <div style="overflow: scroll; height: 500px">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票简称</th>
+                                    <th>买入时间</th>
+                                    <th>卖出时间</th>
+                                    <th>买入价</th>
+                                    <th>卖出价</th>
+                                    <th>单次收益率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(let i = 0; i < lowAndOpp_historyDatas.length; i++) { %>
+                                <tr>
+                                    <td><%= lowAndOpp_historyDatas[i].code %></td>
+                                    <td><%= lowAndOpp_historyDatas[i].name %></td>
+                                    <td><%= lowAndOpp_historyDatas[i].buyTime %></td>
+                                    <td><%= lowAndOpp_historyDatas[i].sellTime %></td>
+                                    <td><%= Math.round(lowAndOpp_historyDatas[i].buyPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(lowAndOpp_historyDatas[i].sellPrice * 100) / 100 %></td>
+                                    <td><%= Math.round(lowAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $('#historyTradeTab').find('a').click(function (e) {
+                        $(this).tab('show');
+                        $(this).resize();
+                    });
+                </script>
             </div>
         </div>
     </div>
+    <!--历史交易查询-END-->
+
 
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
 
+    <script src="/echarts/chartsIniters/StrategyResult/accumulatedLineChart.js"></script>
+    <script src="/echarts/chartsIniters/StrategyResult/profitDistributionPieChart.js"></script>
+    <script src="/echarts/chartsIniters/StrategyResult/strategyResultRadarChart.js"></script>
+    <script type="text/javascript">
+        let baseDates = JSON.parse('<%- JSON.stringify(base_Dates) %>');
+        let baseData = JSON.parse('<%- JSON.stringify(base_profitRates) %>');
+        let normalData = JSON.parse('<%- JSON.stringify(normal_profitRates) %>');
+        loadAccumulatedLineChart(baseDates, baseData, normalData);
+
+        let pie_normalData = JSON.parse('<%- JSON.stringify(normal_pieDatas) %>');
+        let pie_highAndSameData = JSON.parse('<%- JSON.stringify(highAndSame_pieDatas) %>');
+        let pie_highAndOppData = JSON.parse('<%- JSON.stringify(highAndOpp_pieDatas) %>');
+        let pie_lowAndSameData = JSON.parse('<%- JSON.stringify(lowAndSame_pieDatas) %>');
+        let pie_lowAndOppData = JSON.parse('<%- JSON.stringify(lowAndOpp_pieDatas) %>');
+        loadDistributionPieChart(normal_pieChart, pie_normalData);
+        loadDistributionPieChart(highAndSame_pieChart, pie_highAndSameData);
+        loadDistributionPieChart(highAndOpp_pieChart, pie_highAndOppData);
+        loadDistributionPieChart(lowAndSame_pieChart, pie_lowAndSameData);
+        loadDistributionPieChart(lowAndOpp_pieChart, pie_lowAndOppData);
+
+        let radarData = JSON.parse('<%- JSON.stringify(strategyScores) %>');
+        loadStrategyResultRadarChart(radarData);
+    </script>
 </div>
 </body>
 

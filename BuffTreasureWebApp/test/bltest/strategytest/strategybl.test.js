@@ -41,16 +41,15 @@ describe('strategybl', function() {
                     done(err);
                 }
                 else {
-                    console.log(docs[0]["historyTradeRecord"]);
-                    console.log(docs[0]["strategyDayRatePiece"]);
+                    console.log(docs[0]);
                     // console.log(docs[0]["baseDayRatePiece"]);
 
-                    let i = 1;
-                    docs.forEach(doc => {
-                        console.log(i);
-                        console.log(doc["strategyDayRatePiece"]);
-                        i++;
-                    });
+                    // let i = 1;
+                    // docs.forEach(doc => {
+                    //     console.log(i);
+                    //     console.log(doc["strategyDayRatePiece"]);
+                    //     i++;
+                    // });
                     done();
                 }
             });

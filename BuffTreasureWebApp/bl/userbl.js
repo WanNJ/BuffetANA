@@ -59,8 +59,8 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
             callback(err, false);
         else {
             let has = false;
-            for (let i = 0; i < stocks.length; i++) {
-                if (stocks[i]["stockCode"] === stock["stockCode"]) {
+            for (let i = 0; i < stocks["selfSelectStock"].length; i++) {
+                if (stocks["selfSelectStock"][i]["stockCode"] === stock["stockCode"]) {
                     has = true;
                     break;
                 }
@@ -89,7 +89,7 @@ exports.getSelfSelectStock = (userName, callback) => {
             callback(err, null);
         else {
             let stocks = {};
-            docs.forEach(t => {
+            docs["selfSelectStock"].forEach(t => {
                 stocks[t["stockCode"]] = t["stockName"];
             });
             callback(null, stocks);

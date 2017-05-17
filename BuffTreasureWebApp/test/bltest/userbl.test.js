@@ -7,7 +7,6 @@ let expect = require('chai').expect;
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');
-var assert = require("assert");
 mongoose.connect('mongodb://localhost/formal');
 
 mongoose.connection.on('open', function () {
@@ -15,23 +14,48 @@ mongoose.connection.on('open', function () {
 });
 
 
-/*
- *  add by wsw
- *  目前这个测试  只能我自己跑  需要设计所有人都能跑的测试方法
- *  仿照田原的代码对 userbl进行测试
- *  结果仿照断言
- */
 describe('userbl', function() {
-    describe('#login()', function() {
+    describe('#signUp()', function() {
         it('just a test', function(done) {
-            userbl.login('wsw15','123',function (err, doc) {
+            userbl.signUp('slowtime','123456', '151250134@smail.nju.edu.cn',function (err, doc) {
                 if (err) {
                     done(err);
                 }
                 else {
                     //使用断言
-                    assert.equal(doc,false,'反应不正确');
-                    console.log("correct")
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#addToSelfSelectStock()', function() {
+        it('just a test', function(done) {
+            userbl.addToSelfSelectStock('slowtime',{"stockCode" : "000001", "stockName" : "平安银行"},function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    if (err)
+                        console.log(err);
+                    else
+                        console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getSelfSelectStock()', function() {
+        it('just a test', function(done) {
+            userbl.getSelfSelectStock('slowtime', function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    if (err)
+                        console.log(err);
+                    else
+                        console.log(doc);
                     done();
                 }
             });

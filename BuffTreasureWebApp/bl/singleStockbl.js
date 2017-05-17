@@ -493,7 +493,7 @@ exports.getMonthlyData = (code, callback) => {
                     "adjClose": month_adjClose,
                     "changeRate": month_changeRate,
                     "turnOverRate": month_turnOverRate.reduce((x, y) => { return x + y; }),
-                    "changePrice": month_changePrice.reduce((x, y) => { })
+                    "changePrice": month_changePrice.reduce((x, y) => { return x + y; })
                 };
                 month_docs.unshift(month);
             }
@@ -615,8 +615,9 @@ exports.getMonthlyData = (code, callback) => {
                 let RSI6 = 0;
                 let RSI12 = 0;
                 let RSI24 = 0;
-                if ((upAverage6 + downAverage6) !== 0)
+                if ((upAverage6 + downAverage6) !== 0) {
                     RSI6 = upAverage6 / (upAverage6 + downAverage6) * 100;
+                }
                 if ((upAverage12 + downAverage12) !== 0)
                     RSI12 = upAverage12 / (upAverage12 + downAverage12) * 100;
                 if ((upAverage24 + downAverage24) !== 0)

@@ -64,7 +64,6 @@
                 });
             });
 
-
             $("#stock_form").submit(function (e) {
                 e.preventDefault();
 
@@ -199,6 +198,40 @@
                     }
                 })
             });
+
+            $('#addToPersonalStockBtn').click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "post",
+                    url: 'single-stock/addToPersonalStock',
+                    data: {'stockCode': $('#stock_code').text().substring(3, 9), 'stockName': $('#stock_name').text()},
+                    async: true,
+                    cache: true,
+                    success: (result) => {
+                        if(result === 'SUCCESS') {
+                            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>添加自选股成功！</strong></div>');
+                        } else if (result === 'SIGN_ERROR') {
+                            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请先登录之后再添加！</strong></div>');
+                        } else if (result === 'DUPLICATED') {
+                            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>您已经添加过该股票，请勿重复添加！</strong></div>');
+                        } else if (result === 'NOTEXIST') {
+                            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>错误操作！股票不存在！</strong></div>');
+                        }
+                        window.setTimeout(function () {
+                            $("#bottom-alert").alert("close");
+                        }, 2000);
+                    },
+                    error: () => {
+                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>出错啦，请稍后再试！</strong></div>');
+
+                        window.setTimeout(function () {
+                            $("#bottom-alert").alert("close");
+                        }, 2000);
+                    }
+                });
+            });
+
         });
     </script>
 
@@ -251,7 +284,7 @@
                     <div class="row">
                         <div class="col-sm-12 text-center"
                              style="height: 102px;padding-top:16px;  line-height: 25px;">
-                            <button type="button" class="btn btn-primary btn-lg" style="height: 60px;">
+                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-lg" style="height: 60px;">
                                 <span class="fa fa-plus"></span> 加入自选股
                             </button>
                         </div>

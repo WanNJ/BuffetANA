@@ -1,6 +1,7 @@
 let express = require('express');
 let allStockBl = require('../bl/allStockbl');
 let singleStockService = require('../bl/singleStockbl');
+let userBl = require('../bl/userbl');
 let router = express.Router();
 
 router.get('/getAllStockList', (req, res, next) => {
@@ -49,6 +50,20 @@ router.post('/getMonthlyKLine', (req, res, next) => {
 
         res.send(docs);
     });
+});
+
+router.post('/addToPersonalStock', (req, res, next) => {
+    let sess = req.session;
+
+    if(sess.user) {
+        userBl.addToSelfSelectStock(sess.user, {'stockCode': req.body.stockCode, 'stockName': req.body.stockName}, (err, result) => {
+            if(err)
+                res.render('error');
+            res.send(result);
+        });
+    } else {
+        res.send('SIGN_ERROR');
+    }
 });
 
 module.exports = router;

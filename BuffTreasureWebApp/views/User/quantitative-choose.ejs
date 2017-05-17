@@ -12,22 +12,22 @@
         <div class="container bloc-lg container-fluid">
             <div class="section-container home-section-wrap clearfix">
                 <span>股票池：</span>
-                <select class="form-control" style="max-width: 120px;display: inline">
+                <select class="form-control" style="max-width: 120px;display: inline" id="stock-pool">
                     <option value="asc" selected="selected">沪深300</option>
                     <option value="des">沪深A股</option>
                     <option value="des">自定义</option>
                 </select>
                 排除ST
-                <div class="switch" style="display: inline-block">
+                <div class="switch" style="display: inline-block" id="exclude-ST">
                     <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
                     <label for="cmn-toggle-1"></label>
                 </div>
-                <button type="submit" class="btn btn-info btn-clean animated" id="plate" >
-                    板块
-                </button>
-                <button type="submit" class="btn btn-info btn-clean animated" id="industry" >
-                    行业
-                </button>
+                <!--<button type="submit" class="btn btn-info btn-clean animated" id="plate" >-->
+                    <!--板块-->
+                <!--</button>-->
+                <!--<button type="submit" class="btn btn-info btn-clean animated" id="industry" >-->
+                    <!--行业-->
+                <!--</button>-->
             </div>
             <div class="row">
                 <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
@@ -40,40 +40,40 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" onclick="addFilterConditon('股票代码')">
                                 股票代码
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" onclick="addFilterConditon('成交量')">
                                 成交量
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" onclick="addFilterConditon('市值')">
                                 市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" onclick="addFilterConditon('换手率')">
                                 换手率
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" onclick="addFilterConditon('收盘价')">
                                 收盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low" onclick="addFilterConditon($(this).text())">
                                 最低价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" onclick="addFilterConditon('股票代码')">
                                 最高价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" onclick="addFilterConditon('股票代码')">
                                 流通市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon('股票代码')">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" onclick="addFilterConditon('股票代码')">
                                 涨幅
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon('股票代码')">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" onclick="addFilterConditon('股票代码')">
                                 复权收盘价
                             </button>
                         </div>
@@ -143,9 +143,9 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="filter-conditon-lines">
                                 <tr>
-                                    <td scope="row">交易天数</td>
+                                    <td scope="row">换手率</td>
                                     <td>
                                         <select class="form-control" style="max-width: 120px">
                                             <option value="asc" selected="selected">小于</option>
@@ -186,9 +186,30 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="ranking-conditon-line">
                                 <tr>
-                                    <td scope="row">交易天数</td>
+                                    <td scope="row">MA</td>
+                                    <td>
+                                        <select class="form-control" style="max-width: 120px">
+                                            <option value="asc" selected="selected">从小到大</option>
+                                            <option value="des">从大到小</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input style="max-width: 50px"/>
+                                        天
+                                    </td>
+                                    <td>
+                                        <input style="max-width: 50px"/>
+                                    </td>
+                                    <td>
+                                        <a type="button">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">MOM</td>
                                     <td>
                                         <select class="form-control" style="max-width: 120px">
                                             <option value="asc" selected="selected">从小到大</option>
@@ -222,29 +243,71 @@
                 </ul>
                 <div class="tab-content table-condensed">
                     <div role="tabpanel" class="tab-pane fade in active" style="padding-top: 20px" id="trade-modules">
-                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                            市场观察期：
-                            <input style="max-width: 50px;"/>
-                            天
-                        </div>
-                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                            持仓期：
-                            <input style="max-width: 50px;"/>
-                            天
-                        </div>
-                        <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                            持股数：
-                            <input style="max-width: 50px;"/>
-                        </div>
                     </div>
                 </div>
+                <div>
+                    <div style="padding-left: 10px;padding-right: 50px;">
+                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text">
+                            <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <span class="date-txt between"> - </span>
+                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text">
+                            <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+
+                    </div>
+                </div>
+                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                    市场观察期：
+                    <input style="max-width: 50px;" id="market-observe"/>
+                    天
+                </div>
+                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                    持仓期：
+                    <input style="max-width: 50px;" id="reserve-days"/>
+                    天
+                </div>
+                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                    持股数：
+                    <input style="max-width: 50px;" id="number-of-stock"/>
+                </div>
+            </div>
+            <div class="row text-center">
+                <button type="submit" class="btn btn-primary btn-lg btn-clean animated" onclick="start()">
+                    开始回测
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
+    function addFilterConditon(name) {
+        console.log(name);
+        $("#filter-conditon-lines").append();
+    }
+    function addRankingConditon(name) {
 
+    }
+    function start() {
+        $("#stock-pool");
+        $("#exclude-ST");
+        $("#filter-conditon-lines");
+        $("#ranking-conditon-line");
+        $("#market-observe");
+        $("#reserve-days");
+        $("#number-of-stock");
+
+        $.ajax()
+    }
 </script>
 </body>
 

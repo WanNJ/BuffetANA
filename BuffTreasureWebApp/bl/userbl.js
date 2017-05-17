@@ -2,6 +2,7 @@
  * Created by slow_time on 2017/5/4.
  */
 let userDB = require('../models/user.js').userDB;
+let allStockDB = require('../models/allstock').allStockDB;
 
 /**
  * 用户登录
@@ -66,12 +67,23 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
                 }
             }
             if (has === false) {
-                userDB.addToSelfSelectStock(userName, stock, (err, isOK) => {
-                    callback(err, isOK);
+                allStockDB.getNameByCode(stock["stockCode"], (err, doc) => {
+                    if (err)
+                        callback(err, false);
+                    else {
+                        // 判断这只股票存不存在
+                        if (doc === null)
+                            callback(null, 'DUPLICATED');
+                        else {
+                            userDB.addToSelfSelectStock(userName, stock, (err, isOK) => {
+                                callback(err, 'SUCCESS');
+                            });
+                        }
+                    }
                 });
             }
             else {
-                callback(new Error("您已添加过该股票，请勿重复添加！"), false)
+                callback(null, 'NOTEXSIT')
             }
         }
     });

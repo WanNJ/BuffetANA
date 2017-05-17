@@ -199,39 +199,39 @@ function getBackDetail() {
 
 /**
  * 获得回测累计收益比较图中的策略收益率累积折线图
- * @returns {Array}
+ * @returns {{date: Array, profitRate: Array}}
  */
 function getStrategyDayRatePiece() {
-    let dayRatePieceVOS = [];
     let sum = 100000.0;
+    let dayRatePieceVO = {
+        "date" : [],          // x轴的日期
+        "profitRate" : []     // y轴的收益率
+    };
     for(let i = 0; i < pickleDatas.length; i++) {
         sum += strategyRates[i] * sum;
-        let dayRatePieceVO = {
-            "date" : pickleDatas[i].endDate,                     // x轴的日期
-            "profitRate" : (sum - 100000.0) / 100000.0 * 100     // y轴的收益率
-        };
-        dayRatePieceVOS.push(dayRatePieceVO);
+        dayRatePieceVO["date"].push(pickleDatas[i].endDate);
+        dayRatePieceVO["profitRate"].push((sum - 100000.0) / 100000.0 * 100);
     }
-    return dayRatePieceVOS;
+    return dayRatePieceVO;
 }
 
 
 /**
  * 获得回测累计收益比较图中的基准收益率累积折线图
- * @returns {Array}
+ * @returns {{date: Array, profitRate: Array}}
  */
 function getBaseDayRatePiece() {
-    let dayRatePieceVOS = [];
     let sum = 100000.0;
+    let dayRatePieceVO = {
+        "date" : [],          // x轴的日期
+        "profitRate" : []     // y轴的收益率
+    };
     for(let i = 0; i < pickleDatas.length; i++) {
         sum += baseRates[i] * sum;
-        let dayRatePieceVO = {
-            "date" : pickleDatas[i].endDate,                     // x轴的日期
-            "profitRate" : (sum - 100000.0) / 100000.0 * 100     // y轴的收益率
-        };
-        dayRatePieceVOS.push(dayRatePieceVO);
+        dayRatePieceVO["date"].push(pickleDatas[i].endDate);
+        dayRatePieceVO["profitRate"].push((sum - 100000.0) / 100000.0 * 100);
     }
-    return dayRatePieceVOS;
+    return dayRatePieceVO;
 }
 
 

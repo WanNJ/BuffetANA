@@ -41,9 +41,9 @@ describe('strategybl', function() {
                     done(err);
                 }
                 else {
-                    console.log(docs[0]["historyTradeRecord"]);
-                    // console.log(docs["strategyDayRatePiece"]);
-                    // console.log(docs["baseDayRatePiece"]);
+                    // console.log(docs[0]["historyTradeRecord"]);
+                    console.log(docs[0]["strategyDayRatePiece"]);
+                    console.log(docs[0]["baseDayRatePiece"]);
                     // console.log(docs["historyTradeRecord"][0]);
 
                     // let i = 1;

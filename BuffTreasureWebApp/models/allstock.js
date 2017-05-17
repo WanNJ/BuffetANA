@@ -44,6 +44,18 @@ exports.allStockDB = {
         }
     },
 
+
+    /**
+     * 根据股票代码获得股票名称
+     * @param code
+     * @param callback
+     */
+    getNameByCode: (code, callback) => {
+        allStock.findOne({code: code}, ['name'], (err, doc) => {
+            callback(err, doc);
+        });
+    },
+
     /**
      * 获得沪深300所有股票代码和名称
      * @param callback

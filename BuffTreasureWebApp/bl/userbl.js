@@ -73,7 +73,7 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
                     else {
                         // 判断这只股票存不存在
                         if (doc === null)
-                            callback(null, 'DUPLICATED');
+                            callback(null, 'NOTEXSIT');
                         else {
                             userDB.addToSelfSelectStock(userName, stock, (err, isOK) => {
                                 callback(err, 'SUCCESS');
@@ -83,7 +83,7 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
                 });
             }
             else {
-                callback(null, 'NOTEXSIT')
+                callback(null, 'DUPLICATED')
             }
         }
     });

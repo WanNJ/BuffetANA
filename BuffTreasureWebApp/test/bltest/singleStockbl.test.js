@@ -18,7 +18,7 @@ mongoose.connection.on('open', function () {
 describe('singleStockbl', function() {
     describe('#getDailyData()', function() {
         it('should show all information of 000001 per day', function(done) {
-            singleStockbl.getDailyData('000001', (err, all_day_data) => {
+            singleStockbl.getDailyData('300122', (err, all_day_data) => {
                 if (err) {
                     done(err);
                 }
@@ -33,7 +33,7 @@ describe('singleStockbl', function() {
     });
     describe('#getDailyData()', function() {
         it('should show all information of 000001 per day', function(done) {
-            singleStockbl.getDailyData('000001', (err, all_day_data) => {
+            singleStockbl.getDailyData('300122', (err, all_day_data) => {
                 if (err) {
                     done(err);
                 }
@@ -48,7 +48,7 @@ describe('singleStockbl', function() {
     });
     describe('#getWeeklyData()', function() {
         it('should show all information of 000001 per week', function(done) {
-            singleStockbl.getWeeklyData('000001', (err, all_week_data) => {
+            singleStockbl.getWeeklyData('300122', (err, all_week_data) => {
                 if (err) {
                     done(err);
                 }
@@ -61,12 +61,12 @@ describe('singleStockbl', function() {
     });
     describe('#getMonthlyData()', function() {
         it('should show all information of 000001 per month', function(done) {
-            singleStockbl.getMonthlyData('000001', (err, all_month_data) => {
+            singleStockbl.getMonthlyData('300122', (err, all_month_data) => {
                 if (err) {
                     done(err);
                 }
                 else {
-                    console.log(all_month_data.reverse());
+                    console.log(all_month_data);
                     done();
                 }
             });

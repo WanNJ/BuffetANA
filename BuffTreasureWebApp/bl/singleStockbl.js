@@ -165,7 +165,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(DIF);
                 one_day_data.push(DEA);
                 one_day_data.push(MACD);
-                one_day_data.push(parseFloat(data["adjClose"].toFixed(2)));
+                one_day_data.push(parseFloat(data["close"].toFixed(2)));
 
                 /*
                  * 计算当日RSI
@@ -248,27 +248,31 @@ exports.getWeeklyData = (code, callback) => {
         else {
             let week_docs = [];
             for (let i = docs.length - 1; i >= 0; i--) {
+                if (docs[i]["volume"] === 0)
+                    continue;
                 let week_date = docs[i]["date"];
                 let week_open = docs[i]["open"];
                 let week_close = docs[i]["close"];
                 let week_high = [];
                 let week_low = [];
                 let week_volume = [];
-                let week_adjClose = docs[i]["adjClose"];
+                let week_adjClose = docs[i]["close"];
                 let week_turnOverRate = [];
                 let week_changePrice = [];
                 let week_changeRate = 0;
                 // 判断有没有到周一
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
-                    week_high.push(docs[i]["high"]);
-                    week_low.push(docs[i]["low"]);
-                    week_volume.push(docs[i]["volume"]);
-                    week_turnOverRate.push(docs[i]["turnOverRate"]);
-                    week_changePrice.push(docs[i]["changePrice"]);
+                    if (docs[i]["volume"] !== 0) {
+                        week_high.push(docs[i]["high"]);
+                        week_low.push(docs[i]["low"]);
+                        week_volume.push(docs[i]["volume"]);
+                        week_turnOverRate.push(docs[i]["turnOverRate"]);
+                        week_changePrice.push(docs[i]["changePrice"]);
+                    }
                     i--;
                 }
                 // 此时i指向的是周一，仍然是这一周的数据，需要加进去
-                if (i >= 0) {
+                if (i >= 0 && docs[i]["volume"] !== 0) {
                     week_high.push(docs[i]["high"]);
                     week_low.push(docs[i]["low"]);
                     week_volume.push(docs[i]["volume"]);
@@ -278,6 +282,9 @@ exports.getWeeklyData = (code, callback) => {
                 if (i < 0)
                     i++;
                 week_changeRate = (week_adjClose - docs[i]["beforeClose"]) / docs[i]["beforeClose"];
+
+                if (week_volume.length === 0)
+                    continue;
                 let week = {
                     "date": week_date,
                     "open": week_open,
@@ -363,7 +370,7 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(DIF);
                 one_week_data.push(DEA);
                 one_week_data.push(MACD);
-                one_week_data.push(parseFloat(data["adjClose"].toFixed(2)));
+                one_week_data.push(parseFloat(data["close"].toFixed(2)));
 
                 /*
                  * 计算当周RSI
@@ -446,13 +453,15 @@ exports.getMonthlyData = (code, callback) => {
         else {
             let month_docs = [];
             for (let i = docs.length - 1; i >= 0; i--) {
+                if (docs[i]["volume"] === 0)
+                    continue;
                 let month_date = docs[i]["date"];
                 let month_open = docs[i]["open"];
                 let month_close = docs[i]["close"];
                 let month_high = [];
                 let month_low = [];
                 let month_volume = [];
-                let month_adjClose = docs[i]["adjClose"];
+                let month_adjClose = docs[i]["close"];
                 let month_turnOverRate = [];
                 let month_changePrice = [];
                 let month_changeRate = 0;
@@ -460,16 +469,20 @@ exports.getMonthlyData = (code, callback) => {
                 let now_month = docs[i]["date"].getMonth();
                 // 判断月份有没有改变
                 while (i >= 0 && docs[i]["date"].getMonth() === now_month) {
-                    month_high.push(docs[i]["high"]);
-                    month_low.push(docs[i]["low"]);
-                    month_volume.push(docs[i]["volume"]);
-                    month_turnOverRate.push(docs[i]["turnOverRate"]);
-                    month_changePrice.push(docs[i]["changePrice"]);
+                    if (docs[i]["volume"] !== 0) {
+                        month_high.push(docs[i]["high"]);
+                        month_low.push(docs[i]["low"]);
+                        month_volume.push(docs[i]["volume"]);
+                        month_turnOverRate.push(docs[i]["turnOverRate"]);
+                        month_changePrice.push(docs[i]["changePrice"]);
+                    }
                     i--;
                 }
                 // 由于在外层for循环也要进行一次i--，所以在此加1，防止数据丢失
                 i++;
                 month_changeRate = (month_adjClose - docs[i]["beforeClose"]) / docs[i]["beforeClose"];
+                if (month_volume.length === 0)
+                    continue;
                 let month = {
                     "date": month_date,
                     "open": month_open,
@@ -555,10 +568,10 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(DIF);
                 one_month_data.push(DEA);
                 one_month_data.push(MACD);
-                one_month_data.push(parseFloat(data["adjClose"].toFixed(2)));
+                one_month_data.push(parseFloat(data["close"].toFixed(2)));
 
                 /*
-                 * 计算当周RSI
+                 * 计算当月RSI
                  */
                 changePrice6.push(data["changePrice"]);
                 changePrice12.push(data["changePrice"]);

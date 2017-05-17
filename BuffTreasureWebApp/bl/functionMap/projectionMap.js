@@ -14,5 +14,4 @@ exports.proMap = {
     "KDJ_K" : ['high','low' ,'close','changePrice'],
     "KDJ_D" : ['high','low' ,'close','changePrice'],
     "KDJ_J" : ['high','low' ,'close','changePrice'],
-    "volume" : ['volume']
 }

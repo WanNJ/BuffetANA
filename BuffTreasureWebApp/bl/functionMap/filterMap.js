@@ -2,12 +2,12 @@
  * Created by wshwbluebird on 2017/5/14.
  */
 
-let para = require('../strategy/strategyParameter')
+let para = require('../strategy/strategyParameter').calculateFilterValue
 
 
 exports. setFilter = function(code ,codeIndex, name , isBigger , value ,beginDate, endDate, AllDataList) {
     return new Promise((resolve,reject)=>{
-        functionMap[name](code ,beginDate , endDate ,(err,valueList)=>{
+        para(name ,code ,beginDate , endDate ,(err,valueList)=>{
             let keys = Object.keys(AllDataList);
             for(let i = 0 ; i < 5 ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
@@ -36,6 +36,3 @@ exports. setFilter = function(code ,codeIndex, name , isBigger , value ,beginDat
 }
 
 
-let functionMap = {
-    "volume":para.calculateVolValue
-};

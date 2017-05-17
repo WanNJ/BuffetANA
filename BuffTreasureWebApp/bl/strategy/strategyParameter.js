@@ -604,7 +604,7 @@ function normalize(array) {
  *      !!!数组中没有value的date 不存在
  *      比如2014-01-02 没有MA均线  那么返回的数组里面没有 date 2014-01-02 就根本不会出现
  */
-exports.calculateVolValue = function (code ,beginDate , endDate ,callback) {
+exports.calculateFilterValue = function (name ,code ,beginDate , endDate ,callback) {
     // TODO 应该是24000*3600吧？
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate,[] ,(err,doc) => {
@@ -614,7 +614,7 @@ exports.calculateVolValue = function (code ,beginDate , endDate ,callback) {
         for(let i  = 0;  i< doc.length && doc[i]["date"] -beginDate >= 0; i++){
             let part = {
                 "date" : doc[i]["date"],
-                "value" : doc[i]['volume']
+                "value" : doc[i+1][name]
             };
             //console.log('part:  '+part['value'])
             valueList.push(part);

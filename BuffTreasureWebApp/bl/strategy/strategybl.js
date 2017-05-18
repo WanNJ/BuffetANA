@@ -49,7 +49,7 @@ let largestBackRate;
  * @param filter
  *        筛选指标          比较符     值
  * eg : { "volume" :          [">",     1000000],
- *        "turnOverrate" : ["<",     0.05]
+ *        "turnOverRate" : ["<",     0.05]
  *       }
  * @param tradeModelVO {TradeModelVO} 交易模型
  * @param envSpecDay {Number}  市场观察期

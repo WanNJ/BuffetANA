@@ -13,21 +13,21 @@
             <div class="section-container home-section-wrap clearfix">
                 <span>股票池：</span>
                 <select class="form-control" style="max-width: 120px;display: inline" id="stock-pool">
-                    <option value="asc" selected="selected">沪深300</option>
-                    <option value="des">中小板</option>
-                    <option value="des">创业板</option>
-                    <option value="des">自定义</option>
+                    <option selected="selected">沪深300</option>
+                    <option >中小板</option>
+                    <option >创业板</option>
+                    <option >自定义</option>
                 </select>
                 排除ST
-                <div class="switch" style="display: inline-block" id="exclude-ST">
-                    <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <div class="switch" style="display: inline-block">
+                    <input id="exclude-ST" class="cmn-toggle cmn-toggle-round" type="checkbox">
                     <label for="cmn-toggle-1"></label>
                 </div>
                 <!--<button type="submit" class="btn btn-info btn-clean animated" id="plate" >-->
-                    <!--板块-->
+                <!--板块-->
                 <!--</button>-->
                 <!--<button type="submit" class="btn btn-info btn-clean animated" id="industry" >-->
-                    <!--行业-->
+                <!--行业-->
                 <!--</button>-->
             </div>
             <div class="row">
@@ -35,46 +35,59 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#filter-options" aria-controls="filter-options" role="tab" data-toggle="tab">筛选指标</a>
+                            <a href="#filter-options" aria-controls="filter-options" role="tab"
+                               data-toggle="tab">筛选指标</a>
                         </li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code"
+                                    onclick="addFilterConditon($(this).text())">
                                 股票代码
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume"
+                                    onclick="addFilterConditon($(this).text())">
                                 成交量
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue"
+                                    onclick="addFilterConditon($(this).text())">
                                 市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate"
+                                    onclick="addFilterConditon($(this).text())">
                                 换手率
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close"
+                                    onclick="addFilterConditon($(this).text())">
                                 收盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low"
+                                    onclick="addFilterConditon($(this).text())">
                                 最低价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high"
+                                    onclick="addFilterConditon($(this).text())">
                                 最高价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue"
+                                    onclick="addFilterConditon($(this).text())">
                                 流通市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open"
+                                    onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate"
+                                    onclick="addFilterConditon($(this).text())">
                                 涨幅
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open"
+                                    onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" onclick="addFilterConditon($(this).text())">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose"
+                                    onclick="addFilterConditon($(this).text())">
                                 复权收盘价
                             </button>
                         </div>
@@ -90,34 +103,34 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MA" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MA">
                                 MA
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MOM" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MOM">
                                 MOM
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSI" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSI">
                                 RSI
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DIF" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DIF">
                                 MACD_DIF
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DEA" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DEA">
                                 MACD_DEA
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD">
                                 MACD
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSV" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSV">
                                 RSV
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_K" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_K">
                                 KDJ_K
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_D" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_D">
                                 KDJ_D
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_J" >
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_J">
                                 KDJ_J
                             </button>
                         </div>
@@ -144,17 +157,17 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody id="filter-conditon-lines">
+                                <tbody>
                                 <tr>
                                     <td scope="row">换手率</td>
                                     <td>
-                                        <select class="form-control" style="max-width: 120px">
-                                            <option value="asc" selected="selected">小于</option>
-                                            <option value="des">大于</option>
+                                        <select id="turnOverRate_cmp" class="form-control" style="max-width: 120px">
+                                            <option value="<" selected="selected">小于</option>
+                                            <option value=">">大于</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input style="max-width: 100px"/>
+                                        <input id="turnOverRate_val" style="max-width: 100px"/>
                                     </td>
                                     <td>
                                         <a type="button">
@@ -191,17 +204,17 @@
                                 <tr>
                                     <td scope="row">MA</td>
                                     <td>
-                                        <select class="form-control" style="max-width: 120px">
+                                        <select class="form-control" id="ma_ranking_rule" style="max-width: 120px">
                                             <option value="asc" selected="selected">从小到大</option>
-                                            <option value="des">从大到小</option>
+                                            <option value="desc">从大到小</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input style="max-width: 50px"/>
+                                        <input id="ma_waiting_period" style="max-width: 50px"/>
                                         天
                                     </td>
                                     <td>
-                                        <input style="max-width: 50px"/>
+                                        <input id="ma_weight" style="max-width: 50px"/>
                                     </td>
                                     <td>
                                         <a type="button">
@@ -212,17 +225,17 @@
                                 <tr>
                                     <td scope="row">MOM</td>
                                     <td>
-                                        <select class="form-control" style="max-width: 120px">
+                                        <select id="mom_ranking_rule" class="form-control" style="max-width: 120px">
                                             <option value="asc" selected="selected">从小到大</option>
-                                            <option value="des">从大到小</option>
+                                            <option value="desc">从大到小</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input style="max-width: 50px"/>
+                                        <input id="mom_waiting_period" style="max-width: 50px"/>
                                         天
                                     </td>
                                     <td>
-                                        <input style="max-width: 50px"/>
+                                        <input id="mom_weight" style="max-width: 50px"/>
                                     </td>
                                     <td>
                                         <a type="button">
@@ -248,15 +261,17 @@
                 </div>
                 <div>
                     <div style="padding-left: 10px;padding-right: 50px;">
-                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" id="date-from">
-                            <input class="form-control" size="16" type="text" value="2015-01-01">
+                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd"
+                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input id="date-from" class="form-control" size="16" type="text" value="2015-01-01">
                             <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <span class="date-txt between"> - </span>
-                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" id="date-to">
-                            <input class="form-control" size="16" type="text" value="2017-05-17">
+                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd"
+                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input id="date-to" class="form-control" size="16" type="text" value="2017-05-17">
                             <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -291,6 +306,20 @@
 </div>
 
 <script type="text/javascript">
+    function standardPost(url, args) {
+        let form = $("<form method='post'></form>");
+        form.attr({"action": url});
+        for (let arg in args) {
+            let input = $("<input type='hidden'>");
+            input.attr({"name": arg});
+            input.val(args[arg]);
+            form.append(input);
+        }
+
+        $(document.body).append(form);
+        form.submit();
+    }
+
     function addFilterConditon(name) {
         console.log(name);
         $("#filter-conditon-lines").append();
@@ -299,31 +328,24 @@
 
     }
     function start() {
-        let data={
-            stockPool: $("#stock-pool").val(),
+        let data = {
+            beginDate: $("#date-from").val(),
+            endDate: $("#date-to").val(),
+            stockPool: $("#stock-pool").find("option:selected").text(),
             excludeST: $("#exclude-ST").val(),
-            filterConditonLines: $("#filter-conditon-lines").val(),
-            rankingConditonLine: $("#ranking-conditon-line").val(),
-            date_from: $("#date-from").val(),
-            date_to: $("#date-to").val(),
-            marketObserve: $("#market-observe").val(),
+            turnOverRateCmpChar:   $('#turnOverRate_cmp').val(),
+            turnOverRateVal: $('#turnOverRate_val').val(),
+            maRanking: $("#ma_ranking_rule").val(),
+            maWaiting: $("#ma_waiting_period").val(),
+            maWeight:  $("#ma_weight").val(),
+            momRanking: $("#mom_ranking_rule").val(),
+            momWaiting: $("#mom_waiting_period").val(),
+            momWeight:  $("#mom_weight").val(),
             reserveDays: $("#reserve-days").val(),
             numberOfStock: $("#number-of-stock").val(),
+            marketObserve: $("#market-observe").val()
         };
-        function standardPost (url,args)
-        {
-            var form = $("<form method='post'></form>");
-            form.attr({"action":url});
-            for (arg in args)
-            {
-                var input = $("<input type='hidden'>");
-                input.attr({"name":arg});
-                input.val(args[arg]);
-                form.append(input);
-            }
-            form.submit();
-        }("quantitative-analysis/result",data);
-
+        standardPost('result', data);
     }
 </script>
 </body>

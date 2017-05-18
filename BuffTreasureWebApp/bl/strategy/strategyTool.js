@@ -47,7 +47,7 @@ let mergeArray = function(arr1, arr2){
  * @param isExclude  是否排除ST股，排除为true，不排除为false
  */
 let excludeST = function (arr ,  isExclude){
-    return   !isExclude? arr: arr.filter(t => !(t[1].substring(0,3)==='*ST'));
+    return   !isExclude? arr: arr.filter(t => !(t['name'].substring(0,3)==='*ST'));
 };
 
 
@@ -94,6 +94,8 @@ exports.getChoosedStockList = (stockPoolConditionVO , callback) =>{
  */
 exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay,callback) =>{
         thermometerbl.getEachDayEnvironmentByFormation(beginDate,endDate,envSpecDay,(err,doc) =>{
+
+            //console.log(doc);
             /**
              * 要返回的五种pickleList 集合
              * @type {Array}
@@ -138,6 +140,7 @@ exports.divideDaysByThermometer = (beginDate, endDate, holdingPeriod, envSpecDay
                     normalBegin = dd['date'];
                     normalIndex++;
                 }else if(normalIndex === holdingPeriod){
+                    //console.log(normalBegin+'   '+dd['date'])
                     normalPickleList.push(new PickleDataVO(normalBegin,dd['date'],[],0));
                     normalIndex = 0;
                 }else{

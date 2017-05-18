@@ -74,7 +74,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
             curMASum += doc[i+formationPeriod+2]["adjClose"] - doc[i+1]["adjClose"];
             //console.log(curMASum)
         }
-        MAValue.reverse()
+        MAValue.reverse();
         //if(MAValue.length ===0)console.log(code)
         callback(err,normalize(MAValue));
     });

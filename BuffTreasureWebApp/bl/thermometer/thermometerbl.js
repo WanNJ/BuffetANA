@@ -37,7 +37,6 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
 
     thermometerDB.getThermometerInRangeDate(searchBeginDate,endDate, (err, docs)=>{
 
-       // console.log(docs)
         let temp = 0 ;               //温度
         let earnEffect50 = 0;        //  换手率前50 赚钱效应
         let earnEffectAll = 0;       //  赚钱效应
@@ -189,7 +188,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                     const before = [...givenData['before']];
                     const today = [...givenData['today']];
                     //建立 要计算的数据模型
-                    let curDate = today[0]['date']
+                    let curDate = today[0]['date'];
                     let limitUp = 0; //当日涨停股票的个数
                     let limitDown = 0 ; //当日跌停股票的个数
                     let halfLimitUp = 0; //当日涨超过5%股票的个数
@@ -200,8 +199,8 @@ exports.getDailyEnvironment  = (date , callback) =>{
                     let lastTurnOver;    //换手率前50只个股赚钱效应
                     let yesUpNum = 0;      // 昨日涨停股票个数
                     let yesDownNum = 0;   // 昨日跌停股票个数
-                    let yesUpValue = 0    // 昨日涨停股票今日总体涨幅
-                    let yesDownValue = 0  // 昨日跌停股票今日总体涨幅
+                    let yesUpValue = 0;   // 昨日涨停股票今日总体涨幅
+                    let yesDownValue = 0;  // 昨日跌停股票今日总体涨幅
                     let upNum = 0;       // 今日上涨股票个数
                     let downNum = 0;     //今日下跌股票个数
                     let moneyEffect;    //率前50只个股赚钱效应
@@ -263,7 +262,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                             else if(d < 0) changDownNum ++;
                         }
 
-                    )
+                    );
 
                     lastTurnOver = (changUpNum * 100) / (changUpNum + changDownNum)
 
@@ -279,7 +278,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                         "lastLimitDown": lastLimitDown.toFixed(5),  //跌停涨停股票今日表现    反应市场的追跌情况
                         "lastTurnOver": lastTurnOver.toFixed(5),  //换手率前50只个股赚钱效应为26%
                         "moneyEffect": moneyEffect.toFixed(5),   //总体赚钱效应在一个总体内赚钱效应  上涨家数与涨跌总家数之比
-                     }
+                     };
 
                     return thermometer
 
@@ -311,7 +310,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
 
         }
     });
-}
+};
 
 
 /**
@@ -325,15 +324,12 @@ exports.WriteDailyEnvironmentRange  = (beginDate, endDate , callback) =>{
     let oneDayTime = 24000*3600;
     function getWriteOneDayPromise(date) {
         //date = new Date(date - 24000 * 3600);
-        console.log(date)
         return new Promise(function(resolve, reject){
             if(date  < beginDate){
                 reject(new Error('nothing'));
             }else{
                 bl.getDailyEnvironment(date,(err,doc)=>{
                     date = new Date(date - 24000 * 3600);
-                    console.log(doc!==null)
-                    console.log(date)
                     resolve(getWriteOneDayPromise(date));
                 })
             }

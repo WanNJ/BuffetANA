@@ -260,26 +260,43 @@
                     </div>
                 </div>
                 <div>
-                    <div style="padding-left: 10px;padding-right: 50px;">
-                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd"
-                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input id="date-from" class="form-control" size="16" type="text" value="2015-01-01">
-                            <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                    <div id="time-box" style="padding-left: 10px;padding-right: 50px;display: inline-block;">
+                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                         <span class="date-txt between"> - </span>
-                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd"
-                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input id="date-to" class="form-control" size="16" type="text" value="2017-05-17">
-                            <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
-                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-
-                    </div>
+                    <script type="text/javascript">
+                        $("#time-box .form_date_start").datetimepicker({
+                            language: "zh-CN",
+                            pickerPosition: "top-right",
+                            weekStart: 0,
+                            autoclose: 1,
+                            todayHighlight: 1,
+                            startView: 2,
+                            minView: 2,
+                            startDate: "2007-01-04",
+                            daysOfWeekDisabled: [6, 0],
+                            forceParse: 0
+                        }).data("datetimepicker");
+                        $("#time-box .form_date_end").datetimepicker({
+                            language: "zh-CN",
+                            pickerPosition: "top-right",
+                            weekStart: 0,
+                            autoclose: 1,
+                            todayHighlight: 1,
+                            startView: 2,
+                            minView: 2,
+                            startDate: "2007-01-04",
+                            daysOfWeekDisabled: [6, 0],
+                            forceParse: 0
+                        }).data("datetimepicker");
+                    </script>
                 </div>
                 <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
                     市场观察期：

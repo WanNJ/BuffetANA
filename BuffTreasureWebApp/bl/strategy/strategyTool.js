@@ -328,7 +328,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
     let operatePromise = function (codeList ,codeIndex , listAll, projection){
         // console.log('start' + new Date())
         //console.log(codeList)
-        if(codeList.length === 0){
+        if(typeof codeList ==='undefined'||codeList.length === 0){
             throw new Error('股票池为空');
         }
         // console.log('here')

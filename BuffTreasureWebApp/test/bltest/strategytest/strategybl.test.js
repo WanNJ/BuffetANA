@@ -38,6 +38,7 @@ describe('strategybl', function() {
             };
             strategy.getBackResults(new Date('2015-01-01'), new Date('2017-03-17'), stockPoolConditionVO, rank, filter, tradeModelVO, 10, function (err, docs) {
                 if (err) {
+                    console.log(err.message)
                     done(err);
                 }
                 else {

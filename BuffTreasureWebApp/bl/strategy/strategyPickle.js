@@ -24,7 +24,47 @@ let proMap  =require('../functionMap/projectionMap').proMap;
             'LowAndOpposite':LowAndOppositePickleList
          }
  */
-exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) => {
+exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) => {
+
+    /**
+     * 参数检验
+     * add by wsw
+     */
+
+    let parameterCheck = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)=>{
+        return new Promise((resolve,reject) => {
+            if (endDate - beginDate < 24000 * 3600 * 365) {
+                throw new Error('回测时间不能小于1年')
+            }
+
+            if(rank.length === 0){
+                throw  new Error('基础策略未选择')
+            }
+
+            if(envSpecDay > 10){
+                throw  new Error('环境参数不能大于10')
+            }
+
+            if(tradeModelVO.holdingNums === 0){
+                throw  new Error('持有股票数目不能为0')
+            }
+            if(tradeModelVO.holdingNums > 40){
+                throw  new Error('持有股票数目过多')
+            }
+            if(tradeModelVO.holdingDays === 0){
+                throw  new Error('持仓天数不能为0')
+            }
+            if(tradeModelVO.holdingNums > 100){
+                throw  new Error('持仓天数过多')
+            }
+
+            resolve([])
+        })
+
+    }
+
+
+
     /**
      *
      * @returns {Promise}
@@ -149,8 +189,8 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
     }
 
 
-
-    getCodeList()
+    parameterCheck(beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)
+        .then(t=>getCodeList())
         .then(list=>divideDays(list))
         //.catch(e => callback(e,null))
         .then(data=>setValue(data))

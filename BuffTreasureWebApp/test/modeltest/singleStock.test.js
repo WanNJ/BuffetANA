@@ -9,7 +9,7 @@ let expect = require('chai').expect;
 let mongoose = require('mongoose');
 var describe = require("mocha").describe;
 var it = require("mocha").it;
-mongoose.connect('mongodb://localhost/formal');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

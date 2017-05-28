@@ -334,6 +334,8 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
         // console.log('here')
         //console.log(codeList[codeIndex])
         return new Promise((resolve,reject)=>{
+            //console.log(codeList)
+
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else {
@@ -411,7 +413,6 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                     else
                         valid = false;
 
-                    console.log('end:   '+end)
                     pickleData.backDatas.push
                     (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,begin, end, valid));
                 }else {

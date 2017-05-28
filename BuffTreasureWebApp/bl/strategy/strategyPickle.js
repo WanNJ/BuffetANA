@@ -92,6 +92,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
             //console.log('ere')
             strategyTool.setRankAndFilterToPickleDataList
             (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,(err,list) =>{
+                //console.log(list)
                 resolve(list);
             })
         })

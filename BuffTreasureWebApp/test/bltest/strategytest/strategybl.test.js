@@ -11,7 +11,7 @@ let expect = require('chai').expect;
 let mongoose = require('mongoose');
 let TradeModelVO = require("../../../vo/TradeModelVO.js").TradeModelVO;
 let StockPoolConditionVO = require("../../../vo/StockPoolConditionVO.js").StockPoolConditionVO;
-mongoose.connect('mongodb://localhost/formal');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -36,7 +36,7 @@ describe('strategybl', function() {
             let filter = {
                 "turnOverRate" : ['<', 1]
             };
-            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-05-17'), stockPoolConditionVO, rank, filter, tradeModelVO, 10, function (err, docs) {
+            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-03-17'), stockPoolConditionVO, rank, filter, tradeModelVO, 10, function (err, docs) {
                 if (err) {
                     done(err);
                 }

@@ -9,8 +9,8 @@
  * @returns {number}
  */
 exports.getCOV = (a, b) => {
-    let aAve = getAverage(a);
-    let bAve = getAverage(b);
+    let aAve = this.getAverage(a);
+    let bAve = this.getAverage(b);
     let sum = 0.0;
     for (let i = 0; i < a.length; i++) {
         sum += (a[i] - aAve) * (b[i] - bAve);
@@ -33,7 +33,7 @@ exports.getAverage = (a) => {
  * @returns {number}
  */
 exports.getVariance = (a)=> {
-    let ave = getAverage(a);
+    let ave = this.getAverage(a);
     let sum = 0.0;
     a.forEach(x => {
         sum += Math.pow((x - ave), 2);
@@ -47,5 +47,5 @@ exports.getVariance = (a)=> {
  * @returns {number}
  */
 exports.getSTD = (a) => {
-    return Math.sqrt(getVariance(a));
+    return Math.sqrt(this.getVariance(a));
 };

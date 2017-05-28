@@ -44,7 +44,7 @@ exports.getInIndustryCorrelationResult = (code, holdingPeriod, callback) => {
                             else {
                                 let maxCorrelation = 0.0;
                                 let industryCorrelationVO = null;
-                                for (let stock in docs) {
+                                for (let stock of docs) {
                                     if (stock["code"] === code)
                                         continue;
                                     singleStockDB.getStockInfoByCode(stock["code"], (err, compared) => {

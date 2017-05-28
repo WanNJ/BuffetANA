@@ -322,6 +322,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
  */
 exports.WriteDailyEnvironmentRange  = (beginDate, endDate , callback) =>{
     let oneDayTime = 24000*3600;
+    //console.log('here')
     function getWriteOneDayPromise(date) {
         //date = new Date(date - 24000 * 3600);
         return new Promise(function(resolve, reject){

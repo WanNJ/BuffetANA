@@ -10,7 +10,7 @@ let expect = require('chai').expect;
 // MongoDB
 let mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/formal');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -32,28 +32,30 @@ mongoose.connection.on('open', function () {
 //     });
 // });
 
-describe('#getEachDayEnvironmentByFormation()', function() {
-    it('print the list', function(done) {
-        thermometerbl.getEachDayEnvironmentByFormation(new Date("2010-01-01"),new Date("2016-04-01"),10 , (err,data) => {
-            if (err) {
-                console.log('wrong')
-                done(err);
-            }
-            else {
-                console.log(data);
-                done();
-            }
-        });
-    });
-});
+// describe('#getEachDayEnvironmentByFormation()', function() {
+//     it('print the list', function(done) {
+//         thermometerbl.getEachDayEnvironmentByFormation(new Date("2010-01-01"),new Date("2016-04-01"),10 , (err,data) => {
+//             if (err) {
+//                 console.log('wrong')
+//                 done(err);
+//             }
+//             else {
+//                 console.log(data);
+//                 done();
+//             }
+//         });
+//     });
+// });
 
 /**
+ * 这个是 跑市场温度的!!!!!!!!
+ *
  * 提示  在命令行里输入 测试  mocha -t 300000 thermometer.test.js
  * 必须在命令行里设置  不然两秒钟不够
  */
 describe('#WriteDailyEnvironmentRange()', function() {
     it('write to db', function(done) {
-        thermometerbl.WriteDailyEnvironmentRange(new Date("2009-01-01"),new Date("2017-04-28"), () => {
+        thermometerbl.WriteDailyEnvironmentRange(new Date("2001-01-01"),new Date("2017-04-28"), () => {
                 //this.setTimeout(1500);
                 console.log('finish');
                 done();

@@ -53,12 +53,12 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
 
         for(let i = 2; i < doc.length && i < formationPeriod +2; i++){
 
-            curMASum+= doc[i]["adjClose"];
+            curMASum+= doc[i]["afterAdjClose"];
            // console.log(curMASum)
         }
 
         for(let i  = 0;  (i+formationPeriod +2)< doc.length && doc[i]["date"] -beginDate >= 0; i++){
-            let temp = (curMASum/formationPeriod - doc[i+1]["adjClose"])/(curMASum/formationPeriod);
+            let temp = (curMASum/formationPeriod - doc[i+1]["afterAdjClose"])/(curMASum/formationPeriod);
             //console.log(temp)
             let part = {
                 "date" : doc[i]["date"],
@@ -71,7 +71,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
              * added by TY
              * TODO 此处的 i+formationPeriod 有可能存在数组下标越界的可能，应该加一个判断
              */
-            curMASum += doc[i+formationPeriod+2]["adjClose"] - doc[i+1]["adjClose"];
+            curMASum += doc[i+formationPeriod+2]["afterAdjClose"] - doc[i+1]["afterAdjClose"];
             //console.log(curMASum)
         }
         MAValue.reverse();
@@ -102,7 +102,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
  */
 exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod ,callback) {
     let searchBeginDate = new Date(beginDate-600*24000*3600);
-    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,["date", "adjClose"], (err, docs) => {
+    singleStockDB.getStockInfoInRangeDate(code, searchBeginDate, endDate,["date", "afterAdjClose"], (err, docs) => {
         docs.reverse();
         /**
          * 计算观察期的收益率时的临时变量
@@ -115,8 +115,8 @@ exports.calculateMOMValue = function (code ,beginDate , endDate, formationPeriod
         // 数据层已经过滤掉了交易量为0的数据
         // docs = docs.filter(data => data["volume"] !== 0);
         for (let i = 1; i + formationPeriod < docs.length && docs[i]["date"] - beginDate >= 0; i++) {
-            endAdj = docs[i]["adjClose"];
-            beginAdj = docs[i + formationPeriod]["adjClose"];
+            endAdj = docs[i]["afterAdjClose"];
+            beginAdj = docs[i + formationPeriod]["afterAdjClose"];
             // 该观察内的收益率
             let yield_rate = (endAdj - beginAdj) / beginAdj;
             MOMValue.push({

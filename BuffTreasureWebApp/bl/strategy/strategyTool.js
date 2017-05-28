@@ -262,6 +262,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
             if(index === keys.length) {
                 resolve(AllPickleDataList);
             }else{
+
                 //console.log(keys)
                 //console.log('length:' +keys.length)
                 resolve(rankMap[keys[index]]
@@ -327,6 +328,9 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
     let operatePromise = function (codeList ,codeIndex , listAll, projection){
         // console.log('start' + new Date())
         //console.log(codeList)
+        if(codeList.length === 0){
+            throw new Error('股票池为空');
+        }
         // console.log('here')
         //console.log(codeList[codeIndex])
         return new Promise((resolve,reject)=>{
@@ -354,7 +358,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
     };
 
-    operatePromise(codeList,0,AllPickleDataList,projection).catch(e=>console.log(e)).then(list =>callback(null,list));
+    operatePromise(codeList,0,AllPickleDataList,projection).then(list =>callback(null,list)).catch(e=>callback(e,null));
 
 };
 
@@ -392,7 +396,7 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                     //console.log(data[p]['date'])
                     //console.log('ppppp:    '+pickleData.beginDate)
                     if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] ===0){
-                        begin = data[p]['adjClose']; //最后一天收盘价格
+                        begin = data[p]['afterAdjClose']; //最后一天收盘价格
                     }
                     else
                         valid = false;
@@ -403,9 +407,11 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                     }
                     let end = 0;
                     if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date'] === 0 )
-                        end = data[p]['adjClose']; //最后一天收盘价格
+                        end = data[p]['afterAdjClose']; //最后一天收盘价格
                     else
                         valid = false;
+
+                    console.log('end:   '+end)
                     pickleData.backDatas.push
                     (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,begin, end, valid));
                 }else {

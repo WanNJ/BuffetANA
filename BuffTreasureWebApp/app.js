@@ -73,7 +73,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://localhost/formal');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

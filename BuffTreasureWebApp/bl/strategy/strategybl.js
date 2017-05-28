@@ -113,6 +113,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             let keys = Object.keys(docs);
             for (let i = 0; i < 5; i++) {
                 pickleDatas =  docs[keys[i]];
+
                 initPara(beginDate, endDate);
                 let result = {
                     "backDetail" : getBackDetail(),

@@ -89,6 +89,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
      */
     let setValue = function (data) {
         return new Promise((resolve,reject) =>{
+            //console.log('ere')
             strategyTool.setRankAndFilterToPickleDataList
             (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,(err,list) =>{
                 resolve(list);
@@ -119,7 +120,7 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
      * @param AllDataList
      * @returns {*}
      */
-    let caculateBase = function (AllDataList) {
+    let calculateBase = function (AllDataList) {
         //console.log(AllDataList['Normal'][0])
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
@@ -128,12 +129,15 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
             pickleDataList.forEach(pickleData =>{
                 let num = 0;
                 let moneySum = 0;
+
                 pickleData.backDatas
                     .filter(t=>t.valid)
                     .forEach(data=>{
                         num++;
                         moneySum+= ((100/data.firstDayOpen)*data.lastDayClose-100)/100;
-                    })
+                    });
+                //console.log(moneySum)
+                //console.log(num)
                 if(num!==0)
                 pickleData.baseProfitRate = moneySum/num
             });
@@ -147,13 +151,14 @@ exports.getPickleData = (beginDate, endDate, stockPoolConditionVO, rank, filter,
 
     getCodeList()
         .then(list=>divideDays(list))
-        .catch(e => console.log('wrong in divideDays:   '+e))
+        //.catch(e => callback(e,null))
         .then(data=>setValue(data))
-        .catch(e => console.log('wrong in setValue:   '+e))
-        .then(data=>caculateBase(data))
-        .catch(e => console.log('wrong in calculateValue:   '+e))
+        //.catch(e =>callback(e,null))
+        .then(data=>calculateBase(data))
+        //.catch(e=>callback(e,null))
         .then(data=>filterAndRank(data,tradeModelVO.holdingNums))
-        .catch(e => console.log('wrong in filterAndRank:   '+e))
-        .then(allList=>callback(null,allList));
+        //.catch(e=>callback(e,null))
+        .then(allList=>callback(null,allList))
+        .catch(e=>callback(e,null))
 };
 

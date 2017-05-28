@@ -13,8 +13,8 @@ let expect = require('chai').expect;
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/formal');
+f
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

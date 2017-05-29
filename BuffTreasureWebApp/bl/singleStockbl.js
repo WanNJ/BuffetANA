@@ -40,8 +40,12 @@ exports.getTwoDayInfo = (date, callback) => {
 
 function splitData(daily_rawData) {
     let categoryData = [];
-    let values = [];
+    let values_no_adj = [];
+    let values_before_adj = [];
+    let values_after_adj = [];
     let changeRates = [];
+    let changeRates_before = [];
+    let changeRates_after = [];
     let volumns = [];
     let turnOverRates = [];
     let kIndexes = [];
@@ -56,8 +60,12 @@ function splitData(daily_rawData) {
     let rsi24s = [];
     for (let i = 0; i < daily_rawData.length; i++) {
         categoryData.push(daily_rawData[i].splice(0, 1)[0]);
-        values.push(daily_rawData[i].splice(0, 4));
+        values_no_adj.push(daily_rawData[i].splice(0, 4));
+        values_before_adj.push(daily_rawData[i].splice(0, 4));
+        values_after_adj.push(daily_rawData[i].splice(0, 4));
         changeRates.push(daily_rawData[i].splice(0, 1)[0]);
+        changeRates_before.push(daily_rawData[i].splice(0, 1)[0]);
+        changeRates_after.push(daily_rawData[i].splice(0, 1)[0]);
         volumns.push(daily_rawData[i].splice(0, 1)[0]);
         turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
         kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
@@ -73,8 +81,12 @@ function splitData(daily_rawData) {
     }
     return {
         categoryData: categoryData,
-        KLineValue: values,
+        KLineValue_no_adj: values_no_adj,
+        KLineValue_before_adj: values_before_adj,
+        KLineValue_after_adj: values_after_adj,
         changeRates: changeRates,
+        changeRates_before: changeRates_before,
+        changeRates_after: changeRates_after,
         volumns: volumns,
         turnOverRates: turnOverRates,
         kIndexes: kIndexes,
@@ -96,6 +108,9 @@ exports.getDailyData = (code, callback) => {
             callback(err, null);
         }
         else {
+            // 计算前复权和后复权涨跌幅所需要的临时数据
+            let before_adj = 0;
+            let after_adj = 0;
             // 计算KDJ所需要的临时数据
             let beforeK = 50; // 前日K值
             let beforeD = 50; // 前日D值
@@ -118,7 +133,25 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(parseFloat(data["close"].toFixed(2)));
                 one_day_data.push(parseFloat(data["low"].toFixed(2)));
                 one_day_data.push(parseFloat(data["high"].toFixed(2)));
+                one_day_data.push(parseFloat((data["open"] * data["beforeAdjClose"] / data["close"]).toFixed(2)));
+                one_day_data.push(parseFloat(data["beforeAdjClose"].toFixed(2)));
+                one_day_data.push(parseFloat((data["low"] * data["beforeAdjClose"] / data["close"]).toFixed(2)));
+                one_day_data.push(parseFloat((data["high"] * data["beforeAdjClose"] / data["close"]).toFixed(2)));
+                one_day_data.push(parseFloat((data["open"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
+                one_day_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
+                one_day_data.push(parseFloat((data["low"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
+                one_day_data.push(parseFloat((data["high"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
                 one_day_data.push(parseFloat(data["changeRate"].toFixed(2)));
+                if (before_adj === 0)
+                    one_day_data.push(0.0);
+                else
+                    one_day_data.push(parseFloat(((data["beforeAdjClose"] - before_adj) / before_adj).toFixed(2)));
+                before_adj = data["beforeAdjClose"];
+                if (after_adj === 0)
+                    one_day_data.push(0.0);
+                else
+                    one_day_data.push(parseFloat(((data["afterAdjClose"] - after_adj) / after_adj).toFixed(2)));
+                after_adj = data["afterAdjClose"];
                 one_day_data.push(data["volume"]);
                 one_day_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
@@ -255,17 +288,32 @@ exports.getWeeklyData = (code, callback) => {
                 let week_close = docs[i]["close"];
                 let week_high = [];
                 let week_low = [];
+                let week_open_before = docs[i]["open"] * docs[i]["beforeAdjClose"] / docs[i]["close"];
+                let week_close_before = docs[i]["beforeAdjClose"];
+                let week_high_before = [];
+                let week_low_before = [];
+                let week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
+                let week_close_after = docs[i]["afterAdjClose"];
+                let week_high_after = [];
+                let week_low_after = [];
                 let week_volume = [];
-                let week_adjClose = docs[i]["close"];
                 let week_turnOverRate = [];
                 let week_changePrice = [];
-                let week_changeRate = 0;
+                let week_changeRate = 0.0;
+                let week_changeRate_before = 0.0;
+                let week_changeRate_after = 0.0;
                 // 判断有没有到周一
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
                     if (docs[i]["volume"] !== 0) {
                         week_open = docs[i]["open"];
+                        week_open_before = docs[i]["open"] * docs[i]["beforeAdjClose"] / docs[i]["close"];
+                        week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                         week_high.push(docs[i]["high"]);
                         week_low.push(docs[i]["low"]);
+                        week_high_before.push((docs[i]["high"] * docs[i]["beforeAdjClose"]) / docs[i]["close"]);
+                        week_low_before.push((docs[i]["low"] * docs[i]["beforeAdjClose"]) / docs[i]["close"]);
+                        week_high_before.push((docs[i]["high"] * docs[i]["afterAdjClose"]) / docs[i]["close"]);
+                        week_high_after.push((docs[i]["high"] * docs[i]["afterAdjClose"]) / docs[i]["close"]);
                         week_volume.push(docs[i]["volume"]);
                         week_turnOverRate.push(docs[i]["turnOverRate"]);
                         week_changePrice.push(docs[i]["changePrice"]);
@@ -283,7 +331,11 @@ exports.getWeeklyData = (code, callback) => {
                 }
                 if (i < 0)
                     i++;
-                week_changeRate = (week_adjClose - docs[i]["beforeClose"]) / docs[i]["beforeClose"];
+                week_changeRate = (week_close - docs[i]["beforeClose"]) / docs[i]["beforeClose"];
+                if (i > 0) {
+                    week_changeRate_before = (week_close_before - docs[i - 1]["beforeAdjClose"])/ docs[i - 1]["beforeAdjClose"];
+                    week_changeRate_after = (week_close_after - docs[i - 1]["afterAdjClose"])/ docs[i - 1]["afterAdjClose"];
+                }
 
                 if (week_volume.length === 0)
                     continue;
@@ -293,9 +345,18 @@ exports.getWeeklyData = (code, callback) => {
                     "high": Math.max.apply(null, week_high),
                     "low": Math.min.apply(null, week_low),
                     "close": week_close,
+                    "open_before": week_open_before,
+                    "high_before": Math.max.apply(null, week_high_before),
+                    "low_before": Math.min.apply(null, week_low_before),
+                    "beforeAdjClose": week_close_before,
+                    "open_after": week_open_after,
+                    "high_after": Math.max.apply(null, week_high_after),
+                    "low_after": Math.min.apply(null, week_low_after),
+                    "afterAdjClose": week_close_after,
                     "volume": week_volume.reduce((x, y) => { return x + y; }),
-                    "adjClose": week_adjClose,
                     "changeRate": week_changeRate,
+                    "changeRate_before": week_changeRate_before,
+                    "changeRate_after": week_changeRate_after,
                     "changePrice": week_changePrice.reduce((x, y) => { return x + y; }),
                     "turnOverRate": week_turnOverRate.reduce((x, y) => { return x + y; })
                 };
@@ -325,7 +386,17 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(parseFloat(data["close"].toFixed(2)));
                 one_week_data.push(parseFloat(data["low"].toFixed(2)));
                 one_week_data.push(parseFloat(data["high"].toFixed(2)));
+                one_week_data.push(parseFloat(data["open_before"].toFixed(2)));
+                one_week_data.push(parseFloat(data["beforeAdjClose"].toFixed(2)));
+                one_week_data.push(parseFloat(data["low_before"].toFixed(2)));
+                one_week_data.push(parseFloat(data["high_before"].toFixed(2)));
+                one_week_data.push(parseFloat(data["open_after"].toFixed(2)));
+                one_week_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
+                one_week_data.push(parseFloat(data["low_after"].toFixed(2)));
+                one_week_data.push(parseFloat(data["high_after"].toFixed(2)));
                 one_week_data.push(parseFloat(data["changeRate"].toFixed(2)));
+                one_week_data.push(parseFloat(data["changeRate_before"].toFixed(2)));
+                one_week_data.push(parseFloat(data["changeRate_after"].toFixed(2)));
                 one_week_data.push(data["volume"]);
                 one_week_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
@@ -462,19 +533,35 @@ exports.getMonthlyData = (code, callback) => {
                 let month_close = docs[i]["close"];
                 let month_high = [];
                 let month_low = [];
+                let month_open_before = docs[i]["open"] * docs[i]["beforeAdjClose"] / docs[i]["close"];
+                let month_close_before = docs[i]["beforeAdjClose"];
+                let month_high_before = [];
+                let month_low_before = [];
+                let month_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
+                let month_close_after = docs[i]["afterAdjClose"];
+                let month_high_after = [];
+                let month_low_after = [];
                 let month_volume = [];
                 let month_adjClose = docs[i]["close"];
                 let month_turnOverRate = [];
                 let month_changePrice = [];
                 let month_changeRate = 0;
+                let month_changeRate_before = 0.0;
+                let month_changeRate_after = 0.0;
 
                 let now_month = docs[i]["date"].getMonth();
                 // 判断月份有没有改变
                 while (i >= 0 && docs[i]["date"].getMonth() === now_month) {
                     if (docs[i]["volume"] !== 0) {
-                        month_close = docs[i]["close"];
+                        month_open = docs[i]["open"];
+                        month_open_before = docs[i]["open"] * docs[i]["beforeAdjClose"] / docs[i]["close"];
+                        month_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                         month_high.push(docs[i]["high"]);
                         month_low.push(docs[i]["low"]);
+                        month_high_before.push((docs[i]["high"] * docs[i]["beforeAdjClose"]) / docs[i]["close"]);
+                        month_low_before.push((docs[i]["low"] * docs[i]["beforeAdjClose"]) / docs[i]["close"]);
+                        month_high_before.push((docs[i]["high"] * docs[i]["afterAdjClose"]) / docs[i]["close"]);
+                        month_high_after.push((docs[i]["high"] * docs[i]["afterAdjClose"]) / docs[i]["close"]);
                         month_volume.push(docs[i]["volume"]);
                         month_turnOverRate.push(docs[i]["turnOverRate"]);
                         month_changePrice.push(docs[i]["changePrice"]);
@@ -484,6 +571,10 @@ exports.getMonthlyData = (code, callback) => {
                 // 由于在外层for循环也要进行一次i--，所以在此加1，防止数据丢失
                 i++;
                 month_changeRate = (month_adjClose - docs[i]["beforeClose"]) / docs[i]["beforeClose"];
+                if (i > 0) {
+                    month_changeRate_before = (month_close_before - docs[i - 1]["beforeAdjClose"])/ docs[i - 1]["beforeAdjClose"];
+                    month_changeRate_after = (month_close_after - docs[i - 1]["afterAdjClose"])/ docs[i - 1]["afterAdjClose"];
+                }
                 if (month_volume.length === 0)
                     continue;
                 let month = {
@@ -492,9 +583,19 @@ exports.getMonthlyData = (code, callback) => {
                     "high": Math.max.apply(null, month_high),
                     "low": Math.min.apply(null, month_low),
                     "close": month_close,
+                    "open_before": month_open_before,
+                    "high_before": Math.max.apply(null, month_high_before),
+                    "low_before": Math.min.apply(null, month_low_before),
+                    "beforeAdjClose": month_close_before,
+                    "open_after": month_open_after,
+                    "high_after": Math.max.apply(null, month_high_after),
+                    "low_after": Math.min.apply(null, month_low_after),
+                    "afterAdjClose": month_close_after,
                     "volume": month_volume.reduce((x, y) => { return x + y; }),
                     "adjClose": month_adjClose,
                     "changeRate": month_changeRate,
+                    "changeRate_before": month_changeRate_before,
+                    "changeRate_after": month_changeRate_after,
                     "turnOverRate": month_turnOverRate.reduce((x, y) => { return x + y; }),
                     "changePrice": month_changePrice.reduce((x, y) => { return x + y; })
                 };
@@ -524,7 +625,17 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(parseFloat(data["close"].toFixed(2)));
                 one_month_data.push(parseFloat(data["low"].toFixed(2)));
                 one_month_data.push(parseFloat(data["high"].toFixed(2)));
+                one_month_data.push(parseFloat(data["open_before"].toFixed(2)));
+                one_month_data.push(parseFloat(data["beforeAdjClose"].toFixed(2)));
+                one_month_data.push(parseFloat(data["low_before"].toFixed(2)));
+                one_month_data.push(parseFloat(data["high_before"].toFixed(2)));
+                one_month_data.push(parseFloat(data["open_after"].toFixed(2)));
+                one_month_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
+                one_month_data.push(parseFloat(data["low_after"].toFixed(2)));
+                one_month_data.push(parseFloat(data["high_after"].toFixed(2)));
                 one_month_data.push(parseFloat(data["changeRate"].toFixed(2)));
+                one_month_data.push(parseFloat(data["changeRate_before"].toFixed(2)));
+                one_month_data.push(parseFloat(data["changeRate_after"].toFixed(2)));
                 one_month_data.push(data["volume"]);
                 one_month_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 

@@ -10,7 +10,8 @@ const userSchema = new Schema({
     username : String,
     password : String,
     email : String,
-    selfSelectStock : Array    // 自选股
+    selfSelectStock : Array,    // 自选股
+    strategy: Array             // 保存的策略
 }, {
     collection: 'user',
     versionKey: false

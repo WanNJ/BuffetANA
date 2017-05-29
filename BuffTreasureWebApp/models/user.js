@@ -3,7 +3,7 @@
  */
 
 
-const User = require('./userSchema')
+const User = require('./userSchema');
 
 exports.userDB = {
     getPasswordByName: (name, callback) => {
@@ -44,6 +44,32 @@ exports.userDB = {
     getSelfSelectStock: (userName, callback) => {
         User.findOne({username: userName}, ['selfSelectStock'], (err, stocks) => {
             callback(err, stocks);
+        });
+    },
+
+    /**
+     * 保存策略
+     * @param userName {String} 用户名
+     * @param strategy 策略的具体参数
+     * @param callback
+     */
+    saveStrategy: (userName, strategy, callback) => {
+        User.updateOne({username : userName}, {$push: {strategy: strategy}}, (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
+        });
+    },
+
+    /**
+     * 获得某个用户所有已保存的策略
+     * @param userName
+     * @param callback
+     */
+    getAllStrategy: (userName, callback) => {
+        User.findOne({username: userName}, ['strategy'], (err, strategy) => {
+            callback(err, strategy);
         });
     }
 };

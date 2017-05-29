@@ -9,7 +9,7 @@ let expect = require('chai').expect;
 let mongoose = require('mongoose');
 let describe = require("mocha").describe;
 let it = require("mocha").it;
-mongoose.connect('mongodb://localhost/formal');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -23,24 +23,7 @@ describe('singleStockbl', function() {
                     done(err);
                 }
                 else {
-                    for (let i = all_day_data.length - 21; i < all_day_data.length; i++) {
-                        console.log(all_day_data[i]);
-                    }
-                    done();
-                }
-            });
-        });
-    });
-    describe('#getDailyData()', function() {
-        it('should show all information of 000001 per day', function(done) {
-            singleStockbl.getDailyData('300122', (err, all_day_data) => {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    for (let i = all_day_data.length - 21; i < all_day_data.length; i++) {
-                        console.log(all_day_data[i]);
-                    }
+                    console.log(all_day_data);
                     done();
                 }
             });

@@ -18,7 +18,7 @@ mongoose.connection.on('open', function () {
 describe('singleStockbl', function() {
     describe('#getDailyData()', function() {
         it('should show all information of 000001 per day', function(done) {
-            singleStockbl.getDailyData('300122', (err, all_day_data) => {
+            singleStockbl.getDailyData('000001', (err, all_day_data) => {
                 if (err) {
                     done(err);
                 }

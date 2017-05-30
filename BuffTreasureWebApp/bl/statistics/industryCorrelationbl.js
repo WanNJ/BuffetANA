@@ -21,7 +21,7 @@ let statisticTool = require('../tool/statisticTool');
  *      "compare": {Array}               散点图的Y轴
  * }
  */
-exports.getInIndustryCorrelationResult = (code, holdingPeriod, callback) => {
+exports.getIndustryCorrelationResult = (code, holdingPeriod, callback) => {
 
     // 获得该股票所在的行业
     allStockDB.getIndustryByCode(code, (err, doc) => {
@@ -44,12 +44,15 @@ exports.getInIndustryCorrelationResult = (code, holdingPeriod, callback) => {
                             else {
                                 let maxCorrelation = 0.0;
                                 let industryCorrelationVO = null;
+                                let count = 0;
                                 for (let stock of docs) {
+                                    count++;
+                                    let countNow = count;
                                     if (stock["code"] === code)
                                         continue;
                                     singleStockDB.getStockInfoByCode(stock["code"], (err, compared) => {
                                         compared.reverse();
-                                        compared = compared.filter(t => t["volume"] !== 0).slice(0 ,200);
+                                        compared = compared.filter(t => t["volume"] !== 0).slice(0, 200 + holdingPeriod);
                                         if (compared.length - holdingPeriod > 0) {
                                             let baseTemp = [];
                                             if (compared.length - holdingPeriod < base.length) {
@@ -75,9 +78,11 @@ exports.getInIndustryCorrelationResult = (code, holdingPeriod, callback) => {
                                                 };
                                             }
                                         }
+                                        if (countNow === docs.length) {
+                                            callback(null, industryCorrelationVO);
+                                        }
                                     });
                                 }
-                                callback(null, industryCorrelationVO);
                             }
                         }
                     });

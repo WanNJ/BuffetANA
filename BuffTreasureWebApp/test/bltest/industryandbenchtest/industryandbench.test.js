@@ -17,12 +17,13 @@ describe('industrybl', function() {
     describe('#getAllIndustries()', function() {
         it('should show all industries', function(done) {
             industrybl.getAllIndustries((err, all_industry) => {
-                console.log("sdf")
+                console.log("sdf");
                 if (err) {
                     done(err);
                 }
                 else {
                     console.log(all_industry);
+                    console.log(all_industry.size);
                     done();
                 }
             });
@@ -36,6 +37,7 @@ describe('industrybl', function() {
                 }
                 else {
                     console.log(all_bench);
+                    console.log(all_bench.size);
                     done();
                 }
             });

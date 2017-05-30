@@ -52,6 +52,12 @@ function splitData(daily_rawData) {
     let difs = [];
     let deas = [];
     let macds = [];
+    let difs_before_adj = [];
+    let deas_before_adj = [];
+    let macds_before_adj = [];
+    let difs__after_adj = [];
+    let deas_after_adj = [];
+    let macds_after_adj = [];
     let rsi6s = [];
     let rsi12s = [];
     let rsi24s = [];
@@ -69,6 +75,12 @@ function splitData(daily_rawData) {
         difs.push(daily_rawData[i].splice(0, 1)[0]);
         deas.push(daily_rawData[i].splice(0, 1)[0]);
         macds.push(daily_rawData[i].splice(0, 1)[0]);
+        difs_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        deas_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        macds_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        difs__after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        deas_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        macds_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
         rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
         rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
         rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
@@ -87,6 +99,12 @@ function splitData(daily_rawData) {
         difs: difs,
         deas: deas,
         macds: macds,
+        difs_before_adj: difs_before_adj,
+        deas_before_adj: deas_before_adj,
+        macds_before_adj: macds_before_adj,
+        difs_after_adj: difs__after_adj,
+        deas_after_adj: deas_after_adj,
+        macds_after_adj: macds_after_adj,
         rsi6s: rsi6s,
         rsi12s: rsi12s,
         rsi24s: rsi24s
@@ -118,6 +136,14 @@ exports.getDailyData = (code, callback) => {
             let beforeEMA12 = 0; // 昨日的12日指数平均值
             let beforeEMA26 = 0; // 昨日的26日指数平均值
             let beforeDEA = 0; // 昨日的九日DIF平滑移动平均值
+
+            let beforeEMA12_before_adj = 0; // 昨日的12日指数平均值
+            let beforeEMA26_before_adj = 0; // 昨日的26日指数平均值
+            let beforeDEA_before_adj = 0; // 昨日的九日DIF平滑移动平均值
+
+            let beforeEMA12_after_adj = 0; // 昨日的12日指数平均值
+            let beforeEMA26_after_adj = 0; // 昨日的26日指数平均值
+            let beforeDEA_after_adj = 0; // 昨日的九日DIF平滑移动平均值
             // 计算RSI所需要的临时数据
             let changePrice6 = [];
             let changePrice12 = [];
@@ -175,6 +201,7 @@ exports.getDailyData = (code, callback) => {
                  */
                 // 由于每日行情震荡波动之大小不同，并不适合以每日之收盘价来计算移动平均值，
                 // 于是有需求指数（Demand Index）之产生，用需求指数代表每日的收盘指数
+                // 不复权
                 let DI = (data["close"] * 2 + data["high"] + data["low"]) / 4;
                 let EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12;
                 let EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26;
@@ -184,6 +211,38 @@ exports.getDailyData = (code, callback) => {
                 beforeEMA12 = EMA12;
                 beforeEMA26 = EMA26;
                 beforeDEA = DEA;
+                one_day_data.push(DIF);
+                one_day_data.push(DEA);
+                one_day_data.push(MACD);
+
+                // 前复权
+                let high_before = data["high"] * one_day_beforeAdjClose / data["close"];
+                let low_before = data["low"] * one_day_beforeAdjClose / data["close"]
+                DI = (one_day_beforeAdjClose * 2 + high_before + low_before) / 4;
+                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_before_adj;
+                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_before_adj;
+                DIF = EMA12 - EMA26;
+                DEA = DIF * 0.2 + beforeDEA_before_adj * 0.8;
+                MACD = 2 * (DIF - DEA);
+                beforeEMA12_before_adj = EMA12;
+                beforeEMA26_before_adj = EMA26;
+                beforeDEA_before_adj = DEA;
+                one_day_data.push(DIF);
+                one_day_data.push(DEA);
+                one_day_data.push(MACD);
+
+                // 后复权
+                let high_after = data["high"] * data["afterAdjClose"] / data["close"];
+                let low_after = data["low"] * data["afterAdjClose"] / data["close"]
+                DI = (data["afterAdjClose"] * 2 + high_after + low_after) / 4;
+                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_after_adj;
+                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_after_adj;
+                DIF = EMA12 - EMA26;
+                DEA = DIF * 0.2 + beforeDEA_after_adj * 0.8;
+                MACD = 2 * (DIF - DEA);
+                beforeEMA12_after_adj = EMA12;
+                beforeEMA26_after_adj = EMA26;
+                beforeDEA_after_adj = DEA;
                 one_day_data.push(DIF);
                 one_day_data.push(DEA);
                 one_day_data.push(MACD);

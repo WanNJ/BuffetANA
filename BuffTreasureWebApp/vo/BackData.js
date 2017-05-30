@@ -13,8 +13,9 @@ exports.BackData = class {
      * @param firstDayOpen {Number} 第一天买入时的价格。对应第一天的开盘价
      * @param lastDayClose {Number} 最后一天卖出时的价格，对应最后一天的收盘价
      * @param valid {bool} 这几天是否有停盘  有的话 flase 没有就是 true
+     * @param priceList {Array} 为支持动态持仓增加的细化的价格数组
      */
-    constructor(code, name, rankValue , filterValue, firstDayOpen, lastDayClose ,valid) {
+    constructor(code, name, rankValue , filterValue, firstDayOpen, lastDayClose ,valid, priceList = []) {
         this.code = code;
         this.name = name;
         /**
@@ -33,5 +34,13 @@ exports.BackData = class {
          */
         this.lastDayClose = lastDayClose;
         this.valid = valid;
+
+        /**
+         * add by TY
+         * 动态持仓所需要的细化的价格数组
+         * 大小为持仓期天数+2
+         * @type {Array}
+         */
+        this.priceList = priceList;
     }
 };

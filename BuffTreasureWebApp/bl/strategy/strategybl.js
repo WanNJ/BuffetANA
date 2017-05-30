@@ -114,7 +114,13 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             for (let i = 0; i < 5; i++) {
                 pickleDatas =  docs[keys[i]];
 
-                initPara(beginDate, endDate);
+                // 没有动态持仓
+                if (tradeModelVO.winRate === null)
+                    initPara(beginDate, endDate);
+                // 有动态持仓
+                else
+                    initParaWithDynamic(beginDate, endDate, tradeModelVO.winRate, tradeModelVO.loseRate);
+
                 let result = {
                     "backDetail" : getBackDetail(),
                     "strategyDayRatePiece" : getStrategyDayRatePiece(),
@@ -159,6 +165,50 @@ function initPara(beginDate, endDate) {
             let cnt = 100 / backData.firstDayOpen;
             buyMoney += 100;
             sellMoney += cnt * backData.lastDayClose;
+            tempRate += (sellMoney - buyMoney) / buyMoney;
+        });
+        strategyRates.push(tempRate / pickleData.backDatas.length);
+        sumOfStrategy += sumOfStrategy * (tempRate / pickleData.backDatas.length);
+    });
+    baseYearProfitRate = (sumOfBase - 100000) / 100000;
+    baseYearProfitRate = baseYearProfitRate / ((endDate - beginDate) / (1000*60*60*24)) * 365;
+    yearProfitRate = (sumOfStrategy - 100000) / 100000;
+    yearProfitRate = yearProfitRate / ((endDate - beginDate) / (1000*60*60*24)) * 365;
+}
+
+
+function initParaWithDynamic(beginDate, endDate, winRate, loseRate) {
+    baseRates = [];
+    strategyRates = [];
+    pickleDatas = pickleDatas.filter(t => t.backDatas.length > 0);
+    let sumOfBase = 100000;
+    let sumOfStrategy = 100000;
+    pickleDatas.forEach(pickleData => {
+        let tempRate = 0.0;
+        sumOfBase += sumOfBase * pickleData.baseProfitRate;
+        baseRates.push(pickleData.baseProfitRate);
+
+        let buyMoney = 0;
+        let sellMoney = 0;
+
+        pickleData.backDatas.forEach(backData => {
+            let buy_price = backData.priceList[0];
+            let sell_price = backData.priceList[1];
+            let i = 1;
+            for (i; i < backData.priceList.length - 1; i++) {
+                sell_price = backData.priceList[i]
+                // 如果低于止损率，则直接卖出
+                if ((backData.priceList[i] - buy_price) / buy_price <= loseRate) {
+                    break;
+                }
+            }
+            // 如果持仓期内收益率超过止盈率，则坚定持有一个持仓期
+            if (i === (backData.priceList.length - 1) && (sell_price - buy_price) / buy_price >= winRate) {
+                sell_price = backData.priceList[i];
+            }
+            let cnt = 100 / buy_price;
+            buyMoney += 100;
+            sellMoney += cnt * sell_price;
             tempRate += (sellMoney - buyMoney) / buyMoney;
         });
         strategyRates.push(tempRate / pickleData.backDatas.length);

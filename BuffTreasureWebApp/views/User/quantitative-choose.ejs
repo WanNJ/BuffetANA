@@ -10,18 +10,22 @@
 
     <div class="bloc bgc-white l-bloc" id="bloc-1">
         <div class="container bloc-lg container-fluid">
-            <div class="section-container home-section-wrap clearfix">
-                <span>股票池：</span>
-                <select class="form-control" style="max-width: 120px;display: inline" id="stock-pool">
-                    <option selected="selected">沪深300</option>
-                    <option >中小板</option>
-                    <option >创业板</option>
-                    <option >自定义</option>
-                </select>
-                排除ST
-                <div class="switch" style="display: inline-block">
-                    <input id="exclude-ST" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                    <label for="exclude-ST"></label>
+            <div class="section-container home-section-wrap clearfix row">
+                <div class="col-md-3" style="display: inline">
+                    <span >股票池：</span>
+                    <select class="form-control" style="max-width: 120px;display: inline-flex" id="stock-pool">
+                        <option selected="selected">沪深300</option>
+                        <option >中小板</option>
+                        <option >创业板</option>
+                        <option >自定义</option>
+                    </select>
+                </div>
+                <div class="col-md-3" style="display: inline;margin-top: 5px;">
+                    <span>排除ST</span>
+                    <div class="switch" style="display: inline-flex">
+                        <input id="exclude-ST" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                        <label for="exclude-ST"></label>
+                    </div>
                 </div>
                 <!--<button type="submit" class="btn btn-info btn-clean animated" id="plate" >-->
                 <!--板块-->
@@ -42,51 +46,51 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 股票代码
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 成交量
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-marketValue" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-turnOverRate" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 换手率
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-close" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 收盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-low" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 最低价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-high" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 最高价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-floatMarketValue" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 流通市值
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 涨幅
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 开盘价
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose"
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 复权收盘价
                             </button>
@@ -103,34 +107,44 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MA">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MA" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 MA
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MOM">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MOM" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 MOM
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSI">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSI" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 RSI
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DIF">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DIF" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 MACD_DIF
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DEA">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD_DEA" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 MACD_DEA
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-MACD" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 MACD
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSV">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-RSV" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 RSV
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_K">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_K" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 KDJ_K
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_D">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_D" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 KDJ_D
                             </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_J">
+                            <button type="submit" class="btn btn-primary btn-clean animated" id="strategy-KDJ_J" style="min-width: 100px"
+                                    onclick="addRankingConditon($(this).text())">
                                 KDJ_J
                             </button>
                         </div>
@@ -261,13 +275,17 @@
                 </div>
                 <div>
                     <div id="time-box" style="padding-left: 10px;padding-right: 50px;display: inline-block;">
-                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text">
+                        <div class="input-group date form_date_start" data-date="" data-date-format="yyyy/mm/dd"
+                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" required="required" value="2007/01/17"
+                                   pattern="[0-9]{4}/[0-9]{2}/[0-9]{2}" id="date-from">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                         <span class="date-txt between"> - </span>
-                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text">
+                        <div class="input-group date form_date_end" data-date="" data-date-format="yyyy/mm/dd"
+                             data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" required="required" value="2007/01/17"
+                                   pattern="[0-9]{4}/[0-9]{2}/[0-9]{2}" id="date-to">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
@@ -298,19 +316,21 @@
                         }).data("datetimepicker");
                     </script>
                 </div>
-                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                    市场观察期：
-                    <input style="max-width: 50px;" id="market-observe"/>
-                    天
-                </div>
-                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                    持仓期：
-                    <input style="max-width: 50px;" id="reserve-days"/>
-                    天
-                </div>
-                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                    持股数：
-                    <input style="max-width: 50px;" id="number-of-stock"/>
+                <div class="container-fluid">
+                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                        市场观察期：
+                        <input style="max-width: 50px;" required="required" value="3" pattern="[0-9]{1,}" id="market-observe"/>
+                        天
+                    </div>
+                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                        持仓期：
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="reserve-days"/>
+                        天
+                    </div>
+                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                        持股数：
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock"/>
+                    </div>
                 </div>
             </div>
             <div class="row text-center">

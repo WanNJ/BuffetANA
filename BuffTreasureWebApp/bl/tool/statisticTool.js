@@ -49,3 +49,11 @@ exports.getVariance = (a)=> {
 exports.getSTD = (a) => {
     return Math.sqrt(this.getVariance(a));
 };
+
+/**
+ * 获得变异系数
+ * @param a
+ */
+exports.getCoefficientOfVariation = (a) => {
+    return this.getSTD(a) / this.getAverage(a);
+};

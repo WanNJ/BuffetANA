@@ -320,7 +320,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI24);
 
                 /*
-                 * 计算当日乖离率
+                 * 计算当日乖离率，固定为6、12、24日的乖离率
                  */
                 MA6.push(data["close"]);
                 MA12.push(data["close"]);
@@ -642,7 +642,7 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(RSI24);
 
                 /*
-                 * 计算当周乖离率
+                 * 计算当周乖离率，固定为6、12、24周的乖离率
                  */
                 MA6.push(data["close"]);
                 MA12.push(data["close"]);
@@ -949,7 +949,7 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(RSI24);
 
                 /*
-                 * 计算当月乖离率
+                 * 计算当月乖离率，固定为6、12、24月的乖离率
                  */
                 MA6.push(data["close"]);
                 MA12.push(data["close"]);

@@ -4,6 +4,7 @@
 
 let async = require("async/index.js");
 let singleStockDB = require('../models/singleStock.js').singleStockDB;
+let statisticTool = require('./tool/statisticTool');
 
 /**
  * 为了测试async写的一个接口
@@ -61,6 +62,9 @@ function splitData(daily_rawData) {
     let rsi6s = [];
     let rsi12s = [];
     let rsi24s = [];
+    let BIAS6 = [];
+    let BIAS12 = [];
+    let BIAS24 = [];
     for (let i = 0; i < daily_rawData.length; i++) {
         categoryData.push(daily_rawData[i].splice(0, 1)[0]);
         values_no_adj.push(daily_rawData[i].splice(0, 4));
@@ -84,6 +88,9 @@ function splitData(daily_rawData) {
         rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
         rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
         rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS6.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS12.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS24.push(daily_rawData[i].splice(0, 1)[0]);
     }
     return {
         categoryData: categoryData,
@@ -107,7 +114,10 @@ function splitData(daily_rawData) {
         macds_after_adj: macds_after_adj,
         rsi6s: rsi6s,
         rsi12s: rsi12s,
-        rsi24s: rsi24s
+        rsi24s: rsi24s,
+        BIAS6: BIAS6,
+        BIAS12: BIAS12,
+        BIAS24: BIAS24
     };
 }
 
@@ -149,6 +159,12 @@ exports.getDailyData = (code, callback) => {
             let changePrice6 = [];
             let changePrice12 = [];
             let changePrice24 = [];
+
+            // 计算乖离率BIAS所需要的临时数据
+            let MA6 = [];       // 6日移动平均线
+            let MA12 = [];      // 12日移动平均线
+            let MA24 = [];      // 24日移动平均线
+
             let all_day_data = docs.filter(data => {
                 return (data["volume"] !== 0);
             }).map(data => {
@@ -302,6 +318,29 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI6);
                 one_day_data.push(RSI12);
                 one_day_data.push(RSI24);
+
+                /*
+                 * 计算当日乖离率
+                 */
+                MA6.push(data["close"]);
+                MA12.push(data["close"]);
+                MA24.push(data["close"]);
+                if (MA6.length > 6)
+                    MA6.shift();
+                if (MA12.length > 12)
+                    MA12.shift();
+                if (MA24.length > 24)
+                    MA24.shift();
+                let Ave6 = statisticTool.getAverage(MA6);
+                let Ave12 = statisticTool.getAverage(MA12);
+                let Ave24 = statisticTool.getAverage(MA24);
+                let BIAS6 = (data["close"] - Ave6) / Ave6;
+                let BIAS12 = (data["close"] - Ave12) / Ave12;
+                let BIAS24 = (data["close"] - Ave24) / Ave24;
+                one_day_data.push(BIAS6);
+                one_day_data.push(BIAS12);
+                one_day_data.push(BIAS24);
+
                 return one_day_data;
             });
             callback(null, splitData(all_day_data));
@@ -448,6 +487,11 @@ exports.getWeeklyData = (code, callback) => {
             let changePrice6 = [];
             let changePrice12 = [];
             let changePrice24 = [];
+
+            // 计算乖离率BIAS所需要的临时数据
+            let MA6 = [];       // 6日移动平均线
+            let MA12 = [];      // 12日移动平均线
+            let MA24 = [];      // 24日移动平均线
 
             let all_week_data = week_docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -596,6 +640,29 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(RSI6);
                 one_week_data.push(RSI12);
                 one_week_data.push(RSI24);
+
+                /*
+                 * 计算当周乖离率
+                 */
+                MA6.push(data["close"]);
+                MA12.push(data["close"]);
+                MA24.push(data["close"]);
+                if (MA6.length > 6)
+                    MA6.shift();
+                if (MA12.length > 12)
+                    MA12.shift();
+                if (MA24.length > 24)
+                    MA24.shift();
+                let Ave6 = statisticTool.getAverage(MA6);
+                let Ave12 = statisticTool.getAverage(MA12);
+                let Ave24 = statisticTool.getAverage(MA24);
+                let BIAS6 = (data["close"] - Ave6) / Ave6;
+                let BIAS12 = (data["close"] - Ave12) / Ave12;
+                let BIAS24 = (data["close"] - Ave24) / Ave24;
+                one_week_data.push(BIAS6);
+                one_week_data.push(BIAS12);
+                one_week_data.push(BIAS24);
+
                 return one_week_data;
             });
             callback(null, splitData(all_week_data));
@@ -725,6 +792,11 @@ exports.getMonthlyData = (code, callback) => {
             let changePrice6 = [];
             let changePrice12 = [];
             let changePrice24 = [];
+
+            // 计算乖离率BIAS所需要的临时数据
+            let MA6 = [];       // 6日移动平均线
+            let MA12 = [];      // 12日移动平均线
+            let MA24 = [];      // 24日移动平均线
 
             let all_month_data = month_docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -875,6 +947,29 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(RSI6);
                 one_month_data.push(RSI12);
                 one_month_data.push(RSI24);
+
+                /*
+                 * 计算当月乖离率
+                 */
+                MA6.push(data["close"]);
+                MA12.push(data["close"]);
+                MA24.push(data["close"]);
+                if (MA6.length > 6)
+                    MA6.shift();
+                if (MA12.length > 12)
+                    MA12.shift();
+                if (MA24.length > 24)
+                    MA24.shift();
+                let Ave6 = statisticTool.getAverage(MA6);
+                let Ave12 = statisticTool.getAverage(MA12);
+                let Ave24 = statisticTool.getAverage(MA24);
+                let BIAS6 = (data["close"] - Ave6) / Ave6;
+                let BIAS12 = (data["close"] - Ave12) / Ave12;
+                let BIAS24 = (data["close"] - Ave24) / Ave24;
+                one_month_data.push(BIAS6);
+                one_month_data.push(BIAS12);
+                one_month_data.push(BIAS24);
+
                 return one_month_data;
             });
             callback(null, splitData(all_month_data));

@@ -11,7 +11,8 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
  * 获得某支股票的风险系数
  * @param code
  * @param callback 形如(err, doc) => {}
- * doc是一个数组，eg: [0.5, '高'] 第一个是风险系数，Number类型，第二个是风险程度，String类型（只有'高', '中', '低'三种可能）
+ * doc是一个数组，eg: [0.5, '高'] 第一个是风险系数，Number类型(已经保留了两位小数)
+ * 第二个是风险程度，String类型（只有'高', '中', '低'三种可能）
  */
 exports.getCoefficientOfRisk = (code, callback) => {
     singleStockDB.getStockInfoByCode(code, (err, docs) => {
@@ -20,7 +21,7 @@ exports.getCoefficientOfRisk = (code, callback) => {
         else {
             let stockInfo = docs.filter(s => s["volume"] !== 0).map(s => s["afterAdjClose"]);
             let CV = statisticTool.getCoefficientOfVariation(stockInfo);
-            let result = [CV];
+            let result = [parseFloat(CV.toFixed(2))];
             if (CV > 0.8)
                 result.push('高');
             else if (CV <= 0.8 && CV > 0.5)

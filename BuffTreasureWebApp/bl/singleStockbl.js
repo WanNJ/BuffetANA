@@ -65,6 +65,15 @@ function splitData(daily_rawData) {
     let BIAS6 = [];
     let BIAS12 = [];
     let BIAS24 = [];
+    let Boll = [];
+    let upper = [];
+    let lower = [];
+    let Boll_before_adj = [];
+    let upper_before_adj = [];
+    let lower_before_adj = [];
+    let Boll_after_adj = [];
+    let upper_after_adj = [];
+    let lower_after_adj = [];
     for (let i = 0; i < daily_rawData.length; i++) {
         categoryData.push(daily_rawData[i].splice(0, 1)[0]);
         values_no_adj.push(daily_rawData[i].splice(0, 4));
@@ -91,6 +100,15 @@ function splitData(daily_rawData) {
         BIAS6.push(daily_rawData[i].splice(0, 1)[0]);
         BIAS12.push(daily_rawData[i].splice(0, 1)[0]);
         BIAS24.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll.push(daily_rawData[i].splice(0, 1)[0]);
+        upper.push(daily_rawData[i].splice(0, 1)[0]);
+        lower.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        upper_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        lower_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        upper_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        lower_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
     }
     return {
         categoryData: categoryData,
@@ -117,7 +135,16 @@ function splitData(daily_rawData) {
         rsi24s: rsi24s,
         BIAS6: BIAS6,
         BIAS12: BIAS12,
-        BIAS24: BIAS24
+        BIAS24: BIAS24,
+        Boll: Boll,
+        upper: upper,
+        lower: lower,
+        Boll_before_adj: Boll_before_adj,
+        upper_before_adj: upper_before_adj,
+        lower_before_adj: lower_before_adj,
+        Boll_after_adj: Boll_after_adj,
+        upper_after_adj: upper_after_adj,
+        lower_after_adj: lower_after_adj
     };
 }
 
@@ -164,6 +191,11 @@ exports.getDailyData = (code, callback) => {
             let MA6 = [];       // 6日移动平均线
             let MA12 = [];      // 12日移动平均线
             let MA24 = [];      // 24日移动平均线
+
+            // 计算布林线Boll所需要的临时数据
+            let MA20 = [];
+            let MA20_before_adj = [];
+            let MA20_after_adj = [];
 
             let all_day_data = docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -320,7 +352,7 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(RSI24);
 
                 /*
-                 * 计算当日乖离率，固定为6、12、24日的乖离率
+                 * 计算当日乖离率BIAS，固定为6、12、24日的乖离率
                  */
                 MA6.push(data["close"]);
                 MA12.push(data["close"]);
@@ -340,6 +372,57 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(BIAS6);
                 one_day_data.push(BIAS12);
                 one_day_data.push(BIAS24);
+
+                /*
+                 * 计算当日布林线Boll
+                 */
+                // 不复权
+                MA20.push(data["close"]);
+                if (MA20.length > 20)
+                    MA20.shift();
+                let MD = statisticTool.getSTD(MA20);
+                let Boll = 0;
+                if (MA20.length > 1)
+                    Boll = statisticTool.getAverage(MA20.slice(0, -1));
+                else
+                    Boll = statisticTool.getAverage(MA20);
+                let upper = Boll + 2 * MD;
+                let lower = Boll - 2 * MD;
+                one_day_data.push(Boll);
+                one_day_data.push(upper);
+                one_day_data.push(lower);
+
+                // 前复权
+                MA20_before_adj.push(one_day_beforeAdjClose);
+                if (MA20_before_adj.length > 20)
+                    MA20_before_adj.shift();
+                MD = statisticTool.getSTD(MA20_before_adj);
+                Boll = 0;
+                if (MA20_before_adj.length > 1)
+                    Boll = statisticTool.getAverage(MA20_before_adj.slice(0, -1));
+                else
+                    Boll = statisticTool.getAverage(MA20_before_adj);
+                upper = Boll + 2 * MD;
+                lower = Boll - 2 * MD;
+                one_day_data.push(Boll);
+                one_day_data.push(upper);
+                one_day_data.push(lower);
+
+                // 后复权
+                MA20_after_adj.push(data["afterAdjClose"]);
+                if (MA20_after_adj.length > 20)
+                    MA20_after_adj.shift();
+                MD = statisticTool.getSTD(MA20_after_adj);
+                Boll = 0;
+                if (MA20_after_adj.length > 1)
+                    Boll = statisticTool.getAverage(MA20_after_adj.slice(0, -1));
+                else
+                    Boll = statisticTool.getAverage(MA20_after_adj);
+                upper = Boll + 2 * MD;
+                lower = Boll - 2 * MD;
+                one_day_data.push(Boll);
+                one_day_data.push(upper);
+                one_day_data.push(lower);
 
                 return one_day_data;
             });

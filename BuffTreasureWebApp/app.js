@@ -1,4 +1,4 @@
-let express = require('express');
+﻿let express = require('express');
 // 路径解析器
 let path = require('path');
 let favicon = require('serve-favicon');
@@ -73,7 +73,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://localhost/allInfo');
+mongoose.connect('mongodb://192.168.1.102/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

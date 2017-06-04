@@ -3,6 +3,112 @@ let daily_KLineChart = echarts.init(document.getElementById('dailyKLineChart'), 
 let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'shine');
 let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
 let daily_RSIChart = echarts.init(document.getElementById('daily_RSIChart'), 'shine');
+let daily_BOLLChart = echarts.init(document.getElementById('daily_BOLLChart'), 'shine');
+let daily_WRChart = echarts.init(document.getElementById('daily_WRChart'), 'shine');
+let daily_BIASChart = echarts.init(document.getElementById('daily_BIASChart'), 'shine');
+
+let no_daily_data = [];
+let before_daily_data = [];
+let after_daily_data = [];
+
+function get_MA_data(KLineValue) {
+    let result = [];
+    for(let i = 0; i < KLineValue.length; i++) {
+        result.push(KLineValue[i][1]);
+    }
+    return result;
+}
+
+function get_no_KLineData(rawData) {
+    return {
+        categoryData: rawData.categoryData,
+        KLineValue: rawData.KLineValue_no_adj,
+        adjs: get_MA_data(rawData.KLineValue_no_adj),
+        changeRates: rawData.changeRates,
+        volumns: rawData.volumns,
+        turnOverRates: rawData.turnOverRates,
+        kIndexes: rawData.kIndexes,
+        dIndexes: rawData.dIndexes,
+        jIndexes: rawData.jIndexes,
+        difs: rawData.difs,
+        deas: rawData.deas,
+        macds: rawData.macds,
+        rsi6s: rawData.rsi6s,
+        rsi12s: rawData.rsi12s,
+        rsi24s: rawData.rsi24s,
+        BIAS6: rawData.BIAS6,
+        BIAS12: rawData.BIAS12,
+        BIAS24: rawData.BIAS24,
+        Boll: rawData.Boll,
+        upper: rawData.upper,
+        lower: rawData.lower,
+        WR1: rawData.WR1,
+        WR2: rawData.WR2
+    };
+}
+
+function get_before_KLineData(rawData) {
+    return {
+        categoryData: rawData.categoryData,
+        KLineValue: rawData.KLineValue_before_adj,
+        adjs: get_MA_data(rawData.KLineValue_before_adj),
+        changeRates: rawData.changeRates,
+        volumns: rawData.volumns,
+        turnOverRates: rawData.turnOverRates,
+        kIndexes: rawData.kIndexes,
+        dIndexes: rawData.dIndexes,
+        jIndexes: rawData.jIndexes,
+        difs: rawData.difs_before_adj,
+        deas: rawData.deas_before_adj,
+        macds: rawData.macds_before_adj,
+        rsi6s: rawData.rsi6s,
+        rsi12s: rawData.rsi12s,
+        rsi24s: rawData.rsi24s,
+        BIAS6: rawData.BIAS6,
+        BIAS12: rawData.BIAS12,
+        BIAS24: rawData.BIAS24,
+        Boll: rawData.Boll_before_adj,
+        upper: rawData.upper_before_adj,
+        lower: rawData.lower_before_adj,
+        WR1: rawData.WR1,
+        WR2: rawData.WR2
+    };
+}
+
+function get_after_KLineData(rawData) {
+    return {
+        categoryData: rawData.categoryData,
+        KLineValue: rawData.KLineValue_after_adj,
+        adjs: get_MA_data(rawData.KLineValue_after_adj),
+        changeRates: rawData.changeRates,
+        volumns: rawData.volumns,
+        turnOverRates: rawData.turnOverRates,
+        kIndexes: rawData.kIndexes,
+        dIndexes: rawData.dIndexes,
+        jIndexes: rawData.jIndexes,
+        difs: rawData.difs_after_adj,
+        deas: rawData.deas_after_adj,
+        macds: rawData.macds_after_adj,
+        rsi6s: rawData.rsi6s,
+        rsi12s: rawData.rsi12s,
+        rsi24s: rawData.rsi24s,
+        BIAS6: rawData.BIAS6,
+        BIAS12: rawData.BIAS12,
+        BIAS24: rawData.BIAS24,
+        Boll: rawData.Boll_after_adj,
+        upper: rawData.upper_after_adj,
+        lower: rawData.lower_after_adj,
+        WR1: rawData.WR1,
+        WR2: rawData.WR2
+    };
+}
+
+
+function setDailyData(data) {
+    no_daily_data = get_no_KLineData(data);
+    before_daily_data = get_before_KLineData(data);
+    after_daily_data = get_after_KLineData(data);
+}
 
 function loadDailyKLineChart(objData) {
     let daily_KLineChartOption = {
@@ -568,15 +674,387 @@ function loadDailyKLineChart(objData) {
             },
         ]
     };
+    let daily_BOLLChartOption = {
+        title: {
+            show: false,
+            text: 'BOLL',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 2)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['BOLL', 'UPPER', 'LOWER'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'BOLL',
+                type: 'line',
+                data: objData.Boll,
+                itemStyle: {
+                    normal: {
+                        color: 'grey',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'UPPER',
+                type: 'line',
+                data: objData.upper,
+                itemStyle: {
+                    normal: {
+                        color: 'orange',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'LOWER',
+                type: 'line',
+                data: objData.lower,
+                itemStyle: {
+                    normal: {
+                        color: 'purple',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+        ]
+    };
+    let daily_WRChartOption = {
+        title: {
+            show: false,
+            text: 'WR',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 1)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['WR1', 'WR2'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'WR1',
+                type: 'line',
+                data: objData.WR1,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'blue',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'WR2',
+                type: 'line',
+                data: objData.WR2,
+                itemStyle: {
+                    normal: {
+                        color: '#70FF5D',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            }
+        ]
+    };
+    let daily_BIASChartOption = {
+        title: {
+            show: false,
+            text: 'BIAS',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 2)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['BIAS6', 'BIAS12', 'BIAS24'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'BIAS6',
+                type: 'line',
+                data: objData.BIAS6,
+                itemStyle: {
+                    normal: {
+                        color: 'orange',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'BIAS12',
+                type: 'line',
+                data: objData.BIAS12,
+                itemStyle: {
+                    normal: {
+                        color: 'blue',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'BIAS24',
+                type: 'line',
+                data: objData.BIAS24,
+                itemStyle: {
+                    normal: {
+                        color: 'red',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+        ]
+    };
 
     // 使用刚指定的配置项和数据显示图表
     daily_KLineChart.setOption(daily_KLineChartOption);
     daily_KDJChart.setOption(daily_KDJChartOption);
     daily_MACDChart.setOption(daily_MACDChartOption);
     daily_RSIChart.setOption(daily_RSIChartOption);
+    daily_BOLLChart.setOption(daily_BOLLChartOption);
+    daily_WRChart.setOption(daily_WRChartOption);
+    daily_BIASChart.setOption(daily_BIASChartOption);
 }
 
-echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart]);
+echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart, daily_BOLLChart, daily_WRChart, daily_BIASChart]);
 
 setTimeout(() => {
     window.onresize = function () {
@@ -584,5 +1062,8 @@ setTimeout(() => {
         daily_KDJChart.resize();
         daily_MACDChart.resize();
         daily_RSIChart.resize();
+        daily_BOLLChart.resize();
+        daily_WRChart.resize();
+        daily_BIASChart.resize();
     }
 }, 200);

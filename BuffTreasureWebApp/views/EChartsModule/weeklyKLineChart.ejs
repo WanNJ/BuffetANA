@@ -6,6 +6,9 @@
         <li class="active"><a href="#weekly_KDJChart">KDJ</a></li>
         <li><a href="#weekly_MACDChart">MACD</a></li>
         <li><a href="#weekly_RSIChart">RSI</a></li>
+        <li><a href="#weekly_BOLLChart">BOLL</a></li>
+        <li><a href="#weekly_WRChart">WR</a></li>
+        <li><a href="#weekly_BIASChart">BIAS</a></li>
     </ul>
 </div>
 <div class="col-sm-1"></div>
@@ -14,6 +17,9 @@
     <div id="weekly_KDJChart" class="tab-pane active" style="height: 120px"></div>
     <div id="weekly_MACDChart" class="tab-pane" style="height: 120px"></div>
     <div id="weekly_RSIChart" class="tab-pane" style="height: 120px"></div>
+    <div id="weekly_BOLLChart" class="tab-pane" style="height: 120px"></div>
+    <div id="weekly_WRChart" class="tab-pane" style="height: 120px"></div>
+    <div id="weekly_BIASChart" class="tab-pane" style="height: 120px"></div>
 </div>
 
 <script src="/echarts/theme/shine.js"></script>
@@ -30,5 +36,11 @@
             weekly_MACDChart.resize();
         if($(this).attr('href') === '#weekly_RSIChart')
             weekly_RSIChart.resize();
+        if($(this).attr('href') === '#weekly_BOLLChart')
+            weekly_BOLLChart.resize();
+        if($(this).attr('href') === '#weekly_WRChart')
+            weekly_WRChart.resize();
+        if($(this).attr('href') === '#weekly_BIASChart')
+            weekly_BIASChart.resize();
     });
 </script>

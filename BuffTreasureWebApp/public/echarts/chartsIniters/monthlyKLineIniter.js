@@ -3,6 +3,19 @@ let monthly_KLineChart = echarts.init(document.getElementById('monthlyKLineChart
 let monthly_KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
 let monthly_MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
 let monthly_RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
+let monthly_BOLLChart = echarts.init(document.getElementById('monthly_BOLLChart'), 'shine');
+let monthly_WRChart = echarts.init(document.getElementById('monthly_WRChart'), 'shine');
+let monthly_BIASChart = echarts.init(document.getElementById('monthly_BIASChart'), 'shine');
+
+let no_monthly_data = [];
+let before_monthly_data = [];
+let after_monthly_data = [];
+
+function setMonthlyData(data) {
+    no_monthly_data = get_no_KLineData(data);
+    before_monthly_data = get_before_KLineData(data);
+    after_monthly_data = get_after_KLineData(data);
+}
 
 function loadMonthlyKLineChart(objData) {
     let monthly_KLineChartOption = {
@@ -567,15 +580,387 @@ function loadMonthlyKLineChart(objData) {
             },
         ]
     };
+    let monthly_BOLLChartOption = {
+        title: {
+            show: false,
+            text: 'BOLL',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 2)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['BOLL', 'UPPER', 'LOWER'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'BOLL',
+                type: 'line',
+                data: objData.Boll,
+                itemStyle: {
+                    normal: {
+                        color: 'grey',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'UPPER',
+                type: 'line',
+                data: objData.upper,
+                itemStyle: {
+                    normal: {
+                        color: 'orange',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'LOWER',
+                type: 'line',
+                data: objData.lower,
+                itemStyle: {
+                    normal: {
+                        color: 'purple',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+        ]
+    };
+    let monthly_WRChartOption = {
+        title: {
+            show: false,
+            text: 'WR',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 1)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['WR1', 'WR2'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'WR1',
+                type: 'line',
+                data: objData.WR1,
+                markArea: {
+                    silent: true,
+                    data: [[{
+                        yAxis: 20
+                    }, {
+                        yAxis: 80
+                    }]]
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'blue',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'WR2',
+                type: 'line',
+                data: objData.WR2,
+                itemStyle: {
+                    normal: {
+                        color: '#70FF5D',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            }
+        ]
+    };
+    let monthly_BIASChartOption = {
+        title: {
+            show: false,
+            text: 'BIAS',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            position: (pos, params, el, elRect, size) => {
+                let obj = {top: 30};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                return obj;
+            },
+            formatter: function (params) {
+                let res = '';
+
+                for (let i = 0; i < params.length; i++) {
+                    let value = params[i].value;
+
+                    if (value !== '-')
+                        value = Math.round(params[i].value * 100) / 100;
+                    res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
+                    if (i !== 2)
+                        res += '<br/>';
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['BIAS6', 'BIAS12', 'BIAS24'],
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolBox: {
+            show: false
+        },
+        grid: [
+            {
+                top: '25%',
+                height: '70%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: objData.categoryData,
+                axisLabel: {show: false},
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                splitNumber: 2,
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            },
+            {
+                show: false,
+                realtime: true,
+                type: 'slider',
+                startValue: objData.categoryData.length - 60,
+                endValue: objData.categoryData.length - 1
+            }
+        ],
+        series: [
+            {
+                name: 'BIAS6',
+                type: 'line',
+                data: objData.BIAS6,
+                itemStyle: {
+                    normal: {
+                        color: 'orange',
+                        lineStyle: {
+                            width: 1,
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'BIAS12',
+                type: 'line',
+                data: objData.BIAS12,
+                itemStyle: {
+                    normal: {
+                        color: 'blue',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+            {
+                name: 'BIAS24',
+                type: 'line',
+                data: objData.BIAS24,
+                itemStyle: {
+                    normal: {
+                        color: 'red',
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                showSymbol: false
+            },
+        ]
+    };
 
     // 使用刚指定的配置项和数据显示图表
     monthly_KLineChart.setOption(monthly_KLineChartOption);
     monthly_KDJChart.setOption(monthly_KDJChartOption);
     monthly_MACDChart.setOption(monthly_MACDChartOption);
     monthly_RSIChart.setOption(monthly_RSIChartOption);
+    monthly_BOLLChart.setOption(monthly_BOLLChartOption);
+    monthly_WRChart.setOption(monthly_WRChartOption);
+    monthly_BIASChart.setOption(monthly_BIASChartOption);
 }
 
-echarts.connect([monthly_KLineChart, monthly_KDJChart, monthly_MACDChart, monthly_RSIChart]);
+echarts.connect([monthly_KLineChart, monthly_KDJChart, monthly_MACDChart, monthly_RSIChart, monthly_BOLLChart, monthly_WRChart, monthly_BIASChart]);
 
 setTimeout(() => {
     window.onresize = function () {
@@ -583,5 +968,8 @@ setTimeout(() => {
         monthly_KDJChart.resize();
         monthly_MACDChart.resize();
         monthly_RSIChart.resize();
+        monthly_BOLLChart.resize();
+        monthly_WRChart.resize();
+        monthly_BIASChart.resize();
     }
 }, 200);

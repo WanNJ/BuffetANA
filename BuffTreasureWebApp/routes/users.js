@@ -154,13 +154,8 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     // excludeST = body.excludeST === 'on';
 
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, null, null, excludeST);
-    let rank = {
-        "MA": [body.maRanking, Number(body.maWaiting), Number(body.maWeight)],
-        "MOM": [body.momRanking, Number(body.momWaiting), Number(body.momWeight)]
-    };
-    let filter = {
-        "turnOverRate": [body.turnOverRateCmpChar, Number(body.turnOverRateVal)]
-    };
+    let rank = body.rank;
+    let filter = body.filter;
     let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
     let envSpyDay = Number(body.marketObserve);
 

@@ -46,10 +46,6 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-options">
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-code" style="min-width: 100px"
-                                    onclick="addFilterConditon($(this).text())">
-                                股票代码
-                            </button>
                             <button type="submit" class="btn btn-primary btn-clean animated" id="stock-volume" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 成交量
@@ -85,10 +81,6 @@
                             <button type="submit" class="btn btn-primary btn-clean animated" id="stock-changeRate" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
                                 涨幅
-                            </button>
-                            <button type="submit" class="btn btn-primary btn-clean animated" id="stock-open" style="min-width: 100px"
-                                    onclick="addFilterConditon($(this).text())">
-                                开盘价
                             </button>
                             <button type="submit" class="btn btn-primary btn-clean animated" id="stock-adjClose" style="min-width: 100px"
                                     onclick="addFilterConditon($(this).text())">
@@ -368,6 +360,18 @@
             $(obj).css("background-color","#FFFFCC");
         }
     }
+    chmap ={
+        '成交量':'volume',
+        '涨幅': 'changeRate',
+        '最高价' :'high',
+        '最低价' :'low',
+        '流通市值': 'floatMarketValue',
+        '换手率': 'turnOverRate',
+        '复权收盘价' :'adjClose',
+        '开盘价' :'open',
+        '收盘价': 'close',
+        '市值' : 'marketValue'
+    }
 
     function addFilterConditon(name) {
         let newRow="<tr>                                                                                \
@@ -389,13 +393,14 @@
         </tr>";
         $("#filter-conditon-table tr:last").after(newRow);
         $("#filter-conditon-table tr:last td:first").text(name);
+        $("#filter-conditon-table tr:last td:first").val(chmap[name.trim()]);
         if(name.search("幅|率")>-1){
             $("#filter-conditon-table tr:last td:eq(2)").append("<span>%</span>");
         }
     }
     function addRankingConditon(name) {
         let newRow="<tr>                                                                                \
-            <td scope=\"row\">换手率</td>                                                              \
+            <td scope=\"row\"></td>                                                              \
             <td>                                                                                      \
                 <select class=\"form-control\" style=\"max-width: 120px\">                          \
                     <option value=\"asd\" selected=\"selected\">从小到大</option>                                \
@@ -417,6 +422,7 @@
         </tr>";
         $("#ranking-conditon-table tr:last").after(newRow);
         $("#ranking-conditon-table tr:last td:first").text(name);
+        $("#ranking-conditon-table tr:last td:first").val(name.trim());
     }
 
     function standardPost(url, args) {
@@ -438,14 +444,24 @@
             "MA": [$("#ma_ranking_rule").val(), Number($("#ma_waiting_period").val()), Number($("#ma_weight").val())],
             "MOM": [$("#mom_ranking_rule").val(), Number($("#mom_waiting_period").val()), Number($("#mom_weight").val())]
         };
-        for(let i=0;i<$("#ranking-conditon-table tr:gt(0)").length;i++){
-            let name=$($("#ranking-conditon-table tr:gt(0)").get(i).cells.item(0)).text();
-
-            console.log(name);
+        let rank_rows=$("#ranking-conditon-table tr:gt(0)");
+        for(let i=0;i<rank_rows.length;i++){
+            let name=$(rank_rows.get(i).cells.item(0)).val();
+            rank[name]=[$(rank_rows.get(i).cells.item(1)).children().val(),
+                Number($(rank_rows.get(i).cells.item(2)).children().val()),
+                Number($(rank_rows.get(i).cells.item(3)).children().val())];
         }
+
         let filter = {
             "turnOverRate": [$('#turnOverRate_cmp').val(), Number($('#turnOverRate_val').val())]
         };
+        let filter_rows=$("#filter-conditon-table tr:gt(0)");
+        for(let i=0;i<filter_rows.length;i++){
+            let name=$(filter_rows.get(i).cells.item(0)).val();
+            filter[name]=[$(filter_rows.get(i).cells.item(1)).children().val(),
+                Number($(filter_rows.get(i).cells.item(2)).children().val())];
+        }
+
         let data = {
             beginDate: $("#date-from").val(),
             endDate: $("#date-to").val(),

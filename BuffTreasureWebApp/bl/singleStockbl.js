@@ -480,8 +480,10 @@ exports.getWeeklyData = (code, callback) => {
                 // 后复权计算
                 let week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                 let week_close_after = docs[i]["afterAdjClose"];
+                console.log(week_close_after);
                 let week_high_after = [];
                 let week_low_after = [];
+
                 let week_volume = [];
                 let week_turnOverRate = [];
                 let week_changePrice = [];
@@ -490,7 +492,6 @@ exports.getWeeklyData = (code, callback) => {
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
                     if (docs[i]["volume"] !== 0) {
                         week_open = docs[i]["open"];
-                        week_beforeAdjClose = docs[i]["beforeAdjClose"] / before_index_ratio * before_index_price;
                         week_open_before = docs[i]["open"] * week_beforeAdjClose / docs[i]["close"];
                         week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                         week_high.push(docs[i]["high"]);
@@ -508,7 +509,6 @@ exports.getWeeklyData = (code, callback) => {
                 // 此时i指向的是周一，仍然是这一周的数据，需要加进去
                 if (i >= 0 && docs[i]["volume"] !== 0) {
                     week_open = docs[i]["open"];
-                    week_beforeAdjClose = docs[i]["beforeAdjClose"] / before_index_ratio * before_index_price;
                     week_open_before = docs[i]["open"] * week_beforeAdjClose / docs[i]["close"];
                     week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                     week_high.push(docs[i]["high"]);

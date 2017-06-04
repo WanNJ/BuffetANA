@@ -6,6 +6,9 @@
         <li class="active"><a href="#daily_KDJChart">KDJ</a></li>
         <li><a href="#daily_MACDChart">MACD</a></li>
         <li><a href="#daily_RSIChart">RSI</a></li>
+        <li><a href="#daily_BOLLChart">BOLL</a></li>
+        <li><a href="#daily_WRChart">WR</a></li>
+        <li><a href="#daily_BIASChart">BIAS</a></li>
     </ul>
 </div>
 <div class="col-sm-1"></div>
@@ -14,6 +17,9 @@
     <div id="daily_KDJChart" class="tab-pane active" style="height: 120px"></div>
     <div id="daily_MACDChart" class="tab-pane" style="height: 120px"></div>
     <div id="daily_RSIChart" class="tab-pane" style="height: 120px"></div>
+    <div id="daily_BOLLChart" class="tab-pane" style="height: 120px"></div>
+    <div id="daily_WRChart" class="tab-pane" style="height: 120px"></div>
+    <div id="daily_BIASChart" class="tab-pane" style="height: 120px"></div>
 </div>
 
 <script src="/echarts/theme/shine.js"></script>
@@ -30,5 +36,11 @@
             daily_MACDChart.resize();
         if($(this).attr('href') === '#daily_RSIChart')
             daily_RSIChart.resize();
+        if($(this).attr('href') === '#daily_BOLLChart')
+            daily_BOLLChart.resize();
+        if($(this).attr('href') === '#daily_WRChart')
+            daily_WRChart.resize();
+        if($(this).attr('href') === '#daily_BIASChart')
+            daily_BIASChart.resize();
     });
 </script>

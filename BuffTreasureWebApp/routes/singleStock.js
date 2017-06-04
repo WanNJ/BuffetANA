@@ -21,8 +21,8 @@ router.post('/getDailyKLine', (req, res, next) => {
     singleStockService.getDailyData(stockCode, (err, docs) => {
         if (err)
             res.render('error');
-
-        res.send(docs);
+        else
+            res.send(docs);
     });
 });
 
@@ -34,8 +34,8 @@ router.post('/getWeeklyKLine', (req, res, next) => {
     singleStockService.getWeeklyData(stockCode, (err, docs) => {
         if (err)
             res.render('error');
-
-        res.send(docs);
+        else
+            res.send(docs);
     });
 });
 
@@ -47,8 +47,8 @@ router.post('/getMonthlyKLine', (req, res, next) => {
     singleStockService.getMonthlyData(stockCode, (err, docs) => {
         if (err)
             render('error');
-
-        res.send(docs);
+        else
+            res.send(docs);
     });
 });
 

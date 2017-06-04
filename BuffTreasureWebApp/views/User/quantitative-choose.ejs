@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
+                <div class="col-md-5 col-md-push-1 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
@@ -162,7 +162,7 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active " id="filter-conditons">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="filter-conditon-table">
                                 <thead>
                                 <tr>
                                     <th>指标</th>
@@ -171,7 +171,7 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="filter-conditon-lines">
                                 <tr>
                                     <td scope="row">换手率</td>
                                     <td>
@@ -194,7 +194,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xs-12 section-container home-section-wrap clearfix">
+                <div class="col-md-5 col-md-push-1 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
@@ -204,7 +204,7 @@
                     <!-- Tab panes -->
                     <div class="tab-content table-condensed">
                         <div role="tabpanel" class="tab-pane fade in active " id="ranking-conditons">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="ranking-conditon-table">
                                 <thead>
                                 <tr>
                                     <th>指标</th>
@@ -214,7 +214,7 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody id="ranking-conditon-line">
+                                <tbody>
                                 <tr>
                                     <td scope="row">MA</td>
                                     <td>
@@ -369,6 +369,56 @@
         }
     }
 
+    function addFilterConditon(name) {
+        let newRow="<tr>                                                                                \
+            <td scope=\"row\"></td>                                                              \
+            <td>                                                                                      \
+                <select class=\"form-control\" style=\"max-width: 120px\">                          \
+                    <option value=\"<\" selected=\"selected\">小于</option>                                \
+                    <option value=\">\">大于</option>                                                         \
+                </select>                                                                               \
+            </td>                                                                                   \
+            <td>                                                                                   \
+                <input style=\"max-width: 100px\"/>                                                   \
+            </td>                                                                                   \
+            <td>                                                                                   \
+                <a type=\"button\" onclick='$(this).parent().parent().remove()'>                \
+                    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>      \
+                </a>                                                                                   \
+            </td>                                                                                   \
+        </tr>";
+        $("#filter-conditon-table tr:last").after(newRow);
+        $("#filter-conditon-table tr:last td:first").text(name);
+        if(name.search("幅|率")>-1){
+            $("#filter-conditon-table tr:last td:eq(2)").append("<span>%</span>");
+        }
+    }
+    function addRankingConditon(name) {
+        let newRow="<tr>                                                                                \
+            <td scope=\"row\">换手率</td>                                                              \
+            <td>                                                                                      \
+                <select class=\"form-control\" style=\"max-width: 120px\">                          \
+                    <option value=\"asd\" selected=\"selected\">从小到大</option>                                \
+                    <option value=\"des\">从大到小</option>                                                         \
+                </select>                                                                               \
+            </td>                                                                                   \
+            <td>                                                                                   \
+                <input style=\"max-width: 50px\"/>                                                   \
+                <span>天</span>                                                                      \
+            </td>                                                                                   \
+            <td>                                                                                    \
+                <input style=\"max-width: 50px\"/>                                              \
+            </td>                                                                                    \
+            <td>                                                                                   \
+                <a type=\"button\" onclick='$(this).parent().parent().remove()'>                \
+                    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>      \
+                </a>                                                                                   \
+            </td>                                                                                   \
+        </tr>";
+        $("#ranking-conditon-table tr:last").after(newRow);
+        $("#ranking-conditon-table tr:last td:first").text(name);
+    }
+
     function standardPost(url, args) {
         let form = $("<form method='post'></form>");
         form.attr({"action": url});
@@ -383,27 +433,26 @@
         form.submit();
     }
 
-    function addFilterConditon(name) {
-        console.log(name);
-        $("#filter-conditon-lines").append();
-    }
-    function addRankingConditon(name) {
-
-    }
     function start() {
+        let rank = {
+            "MA": [$("#ma_ranking_rule").val(), Number($("#ma_waiting_period").val()), Number($("#ma_weight").val())],
+            "MOM": [$("#mom_ranking_rule").val(), Number($("#mom_waiting_period").val()), Number($("#mom_weight").val())]
+        };
+        for(let i=0;i<$("#ranking-conditon-table tr:gt(0)").length;i++){
+            let name=$($("#ranking-conditon-table tr:gt(0)").get(i).cells.item(0)).text();
+
+            console.log(name);
+        }
+        let filter = {
+            "turnOverRate": [$('#turnOverRate_cmp').val(), Number($('#turnOverRate_val').val())]
+        };
         let data = {
             beginDate: $("#date-from").val(),
             endDate: $("#date-to").val(),
             stockPool: $("#stock-pool").find("option:selected").text(),
             excludeST: $("#exclude-ST").val(),
-            turnOverRateCmpChar:   $('#turnOverRate_cmp').val(),
-            turnOverRateVal: $('#turnOverRate_val').val(),
-            maRanking: $("#ma_ranking_rule").val(),
-            maWaiting: $("#ma_waiting_period").val(),
-            maWeight:  $("#ma_weight").val(),
-            momRanking: $("#mom_ranking_rule").val(),
-            momWaiting: $("#mom_waiting_period").val(),
-            momWeight:  $("#mom_weight").val(),
+            rank: rank,
+            filter: filter,
             reserveDays: $("#reserve-days").val(),
             numberOfStock: $("#number-of-stock").val(),
             marketObserve: $("#market-observe").val()

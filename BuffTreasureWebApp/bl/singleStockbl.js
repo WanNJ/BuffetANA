@@ -74,6 +74,8 @@ function splitData(daily_rawData) {
     let Boll_after_adj = [];
     let upper_after_adj = [];
     let lower_after_adj = [];
+    let WR1 = [];
+    let WR2 = [];
     for (let i = 0; i < daily_rawData.length; i++) {
         categoryData.push(daily_rawData[i].splice(0, 1)[0]);
         values_no_adj.push(daily_rawData[i].splice(0, 4));
@@ -109,6 +111,8 @@ function splitData(daily_rawData) {
         Boll_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
         upper_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
         lower_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        WR1.push(daily_rawData[i].splice(0, 1)[0]);
+        WR2.push(daily_rawData[i].splice(0, 1)[0]);
     }
     return {
         categoryData: categoryData,
@@ -144,7 +148,9 @@ function splitData(daily_rawData) {
         lower_before_adj: lower_before_adj,
         Boll_after_adj: Boll_after_adj,
         upper_after_adj: upper_after_adj,
-        lower_after_adj: lower_after_adj
+        lower_after_adj: lower_after_adj,
+        WR1: WR1,
+        WR2: WR2
     };
 }
 
@@ -196,6 +202,12 @@ exports.getDailyData = (code, callback) => {
             let MA20 = [];
             let MA20_before_adj = [];
             let MA20_after_adj = [];
+
+            // 计算威廉指标WR所需要的临时数据
+            let high_period_10 = [];
+            let low_period_10 = [];
+            let high_period_6 = [];
+            let low_period_6 = [];
 
             let all_day_data = docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -424,6 +436,34 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(upper);
                 one_day_data.push(lower);
 
+                /*
+                 * 计算当日威廉指标WR，WR1固定为10天买卖强弱指标，WR2固定为6天买卖强弱指标
+                 */
+                high_period_10.push(data["high"]);
+                low_period_10.push(data["low"]);
+                high_period_6.push(data["high"]);
+                low_period_6.push(data["low"]);
+                if (high_period_10.length > 10)
+                    high_period_10.shift();
+                if (low_period_10.length > 10)
+                    low_period_10.shift();
+                if (high_period_6.length > 6)
+                    high_period_6.shift();
+                if (low_period_6.length > 6)
+                    low_period_6.shift();
+                let high_10 = Math.max.apply(null, high_period_10);
+                let low_10 = Math.min.apply(null, low_period_10);
+                let high_6 = Math.max.apply(null, high_period_6);
+                let low_6 = Math.min.apply(null, low_period_6);
+                let WR1 = 0;
+                let WR2 = 0;
+                if (high_10 - low_10 !== 0)
+                    WR1 = 100 * (high_10 - data["close"]) / (high_10 - low_10);
+                if (high_6 - low_6 !== 0)
+                    WR2 = 100 * (high_6 - data["close"]) / (high_6 - low_6);
+                one_day_data.push(WR1);
+                one_day_data.push(WR2);
+
                 return one_day_data;
             });
             callback(null, splitData(all_day_data));
@@ -580,6 +620,12 @@ exports.getWeeklyData = (code, callback) => {
             let MA20 = [];
             let MA20_before_adj = [];
             let MA20_after_adj = [];
+
+            // 计算威廉指标WR所需要的临时数据
+            let high_period_10 = [];
+            let low_period_10 = [];
+            let high_period_6 = [];
+            let low_period_6 = [];
 
             let all_week_data = week_docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -802,6 +848,34 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(upper);
                 one_week_data.push(lower);
 
+                /*
+                 * 计算当日威廉指标WR，WR1固定为10天买卖强弱指标，WR2固定为6天买卖强弱指标
+                 */
+                high_period_10.push(data["high"]);
+                low_period_10.push(data["low"]);
+                high_period_6.push(data["high"]);
+                low_period_6.push(data["low"]);
+                if (high_period_10.length > 10)
+                    high_period_10.shift();
+                if (low_period_10.length > 10)
+                    low_period_10.shift();
+                if (high_period_6.length > 6)
+                    high_period_6.shift();
+                if (low_period_6.length > 6)
+                    low_period_6.shift();
+                let high_10 = Math.max.apply(null, high_period_10);
+                let low_10 = Math.min.apply(null, low_period_10);
+                let high_6 = Math.max.apply(null, high_period_6);
+                let low_6 = Math.min.apply(null, low_period_6);
+                let WR1 = 0;
+                let WR2 = 0;
+                if (high_10 - low_10 !== 0)
+                    WR1 = 100 * (high_10 - data["close"]) / (high_10 - low_10);
+                if (high_6 - low_6 !== 0)
+                    WR2 = 100 * (high_6 - data["close"]) / (high_6 - low_6);
+                one_week_data.push(WR1);
+                one_week_data.push(WR2);
+
                 return one_week_data;
             });
             callback(null, splitData(all_week_data));
@@ -941,6 +1015,12 @@ exports.getMonthlyData = (code, callback) => {
             let MA20 = [];
             let MA20_before_adj = [];
             let MA20_after_adj = [];
+
+            // 计算威廉指标WR所需要的临时数据
+            let high_period_10 = [];
+            let low_period_10 = [];
+            let high_period_6 = [];
+            let low_period_6 = [];
 
             let all_month_data = month_docs.filter(data => {
                 return (data["volume"] !== 0);
@@ -1164,6 +1244,34 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(Boll);
                 one_month_data.push(upper);
                 one_month_data.push(lower);
+
+                /*
+                 * 计算当日威廉指标WR，WR1固定为10天买卖强弱指标，WR2固定为6天买卖强弱指标
+                 */
+                high_period_10.push(data["high"]);
+                low_period_10.push(data["low"]);
+                high_period_6.push(data["high"]);
+                low_period_6.push(data["low"]);
+                if (high_period_10.length > 10)
+                    high_period_10.shift();
+                if (low_period_10.length > 10)
+                    low_period_10.shift();
+                if (high_period_6.length > 6)
+                    high_period_6.shift();
+                if (low_period_6.length > 6)
+                    low_period_6.shift();
+                let high_10 = Math.max.apply(null, high_period_10);
+                let low_10 = Math.min.apply(null, low_period_10);
+                let high_6 = Math.max.apply(null, high_period_6);
+                let low_6 = Math.min.apply(null, low_period_6);
+                let WR1 = 0;
+                let WR2 = 0;
+                if (high_10 - low_10 !== 0)
+                    WR1 = 100 * (high_10 - data["close"]) / (high_10 - low_10);
+                if (high_6 - low_6 !== 0)
+                    WR2 = 100 * (high_6 - data["close"]) / (high_6 - low_6);
+                one_month_data.push(WR1);
+                one_month_data.push(WR2);
 
                 return one_month_data;
             });

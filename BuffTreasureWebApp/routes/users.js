@@ -1,5 +1,6 @@
 let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
+let storeMap = require('../bl/functionMap/storeMap');
 let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
@@ -142,6 +143,9 @@ router.get('/quantitative-analysis/choose', function (req, res, next) {
     res.render('User/quantitative-choose');
 });
 
+router.get('/quantitative-analysis/chmap', function (req, res, next) {
+    res.send(storeMap.chmap);
+});
 
 
 router.post('/quantitative-analysis/result', function (req, res, next) {

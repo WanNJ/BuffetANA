@@ -71,6 +71,7 @@
         function getCharts(stockCode) {
             let fullStockCode = getFullStockCode(stockCode);
 
+            // 基本数据
             $.ajax({
                 url: 'http://hq.sinajs.cn/list=' + fullStockCode,
                 dataType: "script",
@@ -100,6 +101,7 @@
                 }
             });
 
+            // 分时图数据
             $.ajax({
                 type: "get",
                 url: 'http://img1.money.126.net/data/hs/time/today/' + getAnotherFullStockName(stockCode) + '.json',
@@ -132,7 +134,8 @@
             window.setInterval(function () {
                 //TODO 更新分时图
             }, 3000);
-            
+
+            // 日K数据
             $.ajax({
                 type: "post",
                 async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -161,6 +164,7 @@
                 }
             })
 
+            // 周K数据
             $.ajax({
                 type: "post",
                 async: true,
@@ -188,6 +192,7 @@
                 }
             })
 
+            // 月K数据
             $.ajax({
                 type: "post",
                 async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -275,7 +280,7 @@
                     async: true,
                     cache: true,
                     success: (result) => {
-                        if(result === 'SUCCESS') {
+                        if (result === 'SUCCESS') {
                             $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>添加自选股成功！</strong></div>');
                         } else if (result === 'SIGN_ERROR') {
                             $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请先登录之后再添加！</strong></div>');
@@ -311,7 +316,8 @@
     <div class="col-md-10 col-md-offset-1 jumbotron">
         <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
             <div class="input-group input-group-lg">
-                <input type="text" class="form-control" name="query" id="search_area" autocomplete="off" placeholder="搜索个股..."
+                <input type="text" class="form-control" name="query" id="search_area" autocomplete="off"
+                       placeholder="搜索个股..."
                        required>
                 <span class="input-group-btn">
                 <button id="searchButton" class="btn btn-default" type="submit">搜索</button>
@@ -321,7 +327,7 @@
     </div>
 
 
-    <div id="stockSeg" style="display: none;">
+    <div id="stockSeg" style="display: block;">
 
         <div class="col-sm-10 col-sm-offset-1">
             <div class="row">
@@ -349,7 +355,8 @@
                     <div class="row">
                         <div class="col-sm-12 text-center"
                              style="height: 102px;padding-top:16px;  line-height: 25px;">
-                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-lg" style="height: 60px;">
+                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-lg"
+                                    style="height: 60px;">
                                 <span class="fa fa-plus"></span> 加入自选股
                             </button>
                         </div>
@@ -362,9 +369,36 @@
         <div class="col-sm-10 col-sm-offset-1">
             <ul class="nav nav-tabs nav-justified" id="mainTab">
                 <li id="firstTab" class="active"><a href="#timeSharing">分时</a></li>
-                <li><a href="#dailyKLine">日K</a></li>
-                <li><a href="#weeklyKLine">周K</a></li>
-                <li><a href="#monthlyKLine">月K</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#dailyKLine" role="button">
+                        日K <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">不复权</a></li>
+                        <li><a href="#">前复权</a></li>
+                        <li><a href="#">后复权</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#weeklyKLine" role="button">
+                        周K <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">不复权</a></li>
+                        <li><a href="#">前复权</a></li>
+                        <li><a href="#">后复权</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#monthlyKLine" role="button">
+                        月K <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">不复权</a></li>
+                        <li><a href="#">前复权</a></li>
+                        <li><a href="#">后复权</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <div class="col-sm-12" style="height: 20px;"></div>
@@ -386,7 +420,7 @@
         </div>
 
         <script>
-            $('#mainTab').find('a').click(function (e) {
+            $('#mainTab > li > a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
                 $(this).resize();
@@ -404,6 +438,14 @@
                     monthly_KLineChart.resize();
                     monthly_KDJChart.resize();
                 }
+            });
+        </script>
+
+        <script>
+            $('li.dropdown').mouseover(function () {
+                $(this).addClass('open');
+            }).mouseout(function () {
+                $(this).removeClass('open');
             });
         </script>
     </div>

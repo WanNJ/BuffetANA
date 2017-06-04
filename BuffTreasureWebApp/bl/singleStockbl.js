@@ -31,10 +31,14 @@ exports.getTwoDayInfo = (date, callback) => {
  *
  * ！！！！！！剔除了交易量为0的日期！！！！！！！！
  *
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj       RSI6     RSI12     RSI24
- * eg:  80  90  70      0.2        0.3        -0.2       11.0      22.42    33.33     44.44
+ *      日期，           开盘价，    收盘价，    最低价，    最高价，   前复权开盘价，    前复权收盘价，    前复权最低价，    前复权最高价      后复权开盘价，    后复权收盘价，    后复权最低价，    后复权最高价
+ * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275           11.50           10.10           11.50           1.275           11.50           10.10           11.50
+ *      涨跌幅(已乘100)，    成交量，    换手率(已乘100),    K   D   J,      DIF        DEA        MACD     DIF_before_adj        DEA_before_adj        MACD_before_adj   DIF_after_adj        DEA_after_adj        MACD_after_adj
+ * eg:  1.275              1232       2.23               80  90  70      0.2        0.3        -0.2     0.2        0.3        -0.2                  22.42             0.2                  0.3                 -0.2
+ *      RSI6     RSI12     RSI24      BIAS6    BIAS12    BIAS24    Boll   upper   lower     Boll_before_adj   upper_before_adj   lower_before_adj     Boll_after_adj   upper_after_adj   lower_after_adj
+ * eg:  22.42   33.33      44.44      23       24        25        26     27      28        29                30                  31                   32               33                34
+ *      WR1      WR2
+ * eg:  34       35
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */

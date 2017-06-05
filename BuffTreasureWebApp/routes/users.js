@@ -158,8 +158,8 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     // excludeST = body.excludeST === 'on';
 
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, null, null, excludeST);
-    let rank = body.rank;
-    let filter = body.filter;
+    let rank = JSON.parse(body.rank);
+    let filter = JSON.parse(body.filter);
     let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
     let envSpyDay = Number(body.marketObserve);
 

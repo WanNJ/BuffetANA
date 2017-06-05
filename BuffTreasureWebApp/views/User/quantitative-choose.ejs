@@ -451,10 +451,7 @@
     }
 
     function start() {
-        let rank = {
-            "MA": [$("#ma_ranking_rule").val(), Number($("#ma_waiting_period").val()), Number($("#ma_weight").val())],
-            "MOM": [$("#mom_ranking_rule").val(), Number($("#mom_waiting_period").val()), Number($("#mom_weight").val())]
-        };
+        let rank = {};
         let rank_rows=$("#ranking-conditon-table tr:gt(0)");
         for(let i=0;i<rank_rows.length;i++){
             let name=$(rank_rows.get(i).cells.item(0)).val();
@@ -463,9 +460,7 @@
                 Number($(rank_rows.get(i).cells.item(3)).children().val())];
         }
 
-        let filter = {
-            "turnOverRate": [$('#turnOverRate_cmp').val(), Number($('#turnOverRate_val').val())]
-        };
+        let filter = {};
         let filter_rows=$("#filter-conditon-table tr:gt(0)");
         for(let i=0;i<filter_rows.length;i++){
             let name=$(filter_rows.get(i).cells.item(0)).val();
@@ -478,8 +473,8 @@
             endDate: $("#date-to").val(),
             stockPool: $("#stock-pool").find("option:selected").text(),
             excludeST: $("#exclude-ST").val(),
-            rank: rank,
-            filter: filter,
+            rank: JSON.stringify(rank),
+            filter: JSON.stringify(filter),
             reserveDays: $("#reserve-days").val(),
             numberOfStock: $("#number-of-stock").val(),
             marketObserve: $("#market-observe").val()

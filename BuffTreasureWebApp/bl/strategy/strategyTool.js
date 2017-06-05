@@ -47,14 +47,18 @@ let mergeArray = function(arr1, arr2){
  * @param isExclude  是否排除ST股，排除为true，不排除为false
  */
 let excludeST = function (arr ,  isExclude){
+    console.log('exclude')
     return   !isExclude? arr: arr.filter(t => !(t['name'].substring(0,3)==='*ST'));
 };
 
 
 
 exports.getChoosedStockList = (stockPoolConditionVO , callback) =>{
+    console.log('getChoosed')
     if( (stockPoolConditionVO instanceof StockPoolConditionVO) === false){
         callback(new Error('getChoosedStockList: 参数1  没有实现StockPoolConditionVO'),null);
+        if(stockPoolConditionVO.benches===null) stockPoolConditionVO.benches = []
+        if(stockPoolConditionVO.industries===null) stockPoolConditionVO.industries=[]
     }else{
        // console.log(stockPoolConditionVO.stockPool)
         let promise = stockPoolMap[stockPoolConditionVO.stockPool];

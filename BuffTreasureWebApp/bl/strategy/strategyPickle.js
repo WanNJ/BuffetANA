@@ -33,6 +33,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
 
     let parameterCheck = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)=>{
         return new Promise((resolve,reject) => {
+
             if (endDate - beginDate < 24000 * 3600 * 365) {
                 throw new Error('回测时间不能小于1年')
             }
@@ -57,7 +58,6 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             if(tradeModelVO.holdingNums > 100){
                 throw  new Error('持仓天数过多')
             }
-
             resolve([])
         })
 

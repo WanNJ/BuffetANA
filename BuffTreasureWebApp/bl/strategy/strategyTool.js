@@ -389,32 +389,56 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
             pickleDataList.forEach(pickleData =>{
                 //console.log(p)
                 //console.log(data[p])
+                let days = (pickleData.endDate+1-pickleData.beginDate)/(24000*3600)
+
                 if(typeof data[p] !=='undefined') {
                     let valid = true;
                     while (typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.beginDate < 0 ) {
                         p++;
                     }
                     let begin = 0;
+                    let priceList = [];
                     //console.log(data[p]['date'])
                     //console.log('ppppp:    '+pickleData.beginDate)
                     if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] ===0){
-                        begin = data[p]['afterAdjClose']; //最后一天收盘价格
+                        begin = data[p]['close']; //最后一天收盘价格
                     }
                     else
                         valid = false;
-                    while ( typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.endDate < 0 ) {
-                        p++;
-                        //console.log(p)
 
+                    while ( typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.endDate < 0 ) {
+                        priceList.push(data[p]['close'])
+                        //console.log(p)
+                        p++;
                     }
                     let end = 0;
-                    if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date'] === 0 )
-                        end = data[p]['afterAdjClose']; //最后一天收盘价格
+                    if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date'] === 0 ) {
+                        end = data[p]['close']; //最后一天收盘价格
+                        priceList.push(end)
+                    }
                     else
                         valid = false;
 
+                    let fur = p+days
+                    p=p+1;
+                    //处理额外的持仓天数
+                    if(valid === true){
+                        while ( typeof data[p] !== 'undefined' && p < fur ) {
+                            p++;
+                        }
+                        if (typeof data[p] !== 'undefined' && p===fur ) {
+                            end = data[p]['close']; //未来周期一天收盘价格
+                            priceList.push(end)
+                        } else
+                            priceList.push(priceList[priceList.length-1])
+
+                    }
+
+                     //console.log(priceList)
+
+
                     pickleData.backDatas.push
-                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,begin, end, valid));
+                    (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,begin, end, valid,priceList));
                 }else {
                     pickleData.backDatas.push
                     (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true ,0, 0, false));

@@ -32,3 +32,9 @@ Data/StrategyHistory/*
 BUFF/text/SearchHistory
 
 BuffTreasureWebApp/.idea/
+
+BuffTreasureWebApp/test/testPython/predict.csv
+
+BuffTreasureWebApp/test/testPython/dataset.csv
+
+*.csv

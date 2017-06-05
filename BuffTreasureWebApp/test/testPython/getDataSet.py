@@ -7,7 +7,6 @@ import csv
 def connect_mongodb():
     servers = "mongodb://localhost:27017"
     conn = pymongo.MongoClient(servers)
-    print(conn.database_names())
     db = conn.allInfo
     return db
 
@@ -34,14 +33,13 @@ def pre_deal_data(code , holdingPeriods):
     labels = [label0,label1,label2,label3,label4,label5,label6,label7,label8,label9]
     labelset = []
 
-    for i in range(10):
+    for i in range(holdingPeriods):
         for st in propre:
             heads.append(st+str(i))
-    print(heads)
 
     db = connect_mongodb()
     collection = db[code]
-    beginDate = datetime.datetime.strptime('2015-04-05', '%Y-%m-%d')
+    beginDate = datetime.datetime.strptime('2005-04-05', '%Y-%m-%d')
     cc = collection.find({'volume': {'$gt': 0}, 'date': {'$gt': beginDate}}, pro).sort('date',pymongo.ASCENDING)
 
     nor = {}
@@ -71,7 +69,7 @@ def pre_deal_data(code , holdingPeriods):
         writer.writeheader()
         content = {}
         for i in range(holdingPeriods,len(data) - holdingPeriods):
-            change = 100*(data[i+9]['close']-data[i]['close'])/data[i]['close']
+            change = 100*(data[i+holdingPeriods-1]['close']-data[i]['close'])/data[i]['close']
             ll = int((change+10)/2.5)+1
             if ll < 0:
                 ll = 0
@@ -81,11 +79,15 @@ def pre_deal_data(code , holdingPeriods):
             label = labels[ll]
             labelset.append(label)
             proind = 0
-            for ind in range(i,i-10,-1):
+            for ind in range(i,i-holdingPeriods,-1):
                 value = data[ind]
                 for js in range(len(propre)):
                     head = heads[proind]
-                    content[head] = value[head[:-1]]
+                    try:
+                        content[head] = value[head[:-1]]
+                    except :
+                        content[head] = value[head[:-2]]
+
                     proind +=1
             writer.writerow(content)
 
@@ -102,10 +104,13 @@ def pre_deal_data(code , holdingPeriods):
         writer = csv.DictWriter(f1, fieldnames=fieldnames)
         writer.writeheader()
         proind = 0
-        for ind in range(l-1, l - 10, -1):
+        for ind in range(l-1, l - holdingPeriods, -1):
             value = data[ind]
             for js in range(len(propre)):
                 head = heads[proind]
-                content[head] = value[head[:-1]]
+                try:
+                    content[head] = value[head[:-1]]
+                except:
+                    content[head] = value[head[:-2]]
                 proind += 1
         writer.writerow(content)

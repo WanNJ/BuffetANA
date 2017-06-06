@@ -1362,7 +1362,7 @@ exports.getLatestStockInfo = (codes, callback) => {
  * }
  */
 exports.getCompanyInfo = (code, callback) => {
-    exec('python3' + ' companyInfo.py ' +code, function(err, stdout, stderr){
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/companyInfo.py ' +code, function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }
@@ -1374,7 +1374,6 @@ exports.getCompanyInfo = (code, callback) => {
             let companyInfo = JSON.parse(result);
             callback(null, companyInfo);
         }
-
     });
 };
 

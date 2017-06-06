@@ -15,10 +15,36 @@
                     <span >股票池：</span>
                     <select class="form-control" style="max-width: 120px;display: inline-flex" id="stock-pool">
                         <option selected="selected">沪深300</option>
+                        <option >随机500</option>
+                        <option >沪深A股</option>
                         <option >中小板</option>
                         <option >创业板</option>
-                        <option >自定义</option>
+                        <option >自选股票池</option>
                     </select>
+                </div>
+                <div class="col-md-3 dropdown">
+                    <span>行业：</span>
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        全部
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="industries">
+                        <li>
+                            <a class="active">
+                                <input type="checkbox" autocomplete="off" checked>Checkbox 1 (pre-checked)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="active">
+                                <input type="checkbox" autocomplete="off" checked>Checkbox 2 (pre-checked)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="active">
+                                <input type="checkbox" autocomplete="off" checked>Checkbox 3 (pre-checked)
+                            </a>
+                        </li>
+                    </ul>
                 </div>
                 <div class="col-md-3" style="display: inline;margin-top: 5px;">
                     <span>排除ST</span>
@@ -467,11 +493,17 @@
             filter[name]=[$(filter_rows.get(i).cells.item(1)).children().val(),
                 Number($(filter_rows.get(i).cells.item(2)).children().val())];
         }
+        let industries=new Array();
+        for(let i=0;i< $("#industries li a input:checkbox:checked").length;i++){
+            industries[i]=$("#industries li a input:checkbox:checked").eq(i).parent().text().trim();
+        }
 
         let data = {
             beginDate: $("#date-from").val(),
             endDate: $("#date-to").val(),
             stockPool: $("#stock-pool").find("option:selected").text(),
+            benches: null,
+            industries: industries,
             excludeST: $("#exclude-ST").val(),
             rank: JSON.stringify(rank),
             filter: JSON.stringify(filter),

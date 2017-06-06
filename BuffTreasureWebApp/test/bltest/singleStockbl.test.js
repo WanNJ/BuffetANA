@@ -81,4 +81,17 @@ describe('singleStockbl', function() {
             });
         });
     });
+    describe('#getHotStocks()', function() {
+        it('显示热门股票信息', function(done) {
+            singleStockbl.getHotStocks((err, hot_stocks) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(hot_stocks);
+                    done();
+                }
+            });
+        });
+    });
 });

@@ -5,6 +5,7 @@ const singleStockDB = require('../models/singleStock.js').singleStockDB;
 const statisticTool = require('./tool/statisticTool');
 const RTTool = require('./realtime/singleStockRT');
 const exec = require('child_process').exec;
+const allStockDB = require('../models/allstock').allStockDB;
 
 
 /**
@@ -1307,7 +1308,7 @@ exports.getRTInfo = (code, callback) => {
  *   现价  涨跌幅
  * [[9.2, 0.11]...]
  */
-exports.getLatestStockInfo = (codes, callback) => {
+function getLatestStockInfo(codes, callback) {
     let promises = codes.map(code => new Promise((resolve, reject) => {
         RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
             if (err)
@@ -1325,7 +1326,8 @@ exports.getLatestStockInfo = (codes, callback) => {
     }).catch((err) => {
         callback(err, null);
     });
-};
+}
+exports.getLatestStockRTInfo = getLatestStockInfo;
 
 
 /**
@@ -1362,7 +1364,7 @@ exports.getLatestStockInfo = (codes, callback) => {
  * }
  */
 exports.getCompanyInfo = (code, callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/companyInfo.py ' +code, function(err, stdout, stderr){
+    exec('python3' + ' ./bl/companyInfo.py ' +code, function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }
@@ -1377,4 +1379,38 @@ exports.getCompanyInfo = (code, callback) => {
     });
 };
 
+exports.getHotStocks = (callback) => {
+    exec('python3' + ' ./bl/hot_stock.py', function(err, stdout, stderr){
+        if(err) {
+            callback(err, null);
+        }
+        if(stdout) {
+            let hot_codes = stdout.split('|');
+            hot_codes = hot_codes.map(t => t.substr(0, 6));
+            let promises = hot_codes.map(code => new Promise((resolve, reject) => {
+                allStockDB.getNameByCode(code, (err, name) => {
+                    if (err)
+                        reject(err);
+                    else {
+                        resolve(name["name"]);
+                    }
+                });
+            }));
+            Promise.all(promises).then(names => {
+                getLatestStockInfo(hot_codes, (err, infos) => {
+                    if (err)
+                        callback(err, null);
+                    else {
+                        for (let i = 0; i < infos.length; i++) {
+                            infos[i].unshift(names[i]);
+                        }
+                        callback(null, infos);
+                    }
+                });
+            }).catch((err) => {
+                callback(err, null);
+            });
+        }
+    });
+};
 

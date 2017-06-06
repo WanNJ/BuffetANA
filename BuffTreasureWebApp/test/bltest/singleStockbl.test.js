@@ -55,18 +55,17 @@ describe('singleStockbl', function() {
             });
         });
     });
-    // describe('#getTwoDayInfo()', function() {
-    //     it('should show two day information', function(done) {
-    //         singleStockbl.getTwoDayInfo(new Date("2017-04-28"), (err, two_month_data) => {
-    //             if (err) {
-    //                 done(err);
-    //             }
-    //             else {
-    //                 console.log(two_month_data[0].length);
-    //                 console.log(two_month_data[1].length);
-    //                 done();
-    //             }
-    //         });
-    //     });
-    // });
+    describe('#getLatestStockInfo()', function() {
+        it('显示最近浏览过的股票的现价和涨跌幅', function(done) {
+            singleStockbl.getLatestStockInfo(['000001', '000002', '603158'], (err, results) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(results);
+                    done();
+                }
+            });
+        });
+    });
 });

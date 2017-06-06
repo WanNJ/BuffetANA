@@ -1318,3 +1318,32 @@ exports.getRTInfo = (code, callback) => {
     });
 };
 
+
+/**
+ * 获得最近浏览股票的实时信息
+ * @param codes {Array} 最近浏览股票的代码数组
+ * @param callback (err, results) =. {}
+ * results是一个数组形如（对应顺序为传下来的codes数组的顺序）
+ *   现价  涨跌幅
+ * [[9.2, 0.11]...]
+ */
+exports.getLatestStockInfo = (codes, callback) => {
+    let promises = codes.map(code => new Promise((resolve, reject) => {
+        RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
+            if (err)
+                reject(err);
+            else {
+                let info = [];
+                info.push(stockRTInfo["now_price"]);
+                info.push(stockRTInfo["change_rate"]);
+                resolve(info);
+            }
+        });
+    }));
+    Promise.all(promises).then(results => {
+        callback(null, results);
+    }).catch((err) => {
+        callback(err, null);
+    });
+};
+

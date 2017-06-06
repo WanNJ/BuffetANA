@@ -1379,6 +1379,14 @@ exports.getCompanyInfo = (code, callback) => {
     });
 };
 
+
+/**
+ * 获得热门股票的实时信息
+ * @param callback (err, infos) => {}
+ * infos形如
+ *   股票名称    现价     涨跌幅（已乘100，单位为"%"）
+ * [['平安银行', '9.04', '0.11']...]
+ */
 exports.getHotStocks = (callback) => {
     exec('python3' + ' ./bl/hot_stock.py', function(err, stdout, stderr){
         if(err) {

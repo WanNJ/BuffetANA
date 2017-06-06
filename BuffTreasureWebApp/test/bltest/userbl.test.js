@@ -47,16 +47,13 @@ describe('userbl', function() {
         });
     });
     describe('#getSelfSelectStock()', function() {
-        it('just a test', function(done) {
+        it('just a test1', function(done) {
             userbl.getSelfSelectStock('slowtime', function (err, doc) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    if (err)
-                        console.log(err);
-                    else
-                        console.log(doc);
+                    console.log(doc);
                     done();
                 }
             });

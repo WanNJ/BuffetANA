@@ -5,6 +5,7 @@
 let async = require("async/index.js");
 let singleStockDB = require('../models/singleStock.js').singleStockDB;
 let statisticTool = require('./tool/statisticTool');
+let RTTool = require('./realtime/singleStockRT');
 
 /**
  * 为了测试async写的一个接口
@@ -1283,3 +1284,37 @@ exports.getMonthlyData = (code, callback) => {
         }
     });
 };
+
+
+/**
+ * 获得个股实时的信息
+ * @param code
+ * @param callback (err, stockRTInfo) => {}
+ *
+ * ！！！！！！！！！！！！！注意括号中的单位，没有提到单位的属性，就是不用加单位！！！！！！！！！！！！！！！
+ *
+ * stockRTInfo形如
+ * {
+                    "now_price": 现价
+                    "change_price": 涨跌额
+                    "change_rate": 涨跌幅（已经乘了100，单位为"%"）
+                    "yesterday_close": 昨收
+                    "today_open": 今开
+                    "high": 最高
+                    "low": 最低
+                    "volume": 成交量（单位为"万手"）
+                    "volume_of_transaction": 成交额（单位为"万"）
+                    "marketValue": 总市值（单位为"亿"）
+                    "floatMarketValue": 流通市值（单位为"亿"）
+                    "turnOverRate": 换手率（已经乘了100，单位为"%"）
+                    "PB_ratio": 市净率
+                    "amplitude": 振幅（已经乘了100，单位为"%"）
+                    "PE_ratio": 市盈率
+  }
+ */
+exports.getRTInfo = (code, callback) => {
+    RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
+        callback(err, stockRTInfo);
+    });
+};
+

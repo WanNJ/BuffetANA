@@ -3,6 +3,7 @@
  */
 let userDB = require('../models/user.js').userDB;
 let allStockDB = require('../models/allstock').allStockDB;
+let RTTool = require('./realtime/singleStockRT');
 
 /**
  * 用户登录
@@ -99,7 +100,13 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
  * 获得某一用户的所有自选股票
  * @param userName
  * @param callback 形如(err, docs) => {}
- * docs是JSON格式，其中的键名集合是所有的自选股的代码，键名对应的值是该股票的名称
+ * docs是JSON格式，其中的键名集合是所有的自选股的代码，键名对应的值是一个数组
+ * {
+ *      股票代码    股票名称    现价   涨跌幅(已经乘过100，单位为"%")
+ *      "000001": ["平安银行", 9.42, 0.11]
+ *      "000002": ["万科A",    32.2  2.3]
+ *      ...
+ * }
  */
 exports.getSelfSelectStock = (userName, callback) => {
     userDB.getSelfSelectStock(userName, (err, docs) => {
@@ -107,10 +114,23 @@ exports.getSelfSelectStock = (userName, callback) => {
             callback(err, null);
         else {
             let stocks = {};
+            let count = 0;
             docs["selfSelectStock"].forEach(t => {
-                stocks[t["stockCode"]] = t["stockName"];
+                RTTool.obtainRTInfoByCode(t["stockCode"], (err, stockRTInfo) => {
+                    if (err)
+                        callback(err, null);
+                    else {
+                        let info = [];
+                        info.push(t["stockName"]);
+                        info.push(stockRTInfo["now_price"]);
+                        info.push(stockRTInfo["change_rate"]);
+                        stocks[t["stockCode"]] = info;
+                    }
+                    count++;
+                    if (count === docs["selfSelectStock"].length)
+                        callback(null, stocks);
+                });
             });
-            callback(null, stocks);
         }
     });
 };

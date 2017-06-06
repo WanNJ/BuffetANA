@@ -1,31 +1,11 @@
 /**
  * Created by slow_time on 2017/5/6.
  */
+const singleStockDB = require('../models/singleStock.js').singleStockDB;
+const statisticTool = require('./tool/statisticTool');
+const RTTool = require('./realtime/singleStockRT');
+const exec = require('child_process').exec;
 
-let async = require("async/index.js");
-let singleStockDB = require('../models/singleStock.js').singleStockDB;
-let statisticTool = require('./tool/statisticTool');
-let RTTool = require('./realtime/singleStockRT');
-
-/**
- * 为了测试async写的一个接口
- * 并没有什么用
- * @param date
- * @param callback
- */
-exports.getTwoDayInfo = (date, callback) => {
-    async.parallel([
-        function (cb) {
-            singleStockDB.getStockInfoByDate(new Date("2017-04-28"), cb);
-        },
-        function (cb) {
-            singleStockDB.getStockInfoByDate(new Date("2017-04-27"), cb);
-        }
-        ],
-        function (err, results) {
-            callback(err, results);
-        });
-};
 
 /**
  * 返回日K数据列表，其中每一个元素也是一个数组，形式如下
@@ -1346,4 +1326,56 @@ exports.getLatestStockInfo = (codes, callback) => {
         callback(err, null);
     });
 };
+
+
+/**
+ * 获得该个股对应的公司简介
+ * @param code
+ * @param callback (err, companyInfo) => {}
+ * companyInfo {JSON} 形如
+ * {
+    "公司名称": {String}
+    "公司英文名称": {String}
+    "上市市场": {String}
+    "上市日期": {String}
+    "发行价格": {Number}
+    "主承销商": {String}
+    "成立日期": {String}
+    "注册资本": {String}
+    "机构类型": {String}
+    "组织形式": {String}
+    "董事会秘书": {String}
+    "公司电话": {String}
+    "董秘电话": {String}
+    "公司传真": {String}
+    "董秘传真": {String}
+    "公司电子邮箱": {String}
+    "董秘电子邮箱": {String}
+    "公司网址": {String}
+    "邮政编码": {String}
+    "信息披露网址": {String}
+    "证券简称更名历史": {String}
+    "注册地址": {String}
+    "办公地址": {String}
+    "公司简介": {String}
+    "经营范围": {String}
+ * }
+ */
+exports.getCompanyInfo = (code, callback) => {
+    exec('python3' + ' companyInfo.py ' +code, function(err, stdout, stderr){
+        if(err) {
+            callback(err, null);
+        }
+        if(stdout) {
+            let result = stdout.replace(/'/g, '"');
+            result = result.replace(/\\xa0/g, '');
+            result = result.replace(/\\r\\n/g, '');
+            result = result.replace(/\\"/g, "\"");
+            let companyInfo = JSON.parse(result);
+            callback(null, companyInfo);
+        }
+
+    });
+};
+
 

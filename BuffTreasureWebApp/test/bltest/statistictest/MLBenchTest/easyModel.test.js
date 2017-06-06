@@ -21,7 +21,7 @@ mongoose.connection.on('open', function () {
 describe('testEasyModelbl', function() {
     describe('#EasyPredict()', function () {
         it('should show the result of 00000t NN predicr', function (done) {
-            predict.EasyPredict('000002', 15,(err, result) => {
+            predict.EasyPredict('000002', 5,(err, result) => {
                 if (err) {
                     done(err);
                 }

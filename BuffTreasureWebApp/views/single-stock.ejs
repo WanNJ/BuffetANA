@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
     <% include Components/settings.html %>
     <title>BUFF-个股</title>
 
@@ -8,7 +9,6 @@
     <script src="/echarts/echarts.min.js"></script>
 
     <!--Jquery-UI-->
-    <link rel="stylesheet" href="/css/jquery-ui.css"/>
     <script src="/js/jquery-ui.min.js"></script>
     <script type="text/javascript">
         let dataZoomLength = 60;
@@ -156,6 +156,35 @@
                         setDailyData(result);
                         loadDailyKLineChart(no_daily_data);
                     }
+
+                    // 开启子选项的监听，避免出错
+                    $('#mainTab > li > ul > li > a').click(function (e) {
+                        e.preventDefault();
+                        $('li.dropdown').removeClass('open');
+                        $($(this).parent().parent().parent().children()[0]).tab('show');
+
+                        if ($(this).attr('href') === '#no_daily')
+                            loadDailyKLineChart(no_daily_data);
+                        if ($(this).attr('href') === '#before_daily')
+                            loadDailyKLineChart(before_daily_data);
+                        if ($(this).attr('href') === '#after_daily')
+                            loadDailyKLineChart(after_daily_data);
+
+                        if ($(this).attr('href') === '#no_weekly')
+                            loadWeeklyKLineChart(no_weekly_data);
+                        if ($(this).attr('href') === '#before_weekly')
+                            loadWeeklyKLineChart(before_weekly_data);
+                        if ($(this).attr('href') === '#after_weekly')
+                            loadWeeklyKLineChart(after_weekly_data);
+
+                        if ($(this).attr('href') === '#no_monthly')
+                            loadMonthlyKLineChart(no_monthly_data);
+                        if ($(this).attr('href') === '#before_montyly')
+                            loadMonthlyKLineChart(before_monthly_data);
+                        if ($(this).attr('href') === '#after_monthly')
+                            loadMonthlyKLineChart(after_monthly_data);
+                    });
+
                 },
                 error: function (errorMsg) {
                     //请求失败时执行该函数
@@ -255,6 +284,33 @@
                 });
             });
 
+            // 历史访问
+            let recent_stocks = [];
+
+            if (localStorage.getItem('recentStocks')) {
+                recent_stocks = JSON.parse(localStorage.getItem('recentStocks'));
+                $('#search_area').val(recent_stocks[recent_stocks.length - 1][1] + '(' + recent_stocks[recent_stocks.length - 1][0] + ')');
+                getCharts(recent_stocks[recent_stocks.length - 1][1]);
+                $('#search_area').val('');
+            } else {
+                $('#search_area').val('000001(平安银行)');
+                getCharts('000001');
+                $('#search_area').val('');
+            }
+
+            for (let i = recent_stocks.length - 1; i >= 0; i--) {
+                let appendedStr = '<tr><th>' + recent_stocks[i][0] + '</th><td>' + recent_stocks[i][1] + '</td></tr>';
+                $('#recent_stock_table > tbody').append(appendedStr);
+            }
+
+
+            $('#recent_stock_table > tbody > tr').click(function (e) {
+                e.preventDefault();
+                $('#search_area').val($(this).children()[1].innerText + '(' + $(this).children()[0].innerText + ')');
+                getCharts($(this).children()[1].innerText);
+                $('#search_area').val('');
+            });
+
             // 表单提交
             $("#stock_form").submit(function (e) {
                 e.preventDefault();
@@ -273,6 +329,33 @@
                 let re = /([0-9]+)\((.*)\)/;
                 let result = re.exec(query);
                 let stockCode = result[1];
+
+                // 浏览器缓存
+                let recentStocks = [];
+                if (localStorage.getItem('recentStocks'))
+                    recentStocks = JSON.parse(localStorage.getItem('recentStocks'));
+
+                let newItem = [result[2], stockCode]
+                let alreadyExist = false;
+
+                for (let i = 0; i < recentStocks.length; i++) {
+                    if (recentStocks[i][1] === newItem[1]) {
+                        alreadyExist = true;
+                        break;
+                    }
+                }
+
+                if(alreadyExist) {
+                    recentStocks.splice(recentStocks.indexOf(newItem), 1);
+                    recentStocks.push(newItem);
+                } else {
+                    recentStocks.push(newItem);
+                }
+
+                if (recentStocks.length >= 10)
+                    recentStocks.pop();
+
+                localStorage.setItem('recentStocks', JSON.stringify(recentStocks));
 
                 getCharts(stockCode);
             });
@@ -334,9 +417,57 @@
     </div>
 
     <!--Recently Browsed-->
-    <div class="col-sm-2"></div>
+    <div class="col-md-2 center-block">
+        <div class="col-sm-12" style="height: 50px;"></div>
+
+        <div>
+            <ul class="nav nav-tabs nav-justified" id="left_side_tab">
+                <li class="active" data-toggle="tooltip" data-placement="top" title="历史浏览记录"><a href="#recent_stock_seg"><span class="glyphicon glyphicon-eye-open"
+                                                                     aria-hidden="true"></span></a></li>
+                <li class data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-12 tab-content">
+            <div id="recent_stock_seg" class="tab-pane active">
+                <table id="recent_stock_table" class="table table-hover" style="font-size: small">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>代码</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="hot_stock_seg" class="tab-pane">
+                <table id="hot_stock_table" class="table table-hover" style="font-size: small">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>代码</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#left_side_tab').find('a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    </script>
 
 
+    <!--Main Block Of Single Stock-->
     <div class="col-sm-8" id="stockSeg" style="display: block;">
 
         <!--Basic Infos of a stock-->
@@ -434,8 +565,9 @@
             </div>
         </div>
 
+        <!--标签页监听-->
         <script>
-            $('#mainTab > li > a').click(function(e) {
+            $('#mainTab > li > a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
                 $(this).resize();
@@ -454,34 +586,7 @@
                     monthly_KDJChart.resize();
                 }
             });
-
-            $('#mainTab > li > ul > li > a').click(function(e) {
-                e.preventDefault();
-                if ($(this).attr('href') === '#no_daily')
-                    loadDailyKLineChart(no_daily_data);
-                if($(this).attr('href') === '#before_daily')
-                    loadDailyKLineChart(before_daily_data);
-                if($(this).attr('href') === '#after_daily')
-                    loadDailyKLineChart(after_daily_data);
-
-                if ($(this).attr('href') === '#no_weekly')
-                    loadWeeklyKLineChart(no_weekly_data);
-                if($(this).attr('href') === '#before_weekly')
-                    loadWeeklyKLineChart(before_weekly_data);
-                if($(this).attr('href') === '#after_weekly')
-                    loadWeeklyKLineChart(after_weekly_data);
-
-                if ($(this).attr('href') === '#no_monthly')
-                    loadMonthlyKLineChart(no_monthly_data);
-                if($(this).attr('href') === '#before_montyly')
-                    loadMonthlyKLineChart(before_monthly_data);
-                if($(this).attr('href') === '#after_monthly')
-                    loadMonthlyKLineChart(after_monthly_data);
-
-                $('li.dropdown').removeClass('open');
-            });
         </script>
-
         <script>
             $('li.dropdown').mouseover(function () {
                 $(this).addClass('open');

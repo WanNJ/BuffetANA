@@ -94,4 +94,43 @@ describe('singleStockbl', function() {
             });
         });
     });
+    describe('#getDailyMarketIndex()', function() {
+        it('显示沪深300日线指数', function(done) {
+            singleStockbl.getDailyMarketIndex('sh000300', (err, marketIndex) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(marketIndex);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getWeeklyMarketIndex()', function() {
+        it('显示沪深300周线指数', function(done) {
+            singleStockbl.getWeeklyMarketIndex('sz399300', (err, marketIndex) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(marketIndex);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getMonthlyMarketIndex()', function() {
+        it('显示上证月线指数', function(done) {
+            singleStockbl.getMonthlyMarketIndex('sh000001', (err, marketIndex) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(marketIndex);
+                    done();
+                }
+            });
+        });
+    });
 });

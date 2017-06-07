@@ -124,7 +124,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 200;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -302,7 +302,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -435,7 +435,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -554,7 +554,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -687,7 +687,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -812,7 +812,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -931,7 +931,7 @@ function loadDailyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {

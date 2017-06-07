@@ -183,8 +183,15 @@
                             loadMonthlyKLineChart(before_monthly_data);
                         if ($(this).attr('href') === '#after_monthly')
                             loadMonthlyKLineChart(after_monthly_data);
-                    });
 
+                        timeSharingChart.resize();
+                        daily_KLineChart.resize();
+                        daily_KDJChart.resize();
+                        weekly_KLineChart.resize();
+                        weekly_KDJChart.resize();
+                        monthly_KLineChart.resize();
+                        monthly_KDJChart.resize();
+                    });
                 },
                 error: function (errorMsg) {
                     //请求失败时执行该函数
@@ -337,23 +344,25 @@
 
                 let newItem = [result[2], stockCode]
                 let alreadyExist = false;
+                let existIndex = 0;
 
                 for (let i = 0; i < recentStocks.length; i++) {
                     if (recentStocks[i][1] === newItem[1]) {
                         alreadyExist = true;
+                        existIndex = i;
                         break;
                     }
                 }
 
-                if(alreadyExist) {
-                    recentStocks.splice(recentStocks.indexOf(newItem), 1);
+                if (alreadyExist) {
+                    recentStocks.splice(existIndex, 1);
                     recentStocks.push(newItem);
                 } else {
                     recentStocks.push(newItem);
                 }
 
-                if (recentStocks.length >= 10)
-                    recentStocks.pop();
+                if (recentStocks.length > 10)
+                    recentStocks.shift();
 
                 localStorage.setItem('recentStocks', JSON.stringify(recentStocks));
 
@@ -403,7 +412,7 @@
 <br>
 <div class="container">
     <!--搜索模块-->
-    <div class="col-md-12 jumbotron">
+    <div class="col-sm-10 col-sm-offset-1 jumbotron">
         <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
             <div class="input-group input-group-lg">
                 <input type="text" class="form-control" name="query" id="search_area" autocomplete="off"
@@ -422,9 +431,11 @@
 
         <div>
             <ul class="nav nav-tabs nav-justified" id="left_side_tab">
-                <li class="active" data-toggle="tooltip" data-placement="top" title="历史浏览记录"><a href="#recent_stock_seg"><span class="glyphicon glyphicon-eye-open"
-                                                                     aria-hidden="true"></span></a></li>
-                <li class data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
+                <li class="active" data-toggle="tooltip" data-placement="top" title="历史浏览记录"><a
+                            href="#recent_stock_seg"><span class="glyphicon glyphicon-eye-open"
+                                                           aria-hidden="true"></span></a></li>
+                <li class data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
+                                class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
                 </li>
             </ul>
         </div>

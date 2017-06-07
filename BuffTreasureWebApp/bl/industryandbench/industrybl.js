@@ -54,6 +54,7 @@ exports.getAllIndustries = (callback) => {
             docs.forEach(doc => {
                 all_industry.add(doc["industry"]);
             });
+            all_industry.delete('--');
             callback(null, all_industry);
         }
     });

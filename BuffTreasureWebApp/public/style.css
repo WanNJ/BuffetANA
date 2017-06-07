@@ -1264,7 +1264,7 @@ input.cmn-toggle-yes-no:checked + label:after {
 
 .dropdown-menu {
 	max-height: 400px;
-	overflow:scroll;
+	overflow: auto;
 }
 .tooltip {
 	position: absolute;
@@ -1395,4 +1395,12 @@ input.cmn-toggle-yes-no:checked + label:after {
 	margin-top: -5px;
 	border-width: 0 5px 5px;
 	border-bottom-color: #000;
+}
+.dropdown-toggle{
+	min-width: 120px;
+	min-height: 30px;
+}
+
+.dropdown-toggle .caret {
+	float: right;
 }

@@ -11,7 +11,7 @@
     <div class="bloc bgc-white l-bloc" id="bloc-1">
         <div class="container bloc-lg container-fluid">
             <div class="section-container home-section-wrap clearfix row">
-                <div class="col-md-3" style="display: inline">
+                <div class="col-md-3 col-sm-6" style="display: inline">
                     <span >股票池：</span>
                     <select class="form-control" style="max-width: 120px;display: inline-flex" id="stock-pool">
                         <option selected="selected">沪深300</option>
@@ -22,19 +22,30 @@
                         <option >自选股票池</option>
                     </select>
                 </div>
-                <div class="col-md-3 dropdown">
-                    <span>行业：</span>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_industries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        全部
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="industries">
-                    </ul>
+                <div class="col-md-3 col-sm-6">
+                    <span style="padding-right: 14px;">行业：</span>
+                    <div class="dropdown" style="display: inline;">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_industries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="industries">
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-md-3" style="display: inline;margin-top: 5px;">
+                <div class="col-md-3 col-sm-6">
+                    <span style="padding-right: 14px;">板块：</span>
+                    <div class="dropdown" style="display: inline;">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_boards" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="boards">
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3" col-sm-6 style="display: inline;margin-top: 5px;">
                     <span>排除ST</span>
-                    <div class="switch" style="display: inline-flex">
-                        <input id="exclude-ST" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                    <div class="switch" style="display: inline-flex;margin-left: 10px;">
+                        <input id="exclude-ST" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
                         <label for="exclude-ST"></label>
                     </div>
                 </div>
@@ -347,6 +358,12 @@
 </div>
 
 <script type="text/javascript">
+    let option="<li>                                                                             \
+                        <a class=\"active\"                                                                     \
+                            <input type=\"checkbox\" autocomplete=\"off\" checked>                         \
+                            <span>a</span>                                                                      \
+                        </a>                                                                                     \
+                 </li>";
     $(document).ready(function () {
         $.ajax({
             type: "get",
@@ -364,14 +381,23 @@
             success: (result) => {
                 allIndustries=result.split(",");
                 for(let i=0;i< allIndustries.length;i++){
-                    let option="<li>                                                                             \
-                        <a class=\"active\">                                                                 \
-                            <input type=\"checkbox\" autocomplete=\"off\" checked>                         \
-                            <span>a</span>                                                                      \
-                        </a>                                                                                     \
-                    </li>";
                     $("#industries").append(option);
                     $("#industries li:last a:first span").text(allIndustries[i]);
+                }
+            },
+            error: function(request, err){
+                console.error(err);
+            },
+        });
+        $.ajax({
+            type: "get",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "allBoards", //请求发送到TestServlet处
+            success: (result) => {
+                allBoards=result.split(",");
+                for(let i=0;i< allBoards.length;i++){
+                    $("#boards").append(option);
+                    $("#boards li:last a:first span").text(allBoards[i]);
                 }
             },
             error: function(request, err){
@@ -503,12 +529,16 @@
         for(let i=0;i< $("#industries li a input:checkbox:checked").length;i++){
             industries[i]=$("#industries li a input:checkbox:checked").eq(i).parent().text().trim();
         }
+        let benches=new Array();
+        for(let i=0;i< $("#boards li a input:checkbox:checked").length;i++){
+            benches[i]=$("#boards li a input:checkbox:checked").eq(i).parent().text().trim();
+        }
 
         let data = {
             beginDate: $("#date-from").val(),
             endDate: $("#date-to").val(),
             stockPool: $("#stock-pool").find("option:selected").text(),
-            benches: null,
+            benches: benches,
             industries: industries,
             excludeST: $("#exclude-ST").val(),
             rank: JSON.stringify(rank),

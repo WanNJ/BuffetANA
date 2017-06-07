@@ -6,6 +6,22 @@ let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
 
+let sendMessage = (res, err, docs) => {
+    if (err) {
+        throw err;
+    }
+    else {
+        result="";
+        docs.forEach((i)=>{
+            result+=i+",";
+        });
+        if(result.length>0){
+            result=result.substr(0,result.length-1);
+        }
+        res.send(result);
+    }
+};
+
 function splitStrategyResult(rawData) {
     let strategyScores = rawData[0].strategyEstimateResult;
 
@@ -149,21 +165,11 @@ router.get('/quantitative-analysis/chmap', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/allIndustries', function (req, res, next) {
-    industrybl.getAllIndustries((err, docs) => {
-        if (err) {
-            throw err;
-        }
-        else {
-            result="";
-            docs.forEach((i)=>{
-                result+=i+",";
-            });
-            if(result.length>0){
-                result=result.substr(0,result.length-1);
-            }
-            res.send(result);
-        }
-    });
+    industrybl.getAllIndustries((err, docs) => sendMessage(res, err, docs) );
+});
+
+router.get('/quantitative-analysis/allBoards', function (req, res, next) {
+    industrybl.getAllBoards((err, docs) => sendMessage(res, err, docs) );
 });
 
 
@@ -176,8 +182,8 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let excludeST = false;
     // excludeST = body.excludeST === 'on';
 
-    let benches=body.benches===""? null:body.benches.split(",");
-    let industries=body.industries===""? null:body.industries.split(",");
+    let benches = body.benches===""? null:body.benches.split(",");
+    let industries = body.industries===""? null:body.industries.split(",");
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);

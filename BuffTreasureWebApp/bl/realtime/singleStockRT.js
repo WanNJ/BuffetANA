@@ -33,9 +33,9 @@ const request = require("superagent");
 exports.obtainRTInfoByCode = (code, callback) => {
     if (code.startsWith('60') || code.startsWith('900'))
         code = 'sh' + code;
-    else
+    else if (code.startsWith('300') || code.startsWith('002') || code.startsWith('000') || code.startsWith('200'))
         code = 'sz' + code;
-    let url = 'http://web.ifzq.gtimg.cn/appstock/app/minute/query?_var=min_data_' + code + '&code=' + code + '&r=0.5755017222238814'
+    let url = 'http://web.ifzq.gtimg.cn/appstock/app/minute/query?_var=min_data_' + code + '&code=' + code + '&r=0.5755017222238814';
     request.get(url)
         .end(function (err, res) {
             if (err)

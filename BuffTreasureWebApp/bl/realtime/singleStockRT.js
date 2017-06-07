@@ -11,6 +11,9 @@ const request = require("superagent");
  *
  * ！！！！！！！！！！！！！注意括号中的单位，没有提到单位的属性，就是不用加单位！！！！！！！！！！！！！！！
  *
+ * 如果是大盘指数，则marketValue、floatMarketValue、turnOverRate、PB_ratio、PE_ratio没有值
+ * 在界面中可以以'--'来代替，最好是不显示那些属性
+ *
  * stockRTInfo形如
  * {
                     "now_price": 现价

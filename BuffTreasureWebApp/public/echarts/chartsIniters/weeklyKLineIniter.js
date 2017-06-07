@@ -85,11 +85,15 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '10%',
-                height: '55%'
+                height: '55%',
+                left: 35,
+                right: 0
             },
             {
                 top: '72%',
-                height: '15%'
+                height: '15%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -242,7 +246,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -375,7 +381,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -493,7 +501,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -626,7 +636,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -751,7 +763,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -870,7 +884,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [

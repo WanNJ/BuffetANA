@@ -1422,3 +1422,9 @@ exports.getHotStocks = (callback) => {
     });
 };
 
+
+
+exports.getMarketIndex = (code, callback) => {
+
+};
+

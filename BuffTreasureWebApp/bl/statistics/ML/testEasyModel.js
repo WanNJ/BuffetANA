@@ -4,6 +4,7 @@
 const exec = require('child_process').exec;
 const testModel = './bl/statistics/ML/testModel.py';
 
+
 exports.NNPredict ={
     EasyPredict : (code,holdingPeriod,callback)=>{
         console.time('NN')

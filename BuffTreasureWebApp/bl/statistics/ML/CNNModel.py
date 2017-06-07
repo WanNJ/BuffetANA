@@ -77,7 +77,7 @@ def test_CNN_Model_All(code, holdingDays,speedMode,isENV,beginDate=datetime.date
         if i % 50 == 0:
             accp = (accuracy.eval(feed_dict={
                 x: x_test, y_: y_test, keep_prob: 1.0}))
-            process.append(accp)
+            process.append(accp.item())
         train_step.run(feed_dict={x: x_input, y_: y_input, keep_prob: 0.5})
 
 
@@ -88,10 +88,11 @@ def test_CNN_Model_All(code, holdingDays,speedMode,isENV,beginDate=datetime.date
                 x: [x_predict], y_: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 1]], keep_prob: 1.0}))
 
     headList = ['less10', '10-7.5', '7.5-5', '5-2.5', '2.5-0', '0-2.5', '2.5-5', '5-7.5', '7.5-10', 'more10']
-    resultJson = {'accuracy': acc, 'process': process}
+
+    resultJson = {'accuracy': acc.item(),'process':process}
 
     for i in range(10):
-        resultJson[headList[i]] = result[i]
+        resultJson[headList[i]] = result[i].item()
     return resultJson
 
 
@@ -173,7 +174,7 @@ def test_CNN_Model_Batch(code, holdingDays,speedMode,isENV,beginDate=datetime.da
         if i % 50 == 0:
             accp = (accuracy.eval(feed_dict={
                 x: x_test, y_: y_test, keep_prob: 1.0}))
-            process.append(accp)
+            process.append(accp.item())
 
         [x_input,y_input] = DataSet.getNextBatch()
         train_step.run(feed_dict={x: x_input, y_: y_input, keep_prob: 0.5})
@@ -187,10 +188,10 @@ def test_CNN_Model_Batch(code, holdingDays,speedMode,isENV,beginDate=datetime.da
 
     headList = ['less10','10-7.5','7.5-5','5-2.5','2.5-0','0-2.5','2.5-5','5-7.5','7.5-10','more10']
 
-    resultJson = {'accuracy': acc,'process':process}
+    resultJson = {'accuracy': acc.item(),'process':process}
 
     for i in range(10):
-        resultJson[headList[i]] = result[i]
+        resultJson[headList[i]] = result[i].item()
     return resultJson
 
 import sys
@@ -204,10 +205,11 @@ testMode = sys.argv[6]
 def test_CNN(code, holdingDays,speedMode,isENV,dateStr,testMode):
     out = None
     if testMode == 'All':
-        out = test_CNN_Model_All(code=code,holdingDays=holdingDays,speedMode=speedMode,isENV=(isENV=='True'),beginDate=datetime.datetime.strptime(dateStr, '%Y-%m-%d'))
+        out = test_CNN_Model_All(code=code,holdingDays=holdingDays,speedMode=speedMode,isENV=(isENV=='true'),beginDate=datetime.datetime.strptime(dateStr, '%Y-%m-%d'))
     else:
-        out = test_CNN_Model_Batch(code=code,holdingDays=holdingDays,speedMode=speedMode,isENV=(isENV=='True'),beginDate=datetime.datetime.strptime(dateStr, '%Y-%m-%d'))
+        out = test_CNN_Model_Batch(code=code,holdingDays=holdingDays,speedMode=speedMode,isENV=(isENV=='true'),beginDate=datetime.datetime.strptime(dateStr, '%Y-%m-%d'))
     import json
     print(json.dumps(out))
 
-test_CNN(code=code,holdingDays=holdingDays,speedMode=speedMode,isENV=isENV,dateStr=dateStr,testMode=testMode)
+test_CNN(code=code,holdingDays=int(holdingDays),speedMode=int(speedMode),isENV=isENV,dateStr=dateStr,testMode=testMode)
+

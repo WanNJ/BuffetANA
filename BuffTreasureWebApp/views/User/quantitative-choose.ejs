@@ -24,26 +24,11 @@
                 </div>
                 <div class="col-md-3 dropdown">
                     <span>行业：</span>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_industries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         全部
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="industries">
-                        <li>
-                            <a class="active">
-                                <input type="checkbox" autocomplete="off" checked>Checkbox 1 (pre-checked)
-                            </a>
-                        </li>
-                        <li>
-                            <a class="active">
-                                <input type="checkbox" autocomplete="off" checked>Checkbox 2 (pre-checked)
-                            </a>
-                        </li>
-                        <li>
-                            <a class="active">
-                                <input type="checkbox" autocomplete="off" checked>Checkbox 3 (pre-checked)
-                            </a>
-                        </li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="industries">
                     </ul>
                 </div>
                 <div class="col-md-3" style="display: inline;margin-top: 5px;">
@@ -370,6 +355,27 @@
             dataType: "json", //返回数据形式为json
             success: (result) => {
                 chmap=result;
+            },
+        });
+        $.ajax({
+            type: "get",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "allIndustries", //请求发送到TestServlet处
+            success: (result) => {
+                allIndustries=result.split(",");
+                for(let i=0;i< allIndustries.length;i++){
+                    let option="<li>                                                                             \
+                        <a class=\"active\">                                                                 \
+                            <input type=\"checkbox\" autocomplete=\"off\" checked>                         \
+                            <span>a</span>                                                                      \
+                        </a>                                                                                     \
+                    </li>";
+                    $("#industries").append(option);
+                    $("#industries li:last a:first span").text(allIndustries[i]);
+                }
+            },
+            error: function(request, err){
+                console.error(err);
             },
         });
     });

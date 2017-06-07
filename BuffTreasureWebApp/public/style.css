@@ -1262,6 +1262,10 @@ input.cmn-toggle-yes-no:checked + label:after {
     z-index: 990;
 }
 
+.dropdown-menu {
+	max-height: 400px;
+	overflow:scroll;
+}
 .tooltip {
 	position: absolute;
 	z-index: 1070;

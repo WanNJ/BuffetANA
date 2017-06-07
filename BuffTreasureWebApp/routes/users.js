@@ -1,6 +1,7 @@
 let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
 let storeMap = require('../bl/functionMap/storeMap');
+let industrybl = require('../bl/industryandbench/industrybl');
 let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
@@ -145,6 +146,24 @@ router.get('/quantitative-analysis/choose', function (req, res, next) {
 
 router.get('/quantitative-analysis/chmap', function (req, res, next) {
     res.send(storeMap.chmap);
+});
+
+router.get('/quantitative-analysis/allIndustries', function (req, res, next) {
+    industrybl.getAllIndustries((err, docs) => {
+        if (err) {
+            throw err;
+        }
+        else {
+            result="";
+            docs.forEach((i)=>{
+                result+=i+",";
+            });
+            if(result.length>0){
+                result=result.substr(0,result.length-1);
+            }
+            res.send(result);
+        }
+    });
 });
 
 

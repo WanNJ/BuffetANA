@@ -450,7 +450,6 @@
                     <tr>
                         <th>名称</th>
                         <th>代码</th>
-                        <th>价格</th>
                     </tr>
                     </thead>
 
@@ -483,7 +482,7 @@
 
         $(document).ready(function () {
             $.get('single-stock/getHotStockList', (result) => {
-                for(let i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
                     let appendedStr = '<tr><th>' + result[i][0] + '</th><td>' + result[i][1] + '</td><td>' + result[i][2] + '%' + '</td></tr>';
                     $('#hot_stock_table > tbody').append(appendedStr);
                 }
@@ -621,8 +620,40 @@
         </script>
     </div>
 
-    <!--Hot Stocks-->
-    <div class="col-sm-2"></div>
+    <!-- Right Side -->
+    <div class="col-md-2 center-block" style="padding-right: 20px;padding-left: 0px;">
+        <div class="col-sm-12" style="height: 50px;"></div>
+
+        <div>
+            <ul class="nav nav-tabs nav-justified" id="left_side_tab">
+                <li class="active"><a href="#five_seg">五档盘口<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></li>
+                <li><a href="#industry_seg">行业<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
+                <li><a href="#block_seg">板块<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
+            </ul>
+        </div>
+
+        <div class="col-sm-12 tab-content">
+            <div id="five_seg" class="tab-pane active">
+                <table id="five_table" class="table table-hover" style="font-size: 13px">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="industry_seg" class="tab-pane">
+                <table id="industry_table" class="table table-hover" style="font-size: small">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="block_seg" class="tab-pane">
+                <table id="block_table" class="table table-hover" style="font-size: small">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 
     <!--scrollToTop按钮-->
     <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span

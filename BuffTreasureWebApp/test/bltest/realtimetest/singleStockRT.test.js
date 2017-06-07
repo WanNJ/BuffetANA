@@ -8,7 +8,7 @@ let describe = require("mocha").describe;
 describe('singleStockRT', function() {
     describe('#obtainRTInfoByCode()', function() {
         it('should show the RTInfo Of 600171', function(done) {
-            realTimeTool.obtainRTInfoByCode('600171', (err, RTInfo) => {
+            realTimeTool.obtainRTInfoByCode('sh000001', (err, RTInfo) => {
                 if (err) {
                     done(err);
                 }

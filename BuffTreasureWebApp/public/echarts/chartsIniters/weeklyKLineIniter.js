@@ -31,7 +31,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 200;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -85,11 +85,15 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '10%',
-                height: '55%'
+                height: '55%',
+                left: 35,
+                right: 0
             },
             {
                 top: '72%',
-                height: '15%'
+                height: '15%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -209,7 +213,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -242,7 +246,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -342,7 +348,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -375,7 +381,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -460,7 +468,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -493,7 +501,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -593,7 +603,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -626,7 +636,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -718,7 +730,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -751,7 +763,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [
@@ -837,7 +851,7 @@ function loadWeeklyKLineChart(objData) {
             },
             position: (pos, params, el, elRect, size) => {
                 let obj = {top: 30};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 250;
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 100;
                 return obj;
             },
             formatter: function (params) {
@@ -870,7 +884,9 @@ function loadWeeklyKLineChart(objData) {
         grid: [
             {
                 top: '25%',
-                height: '70%'
+                height: '70%',
+                left: 35,
+                right: 0
             }
         ],
         xAxis: [

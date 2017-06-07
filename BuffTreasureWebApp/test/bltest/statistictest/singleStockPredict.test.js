@@ -19,7 +19,19 @@ mongoose.connection.on('open', function () {
 });
 
 describe('singleStockPredict', function() {
-    describe('#getCoefficientOfRisk()', function () {
+    describe('#isUpOrDown()', function () {
+        it('should show if 000017 is up today', function (done) {
+            statistics.isUpOrDown('000017', 9.0, (err, result) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(result);
+                    done();
+                }
+            });
+
+        });
         it('should show the correlation of 000001', function (done) {
             statistics.getCoefficientOfRisk('000001', (err, CV) => {
                 if (err) {

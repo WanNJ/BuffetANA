@@ -8,8 +8,17 @@ router.get('/getAllStockList', (req, res, next) => {
     allStockBl.getAllStockCodeAndName((err, allStocks) => {
         if (err)
             res.render('error');
+        else
+            res.send(allStocks);
+    });
+});
 
-        res.send(allStocks);
+router.get('/getHotStockList', (req, res, next) => {
+    singleStockService.getHotStocks((err, infos) => {
+        if (err)
+            res.render('error');
+        else
+            res.send(infos);
     });
 });
 
@@ -55,9 +64,12 @@ router.post('/getMonthlyKLine', (req, res, next) => {
 router.post('/addToPersonalStock', (req, res, next) => {
     let sess = req.session;
 
-    if(sess.user) {
-        userBl.addToSelfSelectStock(sess.user, {'stockCode': req.body.stockCode, 'stockName': req.body.stockName}, (err, result) => {
-            if(err)
+    if (sess.user) {
+        userBl.addToSelfSelectStock(sess.user, {
+            'stockCode': req.body.stockCode,
+            'stockName': req.body.stockName
+        }, (err, result) => {
+            if (err)
                 res.render('error');
             res.send(result);
         });

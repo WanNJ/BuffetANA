@@ -5,7 +5,7 @@
 // Coefficient of Variation 变异系数
 const statisticTool = require('../tool/statisticTool');
 const singleStockDB = require('../../models/singleStock').singleStockDB;
-
+const exec = require('child_process').exec;
 
 /**
  * 获得某支股票的风险系数
@@ -32,3 +32,29 @@ exports.getCoefficientOfRisk = (code, callback) => {
         }
     });
 };
+
+
+/**
+ * 根据个股今天的开盘价预测今日是涨还是跌
+ * @param code 股票代码
+ * @param open_price 股票当日的开盘价
+ * @param callback (err, result) => {}
+ * result {Array} 形如
+ * ！！！！！！！！！！！！！注意！！！！！两个元素的类型都是String！！！！！！
+ *
+ *  可信度（已乘100，单位为"%"）            预测今日涨（'1'代表涨，'2'代表跌）
+ * ['53.23',                             '1']
+ */
+exports.isUpOrDown = (code, open_price, callback) => {
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/statistics/StockPredict.py ' +code + ' ' + open_price, function(err, stdout, stderr){
+        if(err) {
+            callback(err, null);
+        }
+        if(stdout) {
+            let result = stdout.substr(0, stdout.length-1).split(',');
+            result[0] = (parseFloat(result[0]) * 100).toFixed(2);
+            callback(null, [...result]);
+        }
+    });
+};
+

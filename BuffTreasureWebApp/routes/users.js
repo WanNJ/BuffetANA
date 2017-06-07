@@ -1,6 +1,7 @@
 let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
 let storeMap = require('../bl/functionMap/storeMap');
+let industrybl = require('../bl/industryandbench/industrybl');
 let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
@@ -147,6 +148,24 @@ router.get('/quantitative-analysis/chmap', function (req, res, next) {
     res.send(storeMap.chmap);
 });
 
+router.get('/quantitative-analysis/allIndustries', function (req, res, next) {
+    industrybl.getAllIndustries((err, docs) => {
+        if (err) {
+            throw err;
+        }
+        else {
+            result="";
+            docs.forEach((i)=>{
+                result+=i+",";
+            });
+            if(result.length>0){
+                result=result.substr(0,result.length-1);
+            }
+            res.send(result);
+        }
+    });
+});
+
 
 router.post('/quantitative-analysis/result', function (req, res, next) {
     let body = req.body;
@@ -157,7 +176,9 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let excludeST = false;
     // excludeST = body.excludeST === 'on';
 
-    let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, null, null, excludeST);
+    let benches=body.benches===""? null:body.benches.split(",");
+    let industries=body.industries===""? null:body.industries.split(",");
+    let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);
     let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));

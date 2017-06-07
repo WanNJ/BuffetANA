@@ -73,24 +73,14 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-// mongoose.connect('mongodb://localhost/allInfo');
-//
-// mongoose.connection.on('open', function () {
-//     console.log('Connected to Mongoose');
-// });
-//
-// process.on('exit', () => {
-//    mongoose.disconnect();
-// });
+mongoose.connect('mongodb://172.25.184.185/allInfo');
+
+mongoose.connection.on('open', function () {
+    console.log('Connected to Mongoose');
+});
+
+process.on('exit', () => {
+   mongoose.disconnect();
+});
 
 module.exports = app;
-// var express = require('express');
-// var url = require('url'); //解析操作url
-// var cheerio = require('cheerio');
-// var eventproxy = require('eventproxy');
-// var request = require("superagent");
-// var targetUrl = 'https://cnodejs.org/';
-// request.get(targetUrl)
-//     .end(function (err, res) {
-//         console.log(res.text);
-//     });

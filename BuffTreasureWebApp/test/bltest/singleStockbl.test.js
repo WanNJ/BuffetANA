@@ -68,4 +68,30 @@ describe('singleStockbl', function() {
             });
         });
     });
+    describe('#getCompanyInfo()', function() {
+        it('显示603223这只股票的公司简介', function(done) {
+            singleStockbl.getCompanyInfo('603223', (err, companyInfo) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(companyInfo);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getHotStocks()', function() {
+        it('显示热门股票信息', function(done) {
+            singleStockbl.getHotStocks((err, hot_stocks) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(hot_stocks);
+                    done();
+                }
+            });
+        });
+    });
 });

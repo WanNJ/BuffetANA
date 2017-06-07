@@ -1,49 +1,22 @@
 /**
- * Created by slow_time on 2017/5/6.
+ * Created by slow_time on 2017/6/7.
  */
-const singleStockDB = require('../models/singleStock.js').singleStockDB;
-const statisticTool = require('./tool/statisticTool');
-const RTTool = require('./realtime/singleStockRT');
-const exec = require('child_process').exec;
-const allStockDB = require('../models/allstock').allStockDB;
 
+const marketIndexDB = require('../../models/marketIndex').marketIndexDB;
+const statisticTool = require('../tool/statisticTool');
+const RTTool = require('../realtime/marketRT');
 
-/**
- * 返回日K数据列表，其中每一个元素也是一个数组，形式如下
- *
- * ！！！！！！剔除了交易量为0的日期！！！！！！！！
- *
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   前复权开盘价，    前复权收盘价，    前复权最低价，    前复权最高价      后复权开盘价，    后复权收盘价，    后复权最低价，    后复权最高价
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275           11.50           10.10           11.50           1.275           11.50           10.10           11.50
- *      涨跌幅(已乘100)，    成交量，    换手率(已乘100),    K   D   J,      DIF        DEA        MACD     DIF_before_adj        DEA_before_adj        MACD_before_adj   DIF_after_adj        DEA_after_adj        MACD_after_adj
- * eg:  1.275              1232       2.23               80  90  70      0.2        0.3        -0.2     0.2        0.3        -0.2                  22.42             0.2                  0.3                 -0.2
- *      RSI6     RSI12     RSI24      BIAS6    BIAS12    BIAS24    Boll   upper   lower     Boll_before_adj   upper_before_adj   lower_before_adj     Boll_after_adj   upper_after_adj   lower_after_adj
- * eg:  22.42   33.33      44.44      23       24        25        26     27      28        29                30                  31                   32               33                34
- *      WR1      WR2
- * eg:  34       35
- * @param code 股票代号
- * @param callback 形如 (err, docs) => { }
- */
-function splitData(daily_rawData) {
+function splitIndex(marketIndex) {
     let categoryData = [];
-    let values_no_adj = [];
-    let values_before_adj = [];
-    let values_after_adj = [];
+    let k_values = [];
     let changeRates = [];
     let volumns = [];
-    let turnOverRates = [];
     let kIndexes = [];
     let dIndexes = [];
     let jIndexes = [];
     let difs = [];
     let deas = [];
     let macds = [];
-    let difs_before_adj = [];
-    let deas_before_adj = [];
-    let macds_before_adj = [];
-    let difs__after_adj = [];
-    let deas_after_adj = [];
-    let macds_after_adj = [];
     let rsi6s = [];
     let rsi12s = [];
     let rsi24s = [];
@@ -53,72 +26,42 @@ function splitData(daily_rawData) {
     let Boll = [];
     let upper = [];
     let lower = [];
-    let Boll_before_adj = [];
-    let upper_before_adj = [];
-    let lower_before_adj = [];
-    let Boll_after_adj = [];
-    let upper_after_adj = [];
-    let lower_after_adj = [];
     let WR1 = [];
     let WR2 = [];
-    for (let i = 0; i < daily_rawData.length; i++) {
-        categoryData.push(daily_rawData[i].splice(0, 1)[0]);
-        values_no_adj.push(daily_rawData[i].splice(0, 4));
-        values_before_adj.push(daily_rawData[i].splice(0, 4));
-        values_after_adj.push(daily_rawData[i].splice(0, 4));
-        changeRates.push(daily_rawData[i].splice(0, 1)[0]);
-        volumns.push(daily_rawData[i].splice(0, 1)[0]);
-        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
-        kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        dIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        jIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        difs.push(daily_rawData[i].splice(0, 1)[0]);
-        deas.push(daily_rawData[i].splice(0, 1)[0]);
-        macds.push(daily_rawData[i].splice(0, 1)[0]);
-        difs_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        deas_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        macds_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        difs__after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        deas_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        macds_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS6.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS12.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS24.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll.push(daily_rawData[i].splice(0, 1)[0]);
-        upper.push(daily_rawData[i].splice(0, 1)[0]);
-        lower.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        upper_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        lower_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        upper_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        lower_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        WR1.push(daily_rawData[i].splice(0, 1)[0]);
-        WR2.push(daily_rawData[i].splice(0, 1)[0]);
+    for (let i = 0; i < marketIndex.length; i++) {
+        categoryData.push(marketIndex[i].splice(0, 1)[0]);
+        k_values.push(marketIndex[i].splice(0, 4));
+        changeRates.push(marketIndex[i].splice(0, 1)[0]);
+        volumns.push(marketIndex[i].splice(0, 1)[0]);
+        kIndexes.push(marketIndex[i].splice(0, 1)[0]);
+        dIndexes.push(marketIndex[i].splice(0, 1)[0]);
+        jIndexes.push(marketIndex[i].splice(0, 1)[0]);
+        difs.push(marketIndex[i].splice(0, 1)[0]);
+        deas.push(marketIndex[i].splice(0, 1)[0]);
+        macds.push(marketIndex[i].splice(0, 1)[0]);
+        rsi6s.push(marketIndex[i].splice(0, 1)[0]);
+        rsi12s.push(marketIndex[i].splice(0, 1)[0]);
+        rsi24s.push(marketIndex[i].splice(0, 1)[0]);
+        BIAS6.push(marketIndex[i].splice(0, 1)[0]);
+        BIAS12.push(marketIndex[i].splice(0, 1)[0]);
+        BIAS24.push(marketIndex[i].splice(0, 1)[0]);
+        Boll.push(marketIndex[i].splice(0, 1)[0]);
+        upper.push(marketIndex[i].splice(0, 1)[0]);
+        lower.push(marketIndex[i].splice(0, 1)[0]);
+        WR1.push(marketIndex[i].splice(0, 1)[0]);
+        WR2.push(marketIndex[i].splice(0, 1)[0]);
     }
     return {
         categoryData: categoryData,
-        KLineValue_no_adj: values_no_adj,
-        KLineValue_before_adj: values_before_adj,
-        KLineValue_after_adj: values_after_adj,
+        KLineValue: k_values,
         changeRates: changeRates,
         volumns: volumns,
-        turnOverRates: turnOverRates,
         kIndexes: kIndexes,
         dIndexes: dIndexes,
         jIndexes: jIndexes,
         difs: difs,
         deas: deas,
         macds: macds,
-        difs_before_adj: difs_before_adj,
-        deas_before_adj: deas_before_adj,
-        macds_before_adj: macds_before_adj,
-        difs_after_adj: difs__after_adj,
-        deas_after_adj: deas_after_adj,
-        macds_after_adj: macds_after_adj,
         rsi6s: rsi6s,
         rsi12s: rsi12s,
         rsi24s: rsi24s,
@@ -128,62 +71,82 @@ function splitData(daily_rawData) {
         Boll: Boll,
         upper: upper,
         lower: lower,
-        Boll_before_adj: Boll_before_adj,
-        upper_before_adj: upper_before_adj,
-        lower_before_adj: lower_before_adj,
-        Boll_after_adj: Boll_after_adj,
-        upper_after_adj: upper_after_adj,
-        lower_after_adj: lower_after_adj,
         WR1: WR1,
         WR2: WR2
     };
 }
 
 
-/**
- * 获得最近浏览股票的实时信息
- * @param codes {Array} 最近浏览股票的代码数组
- * @param callback (err, results) =. {}
- * results是一个数组形如（对应顺序为传下来的codes数组的顺序）
- *   现价  涨跌幅
- * [[9.2, 0.11]...]
- */
-function getLatestStockInfo(codes, callback) {
-    let promises = codes.map(code => new Promise((resolve, reject) => {
-        RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
-            if (err)
-                reject(err);
-            else {
-                let info = [];
-                info.push(stockRTInfo["now_price"]);
-                info.push(stockRTInfo["change_rate"]);
-                resolve(info);
-            }
-        });
-    }));
-    Promise.all(promises).then(results => {
-        callback(null, results);
-    }).catch((err) => {
-        callback(err, null);
-    });
-}
 
-exports.getDailyData = (code, callback) => {
-    singleStockDB.getStockInfoByCode(code, (err, docs) => {
+/**
+ * 获得大盘实时的信息
+ * @param code {String} 只能包括以下四个值
+ * 上证指数      深证成指      沪深300        沪深300
+ * sh000001     sz399001     sh000300      sz399300
+ * @param callback (err, stockRTInfo) => {}
+ *
+ * ！！！！！！！！！！！！！注意括号中的单位，没有提到单位的属性，就是不用加单位！！！！！！！！！！！！！！！
+ *
+ * stockRTInfo形如
+ * {
+                    "now_price": 现价
+                    "change_price": 涨跌额
+                    "change_rate": 涨跌幅（已经乘了100，单位为"%"）
+                    "yesterday_close": 昨收
+                    "today_open": 今开
+                    "high": 最高
+                    "low": 最低
+                    "volume": 成交量（单位为"万手"）
+                    "volume_of_transaction": 成交额（单位为"万"）
+                    "amplitude": 振幅（已经乘了100，单位为"%"）
+  }
+ */
+exports.getMarketRTInfo = (code, callback) => {
+    RTTool.obtainMarketRTInfoByCode(code, (err, stockRTInfo) => {
+        callback(err, stockRTInfo);
+    });
+};
+
+/**
+ * 获得大盘日线指数
+ * @param code {String} 只能包括以下四个值
+ * 上证指数      深证成指      沪深300        沪深300
+ * sh000001     sz399001     sh000300      sz399300
+ * @param callback (err, marketIndex) => {}
+ *
+ * ！！！！！！！！！！！！！！！！！！！！！！！！注意，大盘指数没有前复权和后复权！！！！！！！！！！！！！！！！！！
+ *
+ * marketIndex如下所示
+ * {
+        categoryData: {Array},
+        KLineValue: {Array},
+        changeRates: {Array},
+        volumns: {Array},
+        kIndexes: {Array},
+        dIndexes: {Array},
+        jIndexes: {Array},
+        difs: {Array},
+        deas: {Array},
+        macds: {Array},
+        rsi6s: {Array},
+        rsi12s: {Array},
+        rsi24s: {Array},
+        BIAS6: {Array},
+        BIAS12: {Array},
+        BIAS24: {Array},
+        Boll: {Array},
+        upper: {Array},
+        lower: {Array},
+        WR1: {Array},
+        WR2: {Array}
+ * }
+ */
+exports.getDailyMarketIndex = (code, callback) => {
+    marketIndexDB.getMarketIndexByCode(code, (err, docs) => {
         if (err) {
             callback(err, null);
         }
         else {
-            // 找到前复权的基准
-            let before_index_ratio = 1;
-            let before_index_price = 0;
-            for (let i = docs.length - 1; i >= 0; i--) {
-                if (docs[i]["volume"] !== 0) {
-                    before_index_ratio = docs[i]["beforeAdjClose"];
-                    before_index_price = docs[i]["close"];
-                    break;
-                }
-            }
             // 计算KDJ所需要的临时数据
             let beforeK = 50; // 前日K值
             let beforeD = 50; // 前日D值
@@ -193,14 +156,6 @@ exports.getDailyData = (code, callback) => {
             let beforeEMA12 = 0; // 昨日的12日指数平均值
             let beforeEMA26 = 0; // 昨日的26日指数平均值
             let beforeDEA = 0; // 昨日的九日DIF平滑移动平均值
-
-            let beforeEMA12_before_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_before_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_before_adj = 0; // 昨日的九日DIF平滑移动平均值
-
-            let beforeEMA12_after_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_after_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_after_adj = 0; // 昨日的九日DIF平滑移动平均值
 
             // 计算RSI所需要的临时数据
             let changePrice6 = [];
@@ -214,8 +169,6 @@ exports.getDailyData = (code, callback) => {
 
             // 计算布林线Boll所需要的临时数据
             let MA20 = [];
-            let MA20_before_adj = [];
-            let MA20_after_adj = [];
 
             // 计算威廉指标WR所需要的临时数据
             let high_period_10 = [];
@@ -232,18 +185,8 @@ exports.getDailyData = (code, callback) => {
                 one_day_data.push(parseFloat(data["close"].toFixed(2)));
                 one_day_data.push(parseFloat(data["low"].toFixed(2)));
                 one_day_data.push(parseFloat(data["high"].toFixed(2)));
-                let one_day_beforeAdjClose = data["beforeAdjClose"] / before_index_ratio * before_index_price;
-                one_day_data.push(parseFloat((data["open"] * one_day_beforeAdjClose / data["close"]).toFixed(2)));
-                one_day_data.push(parseFloat(one_day_beforeAdjClose.toFixed(2)));
-                one_day_data.push(parseFloat((data["low"] * one_day_beforeAdjClose / data["close"]).toFixed(2)));
-                one_day_data.push(parseFloat((data["high"] * one_day_beforeAdjClose / data["close"]).toFixed(2)));
-                one_day_data.push(parseFloat((data["open"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
-                one_day_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
-                one_day_data.push(parseFloat((data["low"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
-                one_day_data.push(parseFloat((data["high"] * data["afterAdjClose"] / data["close"]).toFixed(2)));
                 one_day_data.push(parseFloat(data["changeRate"].toFixed(2)));
                 one_day_data.push(data["volume"]);
-                one_day_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
                 /*
                  * 计算当日KDJ
@@ -276,7 +219,6 @@ exports.getDailyData = (code, callback) => {
                  */
                 // 由于每日行情震荡波动之大小不同，并不适合以每日之收盘价来计算移动平均值，
                 // 于是有需求指数（Demand Index）之产生，用需求指数代表每日的收盘指数
-                // 不复权
                 let DI = (data["close"] * 2 + data["high"] + data["low"]) / 4;
                 let EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12;
                 let EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26;
@@ -286,38 +228,6 @@ exports.getDailyData = (code, callback) => {
                 beforeEMA12 = EMA12;
                 beforeEMA26 = EMA26;
                 beforeDEA = DEA;
-                one_day_data.push(DIF);
-                one_day_data.push(DEA);
-                one_day_data.push(MACD);
-
-                // 前复权
-                let high_before = data["high"] * one_day_beforeAdjClose / data["close"];
-                let low_before = data["low"] * one_day_beforeAdjClose / data["close"]
-                DI = (one_day_beforeAdjClose * 2 + high_before + low_before) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_before_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_before_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_before_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_before_adj = EMA12;
-                beforeEMA26_before_adj = EMA26;
-                beforeDEA_before_adj = DEA;
-                one_day_data.push(DIF);
-                one_day_data.push(DEA);
-                one_day_data.push(MACD);
-
-                // 后复权
-                let high_after = data["high"] * data["afterAdjClose"] / data["close"];
-                let low_after = data["low"] * data["afterAdjClose"] / data["close"]
-                DI = (data["afterAdjClose"] * 2 + high_after + low_after) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_after_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_after_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_after_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_after_adj = EMA12;
-                beforeEMA26_after_adj = EMA26;
-                beforeDEA_after_adj = DEA;
                 one_day_data.push(DIF);
                 one_day_data.push(DEA);
                 one_day_data.push(MACD);
@@ -341,8 +251,8 @@ exports.getDailyData = (code, callback) => {
                 upAverage6 /= 6;
                 let downAverage6 = 0;
                 changePrice6.filter(price => {
-                        return price <= 0;
-                    }).forEach(price => downAverage6 -= price);
+                    return price <= 0;
+                }).forEach(price => downAverage6 -= price);
                 downAverage6 /= 6;
                 let upAverage12 = 0;
                 changePrice12.filter(price => {
@@ -402,7 +312,6 @@ exports.getDailyData = (code, callback) => {
                 /*
                  * 计算当日布林线Boll
                  */
-                // 不复权
                 MA20.push(data["close"]);
                 if (MA20.length > 20)
                     MA20.shift();
@@ -414,38 +323,6 @@ exports.getDailyData = (code, callback) => {
                     Boll = statisticTool.getAverage(MA20);
                 let upper = Boll + 2 * MD;
                 let lower = Boll - 2 * MD;
-                one_day_data.push(Boll);
-                one_day_data.push(upper);
-                one_day_data.push(lower);
-
-                // 前复权
-                MA20_before_adj.push(one_day_beforeAdjClose);
-                if (MA20_before_adj.length > 20)
-                    MA20_before_adj.shift();
-                MD = statisticTool.getSTD(MA20_before_adj);
-                Boll = 0;
-                if (MA20_before_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_before_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_before_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
-                one_day_data.push(Boll);
-                one_day_data.push(upper);
-                one_day_data.push(lower);
-
-                // 后复权
-                MA20_after_adj.push(data["afterAdjClose"]);
-                if (MA20_after_adj.length > 20)
-                    MA20_after_adj.shift();
-                MD = statisticTool.getSTD(MA20_after_adj);
-                Boll = 0;
-                if (MA20_after_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_after_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_after_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
                 one_day_data.push(Boll);
                 one_day_data.push(upper);
                 one_day_data.push(lower);
@@ -480,40 +357,52 @@ exports.getDailyData = (code, callback) => {
 
                 return one_day_data;
             });
-            callback(null, splitData(all_day_data));
+            callback(null, splitIndex(all_day_data));
         }
     });
 };
 
+
 /**
- * 返回周K数据列表，其中每一个元素也是一个数组，形式如下
+ * 获得大盘周线指数
+ * @param code {String} 只能包括以下四个值
+ * 上证指数      深证成指      沪深300        沪深300
+ * sh000001     sz399001     sh000300      sz399300
+ * @param callback (err, marketIndex) => {}
  *
- * ！！！！！！剔除了交易量为0的日期！！！！！！！！
+ * ！！！！！！！！！！！！！！！！！！！！！！！！注意，大盘指数没有前复权和后复权！！！！！！！！！！！！！！！！！！
  *
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj
- * eg:  80  90  70      0.2        0.3        -0.2       11.0
- * @param code 股票代号
- * @param callback 形如 (err, docs) => { }
+ * marketIndex如下所示
+ * {
+        categoryData: {Array},
+        KLineValue: {Array},
+        changeRates: {Array},
+        volumns: {Array},
+        kIndexes: {Array},
+        dIndexes: {Array},
+        jIndexes: {Array},
+        difs: {Array},
+        deas: {Array},
+        macds: {Array},
+        rsi6s: {Array},
+        rsi12s: {Array},
+        rsi24s: {Array},
+        BIAS6: {Array},
+        BIAS12: {Array},
+        BIAS24: {Array},
+        Boll: {Array},
+        upper: {Array},
+        lower: {Array},
+        WR1: {Array},
+        WR2: {Array}
+ * }
  */
-exports.getWeeklyData = (code, callback) => {
-    singleStockDB.getStockInfoByCode(code, (err, docs) => {
+exports.getWeeklyMarketIndex = (code, callback) => {
+    marketIndexDB.getMarketIndexByCode(code, (err, docs) => {
         if (err) {
             callback(err, null);
         }
         else {
-            // 找到前复权的基准
-            let before_index_ratio = 1;
-            let before_index_price = 0;
-            for (let i = docs.length - 1; i >= 0; i--) {
-                if (docs[i]["volume"] !== 0) {
-                    before_index_ratio = docs[i]["beforeAdjClose"];
-                    before_index_price = docs[i]["close"];
-                    break;
-                }
-            }
-
             let week_docs = [];
             for (let i = docs.length - 1; i >= 0; i--) {
                 if (docs[i]["volume"] === 0)
@@ -524,37 +413,16 @@ exports.getWeeklyData = (code, callback) => {
                 let week_high = [];
                 let week_low = [];
 
-                // 前复权计算
-                let week_beforeAdjClose = docs[i]["beforeAdjClose"] / before_index_ratio * before_index_price;
-                let week_open_before = docs[i]["open"] * week_beforeAdjClose / docs[i]["close"];
-                let week_close_before = week_beforeAdjClose;
-                let week_high_before = [];
-                let week_low_before = [];
-
-                // 后复权计算
-                let week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
-                let week_close_after = docs[i]["afterAdjClose"];
-                let week_high_after = [];
-                let week_low_after = [];
-
                 let week_volume = [];
-                let week_turnOverRate = [];
                 let week_changePrice = [];
                 let week_changeRate = 0.0;
                 // 判断有没有到周一
                 while (i >= 0 && docs[i]["date"].getDay() !== 1) {
                     if (docs[i]["volume"] !== 0) {
                         week_open = docs[i]["open"];
-                        week_open_before = docs[i]["open"] * week_beforeAdjClose / docs[i]["close"];
-                        week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                         week_high.push(docs[i]["high"]);
                         week_low.push(docs[i]["low"]);
-                        week_high_before.push(docs[i]["high"] * week_beforeAdjClose / docs[i]["close"]);
-                        week_low_before.push(docs[i]["low"] * week_beforeAdjClose / docs[i]["close"]);
-                        week_high_after.push(docs[i]["high"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
-                        week_low_after.push(docs[i]["low"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
                         week_volume.push(docs[i]["volume"]);
-                        week_turnOverRate.push(docs[i]["turnOverRate"]);
                         week_changePrice.push(docs[i]["changePrice"]);
                     }
                     i--;
@@ -562,16 +430,9 @@ exports.getWeeklyData = (code, callback) => {
                 // 此时i指向的是周一，仍然是这一周的数据，需要加进去
                 if (i >= 0 && docs[i]["volume"] !== 0) {
                     week_open = docs[i]["open"];
-                    week_open_before = docs[i]["open"] * week_beforeAdjClose / docs[i]["close"];
-                    week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                     week_high.push(docs[i]["high"]);
                     week_low.push(docs[i]["low"]);
-                    week_high_before.push(docs[i]["high"] * week_beforeAdjClose / docs[i]["close"]);
-                    week_low_before.push(docs[i]["low"] * week_beforeAdjClose / docs[i]["close"]);
-                    week_high_after.push(docs[i]["high"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
-                    week_low_after.push(docs[i]["low"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
                     week_volume.push(docs[i]["volume"]);
-                    week_turnOverRate.push(docs[i]["turnOverRate"]);
                     week_changePrice.push(docs[i]["changePrice"]);
                 }
                 if (i < 0)
@@ -586,18 +447,9 @@ exports.getWeeklyData = (code, callback) => {
                     "high": Math.max.apply(null, week_high),
                     "low": Math.min.apply(null, week_low),
                     "close": week_close,
-                    "open_before": week_open_before,
-                    "high_before": Math.max.apply(null, week_high_before),
-                    "low_before": Math.min.apply(null, week_low_before),
-                    "beforeAdjClose": week_close_before,
-                    "open_after": week_open_after,
-                    "high_after": Math.max.apply(null, week_high_after),
-                    "low_after": Math.min.apply(null, week_low_after),
-                    "afterAdjClose": week_close_after,
                     "volume": week_volume.reduce((x, y) => { return x + y; }),
                     "changeRate": week_changeRate,
                     "changePrice": week_changePrice.reduce((x, y) => { return x + y; }),
-                    "turnOverRate": week_turnOverRate.reduce((x, y) => { return x + y; })
                 };
                 week_docs.unshift(week);
             }
@@ -606,18 +458,11 @@ exports.getWeeklyData = (code, callback) => {
             let beforeD = 50; // 上周D值
             let periodHigh = [];
             let periodLow = [];
+
             // 计算MACD所需要的临时数据
             let beforeEMA12 = 0; // 上周的12周指数平均值
             let beforeEMA26 = 0; // 上周的26周指数平均值
             let beforeDEA = 0; // 上周的九周DIF平滑移动平均值
-
-            let beforeEMA12_before_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_before_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_before_adj = 0; // 昨日的九日DIF平滑移动平均值
-
-            let beforeEMA12_after_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_after_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_after_adj = 0; // 昨日的九日DIF平滑移动平均值
 
             // 计算RSI所需要的临时数据
             let changePrice6 = [];
@@ -631,8 +476,6 @@ exports.getWeeklyData = (code, callback) => {
 
             // 计算布林线Boll所需要的临时数据
             let MA20 = [];
-            let MA20_before_adj = [];
-            let MA20_after_adj = [];
 
             // 计算威廉指标WR所需要的临时数据
             let high_period_10 = [];
@@ -649,17 +492,8 @@ exports.getWeeklyData = (code, callback) => {
                 one_week_data.push(parseFloat(data["close"].toFixed(2)));
                 one_week_data.push(parseFloat(data["low"].toFixed(2)));
                 one_week_data.push(parseFloat(data["high"].toFixed(2)));
-                one_week_data.push(parseFloat(data["open_before"].toFixed(2)));
-                one_week_data.push(parseFloat(data["beforeAdjClose"].toFixed(2)));
-                one_week_data.push(parseFloat(data["low_before"].toFixed(2)));
-                one_week_data.push(parseFloat(data["high_before"].toFixed(2)));
-                one_week_data.push(parseFloat(data["open_after"].toFixed(2)));
-                one_week_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
-                one_week_data.push(parseFloat(data["low_after"].toFixed(2)));
-                one_week_data.push(parseFloat(data["high_after"].toFixed(2)));
                 one_week_data.push(parseFloat(data["changeRate"].toFixed(2)));
                 one_week_data.push(data["volume"]);
-                one_week_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
                 /*
                  * 计算当周KDJ
@@ -701,34 +535,6 @@ exports.getWeeklyData = (code, callback) => {
                 beforeEMA12 = EMA12;
                 beforeEMA26 = EMA26;
                 beforeDEA = DEA;
-                one_week_data.push(DIF);
-                one_week_data.push(DEA);
-                one_week_data.push(MACD);
-
-                // 前复权
-                DI = (data["beforeAdjClose"] * 2 + data["high_before"] + data["low_before"]) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_before_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_before_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_before_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_before_adj = EMA12;
-                beforeEMA26_before_adj = EMA26;
-                beforeDEA_before_adj = DEA;
-                one_week_data.push(DIF);
-                one_week_data.push(DEA);
-                one_week_data.push(MACD);
-
-                // 后复权
-                DI = (data["afterAdjClose"] * 2 + data["high_after"] + data["low_after"]) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_after_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_after_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_after_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_after_adj = EMA12;
-                beforeEMA26_after_adj = EMA26;
-                beforeDEA_after_adj = DEA;
                 one_week_data.push(DIF);
                 one_week_data.push(DEA);
                 one_week_data.push(MACD);
@@ -813,7 +619,6 @@ exports.getWeeklyData = (code, callback) => {
                 /*
                  * 计算当日布林线Boll
                  */
-                // 不复权
                 MA20.push(data["close"]);
                 if (MA20.length > 20)
                     MA20.shift();
@@ -825,38 +630,6 @@ exports.getWeeklyData = (code, callback) => {
                     Boll = statisticTool.getAverage(MA20);
                 let upper = Boll + 2 * MD;
                 let lower = Boll - 2 * MD;
-                one_week_data.push(Boll);
-                one_week_data.push(upper);
-                one_week_data.push(lower);
-
-                // 前复权
-                MA20_before_adj.push(data["beforeAdjClose"]);
-                if (MA20_before_adj.length > 20)
-                    MA20_before_adj.shift();
-                MD = statisticTool.getSTD(MA20_before_adj);
-                Boll = 0;
-                if (MA20_before_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_before_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_before_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
-                one_week_data.push(Boll);
-                one_week_data.push(upper);
-                one_week_data.push(lower);
-
-                // 后复权
-                MA20_after_adj.push(data["afterAdjClose"]);
-                if (MA20_after_adj.length > 20)
-                    MA20_after_adj.shift();
-                MD = statisticTool.getSTD(MA20_after_adj);
-                Boll = 0;
-                if (MA20_after_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_after_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_after_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
                 one_week_data.push(Boll);
                 one_week_data.push(upper);
                 one_week_data.push(lower);
@@ -891,41 +664,52 @@ exports.getWeeklyData = (code, callback) => {
 
                 return one_week_data;
             });
-            callback(null, splitData(all_week_data));
+            callback(null, splitIndex(all_week_data));
         }
     });
 };
 
 
 /**
- * 返回月K数据列表，其中每一个元素也是一个数组，形式如下
+ * 获得大盘月线指数
+ * @param code {String} 只能包括以下四个值
+ * 上证指数      深证成指      沪深300        沪深300
+ * sh000001     sz399001     sh000300      sz399300
+ * @param callback (err, marketIndex) => {}
  *
- * ！！！！！！剔除了交易量为0的日期！！！！！！！！
+ * ！！！！！！！！！！！！！！！！！！！！！！！！注意，大盘指数没有前复权和后复权！！！！！！！！！！！！！！！！！！
  *
- *      日期，           开盘价，    收盘价，    最低价，    最高价，   涨跌幅(已乘100)，    成交量，    换手率(已乘100),
- * eg:  '2017-05-05'    10.2       11.50      10.10      11.50     1.275               1232       2.23
- *      K   D   J,      DIF        DEA        MACD       adj
- * eg:  80  90  70      0.2        0.3        -0.2       11.0
- * @param code 股票代号
- * @param callback 形如 (err, docs) => { }
+ * marketIndex如下所示
+ * {
+        categoryData: {Array},
+        KLineValue: {Array},
+        changeRates: {Array},
+        volumns: {Array},
+        kIndexes: {Array},
+        dIndexes: {Array},
+        jIndexes: {Array},
+        difs: {Array},
+        deas: {Array},
+        macds: {Array},
+        rsi6s: {Array},
+        rsi12s: {Array},
+        rsi24s: {Array},
+        BIAS6: {Array},
+        BIAS12: {Array},
+        BIAS24: {Array},
+        Boll: {Array},
+        upper: {Array},
+        lower: {Array},
+        WR1: {Array},
+        WR2: {Array}
+ * }
  */
-exports.getMonthlyData = (code, callback) => {
-    singleStockDB.getStockInfoByCode(code, (err, docs) => {
+exports.getMonthlyMarketIndex = (code, callback) => {
+    marketIndexDB.getMarketIndexByCode(code, (err, docs) => {
         if (err) {
             callback(err, null);
         }
         else {
-            // 找到前复权的基准
-            let before_index_ratio = 1;
-            let before_index_price = 0;
-            for (let i = docs.length - 1; i >= 0; i--) {
-                if (docs[i]["volume"] !== 0) {
-                    before_index_ratio = docs[i]["beforeAdjClose"];
-                    before_index_price = docs[i]["close"];
-                    break;
-                }
-            }
-
             let month_docs = [];
             for (let i = docs.length - 1; i >= 0; i--) {
                 if (docs[i]["volume"] === 0)
@@ -935,17 +719,7 @@ exports.getMonthlyData = (code, callback) => {
                 let month_close = docs[i]["close"];
                 let month_high = [];
                 let month_low = [];
-                let month_beforeAdjClose = docs[i]["beforeAdjClose"] / before_index_ratio * before_index_price;
-                let month_open_before = docs[i]["open"] * month_beforeAdjClose / docs[i]["close"];
-                let month_close_before = month_beforeAdjClose;
-                let month_high_before = [];
-                let month_low_before = [];
-                let month_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
-                let month_close_after = docs[i]["afterAdjClose"];
-                let month_high_after = [];
-                let month_low_after = [];
                 let month_volume = [];
-                let month_turnOverRate = [];
                 let month_changePrice = [];
                 let month_changeRate = 0;
 
@@ -954,17 +728,9 @@ exports.getMonthlyData = (code, callback) => {
                 while (i >= 0 && docs[i]["date"].getMonth() === now_month) {
                     if (docs[i]["volume"] !== 0) {
                         month_open = docs[i]["open"];
-                        month_beforeAdjClose = docs[i]["beforeAdjClose"] / before_index_ratio * before_index_price;
-                        month_open_before = docs[i]["open"] * month_beforeAdjClose / docs[i]["close"];
-                        month_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                         month_high.push(docs[i]["high"]);
                         month_low.push(docs[i]["low"]);
-                        month_high_before.push(docs[i]["high"] * month_beforeAdjClose / docs[i]["close"]);
-                        month_low_before.push(docs[i]["low"] * month_beforeAdjClose / docs[i]["close"]);
-                        month_high_after.push(docs[i]["high"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
-                        month_low_after.push(docs[i]["low"] * docs[i]["afterAdjClose"] / docs[i]["close"]);
                         month_volume.push(docs[i]["volume"]);
-                        month_turnOverRate.push(docs[i]["turnOverRate"]);
                         month_changePrice.push(docs[i]["changePrice"]);
                     }
                     i--;
@@ -980,17 +746,8 @@ exports.getMonthlyData = (code, callback) => {
                     "high": Math.max.apply(null, month_high),
                     "low": Math.min.apply(null, month_low),
                     "close": month_close,
-                    "open_before": month_open_before,
-                    "high_before": Math.max.apply(null, month_high_before),
-                    "low_before": Math.min.apply(null, month_low_before),
-                    "beforeAdjClose": month_close_before,
-                    "open_after": month_open_after,
-                    "high_after": Math.max.apply(null, month_high_after),
-                    "low_after": Math.min.apply(null, month_low_after),
-                    "afterAdjClose": month_close_after,
                     "volume": month_volume.reduce((x, y) => { return x + y; }),
                     "changeRate": month_changeRate,
-                    "turnOverRate": month_turnOverRate.reduce((x, y) => { return x + y; }),
                     "changePrice": month_changePrice.reduce((x, y) => { return x + y; })
                 };
                 month_docs.unshift(month);
@@ -1000,18 +757,11 @@ exports.getMonthlyData = (code, callback) => {
             let beforeD = 50; // 上月D值
             let periodHigh = [];
             let periodLow = [];
+
             // 计算MACD所需要的临时数据
             let beforeEMA12 = 0; // 上月的12月指数平均值
             let beforeEMA26 = 0; // 上月的26月指数平均值
             let beforeDEA = 0; // 上月的九个月DIF平滑移动平均值
-
-            let beforeEMA12_before_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_before_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_before_adj = 0; // 昨日的九日DIF平滑移动平均值
-
-            let beforeEMA12_after_adj = 0; // 昨日的12日指数平均值
-            let beforeEMA26_after_adj = 0; // 昨日的26日指数平均值
-            let beforeDEA_after_adj = 0; // 昨日的九日DIF平滑移动平均值
 
             // 计算RSI所需要的临时数据
             let changePrice6 = [];
@@ -1025,8 +775,6 @@ exports.getMonthlyData = (code, callback) => {
 
             // 计算布林线Boll所需要的临时数据
             let MA20 = [];
-            let MA20_before_adj = [];
-            let MA20_after_adj = [];
 
             // 计算威廉指标WR所需要的临时数据
             let high_period_10 = [];
@@ -1043,17 +791,8 @@ exports.getMonthlyData = (code, callback) => {
                 one_month_data.push(parseFloat(data["close"].toFixed(2)));
                 one_month_data.push(parseFloat(data["low"].toFixed(2)));
                 one_month_data.push(parseFloat(data["high"].toFixed(2)));
-                one_month_data.push(parseFloat(data["open_before"].toFixed(2)));
-                one_month_data.push(parseFloat(data["beforeAdjClose"].toFixed(2)));
-                one_month_data.push(parseFloat(data["low_before"].toFixed(2)));
-                one_month_data.push(parseFloat(data["high_before"].toFixed(2)));
-                one_month_data.push(parseFloat(data["open_after"].toFixed(2)));
-                one_month_data.push(parseFloat(data["afterAdjClose"].toFixed(2)));
-                one_month_data.push(parseFloat(data["low_after"].toFixed(2)));
-                one_month_data.push(parseFloat(data["high_after"].toFixed(2)));
                 one_month_data.push(parseFloat(data["changeRate"].toFixed(2)));
                 one_month_data.push(data["volume"]);
-                one_month_data.push(parseFloat(data["turnOverRate"].toFixed(2)));
 
                 /*
                  * 计算当周KDJ
@@ -1095,35 +834,6 @@ exports.getMonthlyData = (code, callback) => {
                 beforeEMA12 = EMA12;
                 beforeEMA26 = EMA26;
                 beforeDEA = DEA;
-                one_month_data.push(DIF);
-                one_month_data.push(DEA);
-                one_month_data.push(MACD);
-
-
-                // 前复权
-                DI = (data["beforeAdjClose"] * 2 + data["high_before"] + data["low_before"]) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_before_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_before_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_before_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_before_adj = EMA12;
-                beforeEMA26_before_adj = EMA26;
-                beforeDEA_before_adj = DEA;
-                one_month_data.push(DIF);
-                one_month_data.push(DEA);
-                one_month_data.push(MACD);
-
-                // 后复权
-                DI = (data["afterAdjClose"] * 2 + data["high_after"] + data["low_after"]) / 4;
-                EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_after_adj;
-                EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_after_adj;
-                DIF = EMA12 - EMA26;
-                DEA = DIF * 0.2 + beforeDEA_after_adj * 0.8;
-                MACD = 2 * (DIF - DEA);
-                beforeEMA12_after_adj = EMA12;
-                beforeEMA26_after_adj = EMA26;
-                beforeDEA_after_adj = DEA;
                 one_month_data.push(DIF);
                 one_month_data.push(DEA);
                 one_month_data.push(MACD);
@@ -1209,7 +919,6 @@ exports.getMonthlyData = (code, callback) => {
                 /*
                  * 计算当日布林线Boll
                  */
-                // 不复权
                 MA20.push(data["close"]);
                 if (MA20.length > 20)
                     MA20.shift();
@@ -1221,38 +930,6 @@ exports.getMonthlyData = (code, callback) => {
                     Boll = statisticTool.getAverage(MA20);
                 let upper = Boll + 2 * MD;
                 let lower = Boll - 2 * MD;
-                one_month_data.push(Boll);
-                one_month_data.push(upper);
-                one_month_data.push(lower);
-
-                // 前复权
-                MA20_before_adj.push(data["beforeAdjClose"]);
-                if (MA20_before_adj.length > 20)
-                    MA20_before_adj.shift();
-                MD = statisticTool.getSTD(MA20_before_adj);
-                Boll = 0;
-                if (MA20_before_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_before_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_before_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
-                one_month_data.push(Boll);
-                one_month_data.push(upper);
-                one_month_data.push(lower);
-
-                // 后复权
-                MA20_after_adj.push(data["afterAdjClose"]);
-                if (MA20_after_adj.length > 20)
-                    MA20_after_adj.shift();
-                MD = statisticTool.getSTD(MA20_after_adj);
-                Boll = 0;
-                if (MA20_after_adj.length > 1)
-                    Boll = statisticTool.getAverage(MA20_after_adj.slice(0, -1));
-                else
-                    Boll = statisticTool.getAverage(MA20_after_adj);
-                upper = Boll + 2 * MD;
-                lower = Boll - 2 * MD;
                 one_month_data.push(Boll);
                 one_month_data.push(upper);
                 one_month_data.push(lower);
@@ -1287,148 +964,7 @@ exports.getMonthlyData = (code, callback) => {
 
                 return one_month_data;
             });
-            callback(null, splitData(all_month_data));
+            callback(null, splitIndex(all_month_data));
         }
     });
 };
-
-
-/**
- * 获得个股实时的信息
- * @param code
- * @param callback (err, stockRTInfo) => {}
- *
- * ！！！！！！！！！！！！！注意括号中的单位，没有提到单位的属性，就是不用加单位！！！！！！！！！！！！！！！
- *
- * 如果是大盘指数，则marketValue、floatMarketValue、turnOverRate、PB_ratio、PE_ratio没有值
- * 在界面中可以以'--'来代替，最好是不显示那些属性
- *
- * stockRTInfo形如
- * {
-                    "now_price": 现价
-                    "change_price": 涨跌额
-                    "change_rate": 涨跌幅（已经乘了100，单位为"%"）
-                    "yesterday_close": 昨收
-                    "today_open": 今开
-                    "high": 最高
-                    "low": 最低
-                    "volume": 成交量（单位为"万手"）
-                    "volume_of_transaction": 成交额（单位为"万"）
-                    "marketValue": 总市值（单位为"亿"）
-                    "floatMarketValue": 流通市值（单位为"亿"）
-                    "turnOverRate": 换手率（已经乘了100，单位为"%"）
-                    "PB_ratio": 市净率
-                    "amplitude": 振幅（已经乘了100，单位为"%"）
-                    "PE_ratio": 市盈率
-  }
- */
-exports.getRTInfo = (code, callback) => {
-    RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
-        callback(err, stockRTInfo);
-    });
-};
-
-
-/**
- * 获得最近浏览股票的实时信息
- * @param codes {Array} 最近浏览股票的代码数组
- * @param callback (err, results) =. {}
- * results是一个数组形如（对应顺序为传下来的codes数组的顺序）
- *   现价  涨跌幅
- * [[9.2, 0.11]...]
- */
-exports.getLatestStockRTInfo = getLatestStockInfo;
-
-
-/**
- * 获得该个股对应的公司简介
- * @param code
- * @param callback (err, companyInfo) => {}
- * companyInfo {JSON} 形如
- * {
-    "公司名称": {String}
-    "公司英文名称": {String}
-    "上市市场": {String}
-    "上市日期": {String}
-    "发行价格": {Number}
-    "主承销商": {String}
-    "成立日期": {String}
-    "注册资本": {String}
-    "机构类型": {String}
-    "组织形式": {String}
-    "董事会秘书": {String}
-    "公司电话": {String}
-    "董秘电话": {String}
-    "公司传真": {String}
-    "董秘传真": {String}
-    "公司电子邮箱": {String}
-    "董秘电子邮箱": {String}
-    "公司网址": {String}
-    "邮政编码": {String}
-    "信息披露网址": {String}
-    "证券简称更名历史": {String}
-    "注册地址": {String}
-    "办公地址": {String}
-    "公司简介": {String}
-    "经营范围": {String}
- * }
- */
-exports.getCompanyInfo = (code, callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/companyInfo.py ' +code, function(err, stdout, stderr){
-        if(err) {
-            callback(err, null);
-        }
-        if(stdout) {
-            let result = stdout.replace(/'/g, '"');
-            result = result.replace(/\\xa0/g, '');
-            result = result.replace(/\\r\\n/g, '');
-            result = result.replace(/\\"/g, "\"");
-            let companyInfo = JSON.parse(result);
-            callback(null, companyInfo);
-        }
-    });
-};
-
-
-/**
- * 获得热门股票的实时信息
- * @param callback (err, infos) => {}
- * infos形如
- *   股票名称    现价     涨跌幅（已乘100，单位为"%"）
- * [['平安银行', '9.04', '0.11']...]
- */
-exports.getHotStocks = (callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function(err, stdout, stderr){
-        if(err) {
-            callback(err, null);
-        }
-        if(stdout) {
-            let hot_codes = stdout.split('|');
-            hot_codes = hot_codes.map(t => t.substr(0, 6));
-            let promises = hot_codes.map(code => new Promise((resolve, reject) => {
-                allStockDB.getNameByCode(code, (err, name) => {
-                    if (err)
-                        reject(err);
-                    else {
-                        resolve(name["name"]);
-                    }
-                });
-            }));
-            Promise.all(promises).then(names => {
-                getLatestStockInfo(hot_codes, (err, infos) => {
-                    if (err)
-                        callback(err, null);
-                    else {
-                        for (let i = 0; i < infos.length; i++) {
-                            infos[i].unshift(names[i]);
-                        }
-                        callback(null, infos.slice(0, 10));
-                    }
-                });
-            }).catch((err) => {
-                callback(err, null);
-            });
-        }
-    });
-};
-

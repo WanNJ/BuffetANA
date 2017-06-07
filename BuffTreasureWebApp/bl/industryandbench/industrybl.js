@@ -54,6 +54,7 @@ exports.getAllIndustries = (callback) => {
             docs.forEach(doc => {
                 all_industry.add(doc["industry"]);
             });
+            all_industry.delete('--');
             callback(null, all_industry);
         }
     });
@@ -66,3 +67,21 @@ exports.getAllIndustries = (callback) => {
  *
  * @param callback
  */
+exports.getAllBoards = (callback) => {
+    allStockDB.getAllBoards((err, docs) => {
+        if (err) {
+            callback(err, null);
+        }
+        else {
+            let all_bench = new Set();
+            docs.forEach(doc => {
+                doc["bench"].forEach(bench => {
+                    all_bench.add(bench);
+                });
+            });
+            all_bench.delete('--');
+            callback(null, all_bench);
+        }
+    });
+};
+

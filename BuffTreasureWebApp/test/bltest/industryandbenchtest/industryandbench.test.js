@@ -17,7 +17,6 @@ describe('industrybl', function() {
     describe('#getAllIndustries()', function() {
         it('should show all industries', function(done) {
             industrybl.getAllIndustries((err, all_industry) => {
-                console.log("sdf");
                 if (err) {
                     done(err);
                 }

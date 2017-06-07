@@ -79,6 +79,7 @@ exports.getAllBoards = (callback) => {
                     all_bench.add(bench);
                 });
             });
+            all_bench.delete('--');
             callback(null, all_bench);
         }
     });

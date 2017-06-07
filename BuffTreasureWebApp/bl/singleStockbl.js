@@ -534,7 +534,6 @@ exports.getWeeklyData = (code, callback) => {
                 // 后复权计算
                 let week_open_after = docs[i]["open"] * docs[i]["afterAdjClose"] / docs[i]["close"];
                 let week_close_after = docs[i]["afterAdjClose"];
-                console.log(week_close_after);
                 let week_high_after = [];
                 let week_low_after = [];
 
@@ -1375,7 +1374,7 @@ exports.getLatestStockRTInfo = getLatestStockInfo;
  * }
  */
 exports.getCompanyInfo = (code, callback) => {
-    exec('python3' + ' ./bl/companyInfo.py ' +code, function(err, stdout, stderr){
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/companyInfo.py ' +code, function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }
@@ -1399,7 +1398,7 @@ exports.getCompanyInfo = (code, callback) => {
  * [['平安银行', '9.04', '0.11']...]
  */
 exports.getHotStocks = (callback) => {
-    exec('python3' + ' ./bl/hot_stock.py', function(err, stdout, stderr){
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }
@@ -1423,7 +1422,7 @@ exports.getHotStocks = (callback) => {
                         for (let i = 0; i < infos.length; i++) {
                             infos[i].unshift(names[i]);
                         }
-                        callback(null, infos);
+                        callback(null, infos.slice(0, 10));
                     }
                 });
             }).catch((err) => {

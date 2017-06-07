@@ -66,19 +66,3 @@ exports.getAllIndustries = (callback) => {
  *
  * @param callback
  */
-exports.getAllBoards = (callback) => {
-    allStockDB.getAllBoards((err, docs) => {
-        if (err) {
-            callback(err, null);
-        }
-        else {
-            let all_bench = new Set();
-            docs.forEach(doc => {
-                doc["bench"].forEach(bench => {
-                    all_bench.add(bench);
-                });
-            });
-            callback(null, all_bench);
-        }
-    });
-};

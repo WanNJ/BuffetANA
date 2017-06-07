@@ -424,9 +424,12 @@
             </div>
         </form>
     </div>
+</div>
+
+<div class="page-container">
 
     <!--Recently Browsed-->
-    <div class="col-md-2 center-block">
+    <div class="col-md-2 center-block" style="padding-right: 0px;padding-left: 20px;">
         <div class="col-sm-12" style="height: 50px;"></div>
 
         <div>
@@ -442,11 +445,12 @@
 
         <div class="col-sm-12 tab-content">
             <div id="recent_stock_seg" class="tab-pane active">
-                <table id="recent_stock_table" class="table table-hover" style="font-size: small">
+                <table id="recent_stock_table" class="table table-hover" style="font-size: 13px">
                     <thead>
                     <tr>
                         <th>名称</th>
                         <th>代码</th>
+                        <th>价格</th>
                     </tr>
                     </thead>
 
@@ -459,7 +463,8 @@
                     <thead>
                     <tr>
                         <th>名称</th>
-                        <th>代码</th>
+                        <th>价格</th>
+                        <th>涨跌幅</th>
                     </tr>
                     </thead>
 
@@ -474,6 +479,15 @@
         $('#left_side_tab').find('a').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
+        });
+
+        $(document).ready(function () {
+            $.get('single-stock/getHotStockList', (result) => {
+                for(let i = 0; i < result.length; i++) {
+                    let appendedStr = '<tr><th>' + result[i][0] + '</th><td>' + result[i][1] + '</td><td>' + result[i][2] + '%' + '</td></tr>';
+                    $('#hot_stock_table > tbody').append(appendedStr);
+                }
+            });
         });
     </script>
 

@@ -80,7 +80,9 @@ function splitIndex(marketIndex) {
 
 /**
  * 获得大盘实时的信息
- * @param code
+ * @param code {String} 只能包括以下四个值
+ * 上证指数      深证成指      沪深300        沪深300
+ * sh000001     sz399001     sh000300      sz399300
  * @param callback (err, stockRTInfo) => {}
  *
  * ！！！！！！！！！！！！！注意括号中的单位，没有提到单位的属性，就是不用加单位！！！！！！！！！！！！！！！

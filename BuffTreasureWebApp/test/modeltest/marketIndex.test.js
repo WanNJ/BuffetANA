@@ -4,9 +4,6 @@
 /**
  * Created by slow_time on 2017/5/7.
  */
-let singleStockDB = require('../../models/singleStock.js').singleStockDB;
-let expect = require('chai').expect;
-
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');

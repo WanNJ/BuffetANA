@@ -6,9 +6,8 @@ import datetime
 
 mmDate = datetime.datetime.strptime('2010-04-05', '%Y-%m-%d')
 
-mapStep = [2,2,2,3,3,3,4,4,4,4,4]
-mapSpeed = [0,500,1000,2000,3000,6000]
-
+mapStep = [2,2,2,3,3,3,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5]
+mapSpeed = [0,500,1000,2000,3000,6000,100000]
 
 
 def test_CNN_Model_All(code, holdingDays,speedMode,isENV,beginDate=datetime.datetime.strptime('2010-04-05', '%Y-%m-%d')):

@@ -41,6 +41,15 @@ router.get('/getStockBoard', (req, res, next) => {
     });
 });
 
+router.get('/getRTInfo', (req, res, next) => {
+    singleStockService.getRTInfo(req.query.stockCode, (err, infos) => {
+        if (err)
+            res.render('error');
+        else
+            res.send(infos);
+    });
+});
+
 router.post('/getDailyKLine', (req, res, next) => {
     let re = /([0-9]+)\((.*)\)/;
     let result = re.exec(req.body.query);

@@ -184,6 +184,16 @@ router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
     });
 });
 
+router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
+    userbl.loadStrategy(req.session.user,req.params.name,(err, docs) => {
+        if(err){
+            throw err;
+        }else {
+            res.send(docs);
+        }
+    });
+});
+
 
 router.post('/quantitative-analysis/result', function (req, res, next) {
     let body = req.body;

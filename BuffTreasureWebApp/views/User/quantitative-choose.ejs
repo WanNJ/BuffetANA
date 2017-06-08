@@ -660,7 +660,7 @@
                 if(result==="DUPLICATED"){
                     save(name,true);
                 }else {
-                    console.log(result);
+                    console.log("SAVE:"+result);
                 }
             },
             error: function(request, err){
@@ -682,7 +682,17 @@
                     $("#strategy-list").append(button);
                     $("#strategy-list button:last").text(strategy_name);
                     $("#strategy-list button:last").click(()=>{
-                        //TODO
+                        $.ajax({
+                            type: "get",
+                            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                            url: "strategy/:name", //请求发送到TestServlet处
+                            success: (result) => {
+                                load_strategy(result);
+                            },
+                            error: function(request, err){
+                                console.error(err);
+                            },
+                        });
                     });
                 }
             },

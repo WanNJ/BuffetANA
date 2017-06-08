@@ -2,6 +2,7 @@ let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
 let storeMap = require('../bl/functionMap/storeMap');
 let industrybl = require('../bl/industryandbench/industrybl');
+let userbl = require('../bl/userbl');
 let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
@@ -172,6 +173,17 @@ router.get('/quantitative-analysis/allBoards', function (req, res, next) {
     industrybl.getAllBoards((err, docs) => sendMessage(res, err, docs) );
 });
 
+router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
+    console.log("user:"+req.session.user);
+    userbl.getAllStrategy(req.session.user.name,(err, docs) => {
+        if(err){
+            throw err;
+        }else {
+            res.send(docs);
+        }
+    });
+});
+
 
 router.post('/quantitative-analysis/result', function (req, res, next) {
     let body = req.body;
@@ -186,7 +198,9 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);
-    let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate));
+    let tradeModelVo = body.dynamic_hold==="on"?
+        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate)):
+        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
     let envSpyDay = Number(body.marketObserve);
 
     console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);
@@ -226,6 +240,19 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
             lowAndSame_pieDatas: finalResult.lowAndSame_pieDatas,
             lowAndOpp_pieDatas: finalResult.lowAndOpp_pieDatas
         });
+    });
+});
+
+router.post('/quantitative-analysis/save', function (req, res, next) {
+    let body = req.body;
+    let userName = req.session.user.name;
+
+    userbl.saveStrategy(userName,body,(err, docs) => {
+        if(err){
+            throw err;
+        }else {
+            res.send(docs);  //docs可能的值： 'SUCCESS' 'DUPLICATED'
+        }
     });
 });
 

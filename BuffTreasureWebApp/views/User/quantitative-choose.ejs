@@ -56,7 +56,7 @@
                 <!--行业-->
                 <!--</button>-->
             </div>
-            <div class="row">
+            <div class="row" style="margin-left: 0px;margin-right: 0px;">
                 <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-left: 0px;margin-right: 0px;">
                 <div class="col-md-5 col-xs-12 section-container home-section-wrap clearfix">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
@@ -367,6 +367,46 @@
                     </div>
                 </div>
             </div>
+            <div class="row text-right" style="margin-right: 10px;">
+                <button type="submit" class="btn btn-info btn-sm btn-clean animated" data-toggle="modal" data-target="#saveModal">
+                    保存策略
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title text-left" id="saveModalLabel">策略名称</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" id="strategy-name">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="save($('#strategy-name').val())">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-info btn-sm btn-clean animated" data-toggle="modal" data-target="#loadModal" onclick="load()">
+                    加载策略
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title text-left" id="loadModalLabel">选择策略</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="list-group" id="strategy-list">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row text-center">
                 <button type="submit" class="btn btn-primary btn-lg btn-clean animated" onclick="start()">
                     开始回测
@@ -547,7 +587,7 @@
         form.submit();
     }
 
-    function start() {
+    function collect_data() {
         let rank = {};
         let rank_rows=$("#ranking-conditon-table tr:gt(0)");
         let rank_count=1;
@@ -570,7 +610,7 @@
         }
         let industries=new Array();
         let benches=new Array();
-        if($("#stock-pool").trim()==="自选股票池"){
+        if($("#stock-pool").val().trim()==="自选股票池"){
             for(let i=0;i< $("#industries li a input:checkbox:checked").length;i++){
                 industries[i]=$("#industries li a input:checkbox:checked").eq(i).parent().text().trim();
             }
@@ -582,7 +622,7 @@
         let data = {
             beginDate: $("#date-from").val(),
             endDate: $("#date-to").val(),
-            stockPool: $("#stock-pool").find("option:selected").text(),
+            stockPool: $("#stock-pool").val(),
             benches: benches,
             industries: industries,
             excludeST: $("#exclude-ST").val(),
@@ -591,10 +631,81 @@
             reserveDays: $("#reserve-days").val(),
             numberOfStock: $("#number-of-stock").val(),
             marketObserve: $("#market-observe").val(),
+            dynamic_hold: $("#dynamic-hold").val(),
             maxWinRate: $("#dynamic-hold").val()==="on"? $("#max-win-rate").val():null,
             maxLoseRate: $("#dynamic-hold").val()==="on"? $("#max-lose-rate").val():null,
         };
-        standardPost('result', data);
+        return data;
+    }
+
+    function start() {
+        standardPost('result', collect_data());
+    }
+
+    function save(name) {
+        let data=collect_data();
+        data.strategyName=name;
+        standardPost('save', data);
+    }
+
+    function load() {
+        $("#strategy-list").empty();
+        $.ajax({
+            type: "get",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "allStrategy", //请求发送到TestServlet处
+            success: (result) => {
+                console.log(result);
+                for(let i=0;i<result.length;i++){
+                    let button="<button type=\"button\" class=\"list-group-item\" data-dismiss=\"modal\"></button>";
+                    $("#strategy-list").append(button);
+                    $("#strategy-list button:last").text(result[i].strategyName);
+                }
+            },
+            error: function(request, err){
+                console.error(err);
+            },
+        });
+    }
+
+    function load_strategy(data) {
+        $("#date-from").val(data.beginDate);
+        $("#date-to").val(data.endDate);
+        $("#stock-pool").val(data.stockPool);
+        stock_pool_change($("#stock-pool").val());
+        let benches = data.benches===""? null:data.benches.split(",");
+        let industries = data.industries===""? null:data.industries.split(",");
+        for(let i=0;i< benches.length;i++){
+            $("#boards li a span[text="+benches[i]+"]").parent().find("input:checkbox").attr("checked",true);
+        }
+        for(let i=0;i< industries.length;i++){
+            $("#industries li a span[text="+benches[i]+"]").parent().find("input:checkbox").attr("checked",true);
+        }
+        $("#exclude-ST").val(data.excludeST);
+        $("#exclude-ST").attr("checked",data.excludeST==="on");
+        let rank = JSON.parse(data.rank);
+        let rank_rows=$("#ranking-conditon-table tr:gt(0)");
+        for(let row in rank){
+            addRankingConditon(rank[row][0]);
+            $(rank_rows.last().get(0).cells.item(1)).children().val(rank[row][1]);
+            $(rank_rows.last().get(0).cells.item(2)).children().val(rank[row][2]);
+            $(rank_rows.last().get(0).cells.item(3)).children().val(rank[row][3]);
+        }
+        let filter = JSON.parse(data.rank);
+        let filter_rows=$("#filter-conditon-table tr:gt(0)");
+        for(let row in filter){
+            addFilterConditon(filter[row][0]);
+            $(filter_rows.last().get(0).cells.item(1)).children().val(filter[row][1]);
+            $(filter_rows.last().get(0).cells.item(2)).children().val(filter[row][2]);
+        }
+        $("#reserve-days").val(data.reserveDays);
+        $("#number-of-stock").val(data.numberOfStock);
+        $("#market-observe").val(data.marketObserve);
+        $("#dynamic-hold").val(data.dynamic_hold);
+        $("#dynamic-hold").attr("checked",data.dynamic_hold==="on");
+        dynamic_hold_change($("#dynamic-hold").val());
+        $("#max-win-rate").val(data.maxWinRate);
+        $("#max-lose-rate").val(data.maxLoseRate);
     }
 </script>
 </body>

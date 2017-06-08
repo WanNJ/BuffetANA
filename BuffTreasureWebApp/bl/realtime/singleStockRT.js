@@ -116,7 +116,6 @@ function obtainRTInfo(code, callback) {
         code = 'sh' + code;
     else
         code = 'sz' + code;
-    console.log(code);
     let url = 'http://web.ifzq.gtimg.cn/appstock/app/minute/query?_var=min_data_' + code + '&code=' + code + '&r=0.5755017222238814';
     request.get(url)
         .end(function (err, res) {
@@ -141,7 +140,6 @@ function obtainRTInfo(code, callback) {
                     "amplitude": jd['data'][code]['qt'][code][43],
                     "PE_ratio": jd['data'][code]['qt'][code][39]
                 };
-                console.log(stockRTInfo["now_price"]);
                 callback(null, stockRTInfo);
             }
         });

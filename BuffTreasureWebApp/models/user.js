@@ -62,6 +62,15 @@ exports.userDB = {
         });
     },
 
+    overrideStrategy: (userName, strategy, callback) => {
+        User.updateOne({username: userName}, {$set: {strategy: strategy}}, (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
+        });
+    },
+
     /**
      * 获得某个用户所有已保存的策略
      * @param userName

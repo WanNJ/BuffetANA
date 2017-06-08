@@ -57,4 +57,3 @@ exports.isUpOrDown = (code, open_price, callback) => {
         }
     });
 };
-

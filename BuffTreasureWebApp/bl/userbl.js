@@ -156,15 +156,15 @@ exports.getSelfSelectStock = (userName, callback) => {
     markLO:Number,// low and opposite 情况下的分数
  * }
  * stockPoolCondition {stockPoolConditionVO} 股票池选择条件
- * rank:
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
+ * rank:("r1"、"r2"这些key值随便取什么都可以，只要不重复)
+ *                   策略名称  升序／降序   观察期   权重
+ * eg : {  "r1":    ["MA",    "asd",      10,     0.4],
+ *         "r2"  :  ["MOM"    "des",      20,     0.6]
  *       }
- * filter:
- *        筛选指标          比较符     值
- * eg : { "volume" :          [">",     1000000],
- *        "turnOverRate" : ["<",     0.05]
+ * filter:("f1"、"f2"这些key值随便取什么都可以，只要不重复)
+ *                 筛选指标              比较符     值
+ * eg : {  "f1":   ["volume",           ">",     1000000],
+ *         "f2":   ["turnOverRate",     "<",     0.05]
  *       }
  * tradeModel {TradeModelVO} 交易模型
  * envSpecDay {Number}  市场观察期
@@ -210,6 +210,59 @@ exports.getAllStrategy = (userName, callback) => {
             callback(err, null);
         else {
             callback(null, docs);
+        }
+    });
+};
+
+
+/**
+ * 加载某个策略
+ * @param userName 用户名称
+ * @param strategyName 策略名称
+ * @param callback (err, strategy) => {}
+ * strategy形如:
+ * {
+    strategyName: String
+    beginDate: Date,
+    endDate: Date,
+    stockPoolCondition: {},
+    rank:{},
+    filter:{},
+    tradeModel:{},
+    envSpecDay:Number,
+    markNormal:Number,// 正常情况下 情况下的分数
+    markHS:Number,// high and same 情况下的分数
+    markHO:Number,// high and opposite 情况下的分数
+    markLS:Number,// low and same 情况下的分数
+    markLO:Number,// low and opposite 情况下的分数
+ * }
+ * stockPoolCondition {stockPoolConditionVO} 股票池选择条件
+ * rank:("r1"、"r2"这些key值随便取什么都可以，只要不重复)
+ *                   策略名称  升序／降序   观察期   权重
+ * eg : {  "r1":    ["MA",    "asd",      10,     0.4],
+ *         "r2"  :  ["MOM"    "des",      20,     0.6]
+ *       }
+ * filter:("f1"、"f2"这些key值随便取什么都可以，只要不重复)
+ *                 筛选指标              比较符     值
+ * eg : {  "f1":   ["volume",           ">",     1000000],
+ *         "f2":   ["turnOverRate",     "<",     0.05]
+ *       }
+ * tradeModel {TradeModelVO} 交易模型
+ * envSpecDay {Number}  市场观察期
+ */
+exports.loadStrategy = (userName, strategyName, callback) => {
+    userDB.getAllStrategy(userName, (err, docs) => {
+        if (err)
+            callback(err, null);
+        else {
+            let strategy = null;
+            for (let i = 0; i < docs["strategy"].length; i++) {
+                if (docs["strategy"][i]["strategyName"] === strategyName) {
+                    strategy = docs["strategy"][i];
+                    break;
+                }
+            }
+            callback(null, strategy);
         }
     });
 };

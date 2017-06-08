@@ -16,6 +16,8 @@ let users = require('./routes/users');
 let singleStock = require('./routes/singleStock');
 
 let app = express();
+
+let realTimeTool = require('./bl/realtime/singleStockRT');
 // 视图引擎设置
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -81,6 +83,13 @@ mongoose.connection.on('open', function () {
 
 process.on('exit', () => {
    mongoose.disconnect();
+});
+
+setInterval(realTimeTool.updateAllStockRTInfo, 300000, (err, isOK) => {
+    if (err)
+        console.log("Update real time info failed");
+    else
+        console.log("Update real time info succeed");
 });
 
 module.exports = app;

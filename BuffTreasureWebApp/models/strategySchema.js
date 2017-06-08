@@ -5,21 +5,21 @@ const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 
-//以后增加动态持仓就要修改持仓方式了
+//TODO 以后增加动态持仓就要修改持仓方式了
 /**
  * 获得回测结果
  * @param beginDate {Date} 回测的开始日期
  * @param endDate  {Date} 回测的结束日期
  * @param stockPoolConditionVO {StockPoolConditionVO} 股票池的选择条件
  * @param rank
- *       策略名称   升序／降序   观察期   权重
- * eg : { "MA" :  ["asd",      10,     0.4],
- *        "MOM" : ["des",      20,     0.6]
+ *       策略名称   策略名称  升序／降序   观察期   权重
+ * eg : { "r1" :  ["MA",   "asd",      10,     0.4],
+ *        "r2" :  ["MOM",  "des",      20,     0.6]
  *       }
  * @param filter
- *        筛选指标          比较符     值
- * eg : { "volume" :          [">",     1000000],
- *        "turnOverRate" : ["<",     0.05]
+ *         序列            筛选指标        比较符      值
+ * eg : {  ' f1:         ["volume",       ">",     1000000],
+ *          "f2" :       ["turnOverRate", "<",        0.05]
  *       }
  * @param tradeModelVO {TradeModelVO} 交易模型
  * @param envSpecDay {Number}  市场观察期

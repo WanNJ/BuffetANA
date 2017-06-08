@@ -85,21 +85,33 @@
                     eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
                     $('#stock_name').html(realTimeInfo[0]);
                     $('#stock_code').html('(' + fullStockCode + ')');
-                    $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
-                    $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
-                    $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
-                    if (realTimeInfo[3] - realTimeInfo[2] < 0) {
-                        $("#current_price").css({color: "green"});
-                        $("#chg").css({color: "green"});
-                        $("#chg_p").css({color: "green"});
-                        $("#imp_icon").addClass("fa-arrow-down");
-                        $("#imp_icon").css({color: "green"});
+                    if(Math.abs(realTimeInfo[3]) < 0.001) {
+                        $('#current_price').text('停牌');
+                        $("#current_price").css({color: "grey"});
+                        $('#chg').html('--');
+                        $('#chg_p').html('--');
+                        $("#imp_icon").html('--');
                     } else {
-                        $("#current_price").css({color: "red"});
-                        $("#chg").css({color: "red"});
-                        $("#chg_p").css({color: "red"});
-                        $("#imp_icon").addClass("fa-arrow-up");
-                        $("#imp_icon").css({color: "red"});
+                        $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
+                        $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
+                        $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
+                    }
+
+                    if(Math.abs(realTimeInfo[3]) > 0.001) {
+                        $("#imp_icon").html('');
+                        if (realTimeInfo[3] - realTimeInfo[2] < 0) {
+                            $("#current_price").css({color: "green"});
+                            $("#chg").css({color: "green"});
+                            $("#chg_p").css({color: "green"});
+                            $("#imp_icon").addClass("fa fa-arrow-down");
+                            $("#imp_icon").css({color: "green"});
+                        } else {
+                            $("#current_price").css({color: "red"});
+                            $("#chg").css({color: "red"});
+                            $("#chg_p").css({color: "red"});
+                            $("#imp_icon").addClass("fa-arrow-up");
+                            $("#imp_icon").css({color: "red"});
+                        }
                     }
 
                     let re = /(<th>.*<\/th>)/;
@@ -123,7 +135,27 @@
 
             // 其余详细信息
             $.get('single-stock/getRTInfo', {stockCode: stockCode}, (result) => {
+                let RTInfos = $('#RTInfo_seg > tr > td');
+                RTInfos[0].innerHTML = result.today_open;
+                RTInfos[1].innerHTML = result.volume + '万手';
+                RTInfos[2].innerHTML = result.amplitude + '%';
+                RTInfos[3].innerHTML = result.high;
+                RTInfos[4].innerHTML = result.volume_of_transaction + '亿元';
+                RTInfos[5].innerHTML = result.turnOverRate + '%';
+                RTInfos[6].innerHTML = result.low;
+                RTInfos[7].innerHTML = result.marketValue + '亿';
+                RTInfos[8].innerHTML = result.PB_ratio;
+                RTInfos[9].innerHTML = result.yesterday_close;
+                RTInfos[10].innerHTML = result.floatMarketValue + '亿';
+                RTInfos[11].innerHTML = result.PE_ratio;
 
+                if(result.today_open > result.yesterday_close)
+                    $(RTInfos[0]).css({color: "red"});
+                else
+                    $(RTInfos[0]).css({color: "green"});
+
+                $(RTInfos[3]).css({color: "red"});
+                $(RTInfos[6]).css({color: "green"});
             });
         }
 
@@ -588,38 +620,38 @@
                     <col width="20%">
                     <col width="20%">
                 </colgroup>
-                <tbody>
+                <tbody id="RTInfo_seg">
                 <tr>
                     <th>今开:</th>
-                    <td>9.67</td>
+                    <td>--</td>
                     <th>成交量:</th>
-                    <td>73.87万手</td>
+                    <td>--</td>
                     <th>振幅:</th>
-                    <td>1.55%</td>
+                    <td>--</td>
                 </tr>
                 <tr>
-                    <th>最高：</th>
-                    <td>9.68</td>
+                    <th>最高:</th>
+                    <td>--</td>
                     <th>成交额:</th>
-                    <td>7.08亿元</td>
+                    <td>--</td>
                     <th>换手率:</th>
-                    <td>0.25%</td>
+                    <td>--</td>
                 </tr>
                 <tr>
                     <th>最低:</th>
-                    <td>9.53</td>
+                    <td>--</td>
                     <th>总市值:</th>
-                    <td>2883.00亿</td>
+                    <td>--</td>
                     <th>市净率:</th>
-                    <td>1.60</td>
+                    <td>--</td>
                 </tr>
                 <tr>
                     <th>昨收：</th>
-                    <td>9.67</td>
+                    <td>--</td>
                     <th>流通市值:</th>
-                    <td>2852.89亿</td>
+                    <td>--</td>
                     <th>市盈率<sup>TTM</sup>：</th>
-                    <td>9.43</td>
+                    <td>--</td>
                 </tr>
                 </tbody>
             </table>

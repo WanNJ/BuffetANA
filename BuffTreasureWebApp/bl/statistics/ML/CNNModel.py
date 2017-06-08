@@ -16,12 +16,12 @@ def test_CNN_Model_All(code, holdingDays,speedMode,isENV,beginDate=datetime.date
     DataSet = CNNDataSet.CNNDataSet(beginDate,holdingDays=holdingDays,step=step,code=code,isENV=isENV)
 
     def weight_variable(shape):
-        initial = tf.truncated_normal(shape, stddev=0.0000001)
+        initial = tf.truncated_normal(shape, stddev=0.000000001)
         return tf.Variable(initial)
 
 
     def bias_variable(shape):
-        initial = tf.constant(0.0000001, shape=shape)
+        initial = tf.constant(0.000000001, shape=shape)
         return tf.Variable(initial)
 
     x = tf.placeholder("float", shape=[None, step*4,step*4])

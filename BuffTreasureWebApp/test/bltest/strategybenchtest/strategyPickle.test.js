@@ -19,7 +19,7 @@ mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
 });
 
-describe('#shiit()', function() {
+describe('#shit()', function() {
     it('temp', function(done) {
 
         let stockPoolConditionVO = new StockPoolConditionVO('创业板',[],[],false);
@@ -29,15 +29,15 @@ describe('#shiit()', function() {
 
 
         let rank = {
-            'MA' : ["asd",   10, 1]
-            ,'MOM' : ["asd",   10, 1]
-            , 'RSI' : ["asd", 10, 1]
-            , 'KDJ_K' : ["asd", 10, 1]
-            , 'KDJ_D' : ["asd", 10, 1]
+            'r1' : ["MA","asd",   10, 1]
+            ,'r2' : ["MOM","asd",   10, 1]
+            , 'r3' : ["RSI","asd", 10, 1]
+            , 'r4' : ["KDJ_K","asd", 10, 1]
+            , 'r5' : ["KDJ_D","asd", 10, 1]
         };
 
         let filter = {
-            "volume" :      [">",     0],
+            "f1" :      ["volume", ">",     0],
                    }
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
             stockPoolConditionVO, rank, filter, tradeModelVO, 3, (err,data) => {

@@ -1,6 +1,7 @@
 let express = require('express');
 let allStockBl = require('../bl/allStockbl');
 let singleStockService = require('../bl/singleStockbl');
+let industryService = require('../bl/industryandbench/industrybl');
 let userBl = require('../bl/userbl');
 let router = express.Router();
 
@@ -15,6 +16,33 @@ router.get('/getAllStockList', (req, res, next) => {
 
 router.get('/getHotStockList', (req, res, next) => {
     singleStockService.getHotStocks((err, infos) => {
+        if (err)
+            res.render('error');
+        else
+            res.send(infos);
+    });
+});
+
+router.get('/getStockIndustry', (req, res, next) => {
+    industryService.getIndustryByCode(req.query.stockCode, (err, indus) => {
+        if (err)
+            res.render('error');
+        else
+            res.send(indus);
+    });
+});
+
+router.get('/getStockBoard', (req, res, next) => {
+    industryService.getBoardsByCode(req.query.stockCode, (err, boards) => {
+        if (err)
+            res.render('error');
+        else
+            res.send(boards);
+    });
+});
+
+router.get('/getRTInfo', (req, res, next) => {
+    singleStockService.getRTInfo(req.query.stockCode, (err, infos) => {
         if (err)
             res.render('error');
         else

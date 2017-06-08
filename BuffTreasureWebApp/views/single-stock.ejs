@@ -70,12 +70,11 @@
             };
         }
 
-        function getCharts(stockCode) {
-            $('#firstTab').tab('show');
-
+        // 基本数据
+        function getBasicData(stockCode) {
             let fullStockCode = getFullStockCode(stockCode);
 
-            // 基本数据
+            // 标题信息和五档盘口
             $.ajax({
                 url: 'http://hq.sinajs.cn/list=' + fullStockCode,
                 dataType: "script",
@@ -102,8 +101,55 @@
                         $("#imp_icon").addClass("fa-arrow-up");
                         $("#imp_icon").css({color: "red"});
                     }
+
+                    let re = /(<th>.*<\/th>)/;
+
+                    let list = $('#five_table > tbody > tr');
+                    let str = '';
+
+                    for(let i = 0; i < 5; i++) {
+                        let result = re.exec(list[i].innerHTML);
+                        str = str + '<tr>' + result[1] +  '<td>' + realTimeInfo[29-2*i] + '</td><td>' + Math.round(realTimeInfo[28-2*i]/100) + '</td></tr>';
+                    }
+
+                    for(let i = 0; i < 5; i++) {
+                        let result = re.exec(list[5+i].innerHTML);
+                        str = str + '<tr>' + result[1] + '<td>' + realTimeInfo[10+2*i+1] + '</td><td>' + Math.round(realTimeInfo[10+2*i]/100) + '</td></tr>';
+                    }
+
+                    $('#five_table > tbody').html(str);
                 }
             });
+
+            // 其余详细信息
+            $.get('single-stock/getRTInfo', {stockCode: stockCode}, (result) => {
+
+            });
+        }
+
+        // 板块行业
+        function getIndustry(stockCode) {
+            $.get('single-stock/getStockIndustry', {stockCode: stockCode}, (result) => {
+                for (let i = 0; i < result.length; i++) {
+                    let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    $('#industry_table > tbody').append(appendedStr);
+                }
+            });
+
+            $.get('single-stock/getStockBoard', {stockCode: stockCode}, (result) => {
+                for (let i = 0; i < result.length; i++) {
+                    let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    $('#block_table > tbody').append(appendedStr);
+                }
+            });
+        }
+
+        function getCharts(stockCode) {
+            $('#firstTab').tab('show');
+
+            getBasicData(stockCode);
+
+            getIndustry(stockCode);
 
             // 分时图数据
             $.ajax({
@@ -133,9 +179,10 @@
                 }
             });
 
+            // 更新分时图，每分钟更新一次
             window.setInterval(function () {
-                //TODO 更新分时图
-            }, 3000);
+                getBasicData(stockCode);
+            }, 60000);
 
             // 日K数据
             $.ajax({
@@ -309,7 +356,6 @@
                 let appendedStr = '<tr><th>' + recent_stocks[i][0] + '</th><td>' + recent_stocks[i][1] + '</td></tr>';
                 $('#recent_stock_table > tbody').append(appendedStr);
             }
-
 
             $('#recent_stock_table > tbody > tr').click(function (e) {
                 e.preventDefault();
@@ -490,42 +536,41 @@
         });
     </script>
 
-
     <!--Main Block Of Single Stock-->
     <div class="col-sm-8" id="stockSeg" style="display: block;">
 
         <!--Basic Infos of a stock-->
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <div class="row">
                 <!--Names-->
-                <div class="col-sm-4 text-center" style="height: 102px;">
-                    <h1 id="stock_name" class="display-3" style="color: #337ab7;font-weight: bold"></h1>
-                    <h4 id="stock_code" style="color: #337ab7"></h4>
+                <div class="col-sm-4 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                    <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
+                    <h5 id="stock_code" style="color: #337ab7"></h5>
                 </div>
                 <!--Numbers-->
-                <div class="col-sm-5">
+                <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
                     <div class="row">
-                        <div class="col-sm-5 text-right" style="height: 102px;">
-                            <h1 id="current_price" class="display-1" style="height: 102px;"></h1>
+                        <div class="col-sm-5 text-right" style="height: 102px;padding-left: 10px;padding-right: 0px">
+                            <h1 id="current_price" style="height: 102px;"></h1>
                         </div>
-                        <div class="col-sm-3">
-                            <h1 class="display-1">
+                        <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                            <h1>
                                 <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
                             </h1>
                         </div>
-                        <div class="col-sm-4 text-left" style="height: 102px;">
-                            <h3 id="chg"></h3>
-                            <h3 id="chg_p"></h3>
+                        <div class="col-sm-4 text-center" style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                            <h4 id="chg"></h4>
+                            <h4 id="chg_p"></h4>
                         </div>
                     </div>
                 </div>
                 <!--Add to personal Button-->
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-left: 15px;padding-right: 0px">
                     <div class="row">
                         <div class="col-sm-12 text-center"
-                             style="height: 102px;padding-top:16px;  line-height: 25px;">
-                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-lg"
-                                    style="height: 60px;">
+                             style="height: 102px;padding-top:19px;  line-height: 10px;">
+                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
+                                    style="height: 40px;">
                                 <span class="fa fa-plus"></span> 加入自选股
                             </button>
                         </div>
@@ -533,6 +578,53 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="20%">
+                    <col width="20%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>今开:</th>
+                    <td>9.67</td>
+                    <th>成交量:</th>
+                    <td>73.87万手</td>
+                    <th>振幅:</th>
+                    <td>1.55%</td>
+                </tr>
+                <tr>
+                    <th>最高：</th>
+                    <td>9.68</td>
+                    <th>成交额:</th>
+                    <td>7.08亿元</td>
+                    <th>换手率:</th>
+                    <td>0.25%</td>
+                </tr>
+                <tr>
+                    <th>最低:</th>
+                    <td>9.53</td>
+                    <th>总市值:</th>
+                    <td>2883.00亿</td>
+                    <th>市净率:</th>
+                    <td>1.60</td>
+                </tr>
+                <tr>
+                    <th>昨收：</th>
+                    <td>9.67</td>
+                    <th>流通市值:</th>
+                    <td>2852.89亿</td>
+                    <th>市盈率<sup>TTM</sup>：</th>
+                    <td>9.43</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
 
         <div class="col-sm-12" style="height: 20px;"></div>
         <!--Headers of All kinds of Charts-->
@@ -626,16 +718,26 @@
 
         <div>
             <ul class="nav nav-tabs nav-justified" id="left_side_tab">
-                <li class="active"><a href="#five_seg">五档盘口<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></li>
-                <li><a href="#industry_seg">行业<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
-                <li><a href="#block_seg">板块<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
+                <li class="active"><a href="#five_seg">五档</a></li>
+                <li><a href="#industry_seg">行业</a></li>
+                <li><a href="#block_seg">板块</a></li>
             </ul>
         </div>
 
         <div class="col-sm-12 tab-content">
             <div id="five_seg" class="tab-pane active">
-                <table id="five_table" class="table table-hover" style="font-size: 13px">
+                <table id="five_table" class="table" style="font-size: 13px">
                     <tbody>
+                    <tr><th>卖五</th></tr>
+                    <tr><th>卖四</th></tr>
+                    <tr><th>卖三</th></tr>
+                    <tr><th>卖二</th></tr>
+                    <tr><th>卖一</th></tr>
+                    <tr><th>买一</th></tr>
+                    <tr><th>买二</th></tr>
+                    <tr><th>买三</th></tr>
+                    <tr><th>买四</th></tr>
+                    <tr><th>买五</th></tr>
                     </tbody>
                 </table>
             </div>
@@ -651,7 +753,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 

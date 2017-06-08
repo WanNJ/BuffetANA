@@ -179,15 +179,14 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let beginDate = new Date(body.beginDate);
     let endDate = new Date(body.endDate);
 
-    let excludeST = false;
-    // excludeST = body.excludeST === 'on';
+    let excludeST = body.excludeST === 'on';
 
     let benches = body.benches===""? null:body.benches.split(",");
     let industries = body.industries===""? null:body.industries.split(",");
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);
-    let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
+    let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate));
     let envSpyDay = Number(body.marketObserve);
 
     console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);

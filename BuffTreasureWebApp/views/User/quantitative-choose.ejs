@@ -550,18 +550,22 @@
     function start() {
         let rank = {};
         let rank_rows=$("#ranking-conditon-table tr:gt(0)");
+        let rank_count=1;
         for(let i=0;i<rank_rows.length;i++){
             let name=$(rank_rows.get(i).cells.item(0)).val();
-            rank[name]=[$(rank_rows.get(i).cells.item(1)).children().val(),
+            rank["rank"+(rank_count++)]=[name,
+                $(rank_rows.get(i).cells.item(1)).children().val(),
                 Number($(rank_rows.get(i).cells.item(2)).children().val()),
                 Number($(rank_rows.get(i).cells.item(3)).children().val())];
         }
 
         let filter = {};
         let filter_rows=$("#filter-conditon-table tr:gt(0)");
+        let filter_count=1;
         for(let i=0;i<filter_rows.length;i++){
             let name=$(filter_rows.get(i).cells.item(0)).val();
-            filter[name]=[$(filter_rows.get(i).cells.item(1)).children().val(),
+            filter["filter"+(filter_count++)]=[name,
+                $(filter_rows.get(i).cells.item(1)).children().val(),
                 Number($(filter_rows.get(i).cells.item(2)).children().val())];
         }
         let industries=new Array();

@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+    <% include Components/settings.html %>
+    <title>BUFF-公司信息</title>
+</head>
+
+<body>
+<!-- Main container -->
+<div class="page-container bloc-fill-screen">
+    <% include Components/navigator.ejs %>
+
+    <div class="r-title"><span class="ca">公司简介—</span><%= companyInfo['公司名称'] %></div>
+
+    <div id="con02-0" class="tagmain">
+        <!--公司简介begin-->
+        <table id="comInfo1" width="100%">
+            <tbody>
+            <tr>
+                <td class="ct">公司名称：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['公司名称'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">公司英文名称：</td>
+                <td colspan="3" class="ccl"><<%= companyInfo['公司英文名称'] %>/td>
+            </tr>
+            <tr>
+                <td class="ct">上市市场：</td>
+                <td class="cc"><%= companyInfo['上市市场'] %></td>
+                <td class="ct">上市日期：</td>
+                <td class="cc"><%= companyInfo['上市日期'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">发行价格：</td>
+                <td class="cc"><%= companyInfo['发行价格'] %>/td>
+                <td class="ct">主承销商：</td>
+                <td class="cc"><%= companyInfo['主承销商'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">成立日期：</td>
+                <td class="cc"><%= companyInfo['成立日期'] %></td>
+                <td class="ct">注册资本：</td>
+                <td class="cc"><%= companyInfo['注册资本'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">机构类型：</td>
+                <td class="cc"><%= companyInfo['机构类型'] %></td>
+                <td class="ct">组织形式：</td>
+                <td class="cc"><%= companyInfo['组织形式'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">董事会秘书：</td>
+                <td class="cc"><%= companyInfo['董事会秘书'] %></td>
+                <td class="ct">公司电话：</td>
+                <td class="cc"><%= companyInfo['公司电话'] %></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td class="ct">董秘电话：</td>
+                <td class="cc"><%= companyInfo['董秘电话'] %></td>
+                <td class="ct">公司传真：</td>
+                <td class="cc"><%= companyInfo['公司传真'] %></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td class="ct">董秘传真：</td>
+                <td class="cc"><%= companyInfo['董秘传真'] %></td>
+                <td class="ct">公司电子邮箱：</td>
+                <td class="cc"><%= companyInfo['公司电子邮箱'] %></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td class="ct">董秘电子邮箱：</td>
+                <td class="cc"><%= companyInfo['董秘电子邮箱'] %></td>
+                <td class="ct">公司网址：</td>
+                <td class="cc"><%= companyInfo['公司网址'] %></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td class="ct">邮政编码：</td>
+                <td class="cc"><%= companyInfo['邮政编码'] %></td>
+                <td class="ct">信息披露网址：</td>
+                <td class="cc"><%= companyInfo['信息披露网址'] %></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td class="ct">证券简称更名历史：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['证券简称更名历史'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">注册地址：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['注册地址'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">办公地址：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['办公地址'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">公司简介：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['公司简介'] %></td>
+            </tr>
+            <tr>
+                <td class="ct">经营范围：</td>
+                <td colspan="3" class="ccl"><%= companyInfo['经营范围'] %></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+    <!-- ScrollToTop Button END-->
+
+    <!-- Main container END -->
+    <% include Components/footer.ejs %>
+</div>
+</body>
+</html>

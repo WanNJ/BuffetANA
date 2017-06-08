@@ -85,11 +85,11 @@ process.on('exit', () => {
    mongoose.disconnect();
 });
 
-setInterval(realTimeTool.updateAllStockRTInfo, 300000, (err, isOK) => {
-    if (err)
-        console.log("Update real time info failed");
-    else
-        console.log("Update real time info succeed");
-});
+// setInterval(realTimeTool.updateAllStockRTInfo, 300000, (err, isOK) => {
+//     if (err)
+//         console.log("Update real time info failed");
+//     else
+//         console.log("Update real time info succeed");
+// });
 
 module.exports = app;

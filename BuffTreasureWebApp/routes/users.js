@@ -124,17 +124,17 @@ function splitStrategyResult(rawData) {
     };
 }
 
-// router.use(function (req, res, next) {
-//     let sess = req.session;
-//
-//     if (sess.user) {
-//         next();
-//     } else {
-//         req.session.alertType = "alert-danger";
-//         req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
-//         res.redirect('/sign-in');
-//     }
-// });
+router.use(function (req, res, next) {
+    let sess = req.session;
+
+    if (sess.user) {
+        next();
+    } else {
+        req.session.alertType = "alert-danger";
+        req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
+        res.redirect('/sign-in');
+    }
+});
 
 router.get('/comparison', function (req, res, next) {
     res.render('User/comparison');
@@ -186,7 +186,7 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);
-    let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
+    let tradeModelVo = new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate));
     let envSpyDay = Number(body.marketObserve);
 
     console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);

@@ -586,7 +586,9 @@
             filter: JSON.stringify(filter),
             reserveDays: $("#reserve-days").val(),
             numberOfStock: $("#number-of-stock").val(),
-            marketObserve: $("#market-observe").val()
+            marketObserve: $("#market-observe").val(),
+            maxWinRate: $("#dynamic-hold").val()==="on"? $("#max-win-rate").val():null,
+            maxLoseRate: $("#dynamic-hold").val()==="on"? $("#max-lose-rate").val():null,
         };
         standardPost('result', data);
     }

@@ -1404,3 +1404,42 @@ input.cmn-toggle-yes-no:checked + label:after {
 .dropdown-toggle .caret {
 	float: right;
 }
+
+
+.my-link {
+	font-weight: normal;
+	color: #337ab7;
+	border-radius: 0;
+}
+
+.my-link,
+.my-link:active,
+.my-link.active,
+.my-link[disabled],
+fieldset[disabled] .my-link {
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.my-link,
+.my-link:hover,
+.my-link:focus,
+.my-link:active {
+	border-color: transparent;
+}
+
+.my-link:hover,
+.my-link:focus {
+	color: #337ab7;
+	text-decoration: underline;
+	background-color: transparent;
+}
+
+.my-link[disabled]:hover,
+fieldset[disabled] .my-link:hover,
+.my-link[disabled]:focus,
+fieldset[disabled] .my-link:focus {
+	color: #337ab7;
+	text-decoration: none;
+}

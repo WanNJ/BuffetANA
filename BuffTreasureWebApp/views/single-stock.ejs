@@ -85,6 +85,9 @@
                     eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
                     $('#stock_name').html(realTimeInfo[0]);
                     $('#stock_code').html('(' + fullStockCode + ')');
+
+                    document.getElementById("stock_name_link").href="single-stock/enterprise?stockCode="+stockCode;
+
                     if(Math.abs(realTimeInfo[3]) < 0.001) {
                         $('#current_price').text('停牌');
                         $("#current_price").css({color: "grey"});
@@ -320,8 +323,8 @@
             // 月K数据
             $.ajax({
                 type: "post",
-                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                url: "single-stock/getMonthlyKLine", //请求发送到TestServlet处
+                async: true,
+                url: "single-stock/getMonthlyKLine",
                 data: $("#stock_form").serialize(),
                 dataType: "json", //返回数据形式为json
                 beforeSend: function (XHR) {
@@ -521,7 +524,7 @@
                 <li class="active" data-toggle="tooltip" data-placement="top" title="历史浏览记录"><a
                             href="#recent_stock_seg"><span class="glyphicon glyphicon-eye-open"
                                                            aria-hidden="true"></span></a></li>
-                <li class data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
+                <li data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
                                 class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
                 </li>
             </ul>
@@ -581,10 +584,11 @@
         <div class="col-sm-6">
             <div class="row">
                 <!--Names-->
-                <div class="col-sm-4 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
-                    <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
+                <div class="col-sm-4 text-center" target="_blank" data-toggle="tooltip" data-placement="top" title="点击查看公司信息" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                    <a class="my-link" id="stock_name_link" href="#"><h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1></a>
                     <h5 id="stock_code" style="color: #337ab7"></h5>
                 </div>
+
                 <!--Numbers-->
                 <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
                     <div class="row">

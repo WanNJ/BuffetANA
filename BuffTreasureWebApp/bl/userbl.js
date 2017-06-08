@@ -142,6 +142,7 @@ exports.getSelfSelectStock = (userName, callback) => {
  * @param strategy 形如：
  * {
     strategyName: String
+    overwrite: Bool,    //是否覆盖重名
     beginDate: Date,
     endDate: Date,
     stockPoolCondition: {},
@@ -175,26 +176,42 @@ exports.getSelfSelectStock = (userName, callback) => {
  */
 exports.saveStrategy = (userName, strategy, callback) => {
     userDB.getAllStrategy(userName, (err, docs) => {
-        if (err)
-            callback(err, false);
-        else {
-            let has = false;
-            for (let i = 0; i < docs["strategy"].length; i++) {
-                if (docs["strategy"][i]["strategyName"] === strategy["strategyName"]) {
-                    has = true;
-                    break;
+        if (strategy.overwrite) {
+            if (err)
+                callback(err, false);
+            else {
+                for (let i = 0; i < docs["strategy"].length; i++) {
+                    if (docs["strategy"][i]["strategyName"] === strategy["strategyName"]) {
+                        docs["strategy"][i] = strategy;
+                        break;
+                    }
                 }
-            }
-            if (has === false) {
-                userDB.saveStrategy(userName, strategy, (err) => {
-                    callback(err, 'SUCCESS');
+                userDB.overrideStrategy(userName, docs["strategy"], (err) => {
+                    if (err)
+                        callback(err, false);
+                    else
+                        callback(null, true);
                 });
             }
+        }
+        else {
+            if (err)
+                callback(err, false);
             else {
-                // 此策略名称已经存在
-                if(strategy.overwrite){
-
-                }else {
+                let has = false;
+                for (let i = 0; i < docs["strategy"].length; i++) {
+                    if (docs["strategy"][i]["strategyName"] === strategy["strategyName"]) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (has === false) {
+                    userDB.saveStrategy(userName, strategy, (err) => {
+                        callback(err, 'SUCCESS');
+                    });
+                }
+                else {
+                    // 此策略名称已经存在
                     callback(null, 'DUPLICATED');
                 }
             }

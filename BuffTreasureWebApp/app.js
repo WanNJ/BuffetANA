@@ -75,7 +75,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://192.168.1.102/allInfo');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -85,11 +85,11 @@ process.on('exit', () => {
    mongoose.disconnect();
 });
 
-setInterval(realTimeTool.updateAllStockRTInfo, 300000, (err, isOK) => {
-    if (err)
-        console.log("Update real time info failed");
-    else
-        console.log("Update real time info succeed");
-});
+// setInterval(realTimeTool.updateAllStockRTInfo, 300000, (err, isOK) => {
+//     if (err)
+//         console.log("Update real time info failed");
+//     else
+//         console.log("Update real time info succeed");
+// });
 
 module.exports = app;

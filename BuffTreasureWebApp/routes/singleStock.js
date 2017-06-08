@@ -50,6 +50,20 @@ router.get('/getRTInfo', (req, res, next) => {
     });
 });
 
+router.get('/enterprise', (req, res, next) => {
+    singleStockService.getCompanyInfo(req.query.stockCode, (err, infos) => {
+        res.locals.companyInfo = infos;
+
+        console.log(infos);
+
+        if (err)
+            res.render('error');
+        else {
+            res.render('enterprise');
+        }
+    });
+});
+
 router.post('/getDailyKLine', (req, res, next) => {
     let re = /([0-9]+)\((.*)\)/;
     let result = re.exec(req.body.query);

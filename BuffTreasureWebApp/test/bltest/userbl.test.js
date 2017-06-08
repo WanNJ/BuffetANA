@@ -31,7 +31,7 @@ describe('userbl', function() {
     });
     describe('#addToSelfSelectStock1()', function() {
         it('just a test', function(done) {
-            userbl.addToSelfSelectStock('slowtime',{ "stockCode" : "300002", "stockName" : "神州泰岳" },function (err, doc) {
+            userbl.addToSelfSelectStock('slowtime',{ "stockCode" : "000001", "stockName" : "平安银行" },function (err, doc) {
                 if (err) {
                     done(err);
 
@@ -62,7 +62,8 @@ describe('userbl', function() {
     describe('#saveStrategy()', function() {
         it('save a strategy', function(done) {
             let strategy = {};
-            strategy["strategyName"] = "test_strategy2";
+            strategy["strategyName"] = "test_strategy1";
+            strategy["overwrite"] = true;
             strategy["beginDate"] = new Date('2015-01-01');
             strategy["endDate"] = new Date('2017-03-17');
             strategy["stockPoolCondition"] = {
@@ -72,14 +73,14 @@ describe('userbl', function() {
                 "excludeST": false
             };
             strategy["rank"] = {
-                "MA" : ["asc", 10, 1],
-                "MOM" : ["desc", 9, 1]
+                "r1" : ["MA", "asc", 10, 1],
+                "r2" : ["MOM", "desc", 9, 1]
                 // ,"RSI" : ["asd", 10, 1],
                 // "KDJ_K" : ["asd", 10, 1],
                 // "KDJ_D" : ["asd", 10, 1]
             };
             strategy["filter"] = {
-                "turnOverRate" : ['<', 1]
+                "f1" : ["turnOverRate", '<', 1]
             };
             strategy["tradeModel"] = {
                 "holdingDays": 2,
@@ -109,6 +110,19 @@ describe('userbl', function() {
     describe('#getAllStrategy()', function() {
         it('just a test1', function(done) {
             userbl.getAllStrategy('slowtime', function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#loadStrategy()', function() {
+        it('just a test1', function(done) {
+            userbl.loadStrategy('slowtime', 'test_strategy', function (err, doc) {
                 if (err) {
                     done(err);
                 }

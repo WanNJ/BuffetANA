@@ -70,12 +70,10 @@
             };
         }
 
-        function getCharts(stockCode) {
-            $('#firstTab').tab('show');
-
+        // 基本数据
+        function getBasicData(stockCode) {
             let fullStockCode = getFullStockCode(stockCode);
 
-            // 基本数据
             $.ajax({
                 url: 'http://hq.sinajs.cn/list=' + fullStockCode,
                 dataType: "script",
@@ -102,8 +100,50 @@
                         $("#imp_icon").addClass("fa-arrow-up");
                         $("#imp_icon").css({color: "red"});
                     }
+
+                    let re = /(<th>.*<\/th>)/;
+
+                    let list = $('#five_table > tbody > tr');
+                    let str = '';
+
+                    for(let i = 0; i < 5; i++) {
+                        let result = re.exec(list[i].innerHTML);
+                        str = str + '<tr>' + result[1] +  '<td>' + realTimeInfo[29-2*i] + '</td><td>' + Math.round(realTimeInfo[28-2*i]/100) + '</td></tr>';
+                    }
+
+                    for(let i = 0; i < 5; i++) {
+                        let result = re.exec(list[5+i].innerHTML);
+                        str = str + '<tr>' + result[1] + '<td>' + realTimeInfo[10+2*i+1] + '</td><td>' + Math.round(realTimeInfo[10+2*i]/100) + '</td></tr>';
+                    }
+
+                    $('#five_table > tbody').html(str);
                 }
             });
+        }
+
+        // 板块行业
+        function getIndustry(stockCode) {
+            $.get('single-stock/getStockIndustry', {stockCode: stockCode}, (result) => {
+                for (let i = 0; i < result.length; i++) {
+                    let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    $('#industry_table > tbody').append(appendedStr);
+                }
+            });
+
+            $.get('single-stock/getStockBoard', {stockCode: stockCode}, (result) => {
+                for (let i = 0; i < result.length; i++) {
+                    let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    $('#block_table > tbody').append(appendedStr);
+                }
+            });
+        }
+
+        function getCharts(stockCode) {
+            $('#firstTab').tab('show');
+
+            getBasicData(stockCode);
+
+            getIndustry(stockCode);
 
             // 分时图数据
             $.ajax({
@@ -133,9 +173,10 @@
                 }
             });
 
+            // 更新分时图，每分钟更新一次
             window.setInterval(function () {
-                //TODO 更新分时图
-            }, 3000);
+                getBasicData(stockCode);
+            }, 60000);
 
             // 日K数据
             $.ajax({
@@ -309,7 +350,6 @@
                 let appendedStr = '<tr><th>' + recent_stocks[i][0] + '</th><td>' + recent_stocks[i][1] + '</td></tr>';
                 $('#recent_stock_table > tbody').append(appendedStr);
             }
-
 
             $('#recent_stock_table > tbody > tr').click(function (e) {
                 e.preventDefault();
@@ -626,16 +666,26 @@
 
         <div>
             <ul class="nav nav-tabs nav-justified" id="left_side_tab">
-                <li class="active"><a href="#five_seg">五档盘口<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></li>
-                <li><a href="#industry_seg">行业<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
-                <li><a href="#block_seg">板块<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></a></li>
+                <li class="active"><a href="#five_seg">五档</a></li>
+                <li><a href="#industry_seg">行业</a></li>
+                <li><a href="#block_seg">板块</a></li>
             </ul>
         </div>
 
         <div class="col-sm-12 tab-content">
             <div id="five_seg" class="tab-pane active">
-                <table id="five_table" class="table table-hover" style="font-size: 13px">
+                <table id="five_table" class="table" style="font-size: 13px">
                     <tbody>
+                    <tr><th>卖五</th></tr>
+                    <tr><th>卖四</th></tr>
+                    <tr><th>卖三</th></tr>
+                    <tr><th>卖二</th></tr>
+                    <tr><th>卖一</th></tr>
+                    <tr><th>买一</th></tr>
+                    <tr><th>买二</th></tr>
+                    <tr><th>买三</th></tr>
+                    <tr><th>买四</th></tr>
+                    <tr><th>买五</th></tr>
                     </tbody>
                 </table>
             </div>
@@ -651,7 +701,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 

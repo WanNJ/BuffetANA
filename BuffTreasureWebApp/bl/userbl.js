@@ -215,7 +215,12 @@ exports.getAllStrategy = (userName, callback) => {
         else {
             let strategy = {};
             docs["strategy"].forEach(t => {
-                strategy[t["strategyName"]] = t;
+                strategy[t["strategyName"]] = [];
+                strategy[t["strategyName"]].push(t["markNormal"]);
+                strategy[t["strategyName"]].push(t["markHS"]);
+                strategy[t["strategyName"]].push(t["markHO"]);
+                strategy[t["strategyName"]].push(t["markLS"]);
+                strategy[t["strategyName"]].push(t["markLO"]);
             });
             callback(null, strategy);
         }

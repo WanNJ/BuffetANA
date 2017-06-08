@@ -148,7 +148,7 @@ exports.getSelfSelectStock = (userName, callback) => {
     rank:{},
     filter:{},
     tradeModel:{},
-    envSpecDay:Number,
+    marketObserve:Number,
     markNormal:Number,// 正常情况下 情况下的分数
     markHS:Number,// high and same 情况下的分数
     markHO:Number,// high and opposite 情况下的分数
@@ -167,7 +167,7 @@ exports.getSelfSelectStock = (userName, callback) => {
  *         "f2":   ["turnOverRate",     "<",     0.05]
  *       }
  * tradeModel {TradeModelVO} 交易模型
- * envSpecDay {Number}  市场观察期
+ * marketObserve {Number}  市场观察期
  * @param callback (err, docs) => {}
  *
  * 如果保存成功，则docs为SUCCESS

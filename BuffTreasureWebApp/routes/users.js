@@ -258,6 +258,14 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
 
 router.post('/quantitative-analysis/save', function (req, res, next) {
     let body = req.body;
+    if(body["benches[]"]!==undefined){
+        body["benches"]=body["benches[]"];
+        delete body["benches[]"];
+    }
+    if(body["industries[]"]!==undefined){
+        body["industries"]=body["industries[]"];
+        delete body["industries[]"];
+    }
     let userName = req.session.user;
 
     userbl.saveStrategy(userName,body,(err, docs) => {

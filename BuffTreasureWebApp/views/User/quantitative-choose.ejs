@@ -676,7 +676,6 @@
             async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             url: "allStrategy", //请求发送到TestServlet处
             success: (result) => {
-                console.log(result);
                 for(let strategy_name in result){
                     let button="<button type=\"button\" class=\"list-group-item\" data-dismiss=\"modal\"></button>";
                     $("#strategy-list").append(button);
@@ -685,7 +684,7 @@
                         $.ajax({
                             type: "get",
                             async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                            url: "strategy/:name", //请求发送到TestServlet处
+                            url: "strategy/"+strategy_name, //请求发送到TestServlet处
                             success: (result) => {
                                 load_strategy(result);
                             },
@@ -703,17 +702,18 @@
     }
 
     function load_strategy(data) {
+        console.log(data);
         $("#date-from").val(data.beginDate);
         $("#date-to").val(data.endDate);
         $("#stock-pool").val(data.stockPool);
         stock_pool_change($("#stock-pool").val());
-        let benches = data.benches===""? null:data.benches.split(",");
-        let industries = data.industries===""? null:data.industries.split(",");
+        let benches = data.benches===undefined? new Array():data.benches;
+        let industries = data.industries===undefined? new Array():data.industries;
         for(let i=0;i< benches.length;i++){
-            $("#boards li a span[text="+benches[i]+"]").parent().find("input:checkbox").attr("checked",true);
+            $("#boards li a span:contains('"+benches[i]+"')").parent().find("input:checkbox").attr("checked",true);
         }
         for(let i=0;i< industries.length;i++){
-            $("#industries li a span[text="+benches[i]+"]").parent().find("input:checkbox").attr("checked",true);
+            $("#industries li a span:contains('"+industries[i]+"')").parent().find("input:checkbox").attr("checked",true);
         }
         $("#exclude-ST").val(data.excludeST);
         $("#exclude-ST").attr("checked",data.excludeST==="on");

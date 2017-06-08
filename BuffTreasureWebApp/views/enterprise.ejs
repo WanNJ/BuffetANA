@@ -2,7 +2,7 @@
 <html>
 <head>
     <% include Components/settings.html %>
-    <title>BUFF-公司信息</title>
+    <title><%= companyInfo['公司名称'] %></title>
 </head>
 
 <body>
@@ -10,103 +10,101 @@
 <div class="page-container bloc-fill-screen">
     <% include Components/navigator.ejs %>
 
-    <div class="r-title"><span class="ca">公司简介—</span><%= companyInfo['公司名称'] %></div>
-
-    <div id="con02-0" class="tagmain">
+    <div class="col-sm-12">
         <!--公司简介begin-->
-        <table id="comInfo1" width="100%">
+        <table class="table table-bordered" width="100%">
             <tbody>
             <tr>
-                <td class="ct">公司名称：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['公司名称'] %></td>
+                <th colspan="1" width="10%">公司名称：</th>
+                <td colspan="3"><%= companyInfo['公司名称'] %></td>
             </tr>
             <tr>
-                <td class="ct">公司英文名称：</td>
-                <td colspan="3" class="ccl"><<%= companyInfo['公司英文名称'] %>/td>
+                <th>公司英文名称：</th>
+                <td colspan="3"><%= companyInfo['公司英文名称'] %></td>
             </tr>
             <tr>
-                <td class="ct">上市市场：</td>
-                <td class="cc"><%= companyInfo['上市市场'] %></td>
-                <td class="ct">上市日期：</td>
-                <td class="cc"><%= companyInfo['上市日期'] %></td>
+                <th>上市市场：</th>
+                <td><%= companyInfo['上市市场'] %></td>
+                <th>上市日期：</th>
+                <td><%= companyInfo['上市日期'] %></td>
             </tr>
             <tr>
-                <td class="ct">发行价格：</td>
-                <td class="cc"><%= companyInfo['发行价格'] %>/td>
-                <td class="ct">主承销商：</td>
-                <td class="cc"><%= companyInfo['主承销商'] %></td>
+                <th>发行价格：</th>
+                <td><%= companyInfo['发行价格'] %></td>
+                <th>主承销商：</th>
+                <td><%= companyInfo['主承销商'] %></td>
             </tr>
             <tr>
-                <td class="ct">成立日期：</td>
-                <td class="cc"><%= companyInfo['成立日期'] %></td>
-                <td class="ct">注册资本：</td>
-                <td class="cc"><%= companyInfo['注册资本'] %></td>
+                <th>成立日期：</th>
+                <td><%= companyInfo['成立日期'] %></td>
+                <th>注册资本：</th>
+                <td><%= companyInfo['注册资本'] %></td>
             </tr>
             <tr>
-                <td class="ct">机构类型：</td>
-                <td class="cc"><%= companyInfo['机构类型'] %></td>
-                <td class="ct">组织形式：</td>
-                <td class="cc"><%= companyInfo['组织形式'] %></td>
+                <th>机构类型：</th>
+                <td><%= companyInfo['机构类型'] %></td>
+                <th>组织形式：</th>
+                <td><%= companyInfo['组织形式'] %></td>
             </tr>
             <tr>
-                <td class="ct">董事会秘书：</td>
-                <td class="cc"><%= companyInfo['董事会秘书'] %></td>
-                <td class="ct">公司电话：</td>
-                <td class="cc"><%= companyInfo['公司电话'] %></td>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
-                <td class="ct">董秘电话：</td>
-                <td class="cc"><%= companyInfo['董秘电话'] %></td>
-                <td class="ct">公司传真：</td>
-                <td class="cc"><%= companyInfo['公司传真'] %></td>
+                <th>董事会秘书：</th>
+                <td><%= companyInfo['董事会秘书'] %></td>
+                <th>公司电话：</th>
+                <td><%= companyInfo['公司电话'] %></td>
             </tr>
             <tr>
             </tr>
             <tr>
-                <td class="ct">董秘传真：</td>
-                <td class="cc"><%= companyInfo['董秘传真'] %></td>
-                <td class="ct">公司电子邮箱：</td>
-                <td class="cc"><%= companyInfo['公司电子邮箱'] %></td>
+                <th>董秘电话：</th>
+                <td><%= companyInfo['董秘电话'] %></td>
+                <th>公司传真：</th>
+                <td><%= companyInfo['公司传真'] %></td>
             </tr>
             <tr>
             </tr>
             <tr>
-                <td class="ct">董秘电子邮箱：</td>
-                <td class="cc"><%= companyInfo['董秘电子邮箱'] %></td>
-                <td class="ct">公司网址：</td>
-                <td class="cc"><%= companyInfo['公司网址'] %></td>
+                <th>董秘传真：</th>
+                <td><%= companyInfo['董秘传真'] %></td>
+                <th>公司电子邮箱：</th>
+                <td><%= companyInfo['公司电子邮箱'] %></td>
             </tr>
             <tr>
             </tr>
             <tr>
-                <td class="ct">邮政编码：</td>
-                <td class="cc"><%= companyInfo['邮政编码'] %></td>
-                <td class="ct">信息披露网址：</td>
-                <td class="cc"><%= companyInfo['信息披露网址'] %></td>
+                <th>董秘电子邮箱：</th>
+                <td><%= companyInfo['董秘电子邮箱'] %></td>
+                <th>公司网址：</th>
+                <td><%= companyInfo['公司网址'] %></td>
             </tr>
             <tr>
             </tr>
             <tr>
-                <td class="ct">证券简称更名历史：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['证券简称更名历史'] %></td>
+                <th>邮政编码：</th>
+                <td><%= companyInfo['邮政编码'] %></td>
+                <th>信息披露网址：</th>
+                <td><%= companyInfo['信息披露网址'] %></td>
             </tr>
             <tr>
-                <td class="ct">注册地址：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['注册地址'] %></td>
             </tr>
             <tr>
-                <td class="ct">办公地址：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['办公地址'] %></td>
+                <th>证券简称更名历史：</th>
+                <td colspan="3"><%= companyInfo['证券简称更名历史'] %></td>
             </tr>
             <tr>
-                <td class="ct">公司简介：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['公司简介'] %></td>
+                <th>注册地址：</th>
+                <td colspan="3"><%= companyInfo['注册地址'] %></td>
             </tr>
             <tr>
-                <td class="ct">经营范围：</td>
-                <td colspan="3" class="ccl"><%= companyInfo['经营范围'] %></td>
+                <th>办公地址：</th>
+                <td colspan="3"><%= companyInfo['办公地址'] %></td>
+            </tr>
+            <tr>
+                <th>公司简介：</th>
+                <td colspan="3"><%= companyInfo['公司简介'] %></td>
+            </tr>
+            <tr>
+                <th>经营范围：</th>
+                <td colspan="3"><%= companyInfo['经营范围'] %></td>
             </tr>
             </tbody>
         </table>

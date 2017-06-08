@@ -49,15 +49,14 @@ exports.contentDB = {
      * @param callback
      */
     pressBad: (c_id,userID,callback) => {
-        forumSchema.findOne({'code':code},'bad',(err, data) => {
-            contentSchema.findOne({'_id': c_id}, 'bad', (err, data) => {
-                let goodList = data['bad'];
-                goodList.push(userID);
-                contentSchema.update({'_id': c_id}, {$set: {"good": goodList}}, (err, doc) => {
-                    callback(err, doc)
-                })
-            });
-        })
+         contentSchema.findOne({'_id': c_id}, 'bad', (err, data) => {
+             let goodList = data['bad'];
+             goodList.push(userID);
+             contentSchema.update({'_id': c_id}, {$set: {"bad": goodList}}, (err, doc) => {
+                 callback(err, doc)
+             })
+         });
+
     },
 
 }

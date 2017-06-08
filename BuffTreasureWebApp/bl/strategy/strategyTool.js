@@ -269,9 +269,9 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
                 //console.log(keys)
                 //console.log('length:' +keys.length)
-                resolve(rankMap[keys[index]]
-                    (code ,codeIndex , rank[keys[index]][0]==='desc',rank[keys[index]][2],
-                    rank[keys[index]][1], AllPickleDataList,beginDate ,endDate)
+                resolve(rankMap[rank[keys[index]][0]]
+                    (code ,codeIndex , rank[keys[index]][1]==='desc',rank[keys[index]][2],
+                    rank[keys[index]][3], AllPickleDataList,beginDate ,endDate)
                     .then(setRankPromise(code,codeIndex,rank,index+1,AllPickleDataList,beginDate,endDate)));
             }
         });
@@ -297,7 +297,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 //console.log(filter)
                 //console.log(keys[index])
                 let promise = filterMap.setFilter
-                    (code ,codeIndex,keys[index],filter[keys[index]][0]==='>', filter[keys[index]][1], beginDate ,endDate, AllPickleDataList)
+                    (code ,codeIndex,filter[keys[index]][0],filter[keys[index]][1]==='>', filter[keys[index]][2], beginDate ,endDate, AllPickleDataList)
                     .then(setFilterPromise(code, codeIndex, filter, index + 1,AllPickleDataList,beginDate ,endDate));
                 resolve(promise);
             }

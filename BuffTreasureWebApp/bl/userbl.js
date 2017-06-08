@@ -186,7 +186,7 @@ exports.saveStrategy = (userName, strategy, callback) => {
                         break;
                     }
                 }
-                userDB.overrideStrategy(userName, docs, (err) => {
+                userDB.overrideStrategy(userName, docs["strategy"], (err) => {
                     if (err)
                         callback(err, false);
                     else

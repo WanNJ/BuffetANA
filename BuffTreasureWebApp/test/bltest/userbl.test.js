@@ -31,7 +31,7 @@ describe('userbl', function() {
     });
     describe('#addToSelfSelectStock1()', function() {
         it('just a test', function(done) {
-            userbl.addToSelfSelectStock('slowtime',{ "stockCode" : "300002", "stockName" : "神州泰岳" },function (err, doc) {
+            userbl.addToSelfSelectStock('slowtime',{ "stockCode" : "000001", "stockName" : "平安银行" },function (err, doc) {
                 if (err) {
                     done(err);
 
@@ -62,7 +62,8 @@ describe('userbl', function() {
     describe('#saveStrategy()', function() {
         it('save a strategy', function(done) {
             let strategy = {};
-            strategy["strategyName"] = "test_strategy3";
+            strategy["strategyName"] = "test_strategy1";
+            strategy["overwrite"] = true;
             strategy["beginDate"] = new Date('2015-01-01');
             strategy["endDate"] = new Date('2017-03-17');
             strategy["stockPoolCondition"] = {

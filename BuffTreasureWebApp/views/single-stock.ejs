@@ -530,42 +530,41 @@
         });
     </script>
 
-
     <!--Main Block Of Single Stock-->
     <div class="col-sm-8" id="stockSeg" style="display: block;">
 
         <!--Basic Infos of a stock-->
-        <div class="col-sm-12">
+        <div class="col-sm-6" class="jumbotron">
             <div class="row">
                 <!--Names-->
-                <div class="col-sm-4 text-center" style="height: 102px;">
-                    <h1 id="stock_name" class="display-3" style="color: #337ab7;font-weight: bold"></h1>
-                    <h4 id="stock_code" style="color: #337ab7"></h4>
+                <div class="col-sm-4 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                    <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
+                    <h5 id="stock_code" style="color: #337ab7"></h5>
                 </div>
                 <!--Numbers-->
-                <div class="col-sm-5">
+                <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
                     <div class="row">
-                        <div class="col-sm-5 text-right" style="height: 102px;">
-                            <h1 id="current_price" class="display-1" style="height: 102px;"></h1>
+                        <div class="col-sm-5 text-right" style="height: 102px;padding-left: 10px;padding-right: 0px">
+                            <h1 id="current_price" style="height: 102px;"></h1>
                         </div>
-                        <div class="col-sm-3">
-                            <h1 class="display-1">
+                        <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                            <h1>
                                 <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
                             </h1>
                         </div>
-                        <div class="col-sm-4 text-left" style="height: 102px;">
-                            <h3 id="chg"></h3>
-                            <h3 id="chg_p"></h3>
+                        <div class="col-sm-4 text-center" style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                            <h4 id="chg"></h4>
+                            <h4 id="chg_p"></h4>
                         </div>
                     </div>
                 </div>
                 <!--Add to personal Button-->
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-left: 15px;padding-right: 0px">
                     <div class="row">
                         <div class="col-sm-12 text-center"
-                             style="height: 102px;padding-top:16px;  line-height: 25px;">
-                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-lg"
-                                    style="height: 60px;">
+                             style="height: 102px;padding-top:19px;  line-height: 10px;">
+                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
+                                    style="height: 40px;">
                                 <span class="fa fa-plus"></span> 加入自选股
                             </button>
                         </div>

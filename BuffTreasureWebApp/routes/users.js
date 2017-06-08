@@ -124,17 +124,17 @@ function splitStrategyResult(rawData) {
     };
 }
 
-router.use(function (req, res, next) {
-    let sess = req.session;
-
-    if (sess.user) {
-        next();
-    } else {
-        req.session.alertType = "alert-danger";
-        req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
-        res.redirect('/sign-in');
-    }
-});
+// router.use(function (req, res, next) {
+//     let sess = req.session;
+//
+//     if (sess.user) {
+//         next();
+//     } else {
+//         req.session.alertType = "alert-danger";
+//         req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
+//         res.redirect('/sign-in');
+//     }
+// });
 
 router.get('/comparison', function (req, res, next) {
     res.render('User/comparison');
@@ -179,8 +179,7 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
     let beginDate = new Date(body.beginDate);
     let endDate = new Date(body.endDate);
 
-    let excludeST = false;
-    // excludeST = body.excludeST === 'on';
+    let excludeST = body.excludeST === 'on';
 
     let benches = body.benches===""? null:body.benches.split(",");
     let industries = body.industries===""? null:body.industries.split(",");

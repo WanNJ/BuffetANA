@@ -13,7 +13,7 @@
             <div class="section-container home-section-wrap clearfix row">
                 <div class="col-md-3 col-sm-6" style="display: inline">
                     <span >股票池：</span>
-                    <select class="form-control" style="max-width: 120px;display: inline-flex" id="stock-pool">
+                    <select class="form-control" style="max-width: 120px;display: inline-flex" id="stock-pool" onchange="stock_pool_change($(this).val())">
                         <option selected="selected">沪深300</option>
                         <option >随机500</option>
                         <option >沪深A股</option>
@@ -25,7 +25,7 @@
                 <div class="col-md-3 col-sm-6">
                     <span style="padding-right: 14px;">行业：</span>
                     <div class="dropdown" style="display: inline;">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_industries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-default dropdown-toggle" type="button" disabled=true  id="dropdownMenu_industries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="industries">
@@ -35,7 +35,7 @@
                 <div class="col-md-3 col-sm-6">
                     <span style="padding-right: 14px;">板块：</span>
                     <div class="dropdown" style="display: inline;">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_boards" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-default dropdown-toggle" type="button" disabled=true  id="dropdownMenu_boards" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu_industries" id="boards">
@@ -347,6 +347,25 @@
                         <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
                     </div>
                 </div>
+                <div class="container-fluid">
+                    <div style="padding-left: 10px;padding-right: 70px;display: inline-block">
+                        <span>动态持仓</span>
+                        <div class="switch" style="display: inline-flex;margin-left: 25px;">
+                            <input id="dynamic-hold" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')" onchange="dynamic_hold_change($(this).val())">
+                            <label for="dynamic-hold"></label>
+                        </div>
+                    </div>
+                    <div style="padding-left: 10px;padding-right: 52px;display: inline-block">
+                        止盈率：
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="max-win-rate" onchange="number_validate(this,1,Infinity)"/>
+                        %
+                    </div>
+                    <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                        止损率：
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="max-lose-rate" onchange="number_validate(this,1,Infinity)"/>
+                        %
+                    </div>
+                </div>
             </div>
             <div class="row text-center">
                 <button type="submit" class="btn btn-primary btn-lg btn-clean animated" onclick="start()">
@@ -359,7 +378,7 @@
 
 <script type="text/javascript">
     let option="<li>                                                                             \
-                        <a class=\"active\"                                                                     \
+                        <a class=\"active\">                                                                     \
                             <input type=\"checkbox\" autocomplete=\"off\" checked>                         \
                             <span>a</span>                                                                      \
                         </a>                                                                                     \
@@ -405,6 +424,26 @@
             },
         });
     });
+
+    function stock_pool_change(newVal){
+        if(newVal.trim()==="自选股票池"){
+            $("#dropdownMenu_industries").attr("disabled",false);
+            $("#dropdownMenu_boards").attr("disabled",false);
+        }else {
+            $("#dropdownMenu_industries").attr("disabled",true);
+            $("#dropdownMenu_boards").attr("disabled",true);
+        }
+    }
+
+    function dynamic_hold_change(newVal){
+        if(newVal==="on"){
+            $("#max-win-rate").attr("disabled",false);
+            $("#max-lose-rate").attr("disabled",false);
+        }else {
+            $("#max-win-rate").attr("disabled",true);
+            $("#max-lose-rate").attr("disabled",true);
+        }
+    }
 
     function date_from_change(){
         if(/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/.test($("#date-from").val()) && $("#date-from").val()<=$("#date-to").val()){
@@ -526,12 +565,14 @@
                 Number($(filter_rows.get(i).cells.item(2)).children().val())];
         }
         let industries=new Array();
-        for(let i=0;i< $("#industries li a input:checkbox:checked").length;i++){
-            industries[i]=$("#industries li a input:checkbox:checked").eq(i).parent().text().trim();
-        }
         let benches=new Array();
-        for(let i=0;i< $("#boards li a input:checkbox:checked").length;i++){
-            benches[i]=$("#boards li a input:checkbox:checked").eq(i).parent().text().trim();
+        if($("#stock-pool").trim()==="自选股票池"){
+            for(let i=0;i< $("#industries li a input:checkbox:checked").length;i++){
+                industries[i]=$("#industries li a input:checkbox:checked").eq(i).parent().text().trim();
+            }
+            for(let i=0;i< $("#boards li a input:checkbox:checked").length;i++){
+                benches[i]=$("#boards li a input:checkbox:checked").eq(i).parent().text().trim();
+            }
         }
 
         let data = {

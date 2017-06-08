@@ -192,7 +192,11 @@ exports.saveStrategy = (userName, strategy, callback) => {
             }
             else {
                 // 此策略名称已经存在
-                callback(null, 'DUPLICATED')
+                if(strategy.overwrite){
+
+                }else {
+                    callback(null, 'DUPLICATED');
+                }
             }
         }
     });

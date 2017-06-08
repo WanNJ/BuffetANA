@@ -642,10 +642,31 @@
         standardPost('result', collect_data());
     }
 
-    function save(name) {
+    function save(name,overwrite=false) {
         let data=collect_data();
         data.strategyName=name;
-        standardPost('save', data);
+        data.markNormal=-1;
+        data.markHS=-1;
+        data.markHO=-1;
+        data.markLS=-1;
+        data.markLO=-1;
+        data.overwrite=overwrite;
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            data: data,
+            url: "save", //请求发送到TestServlet处
+            success: (result) => {
+                if(result==="DUPLICATED"){
+                    save(name,true);
+                }else {
+                    console.log(result);
+                }
+            },
+            error: function(request, err){
+                console.error(err);
+            },
+        });
     }
 
     function load() {

@@ -4,8 +4,8 @@
 
 
 exports.proMap = {
-    "MA" :['afterAdjClose'],
-    "MOM" : ['afterAdjClose'],
+    "MA" :['afterAdjClose','close'],
+    "MOM" : ['afterAdjClose','close'],
     "RSI" : ['high','low' ,'close','changePrice'],
     "MACD_DIF" : ['high','low' ,'close','changePrice'],
     "MACD_DEA" : ['high','low' ,'close','changePrice'],

@@ -22,12 +22,12 @@ describe('strategybl', function() {
         it('没有动态持仓', function (done) {
             let stockPoolConditionVO = new StockPoolConditionVO('沪深300',[],[],false);
 
-            let tradeModelVO  = new TradeModelVO(2, 2, 20);
+            let tradeModelVO  = new TradeModelVO(2, 2);
             // console.log(new Date())
 
 
             let rank = {
-                "r1" : ["MA", "asc", 10, 1],
+                "r1" : ["MA", "asd", 10, 1],
                 "r2" : ["MOM", "desc", 9, 1]
                 // ,"RSI" : ["asd", 10, 1],
                 // "KDJ_K" : ["asd", 10, 1],
@@ -36,7 +36,7 @@ describe('strategybl', function() {
             let filter = {
                 "f1" : ["turnOverRate", '<', 1]
             };
-            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-03-17'), stockPoolConditionVO, rank, filter, tradeModelVO, 10, function (err, docs) {
+            strategy.getBackResults(new Date('2015-01-01'), new Date('2017-03-17'), stockPoolConditionVO, rank, filter, tradeModelVO, 3, function (err, docs) {
                 if (err) {
                     console.log(err.message);
                     done(err);

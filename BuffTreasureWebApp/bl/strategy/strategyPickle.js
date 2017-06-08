@@ -30,7 +30,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
      * 参数检验
      * add by wsw
      */
-
+    console.log(beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)
     let parameterCheck = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)=>{
         return new Promise((resolve,reject) => {
 

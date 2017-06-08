@@ -384,7 +384,6 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
 
     console.time('set Read');
     singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),new Date(endDate),projection, (err,data)=>{
-        console.timeEnd('set Read');
         //data.reverse();
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
@@ -405,19 +404,19 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                     //console.log(data[p]['date'])
                     //console.log('ppppp:    '+pickleData.beginDate)
                     if (typeof data[p] !== 'undefined' && pickleData.beginDate - data[p]['date'] ===0){
-                        begin = data[p]['close']; //最后一天收盘价格
+                        begin = data[p]['afterAdjClose']; //最后一天收盘价格
                     }
                     else
                         valid = false;
 
                     while ( typeof data[p] !== 'undefined' && data[p]['date'] - pickleData.endDate < 0 ) {
-                        priceList.push(data[p]['close'])
+                        priceList.push(data[p]['afterAdjClose'])
                         //console.log(p)
                         p++;
                     }
                     let end = 0;
                     if (typeof data[p] !== 'undefined' && pickleData.endDate - data[p]['date'] === 0 ) {
-                        end = data[p]['close']; //最后一天收盘价格
+                        end = data[p]['afterAdjClose']; //最后一天收盘价格
                         priceList.push(end)
                     }
                     else
@@ -431,7 +430,7 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
                             p++;
                         }
                         if (typeof data[p] !== 'undefined' && p===fur ) {
-                            end = data[p]['close']; //未来周期一天收盘价格
+                            end = data[p]['afterAdjClose']; //未来周期一天收盘价格
                             priceList.push(end)
                         } else
                             priceList.push(priceList[priceList.length-1])
@@ -451,7 +450,6 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
             });
             AllDataList[keys[i]] = pickleDataList;
         }
-        console.timeEnd('set Name');
         callback(err,AllDataList);
     })
 }

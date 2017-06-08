@@ -2,7 +2,7 @@
  * Created by slow_time on 2017/5/5.
  */
 
-let allStock = require('./allStockSchema')
+let allStock = require('./allStockSchema');
 
 // 储存第一次查询所有股票代码和名称的结果，以便后续调用时直接使用，不用再次查询数据库
 let allStocks;

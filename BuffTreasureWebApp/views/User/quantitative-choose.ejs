@@ -656,10 +656,13 @@
             url: "allStrategy", //请求发送到TestServlet处
             success: (result) => {
                 console.log(result);
-                for(let i=0;i<result.length;i++){
+                for(let strategy_name in result){
                     let button="<button type=\"button\" class=\"list-group-item\" data-dismiss=\"modal\"></button>";
                     $("#strategy-list").append(button);
-                    $("#strategy-list button:last").text(result[i].strategyName);
+                    $("#strategy-list button:last").text(strategy_name);
+                    $("#strategy-list button:last").click(()=>{
+                        //TODO
+                    });
                 }
             },
             error: function(request, err){

@@ -24,150 +24,6 @@ const allStockDB = require('../models/allstock').allStockDB;
  * @param code 股票代号
  * @param callback 形如 (err, docs) => { }
  */
-function splitData(daily_rawData) {
-    let categoryData = [];
-    let values_no_adj = [];
-    let values_before_adj = [];
-    let values_after_adj = [];
-    let changeRates = [];
-    let volumns = [];
-    let turnOverRates = [];
-    let kIndexes = [];
-    let dIndexes = [];
-    let jIndexes = [];
-    let difs = [];
-    let deas = [];
-    let macds = [];
-    let difs_before_adj = [];
-    let deas_before_adj = [];
-    let macds_before_adj = [];
-    let difs__after_adj = [];
-    let deas_after_adj = [];
-    let macds_after_adj = [];
-    let rsi6s = [];
-    let rsi12s = [];
-    let rsi24s = [];
-    let BIAS6 = [];
-    let BIAS12 = [];
-    let BIAS24 = [];
-    let Boll = [];
-    let upper = [];
-    let lower = [];
-    let Boll_before_adj = [];
-    let upper_before_adj = [];
-    let lower_before_adj = [];
-    let Boll_after_adj = [];
-    let upper_after_adj = [];
-    let lower_after_adj = [];
-    let WR1 = [];
-    let WR2 = [];
-    for (let i = 0; i < daily_rawData.length; i++) {
-        categoryData.push(daily_rawData[i].splice(0, 1)[0]);
-        values_no_adj.push(daily_rawData[i].splice(0, 4));
-        values_before_adj.push(daily_rawData[i].splice(0, 4));
-        values_after_adj.push(daily_rawData[i].splice(0, 4));
-        changeRates.push(daily_rawData[i].splice(0, 1)[0]);
-        volumns.push(daily_rawData[i].splice(0, 1)[0]);
-        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
-        kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        dIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        jIndexes.push(daily_rawData[i].splice(0, 1)[0]);
-        difs.push(daily_rawData[i].splice(0, 1)[0]);
-        deas.push(daily_rawData[i].splice(0, 1)[0]);
-        macds.push(daily_rawData[i].splice(0, 1)[0]);
-        difs_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        deas_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        macds_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        difs__after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        deas_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        macds_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
-        rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS6.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS12.push(daily_rawData[i].splice(0, 1)[0]);
-        BIAS24.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll.push(daily_rawData[i].splice(0, 1)[0]);
-        upper.push(daily_rawData[i].splice(0, 1)[0]);
-        lower.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        upper_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        lower_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        Boll_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        upper_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        lower_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
-        WR1.push(daily_rawData[i].splice(0, 1)[0]);
-        WR2.push(daily_rawData[i].splice(0, 1)[0]);
-    }
-    return {
-        categoryData: categoryData,
-        KLineValue_no_adj: values_no_adj,
-        KLineValue_before_adj: values_before_adj,
-        KLineValue_after_adj: values_after_adj,
-        changeRates: changeRates,
-        volumns: volumns,
-        turnOverRates: turnOverRates,
-        kIndexes: kIndexes,
-        dIndexes: dIndexes,
-        jIndexes: jIndexes,
-        difs: difs,
-        deas: deas,
-        macds: macds,
-        difs_before_adj: difs_before_adj,
-        deas_before_adj: deas_before_adj,
-        macds_before_adj: macds_before_adj,
-        difs_after_adj: difs__after_adj,
-        deas_after_adj: deas_after_adj,
-        macds_after_adj: macds_after_adj,
-        rsi6s: rsi6s,
-        rsi12s: rsi12s,
-        rsi24s: rsi24s,
-        BIAS6: BIAS6,
-        BIAS12: BIAS12,
-        BIAS24: BIAS24,
-        Boll: Boll,
-        upper: upper,
-        lower: lower,
-        Boll_before_adj: Boll_before_adj,
-        upper_before_adj: upper_before_adj,
-        lower_before_adj: lower_before_adj,
-        Boll_after_adj: Boll_after_adj,
-        upper_after_adj: upper_after_adj,
-        lower_after_adj: lower_after_adj,
-        WR1: WR1,
-        WR2: WR2
-    };
-}
-
-
-/**
- * 获得最近浏览股票的实时信息
- * @param codes {Array} 最近浏览股票的代码数组
- * @param callback (err, results) =. {}
- * results是一个数组形如（对应顺序为传下来的codes数组的顺序）
- *   现价  涨跌幅
- * [[9.2, 0.11]...]
- */
-function getLatestStockInfo(codes, callback) {
-    let promises = codes.map(code => new Promise((resolve, reject) => {
-        RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
-            if (err)
-                reject(err);
-            else {
-                let info = [];
-                info.push(stockRTInfo["now_price"]);
-                info.push(stockRTInfo["change_rate"]);
-                resolve(info);
-            }
-        });
-    }));
-    Promise.all(promises).then(results => {
-        callback(null, results);
-    }).catch((err) => {
-        callback(err, null);
-    });
-}
-
 exports.getDailyData = (code, callback) => {
     singleStockDB.getStockInfoByCode(code, (err, docs) => {
         if (err) {
@@ -1431,4 +1287,153 @@ exports.getHotStocks = (callback) => {
         }
     });
 };
+
+/**
+ * =======================================以下是私有方法==============================================
+ */
+
+
+function splitData(daily_rawData) {
+    let categoryData = [];
+    let values_no_adj = [];
+    let values_before_adj = [];
+    let values_after_adj = [];
+    let changeRates = [];
+    let volumns = [];
+    let turnOverRates = [];
+    let kIndexes = [];
+    let dIndexes = [];
+    let jIndexes = [];
+    let difs = [];
+    let deas = [];
+    let macds = [];
+    let difs_before_adj = [];
+    let deas_before_adj = [];
+    let macds_before_adj = [];
+    let difs__after_adj = [];
+    let deas_after_adj = [];
+    let macds_after_adj = [];
+    let rsi6s = [];
+    let rsi12s = [];
+    let rsi24s = [];
+    let BIAS6 = [];
+    let BIAS12 = [];
+    let BIAS24 = [];
+    let Boll = [];
+    let upper = [];
+    let lower = [];
+    let Boll_before_adj = [];
+    let upper_before_adj = [];
+    let lower_before_adj = [];
+    let Boll_after_adj = [];
+    let upper_after_adj = [];
+    let lower_after_adj = [];
+    let WR1 = [];
+    let WR2 = [];
+    for (let i = 0; i < daily_rawData.length; i++) {
+        categoryData.push(daily_rawData[i].splice(0, 1)[0]);
+        values_no_adj.push(daily_rawData[i].splice(0, 4));
+        values_before_adj.push(daily_rawData[i].splice(0, 4));
+        values_after_adj.push(daily_rawData[i].splice(0, 4));
+        changeRates.push(daily_rawData[i].splice(0, 1)[0]);
+        volumns.push(daily_rawData[i].splice(0, 1)[0]);
+        turnOverRates.push(daily_rawData[i].splice(0, 1)[0]);
+        kIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        dIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        jIndexes.push(daily_rawData[i].splice(0, 1)[0]);
+        difs.push(daily_rawData[i].splice(0, 1)[0]);
+        deas.push(daily_rawData[i].splice(0, 1)[0]);
+        macds.push(daily_rawData[i].splice(0, 1)[0]);
+        difs_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        deas_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        macds_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        difs__after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        deas_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        macds_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi6s.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi12s.push(daily_rawData[i].splice(0, 1)[0]);
+        rsi24s.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS6.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS12.push(daily_rawData[i].splice(0, 1)[0]);
+        BIAS24.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll.push(daily_rawData[i].splice(0, 1)[0]);
+        upper.push(daily_rawData[i].splice(0, 1)[0]);
+        lower.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        upper_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        lower_before_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        Boll_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        upper_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        lower_after_adj.push(daily_rawData[i].splice(0, 1)[0]);
+        WR1.push(daily_rawData[i].splice(0, 1)[0]);
+        WR2.push(daily_rawData[i].splice(0, 1)[0]);
+    }
+    return {
+        categoryData: categoryData,
+        KLineValue_no_adj: values_no_adj,
+        KLineValue_before_adj: values_before_adj,
+        KLineValue_after_adj: values_after_adj,
+        changeRates: changeRates,
+        volumns: volumns,
+        turnOverRates: turnOverRates,
+        kIndexes: kIndexes,
+        dIndexes: dIndexes,
+        jIndexes: jIndexes,
+        difs: difs,
+        deas: deas,
+        macds: macds,
+        difs_before_adj: difs_before_adj,
+        deas_before_adj: deas_before_adj,
+        macds_before_adj: macds_before_adj,
+        difs_after_adj: difs__after_adj,
+        deas_after_adj: deas_after_adj,
+        macds_after_adj: macds_after_adj,
+        rsi6s: rsi6s,
+        rsi12s: rsi12s,
+        rsi24s: rsi24s,
+        BIAS6: BIAS6,
+        BIAS12: BIAS12,
+        BIAS24: BIAS24,
+        Boll: Boll,
+        upper: upper,
+        lower: lower,
+        Boll_before_adj: Boll_before_adj,
+        upper_before_adj: upper_before_adj,
+        lower_before_adj: lower_before_adj,
+        Boll_after_adj: Boll_after_adj,
+        upper_after_adj: upper_after_adj,
+        lower_after_adj: lower_after_adj,
+        WR1: WR1,
+        WR2: WR2
+    };
+}
+
+
+/**
+ * 获得最近浏览股票的实时信息
+ * @param codes {Array} 最近浏览股票的代码数组
+ * @param callback (err, results) =. {}
+ * results是一个数组形如（对应顺序为传下来的codes数组的顺序）
+ *   现价  涨跌幅
+ * [[9.2, 0.11]...]
+ */
+function getLatestStockInfo(codes, callback) {
+    let promises = codes.map(code => new Promise((resolve, reject) => {
+        RTTool.obtainRTInfoByCode(code, (err, stockRTInfo) => {
+            if (err)
+                reject(err);
+            else {
+                let info = [];
+                info.push(stockRTInfo["now_price"]);
+                info.push(stockRTInfo["change_rate"]);
+                resolve(info);
+            }
+        });
+    }));
+    Promise.all(promises).then(results => {
+        callback(null, results);
+    }).catch((err) => {
+        callback(err, null);
+    });
+}
 

@@ -65,37 +65,4 @@ exports.forumDB ={
 
         });
     },
-
-    /**
-     * 点差／不看好
-     * @param code 股票代码
-     * @param userID 用户的ID
-     * @param callback
-     */
-    addContent: (code,contentID,callback) => {
-        forumSchema.findOne({'code':code},'content_id',(err, data) => {
-            if(err||data===null) {
-                let forumCode = {
-                    'code': code,
-                    'good': [],
-                    'bad': [],
-                    'content_id': [contentID]
-                }
-                newSchema = new forumSchema(forumCode)
-                newSchema.save((err, doc) => {
-                    callback(err, doc)
-                })
-            }
-            else{
-                contList = data['content_id']
-                contList.push(contentID)
-                forumSchema.update({'code':code},{$set: {"content_id": contList}},(err,doc)=>{
-                    callback(err,doc)
-                })
-            }
-
-        });
-    },
-
-
 }

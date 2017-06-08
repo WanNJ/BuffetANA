@@ -168,15 +168,15 @@
         // 板块行业
         function getIndustry(stockCode) {
             $.get('single-stock/getStockIndustry', {stockCode: stockCode}, (result) => {
-                for (let i = 0; i < result.length; i++) {
-                    let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    let appendedStr = '<tr><th>' + result + '</th></tr>';
+                    $('#industry_table > tbody').html('');
                     $('#industry_table > tbody').append(appendedStr);
-                }
             });
 
             $.get('single-stock/getStockBoard', {stockCode: stockCode}, (result) => {
                 for (let i = 0; i < result.length; i++) {
                     let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
+                    $('#block_table > tbody').html('');
                     $('#block_table > tbody').append(appendedStr);
                 }
             });
@@ -755,7 +755,7 @@
         <div class="col-sm-12" style="height: 50px;"></div>
 
         <div>
-            <ul class="nav nav-tabs nav-justified" id="left_side_tab">
+            <ul class="nav nav-tabs nav-justified" id="right_side_tab">
                 <li class="active"><a href="#five_seg">五档</a></li>
                 <li><a href="#industry_seg">行业</a></li>
                 <li><a href="#block_seg">板块</a></li>
@@ -793,6 +793,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#right_side_tab').find('a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    </script>
+
 
     <!--scrollToTop按钮-->
     <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span

@@ -893,7 +893,7 @@ function loadMonthlyKLineChart(objData) {
             {
                 type: 'category',
                 data: objData.categoryData,
-                axisLabel: {show: false},
+                axisLabel: {show: false}
             }
         ],
         yAxis: [

@@ -22,6 +22,7 @@ let stockRTInfoSchema = new Schema({
     PB_ratio: Number,                     // 市净率
     amplitude: Number,                    // 振幅（已经乘了100，单位为"%"）
     PE_ratio: Number,                     // 市盈率
-}, {collection: 'stockRTInfo'});
+}, {collection: 'stockRTInfo',
+    versionKey: false});
 
 module.exports = mongoose.model('stockRTInfo', stockRTInfoSchema);

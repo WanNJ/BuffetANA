@@ -4,16 +4,35 @@
 let realTimeTool = require('../../../bl/realtime/singleStockRT');
 let it = require("mocha").it;
 let describe = require("mocha").describe;
+let mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/allInfo');
+
+mongoose.connection.on('open', function () {
+    console.log('Connected to Mongoose');
+});
 
 describe('singleStockRT', function() {
     describe('#obtainRTInfoByCode()', function() {
         it('should show the RTInfo Of 600171', function(done) {
-            realTimeTool.obtainRTInfoByCode('sh000001', (err, RTInfo) => {
+            realTimeTool.obtainRTInfoByCode('000001', (err, RTInfo) => {
                 if (err) {
                     done(err);
                 }
                 else {
                     console.log(RTInfo);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#updateAllStockRTInfo()', function() {
+        it('should update all the info of stocks', function(done) {
+            realTimeTool.updateAllStockRTInfo((err, isOK) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(isOK);
                     done();
                 }
             });

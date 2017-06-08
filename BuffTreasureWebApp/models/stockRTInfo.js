@@ -31,8 +31,24 @@ exports.stockRTInfoDB = {
      */
     updateRTInfo: (code, rtInfo, callback) => {
         let conditions = {code: code};
-        let update = {$set : rtInfo};
+        let update = {$set: rtInfo};
         stockRTInfo.updateOne(conditions, update, (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
+        });
+    },
+
+    /**
+     * 新增实时信息，只会在初始化RTInfo这个Collection时调用，调用一次后，不会再被调用
+     * @deprecated
+     * @param rtInfo
+     * @param callback
+     */
+    addRTInfo: (rtInfo, callback) => {
+        let info = new stockRTInfo(rtInfo);
+        info.save((err) => {
             if (err)
                 callback(err, false);
             else

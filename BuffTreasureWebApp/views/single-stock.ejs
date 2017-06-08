@@ -89,8 +89,12 @@
                         $('#current_price').text('停牌');
                         $("#current_price").css({color: "grey"});
                         $('#chg').html('--');
+                        $("#chg").css({color: "grey"});
                         $('#chg_p').html('--');
+                        $("#chg_p").css({color: "grey"});
+                        $("#imp_icon").removeClass('fa fa-arrow-down fa-arrow-up');
                         $("#imp_icon").html('--');
+                        $("#imp_icon").css({color: "grey"});
                     } else {
                         $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
                         $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
@@ -99,6 +103,8 @@
 
                     if(Math.abs(realTimeInfo[3]) > 0.001) {
                         $("#imp_icon").html('');
+                        $("#imp_icon").addClass('fa');
+
                         if (realTimeInfo[3] - realTimeInfo[2] < 0) {
                             $("#current_price").css({color: "green"});
                             $("#chg").css({color: "green"});

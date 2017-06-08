@@ -196,7 +196,7 @@ function initParaWithDynamic(beginDate, endDate, winRate, loseRate) {
             let sell_price = backData.priceList[1];
             let i = 1;
             for (i; i < backData.priceList.length - 1; i++) {
-                sell_price = backData.priceList[i]
+                sell_price = backData.priceList[i];
                 // 如果低于止损率，则直接卖出
                 if ((backData.priceList[i] - buy_price) / buy_price <= loseRate) {
                     break;

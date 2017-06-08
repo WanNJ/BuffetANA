@@ -106,4 +106,17 @@ describe('userbl', function() {
             });
         });
     });
+    describe('#getAllStrategy()', function() {
+        it('just a test1', function(done) {
+            userbl.getAllStrategy('slowtime', function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
 });

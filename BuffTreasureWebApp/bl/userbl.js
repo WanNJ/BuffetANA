@@ -213,7 +213,11 @@ exports.getAllStrategy = (userName, callback) => {
         if (err)
             callback(err, null);
         else {
-            callback(null, docs);
+            let strategy = {};
+            docs["strategy"].forEach(t => {
+                strategy[t["strategyName"]] = t;
+            });
+            callback(null, strategy);
         }
     });
 };

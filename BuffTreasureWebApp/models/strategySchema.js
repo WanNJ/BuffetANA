@@ -24,8 +24,20 @@ let Schema = mongoose.Schema;
  * @param tradeModelVO {TradeModelVO} 交易模型
  * @param envSpecDay {Number}  市场观察期
  *
+ *
  * @param callback 形如 (err, data) => {}
+ *
+ * eg:  @param markHS
+ * {profitAbility: 20,
+       stability: 20,
+       chooseStockAbility: 20,
+       absoluteProfit: 20,
+       antiRiskAbility: 20,
+       strategyScore: 100
+    }
+ *
  */
+
 let strategySchema = new Schema({
     beginDate: Date,
     endDate: Date,

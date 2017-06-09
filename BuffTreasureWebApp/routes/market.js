@@ -13,7 +13,7 @@ router.get('/getRTInfo', (req, res, next) => {
 });
 
 router.post('/getDailyKLine', (req, res, next) => {
-    marketService.getDailyMarketIndex(req.body.query, (err, docs) => {
+    marketService.getDailyMarketIndex(req.body.stockCode, (err, docs) => {
         if (err)
             res.render('error');
         else
@@ -31,7 +31,7 @@ router.post('/getWeeklyKLine', (req, res, next) => {
 });
 
 router.post('/getMonthlyKLine', (req, res, next) => {
-    marketService.getMonthlyMarketIndex(req.body.query, (err, docs) => {
+    marketService.getMonthlyMarketIndex(req.body.stockCode, (err, docs) => {
         if (err)
             render('error');
         else

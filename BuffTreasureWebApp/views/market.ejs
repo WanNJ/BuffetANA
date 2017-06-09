@@ -31,19 +31,12 @@
             return result;
         }
 
-        function getFullStockCode(stockCode) {
-            let sub = stockCode.substring(0, 3);
-            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
-                return 'sz' + stockCode;
-            else
-                return 'sh' + stockCode;
-        }
         function getAnotherFullStockName(stockCode) {
-            let sub = stockCode.substring(0, 3);
-            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
-                return '1' + stockCode;
+            let sub = stockCode.substring(0, 2);
+            if (sub === 'sz')
+                return '1' + stockCode.substring(2);
             else
-                return '0' + stockCode;
+                return '0' + stockCode.substring(2);
         }
 
         function splitTimeSharingData(rawData) {
@@ -73,21 +66,17 @@
         }
 
         function getBasicData(stockCode) {
-            let fullStockCode = getFullStockCode(stockCode);
-
             // 标题信息
             $.ajax({
-                url: 'http://hq.sinajs.cn/list=' + fullStockCode,
+                url: 'http://hq.sinajs.cn/list=' + stockCode,
                 dataType: "script",
                 async: false,
                 cache: true,
                 success: () => {
                     let realTimeInfo = [];
-                    eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
+                    eval('realTimeInfo = ' + 'hq_str_' + stockCode + '.split(",")');
                     $('#stock_name').html(realTimeInfo[0]);
-                    $('#stock_code').html('(' + fullStockCode + ')');
-
-                    document.getElementById("stock_name_link").href = "single-stock/enterprise?stockCode=" + stockCode;
+                    $('#stock_code').html('(' + stockCode + ')');
 
                     if (Math.abs(realTimeInfo[3]) < 0.001) {
                         $('#current_price').text('停牌');
@@ -137,7 +126,7 @@
                 RTInfos[5].innerHTML = result.amplitude + '%';
                 RTInfos[6].innerHTML = result.volume_of_transaction + '亿元';
 
-                if(result.today_open > result.yesterday_close)
+                if (result.today_open > result.yesterday_close)
                     $(RTInfos[0]).css({color: "red"});
                 else
                     $(RTInfos[0]).css({color: "green"});
@@ -197,7 +186,7 @@
                         daily_KLineChart.hideLoading();
                         daily_KDJChart.hideLoading();
                         setDailyData(result);
-                        loadDailyKLineChart(no_daily_data);
+                        loadDailyKLineChart(dailyData);
                     }
                 },
                 error: function (errorMsg) {
@@ -214,9 +203,9 @@
             $.ajax({
                 type: "post",
                 async: true,
-                url: "single-stock/getWeeklyKLine",
-                data: $("#stock_form").serialize(),
-                dataType: "json", //返回数据形式为json
+                url: "market/getWeeklyKLine",
+                data: {stockCode: stockCode},
+                dataType: "json",
                 beforeSend: function (XHR) {
                     weekly_KLineChart.showLoading();
                     weekly_KDJChart.showLoading();
@@ -226,11 +215,10 @@
                         weekly_KLineChart.hideLoading();
                         weekly_KDJChart.hideLoading();
                         setWeeklyData(result);
-                        loadWeeklyKLineChart(no_weekly_data);
+                        loadWeeklyKLineChart(weeklyData);
                     }
                 },
                 error: function (errorMsg) {
-                    //请求失败时执行该函数
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求周K数据失败，请稍后再试！</strong></div>');
 
                     window.setTimeout(function () {
@@ -243,9 +231,9 @@
             $.ajax({
                 type: "post",
                 async: true,
-                url: "single-stock/getMonthlyKLine",
-                data: $("#stock_form").serialize(),
-                dataType: "json", //返回数据形式为json
+                url: "market/getMonthlyKLine",
+                data: {stockCode: stockCode},
+                dataType: "json",
                 beforeSend: function (XHR) {
                     monthly_KLineChart.showLoading();
                     monthly_KDJChart.showLoading();
@@ -255,11 +243,10 @@
                         monthly_KLineChart.hideLoading();
                         monthly_KDJChart.hideLoading();
                         setMonthlyData(result);
-                        loadMonthlyKLineChart(no_monthly_data);
+                        loadMonthlyKLineChart(monthlyData);
                     }
                 },
                 error: function (errorMsg) {
-                    //请求失败时执行该函数
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求月K数据失败，请稍后再试！</strong></div>');
 
                     window.setTimeout(function () {
@@ -271,19 +258,8 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            // TODO Switch Code
-            $("#stock_form").submit(function (e) {
-
-            });
+            getCharts('sh000001');
         });
-
-        // 更新分时图，每分钟更新一次
-        window.setInterval(function () {
-            let stockCode = '';
-            if($('#stock_code').innerHTML !== '')
-                stockCode = $('#stock_code').innerHTML.substring(2);
-            getBasicData(stockCode);
-        }, 60000);
     </script>
 </head>
 <body>
@@ -291,6 +267,33 @@
 <% include Components/navigator.ejs %>
 
 <div class="container">
+
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs nav-justified" id="marketTab">
+            <li class="active"><a href="sh000001">上证指数</a></li>
+            <li><a href="sz399001">深证成指</a></li>
+            <li><a href="sh000300">沪深300(SH)</a></li>
+            <li><a href="sz399300">沪深300(SZ)</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-12" style="height: 20px"></div>
+
+    <script>
+        $('#marketTab > li > a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+            console.log($(this).attr('href'));
+            if ($(this).attr('href') === 'sh000001')
+                getCharts('sh000001');
+            if ($(this).attr('href') === 'sz399001')
+                getCharts('sz399001');
+            if ($(this).attr('href') === 'sh000300')
+                getCharts('sh000300');
+            if ($(this).attr('href') === 'sz399300')
+                getCharts('sz399300');
+        });
+    </script>
+
     <!--Main Block Of Market-->
     <div class="col-sm-12" id="stockSeg" style="display: block;">
 
@@ -298,23 +301,24 @@
         <div class="col-sm-6">
             <div class="row">
                 <!--Names-->
-                <div class="col-sm-6 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                <div class="col-sm-5 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
                     <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
                     <h5 id="stock_code" style="color: #337ab7"></h5>
                 </div>
 
                 <!--Numbers-->
-                <div class="col-sm-6" style="padding-left: 10px;padding-right: 0px">
+                <div class="col-sm-7" style="padding-left: 10px;padding-right: 0px">
                     <div class="row">
-                        <div class="col-sm-5 text-right" style="height: 102px;padding-left: 10px;padding-right: 0px">
+                        <div class="col-sm-7 text-center" style="height: 102px;padding-left: 10px;padding-right: 0px">
                             <h1 id="current_price" style="height: 102px;"></h1>
                         </div>
-                        <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                        <div class="col-sm-2" style="padding-left: 7px;padding-right: 0px">
                             <h1>
                                 <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
                             </h1>
                         </div>
-                        <div class="col-sm-4 text-center" style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                        <div class="col-sm-3 text-center"
+                             style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
                             <h4 id="chg"></h4>
                             <h4 id="chg_p"></h4>
                         </div>

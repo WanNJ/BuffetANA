@@ -34,11 +34,11 @@ let strategySchema = new Schema({
     filter:{},
     tradeModelVO:{},
     envSpecDay:Number,
-    markNormal:Number,// 正常情况下 情况下的分数
-    markHS:Number,// high and same 情况下的分数
-    markHO:Number,// high and opposite 情况下的分数
-    markLS:Number,// low and same 情况下的分数
-    markLO:Number,// low and opposite 情况下的分数
+    markNormal:{},// 正常情况下 情况下的分数
+    markHS:{},// high and same 情况下的分数
+    markHO:{},// high and opposite 情况下的分数
+    markLS:{},// low and same 情况下的分数
+    markLO:{},// low and opposite 情况下的分数
 
 }, {collection: 'strategies'});
 

@@ -22,4 +22,21 @@ exports.strategyDB ={
             callback(err, doc)
         });
     },
+
+    /**
+     *
+     * @param env  是哪种市场环境 传递原来定义的标准字符串
+     * @param cap   选择是那种能力
+     * @param num   选择最好的几个策略
+     * @param callback
+     */
+    getBestStrategyByEnv: (env, cap , num ,callback) => {
+        let str = env+"."+cap;
+        let arg = {};
+        arg[str] = 'desc';
+        let select = {sort:arg}
+        strategySchema.find({},null, select,(err, doc) => {
+            callback(err, doc.slice(0,num))
+        });
+    },
 }

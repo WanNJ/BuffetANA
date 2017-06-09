@@ -46,16 +46,18 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
     let searchBeginDate = new Date(beginDate-  600 *24000*3600);
     singleStockDB.getStockInfoInRangeDate(code ,searchBeginDate,endDate,[] ,(err,doc) => {
         doc.reverse();
+        //console.log(formationPeriod)
         let curMASum = 0;
         let MAValue = [];
 
-        //console.log(doc[0])
+        //console.log(doc.length)
 
         for(let i = 2; i < doc.length && i < formationPeriod +2; i++){
 
             curMASum+= doc[i]["afterAdjClose"];
            // console.log(curMASum)
         }
+
 
         for(let i  = 0;  (i+formationPeriod +2)< doc.length && doc[i]["date"] -beginDate >= 0; i++){
             let temp = (curMASum/formationPeriod - doc[i+1]["afterAdjClose"])/(curMASum/formationPeriod);
@@ -76,6 +78,7 @@ exports.calculateMAValue = function (code ,beginDate , endDate, formationPeriod 
         }
         MAValue.reverse();
         //if(MAValue.length ===0)console.log(code)
+        //console.log(normalize(MAValue))
         callback(err,normalize(MAValue));
     });
 };

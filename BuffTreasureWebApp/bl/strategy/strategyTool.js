@@ -246,7 +246,7 @@ let rankMap = require('../functionMap/rankMap').funtionMap;
  */
 exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                                             beginDate, endDate, rank, filter,
-                                            projection, callback ) =>{
+                                            projection,use =0, callback ) =>{
 
     /**
      *
@@ -313,11 +313,17 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param endDate
      * @returns {Promise}
      */
-    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate, projection) {
+    let setCodeAndName = function (codeAndName , AllDataList , beginDate ,endDate, projection,use ) {
         return new Promise((resolve,reject)=>{
-            setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate,projection, (err,data)=>{
-                resolve(data);
-            });
+            if(use === 0) {
+                setCodeAndNameToPickle(codeAndName, AllDataList, beginDate, endDate, projection, (err, data) => {
+                    resolve(data);
+                });
+            }else{
+                setCodeAndNameToPickleRT(codeAndName,AllDataList,beginDate,endDate,projection,(err, data) => {
+                    resolve(data);
+                });
+            }
         })
     }
 
@@ -329,7 +335,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
      * @param listAll
      * @returns {Promise}
      */
-    let operatePromise = function (codeList ,codeIndex , listAll, projection){
+    let operatePromise = function (codeList ,codeIndex , listAll, projection,use){
         // console.log('start' + new Date())
         //console.log(codeList)
         if(typeof codeList ==='undefined'||codeList.length === 0){
@@ -344,7 +350,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                 resolve (listAll);
             else {
                 // console.time('set name' + codeList[codeIndex])
-                resolve(setCodeAndName(codeList[codeIndex], listAll, beginDate, endDate,projection)
+                resolve(setCodeAndName(codeList[codeIndex], listAll, beginDate, endDate,projection,use)
                     .then(list => {
                         // console.timeEnd('set name' + codeList[codeIndex])
                         // console.time('set rank'+codeList[codeIndex])
@@ -355,7 +361,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                         //console.time(codeList[codeIndex])
                         return setFilterPromise(codeList[codeIndex]['code'],codeIndex, filter, 0, list,beginDate, endDate)
                     })
-                    .then(list => operatePromise(codeList, codeIndex + 1, list,projection)));
+                    .then(list => operatePromise(codeList, codeIndex + 1, list,projection,use)));
             }
 
 
@@ -473,6 +479,24 @@ function setCodeAndNameToPickle(codeAndName , AllDataList , beginDate ,endDate ,
     })
 }
 
+
+
+function setCodeAndNameToPickleRT(codeAndName , AllDataList , beginDate ,endDate,projection, callback){
+    singleStockDB.getStockInfoInRangeDate(codeAndName['code'],new Date(beginDate- 600*24000*3600),endDate,projection, (err,data)=>{
+        //data.reverse();
+        let keys = Object.keys(AllDataList);
+        for(let i = 0 ; i < 1 ; i++){
+            let pickleDataList =  AllDataList[keys[i]];
+            let p = 0 ; //data的指针
+            pickleDataList.forEach(pickleData =>{
+                pickleData.backDatas.push
+                (new BackDataVO(codeAndName['code'], codeAndName['name'], 0, true,0, 0, true,[]))
+            });
+            AllDataList[keys[i]] = pickleDataList;
+        }
+        callback(err,AllDataList);
+    })
+}
 
 
 

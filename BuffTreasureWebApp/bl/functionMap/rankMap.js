@@ -22,7 +22,7 @@ function setMA(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,b
     return new Promise((resolve,reject) => {
         strategyParam.calculateMAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -64,7 +64,7 @@ function setMOM(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,
     return new Promise((resolve,reject) => {
         strategyParam.calculateMOMValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -147,7 +147,7 @@ function setMACD_DIF(code , codeIndex, desc , weight ,formationPeriod , AllDataL
         strategyParam.calculateMACD_DIFValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -189,7 +189,7 @@ function setMACD_DEA(code , codeIndex, desc , weight ,formationPeriod , AllDataL
         strategyParam.calculateMACD_DEAValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -231,9 +231,10 @@ function setMACD(code , codeIndex, desc , weight ,formationPeriod , AllDataList 
         strategyParam.calculateMACDValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
-                let p = 0 ; //data的指针
+                let p = 0 ;
+                //data的指针
                 pickleDataList.forEach(pickleData =>{
                     let backData = pickleData.backDatas[codeIndex];
                     if(backData.valid===true && typeof maList[p] !== 'undefined') {
@@ -273,7 +274,7 @@ function setRSV(code , codeIndex, desc , weight ,formationPeriod , AllDataList ,
         strategyParam.calculateRSVValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -315,7 +316,7 @@ function setKDJ_K(code , codeIndex, desc , weight ,formationPeriod , AllDataList
         strategyParam.calculateKDJ_KValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -357,7 +358,7 @@ function setKDJ_D(code , codeIndex, desc , weight ,formationPeriod , AllDataList
         strategyParam.calculateKDJ_DValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{
@@ -399,7 +400,7 @@ function setKDJ_J(code , codeIndex, desc , weight ,formationPeriod , AllDataList
         strategyParam.calculateKDJ_JValue(code ,beginDate , endDate, formationPeriod , (err,maList) =>{
 
             let keys = Object.keys(AllDataList);
-            for(let i = 0 ; i < 5 ; i++){
+            for(let i = 0 ; i < keys.length ; i++){
                 let pickleDataList =  AllDataList[keys[i]];
                 let p = 0 ; //data的指针
                 pickleDataList.forEach(pickleData =>{

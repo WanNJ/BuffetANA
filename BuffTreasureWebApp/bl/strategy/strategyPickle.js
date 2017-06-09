@@ -34,7 +34,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
     let parameterCheck = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)=>{
         return new Promise((resolve,reject) => {
 
-            if (endDate - beginDate < 24000 * 3600 * 365) {
+            if (endDate - beginDate < 24000 * 3600 * 365 ) {
                 throw new Error('回测时间不能小于1年')
             }
 
@@ -93,7 +93,6 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
     let getCodeList = function () {
         return new Promise((resolve,reject) => {
             strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
-                //console.log(list)
                 resolve(list);
             })
         })
@@ -141,7 +140,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
     let filterAndRank = function (AllDataList,holdNumber) {
         //console.log(AllDataList['Normal'][0])
         let keys = Object.keys(AllDataList);
-        for(let i = 0 ; i < 5 ; i++){
+        for(let i = 0 ; i < keys.length ; i++){
             let pickleDataList =  AllDataList[keys[i]];
             let p = 0 ; //data的指针
             pickleDataList.forEach(pickleData =>{

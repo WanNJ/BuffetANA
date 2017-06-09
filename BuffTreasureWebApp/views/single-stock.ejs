@@ -176,9 +176,10 @@
             });
 
             $.get('single-stock/getStockBoard', {stockCode: stockCode}, (result) => {
+                $('#block_table > tbody').html('');
+                
                 for (let i = 0; i < result.length; i++) {
                     let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
-                    $('#block_table > tbody').html('');
                     $('#block_table > tbody').append(appendedStr);
                 }
             });

@@ -13,8 +13,8 @@ mongoose.connection.on('open', function () {
 
 describe('singleStockRT', function() {
     describe('#obtainRTInfoByCode()', function() {
-        it('should show the RTInfo Of 600171', function(done) {
-            realTimeTool.obtainRTInfoByCode('000001', (err, RTInfo) => {
+        it('should show the RTInfo Of 000002', function(done) {
+            realTimeTool.obtainRTInfoByCode('000002', (err, RTInfo) => {
                 if (err) {
                     done(err);
                 }

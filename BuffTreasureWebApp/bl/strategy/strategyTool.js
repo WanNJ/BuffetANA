@@ -369,6 +369,25 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 };
 
 
+/**
+ * 比较两个策略是否相同（只根据filter、rank、持仓期、stockPoolConditionVO来判断）
+ * @param strategy1
+ * @param strategy2
+ */
+exports.compareTo = (strategy1, strategy2) => {
+    if (strategy1["tradeModelVO"].holdingDays !== strategy2["tradeModelVO"].holdingDays)
+        return false;
+    else if (JSON.stringify(strategy1["stockPoolConditionVO"]) !== JSON.stringify(strategy2["stockPoolConditionVO"]))
+        return false;
+    else if (JSON.stringify(strategy1["filter"]) !== JSON.stringify(strategy2["filter"]))
+        return false;
+    else if (JSON.stringify(strategy1["rank"]) !== JSON.stringify(strategy2["rank"]))
+        return false;
+    else
+        return true;
+};
+
+
 
 /**
  * 向5个pickledata中注入 股票的名字 代码  以及每个阶段的开盘价和收盘价

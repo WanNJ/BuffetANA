@@ -100,7 +100,7 @@ describe('thermometerDB', function() {
                     done(err);
                 }
                 else {
-                    console.log(docs['stockPoolConditionVO'].stockPool)
+                    console.log(docs)
                     done();
                 }
             });

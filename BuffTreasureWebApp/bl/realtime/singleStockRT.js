@@ -104,6 +104,7 @@ exports.getHotBoard = (callback) => {
                 let s = t.split(',');
                 // 为了去除末尾的\n
                 let temp = s[2].replace('\n', '');
+                temp = temp.replace('\r', '');
                 boards[s[0]] = [s[1], temp];
             });
             callback(null, boards);

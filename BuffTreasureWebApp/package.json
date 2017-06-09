@@ -23,7 +23,8 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
     "session-file-store": "latest",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "iconv-lite": "latest"
   },
   "devDependencies": {
     "chai": "^3.5.0",

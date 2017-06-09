@@ -38,4 +38,17 @@ describe('singleStockRT', function() {
             });
         });
     });
+    describe('#getHotBoard()', function() {
+        it('should show all hot boards', function(done) {
+            realTimeTool.getHotBoard((err, boards) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(boards);
+                    done();
+                }
+            });
+        });
+    });
 });

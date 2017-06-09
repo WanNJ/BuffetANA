@@ -1254,11 +1254,11 @@ exports.getCompanyInfo = (code, callback) => {
  * [['平安银行', '9.04', '0.11']...]
  */
 exports.getHotStocks = (callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function(err, stdout, stderr){
-        if(err) {
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function (err, stdout, stderr) {
+        if (err) {
             callback(err, null);
         }
-        if(stdout) {
+        if (stdout) {
             let hot_codes = stdout.split('|');
             hot_codes = hot_codes.map(t => t.substr(0, 6));
             let promises = hot_codes.map(code => new Promise((resolve, reject) => {

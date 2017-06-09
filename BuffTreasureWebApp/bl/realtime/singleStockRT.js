@@ -4,7 +4,7 @@
 const request = require("superagent");
 const allStockDB = require('../../models/allstock').allStockDB;
 const stockRTDB = require('../../models/stockRTInfo').stockRTInfoDB;
-
+const exec = require('child_process').exec;
 
 /**
  * 获得个股实时的信息
@@ -81,6 +81,36 @@ exports.updateAllStockRTInfo = (callback) => {
     });
 };
 
+
+/**
+ * 获得热门板块
+ * @param callback (err, hot_boards) => {}
+ * hot_boards形如:
+ * { '公共交通': [ '11.565', '3.491' ],
+     '电子设备': [ '24.264', '3.272' ],
+     '工程机械': [ '9.957', '2.382' ],
+     '铁路运输': [ '7.720', '1.604' ],
+     '工程建筑': [ '11.281', '1.533' ]
+  }
+ */
+exports.getHotBoard = (callback) => {
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/realtime/hot_board.py', function(err, stdout, stderr){
+        if(err) {
+            callback(err, null);
+        }
+        if(stdout) {
+            let boards = {};
+            stdout.split(';').forEach(t => {
+                let s = t.split(',');
+                // 为了去除末尾的\n
+                let temp = s[2].replace('\n', '');
+                boards[s[0]] = [s[1], temp];
+            });
+            callback(null, boards);
+        }
+    });
+};
+
 /**
  * =========================================以下是私有方法=========================================
  */
@@ -140,6 +170,7 @@ function obtainRTInfo(code, callback) {
                     "amplitude": jd['data'][code]['qt'][code][43],
                     "PE_ratio": jd['data'][code]['qt'][code][39]
                 };
+                console.log(stockRTInfo);
                 callback(null, stockRTInfo);
             }
         });

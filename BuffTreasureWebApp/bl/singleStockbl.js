@@ -1254,7 +1254,7 @@ exports.getCompanyInfo = (code, callback) => {
  * [['平安银行', '9.04', '0.11']...]
  */
 exports.getHotStocks = (callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function (err, stdout, stderr) {
+    exec('python' + ' ../bl/hot_stock.py', function (err, stdout, stderr) {
         if (err) {
             callback(err, null);
         }

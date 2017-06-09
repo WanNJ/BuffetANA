@@ -29,11 +29,31 @@
                                             <th>涨跌幅</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="hot-board-list">
+                                        <tbody>
                                         <tr>
-                                            <td><%= hotBoard %></td>
+                                            <td><%= Object.keys(hotBoard)[0] %></td>
                                             <td><%= hotBoard[Object.keys(hotBoard)[0]][0] %></td>
                                             <td><%= hotBoard[Object.keys(hotBoard)[0]][1] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= Object.keys(hotBoard)[1] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[1]][0] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[1]][1] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= Object.keys(hotBoard)[2] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[2]][0] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[2]][1] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= Object.keys(hotBoard)[3] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[3]][0] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[3]][1] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= Object.keys(hotBoard)[0] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[4]][0] %></td>
+                                            <td><%= hotBoard[Object.keys(hotBoard)[4]][1] %>%</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -50,20 +70,46 @@
                             </h2>
                         </div>
                         <div class="panel-body">
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-medium-persian-blue" style="background:#003366;color:#FFFFFF!important;">*ST新都<span class="special-tag-for-editing-text-with-html"></span></a>
-                            </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-medium-persian-blue" style="background:#003366;color:#FFFFFF!important;">腾讯控股</a>
-                            </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-medium-persian-blue" style="background:#003366;color:#FFFFFF!important;">京东</a>
-                            </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-d btn-lg btn-block" >阿里巴巴<span class="special-tag-for-editing-text-with-html"></span></a>
-                            </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-d btn-lg btn-block" >庞大集团</a>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active ">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>股票名称</th>
+                                            <th>现价</th>
+                                            <th>涨跌幅</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><%= hotStocks[0][0] %></td>
+                                            <td><%= hotStocks[0][1] %></td>
+                                            <td><%= hotStocks[0][2] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= hotStocks[1][0] %></td>
+                                            <td><%= hotStocks[1][1] %></td>
+                                            <td><%= hotStocks[1][2] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= hotStocks[2][0] %></td>
+                                            <td><%= hotStocks[2][1] %></td>
+                                            <td><%= hotStocks[2][2] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= hotStocks[3][0] %></td>
+                                            <td><%= hotStocks[3][1] %></td>
+                                            <td><%= hotStocks[3][2] %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><%= hotStocks[4][0] %></td>
+                                            <td><%= hotStocks[4][1] %></td>
+                                            <td><%= hotStocks[4][2] %>%</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div class="panel-footer">

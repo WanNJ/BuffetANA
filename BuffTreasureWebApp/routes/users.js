@@ -285,25 +285,27 @@ router.post('/quantitative-analysis/save', function (req, res, next) {
     });
 });
 
-router.get('/:id/personalStocks', function (req, res, next) {
+router.get('/:id/personalStocks', (req, res, next) => {
     if (req.session.user === req.params.id) {
         userbl.getSelfSelectStock(req.params.id, (err, docs) => {
             if (err)
                 res.render('error');
             else {
-                let stockInfos = [];
                 res.locals.stockNames = docs;
-                for(let i = 0; i < docs.length; i++) {
-                    singleStockService.getRTInfo(docs[i][1], (err, docs) => {
+                let promises = docs.map(t => new Promise((resolve, reject) => {
+                    singleStockService.getRTInfo(t[1], (err, docs) => {
                         if (err)
-                            res.render('error');
+                            reject(err);
                         else
-                            stockInfos.push(docs);
+                            resolve(docs);
                     });
-                }
-
-                res.locals.stockInfos = stockInfos;
-                res.render('User/personalStocks');
+                }));
+                Promise.all(promises).then(results => {
+                    res.locals.stockInfos = results;
+                    res.render('User/personalStocks');
+                }).catch(err => {
+                    res.render('error');
+                });
             }
         });
     } else {

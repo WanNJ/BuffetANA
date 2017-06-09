@@ -10,12 +10,11 @@
     <% include ../Components/navigator.ejs %>
 
     <div class="panel panel-default">
-        <div class="panel-heading">我的自选股</div>
-        <div class="panel-body"></div>
+        <div class="panel-heading"><h1>我的自选股</h1></div>
 
-        <div id="my_stocks" class="col-md-12 tab-pane">
+        <div class="col-md-12 tab-pane">
             <div>
-                <table class="table table-hover">
+                <table id="my_stock_table" class="table table-hover">
                     <thead>
                     <tr>
                         <th>股票名称</th>
@@ -27,10 +26,10 @@
                         <th>今开</th>
                         <th>最高</th>
                         <th>最低</th>
-                        <th>成交量</th>
-                        <th>成交额</th>
-                        <th>总市值</th>
-                        <th>流通市值</th>
+                        <th>成交量(万手)</th>
+                        <th>成交额(万)</th>
+                        <th>总市值(亿)</th>
+                        <th>流通市值(亿)</th>
                         <th>换手率</th>
                         <th>市净率</th>
                         <th>振幅</th>
@@ -42,21 +41,21 @@
                     <tr>
                         <td><%= stockNames[i][0] %></td>
                         <td><%= stockNames[i][1] %></td>
-                        <td><%= stockInfos[i][0] %></td>
-                        <td><%= stockInfos[i][1] %></td>
-                        <td><%= stockInfos[i][2] %></td>
-                        <td><%= stockInfos[i][3] %></td>
-                        <td><%= stockInfos[i][4] %></td>
-                        <td><%= stockInfos[i][5] %></td>
-                        <td><%= stockInfos[i][6] %></td>
-                        <td><%= stockInfos[i][7] %></td>
-                        <td><%= stockInfos[i][8] %></td>
-                        <td><%= stockInfos[i][9] %></td>
-                        <td><%= stockInfos[i][10] %></td>
-                        <td><%= stockInfos[i][11] %></td>
-                        <td><%= stockInfos[i][12] %></td>
-                        <td><%= stockInfos[i][13] %></td>
-                        <td><%= stockInfos[i][14] %></td>
+                        <td><%= stockInfos[i].now_price %></td>
+                        <td><%= stockInfos[i].change_price %></td>
+                        <td><%= stockInfos[i].change_rate %>%</td>
+                        <td><%= stockInfos[i].yesterday_close %></td>
+                        <td><%= stockInfos[i].today_open %></td>
+                        <td><%= stockInfos[i].high %></td>
+                        <td><%= stockInfos[i].low %></td>
+                        <td><%= stockInfos[i].volume %></td>
+                        <td><%= stockInfos[i].volume_of_transaction %></td>
+                        <td><%= stockInfos[i].marketValue %></td>
+                        <td><%= stockInfos[i].floatMarketValue %></td>
+                        <td><%= stockInfos[i].turnOverRate %>%</td>
+                        <td><%= stockInfos[i].PB_ratio %></td>
+                        <td><%= stockInfos[i].amplitude %>%</td>
+                        <td><%= stockInfos[i].PE_ratio %></td>
                     </tr>
                     <% } %>
                     </tbody>
@@ -64,6 +63,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#my_stock_table > tbody > tr').click(function (e) {
+            e.preventDefault();
+            let stockCode = $(this).children()[1].innerText;
+            window.open();
+        });
+    </script>
 
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>

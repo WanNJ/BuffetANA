@@ -176,7 +176,7 @@ exports.getSelfSelectStock = (userName, callback) => {
  */
 exports.saveStrategy = (userName, strategy, callback) => {
     userDB.getAllStrategy(userName, (err, docs) => {
-        if (strategy.overwrite) {
+        if (strategy.overwrite==="true") {
             if (err)
                 callback(err, false);
             else {

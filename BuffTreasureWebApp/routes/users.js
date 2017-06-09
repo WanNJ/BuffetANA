@@ -272,7 +272,7 @@ router.post('/quantitative-analysis/save', function (req, res, next) {
         if(err){
             throw err;
         }else {
-            res.send(docs);  //docs可能的值： 'SUCCESS' 'DUPLICATED'
+            res.send(docs);  //docs可能的值： 'SUCCESS' 'DUPLICATED' true false
         }
     });
 });

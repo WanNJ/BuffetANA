@@ -709,28 +709,39 @@
         stock_pool_change($("#stock-pool").val());
         let benches = data.benches===undefined? new Array():data.benches;
         let industries = data.industries===undefined? new Array():data.industries;
+        $("#boards li a input:checkbox").each(function () {
+            $(this).attr('checked',false);
+        });
+        $("#industries li a input:checkbox").each(function () {
+            $(this).attr('checked',false);
+        });
         for(let i=0;i< benches.length;i++){
-            $("#boards li a span:contains('"+benches[i]+"')").parent().find("input:checkbox").attr("checked",true);
+            $("#boards li a span:contains('"+benches[i]+"')").parent().find("input:checkbox").get(0).checked=true;
         }
         for(let i=0;i< industries.length;i++){
-            $("#industries li a span:contains('"+industries[i]+"')").parent().find("input:checkbox").attr("checked",true);
+            $("#industries li a span:contains('"+industries[i]+"')").parent().find("input:checkbox").get(0).checked=true;
         }
         $("#exclude-ST").val(data.excludeST);
         $("#exclude-ST").attr("checked",data.excludeST==="on");
         let rank = JSON.parse(data.rank);
-        let rank_rows=$("#ranking-conditon-table tr:gt(0)");
+        $("#ranking-conditon-table tr:gt(0)").empty();
         for(let row in rank){
             addRankingConditon(rank[row][0]);
-            $(rank_rows.last().get(0).cells.item(1)).children().val(rank[row][1]);
-            $(rank_rows.last().get(0).cells.item(2)).children().val(rank[row][2]);
-            $(rank_rows.last().get(0).cells.item(3)).children().val(rank[row][3]);
+            $("#ranking-conditon-table tr:gt(0):last td:eq(1) select").val(rank[row][1]);
+            $("#ranking-conditon-table tr:gt(0):last td:eq(2) input").val(rank[row][2]);
+            $("#ranking-conditon-table tr:gt(0):last td:eq(3) input").val(rank[row][3]);
         }
-        let filter = JSON.parse(data.rank);
-        let filter_rows=$("#filter-conditon-table tr:gt(0)");
+        let filter = JSON.parse(data.filter);
+        $("#filter-conditon-table tr:gt(0)").empty();
         for(let row in filter){
-            addFilterConditon(filter[row][0]);
-            $(filter_rows.last().get(0).cells.item(1)).children().val(filter[row][1]);
-            $(filter_rows.last().get(0).cells.item(2)).children().val(filter[row][2]);
+            for(let name in chmap){
+                if(chmap[name]===filter[row][0]){
+                    addFilterConditon(name);
+                    break;
+                }
+            }
+            $("#filter-conditon-table tr:gt(0):last td:eq(1) select").val(filter[row][1]);
+            $("#filter-conditon-table tr:gt(0):last td:eq(2) input").val(filter[row][2]);
         }
         $("#reserve-days").val(data.reserveDays);
         $("#number-of-stock").val(data.numberOfStock);

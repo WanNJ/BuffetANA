@@ -1,5 +1,7 @@
 let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
+let singleStockRT = require('../bl/realtime/singleStockRT');
+let singleStockbl = require('../bl/singleStockbl');
 let storeMap = require('../bl/functionMap/storeMap');
 let industrybl = require('../bl/industryandbench/industrybl');
 let userbl = require('../bl/userbl');
@@ -151,7 +153,50 @@ router.get('/quantitative-analysis', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/stockRecommend', function (req, res, next) {
-    res.render('User/stockRec');
+    let hotBoard;
+    let hotStocks;
+    let promise1 = new Promise((reject, resolve) => {
+        singleStockRT.getHotBoard((err,docs) => {
+            if(err){
+                reject(err);
+            }else {
+               resolve(docs);
+            }
+        });
+    });
+
+    let promise2 =  new Promise((reject, resolve) => {
+        singleStockbl.getHotStocks((err,docs) => {
+            if(err){
+                reject(err);
+            }else {
+                resolve(docs);
+            }
+        });
+    });
+
+    Promise.all([promise1, promise2]).then(results => {
+        let data={
+            "hotBoard":results[0],
+            "hotStocks" :results[1],
+        };
+        res.render('User/stockRec',data);
+    }).catch(err => {
+        console.error(err);
+        throw err;
+    });
+
+
+});
+
+router.get('/quantitative-analysis/stockRecommend/hotBoard', function (req, res, next) {
+    singleStockRT.getHotBoard((err,docs) => {
+        if(err){
+            throw err;
+        }else {
+            res.send(docs);
+        }
+    });
 });
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {

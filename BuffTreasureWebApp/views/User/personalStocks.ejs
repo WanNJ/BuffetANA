@@ -67,8 +67,9 @@
     <script>
         $('#my_stock_table > tbody > tr').click(function (e) {
             e.preventDefault();
+            let stockName = $(this).children()[0].innerText;
             let stockCode = $(this).children()[1].innerText;
-            window.open();
+            window.open('/single-stock?stockCode=' + stockCode + '&stockName=' + stockName);
         });
     </script>
 

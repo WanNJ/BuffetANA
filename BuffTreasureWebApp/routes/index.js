@@ -23,10 +23,10 @@ router.get('/market', function (req, res, next) {
 });
 
 router.get('/single-stock', function (req, res, next) {
-    console.log('Code: ', req.query.stockCode);
-
-    if(req.session.singleStock)
-        res.locals.singleStock = req.session.singleStock;
+    if(req.query.stockCode !== undefined) {
+        res.locals.stockCode = req.query.stockCode;
+        res.locals.stockName = req.query.stockName;
+    }
 
     res.render('single-stock');
 });

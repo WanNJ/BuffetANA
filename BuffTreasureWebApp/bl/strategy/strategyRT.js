@@ -10,7 +10,21 @@ let rankMap = require('../functionMap/rankMap').funtionMap;
 
 let PickleDataVO =require('../../vo/PickleData').PickleData
 
+/**
+ * 股票池 rank 和 filter  参数在以前的接口都写过了
 
+ * @param stockPoolConditionVO
+ * @param rank
+ * @param filter
+ * @param callback
+ *形如(err,doc)
+ * doc:{list}
+ * [ { code: '000627', name: '天茂集团' },
+ { code: '002024', name: '苏宁云商' },
+ { code: '002065', name: '东华软件' },
+ { code: '002153', name: '石基信息' },
+ { code: '000503', name: '海虹控股' } ]
+ */
 exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
     let set = new Set();
     let rankKeys =  Object.keys(rank);

@@ -76,8 +76,6 @@ function splitIndex(marketIndex) {
     };
 }
 
-
-
 /**
  * 获得大盘实时的信息
  * @param code {String} 只能包括以下四个值

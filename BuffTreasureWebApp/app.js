@@ -14,6 +14,7 @@ let mongoose = require('mongoose');
 let index = require('./routes/index');
 let users = require('./routes/users');
 let singleStock = require('./routes/singleStock');
+let market = require('./routes/market');
 
 let app = express();
 
@@ -55,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 加载处理请求的路由模块
 app.use('/', index);
 app.use('/user', users);
+app.use('/market', market);
 app.use('/single-stock', singleStock);
 
 // 404 ERROR
@@ -75,7 +77,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://172.26.209.152/allInfo');
+mongoose.connect('mongodb://172.28.179.189/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

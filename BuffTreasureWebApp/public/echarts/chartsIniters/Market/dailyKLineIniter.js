@@ -1,24 +1,14 @@
 // 基于准备好的dom，初始化echarts实例
-let monthly_KLineChart = echarts.init(document.getElementById('monthlyKLineChart'), 'shine');
-let monthly_KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
-let monthly_MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
-let monthly_RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
-let monthly_BOLLChart = echarts.init(document.getElementById('monthly_BOLLChart'), 'shine');
-let monthly_WRChart = echarts.init(document.getElementById('monthly_WRChart'), 'shine');
-let monthly_BIASChart = echarts.init(document.getElementById('monthly_BIASChart'), 'shine');
+let daily_KLineChart = echarts.init(document.getElementById('dailyKLineChart'), 'shine');
+let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'shine');
+let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
+let daily_RSIChart = echarts.init(document.getElementById('daily_RSIChart'), 'shine');
+let daily_BOLLChart = echarts.init(document.getElementById('daily_BOLLChart'), 'shine');
+let daily_WRChart = echarts.init(document.getElementById('daily_WRChart'), 'shine');
+let daily_BIASChart = echarts.init(document.getElementById('daily_BIASChart'), 'shine');
 
-let no_monthly_data = [];
-let before_monthly_data = [];
-let after_monthly_data = [];
-
-function setMonthlyData(data) {
-    no_monthly_data = get_no_KLineData(data);
-    before_monthly_data = get_before_KLineData(data);
-    after_monthly_data = get_after_KLineData(data);
-}
-
-function loadMonthlyKLineChart(objData) {
-    let monthly_KLineChartOption = {
+function loadDailyKLineChart(objData) {
+    let daily_KLineChartOption = {
         title: {
             show: false,
             text: '个股',
@@ -37,8 +27,7 @@ function loadMonthlyKLineChart(objData) {
             formatter: function (params) {
                 let res = '';
                 let index = params[0].dataIndex;
-                let turnOverRate = monthly_KLineChartOption.series[5].turnOverRates[index];
-                let changeRate = monthly_KLineChartOption.series[0].changeRates[index];
+                let changeRate = daily_KLineChartOption.series[0].changeRates[index];
 
                 for (let i = 0; i < params.length; i++) {
                     let value = params[i].value;
@@ -47,11 +36,10 @@ function loadMonthlyKLineChart(objData) {
                         if (value !== '-')
                             value = Math.round(params[i].value * 100) / 100;
                         res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
-                        res = res + '<br/>换手率' + ': ' + Math.round(turnOverRate * 100) / 100 + '%';
                         if (i === 0)
                             res += '<br/>';
                     } else if (params[i].seriesName === '日K') {
-                        res = res + '月K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
+                        res = res + '日K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
                     } else {
                         if (value !== '-')
                             value = Math.round(params[i].value * 100) / 100;
@@ -67,7 +55,7 @@ function loadMonthlyKLineChart(objData) {
             }
         },
         legend: {
-            data: ['月K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
         },
         axisPointer: {
             link: {xAxisIndex: 'all'},
@@ -200,7 +188,7 @@ function loadMonthlyKLineChart(objData) {
             }
         ]
     };
-    let monthly_KDJChartOption = {
+    let daily_KDJChartOption = {
         title: {
             show: false,
             text: 'KDJ',
@@ -335,7 +323,7 @@ function loadMonthlyKLineChart(objData) {
             },
         ]
     };
-    let monthly_MACDChartOption = {
+    let daily_MACDChartOption = {
         title: {
             show: false,
             text: 'MACD',
@@ -425,6 +413,7 @@ function loadMonthlyKLineChart(objData) {
             {
                 name: 'MACD',
                 type: 'bar',
+                barWidth: 1,
                 data: objData.macds,
                 itemStyle: {
                     normal: {
@@ -455,7 +444,7 @@ function loadMonthlyKLineChart(objData) {
             }
         ]
     };
-    let monthly_RSIChartOption = {
+    let daily_RSIChartOption = {
         title: {
             show: false,
             text: 'RSI',
@@ -590,7 +579,7 @@ function loadMonthlyKLineChart(objData) {
             },
         ]
     };
-    let monthly_BOLLChartOption = {
+    let daily_BOLLChartOption = {
         title: {
             show: false,
             text: 'BOLL',
@@ -717,7 +706,7 @@ function loadMonthlyKLineChart(objData) {
             },
         ]
     };
-    let monthly_WRChartOption = {
+    let daily_WRChartOption = {
         title: {
             show: false,
             text: 'WR',
@@ -838,7 +827,7 @@ function loadMonthlyKLineChart(objData) {
             }
         ]
     };
-    let monthly_BIASChartOption = {
+    let daily_BIASChartOption = {
         title: {
             show: false,
             text: 'BIAS',
@@ -893,7 +882,7 @@ function loadMonthlyKLineChart(objData) {
             {
                 type: 'category',
                 data: objData.categoryData,
-                axisLabel: {show: false}
+                axisLabel: {show: false},
             }
         ],
         yAxis: [
@@ -967,25 +956,25 @@ function loadMonthlyKLineChart(objData) {
     };
 
     // 使用刚指定的配置项和数据显示图表
-    monthly_KLineChart.setOption(monthly_KLineChartOption);
-    monthly_KDJChart.setOption(monthly_KDJChartOption);
-    monthly_MACDChart.setOption(monthly_MACDChartOption);
-    monthly_RSIChart.setOption(monthly_RSIChartOption);
-    monthly_BOLLChart.setOption(monthly_BOLLChartOption);
-    monthly_WRChart.setOption(monthly_WRChartOption);
-    monthly_BIASChart.setOption(monthly_BIASChartOption);
+    daily_KLineChart.setOption(daily_KLineChartOption);
+    daily_KDJChart.setOption(daily_KDJChartOption);
+    daily_MACDChart.setOption(daily_MACDChartOption);
+    daily_RSIChart.setOption(daily_RSIChartOption);
+    daily_BOLLChart.setOption(daily_BOLLChartOption);
+    daily_WRChart.setOption(daily_WRChartOption);
+    daily_BIASChart.setOption(daily_BIASChartOption);
 }
 
-echarts.connect([monthly_KLineChart, monthly_KDJChart, monthly_MACDChart, monthly_RSIChart, monthly_BOLLChart, monthly_WRChart, monthly_BIASChart]);
+echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart, daily_BOLLChart, daily_WRChart, daily_BIASChart]);
 
 setTimeout(() => {
     window.onresize = function () {
-        monthly_KLineChart.resize();
-        monthly_KDJChart.resize();
-        monthly_MACDChart.resize();
-        monthly_RSIChart.resize();
-        monthly_BOLLChart.resize();
-        monthly_WRChart.resize();
-        monthly_BIASChart.resize();
+        daily_KLineChart.resize();
+        daily_KDJChart.resize();
+        daily_MACDChart.resize();
+        daily_RSIChart.resize();
+        daily_BOLLChart.resize();
+        daily_WRChart.resize();
+        daily_BIASChart.resize();
     }
 }, 200);

@@ -7,16 +7,6 @@ let weekly_BOLLChart = echarts.init(document.getElementById('weekly_BOLLChart'),
 let weekly_WRChart = echarts.init(document.getElementById('weekly_WRChart'), 'shine');
 let weekly_BIASChart = echarts.init(document.getElementById('weekly_BIASChart'), 'shine');
 
-let no_weekly_data = [];
-let before_weekly_data = [];
-let after_weekly_data = [];
-
-function setWeeklyData(data) {
-    no_weekly_data = get_no_KLineData(data);
-    before_weekly_data = get_before_KLineData(data);
-    after_weekly_data = get_after_KLineData(data);
-}
-
 function loadWeeklyKLineChart(objData) {
     let weekly_KLineChartOption = {
         title: {

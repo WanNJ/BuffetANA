@@ -1,22 +1,426 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
     <% include Components/settings.html %>
     <title>BUFF-大盘</title>
+
+    <!--echarts dependency-->
+    <script src="/echarts/echarts.min.js"></script>
+
+    <!--Jquery-UI-->
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/echarts/chartsIniters/Market/marketKLineUtil.js"></script>
+    <script type="text/javascript">
+        let dataZoomLength = 60;
+
+        function calculateMA(dayCount, adjDatas) {
+            let result = [];
+            let len = adjDatas.length;
+            for (let i = 0; i < len; i++) {
+                if (i < dayCount) {
+                    result.push('-');
+                    continue;
+                }
+                let sum = 0;
+                for (let j = 0; j < dayCount; j++) {
+                    sum += adjDatas[i - j];
+                }
+                result.push(sum / dayCount);
+            }
+            return result;
+        }
+
+        function getFullStockCode(stockCode) {
+            let sub = stockCode.substring(0, 3);
+            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
+                return 'sz' + stockCode;
+            else
+                return 'sh' + stockCode;
+        }
+        function getAnotherFullStockName(stockCode) {
+            let sub = stockCode.substring(0, 3);
+            if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
+                return '1' + stockCode;
+            else
+                return '0' + stockCode;
+        }
+
+        function splitTimeSharingData(rawData) {
+            let stockCode = rawData.symbol;
+            let stockName = rawData.name;
+            let data = rawData.data;
+            let times = [];
+            let prices = [];
+            let avgPrices = [];
+            let volumns = [];
+
+            for (let i = 0; i < data.length; i++) {
+                let rawTime = data[i].splice(0, 1)[0];
+                times.push(rawTime.substring(0, 2) + ':' + rawTime.substring(2));
+                prices.push(data[i].splice(0, 1)[0]);
+                avgPrices.push(data[i].splice(0, 1)[0]);
+                volumns.push(data[i].splice(0, 1)[0]);
+            }
+            return {
+                stockName: stockName,
+                stockCode: stockCode,
+                categoryData: times,
+                prices: prices,
+                avgPrices: avgPrices,
+                volumns: volumns
+            };
+        }
+
+        function getBasicData(stockCode) {
+            let fullStockCode = getFullStockCode(stockCode);
+
+            // 标题信息
+            $.ajax({
+                url: 'http://hq.sinajs.cn/list=' + fullStockCode,
+                dataType: "script",
+                async: false,
+                cache: true,
+                success: () => {
+                    let realTimeInfo = [];
+                    eval('realTimeInfo = ' + 'hq_str_' + fullStockCode + '.split(",")');
+                    $('#stock_name').html(realTimeInfo[0]);
+                    $('#stock_code').html('(' + fullStockCode + ')');
+
+                    document.getElementById("stock_name_link").href = "single-stock/enterprise?stockCode=" + stockCode;
+
+                    if (Math.abs(realTimeInfo[3]) < 0.001) {
+                        $('#current_price').text('停牌');
+                        $("#current_price").css({color: "grey"});
+                        $('#chg').html('--');
+                        $("#chg").css({color: "grey"});
+                        $('#chg_p').html('--');
+                        $("#chg_p").css({color: "grey"});
+                        $("#imp_icon").removeClass('fa fa-arrow-down fa-arrow-up');
+                        $("#imp_icon").html('--');
+                        $("#imp_icon").css({color: "grey"});
+                    } else {
+                        $('#current_price').text(Math.round(realTimeInfo[3] * 100) / 100);
+                        $('#chg').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) * 100) / 100);
+                        $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
+                    }
+
+                    if (Math.abs(realTimeInfo[3]) > 0.001) {
+                        $("#imp_icon").html('');
+                        $("#imp_icon").addClass('fa');
+
+                        if (realTimeInfo[3] - realTimeInfo[2] < 0) {
+                            $("#current_price").css({color: "green"});
+                            $("#chg").css({color: "green"});
+                            $("#chg_p").css({color: "green"});
+                            $("#imp_icon").addClass("fa fa-arrow-down");
+                            $("#imp_icon").css({color: "green"});
+                        } else {
+                            $("#current_price").css({color: "red"});
+                            $("#chg").css({color: "red"});
+                            $("#chg_p").css({color: "red"});
+                            $("#imp_icon").addClass("fa-arrow-up");
+                            $("#imp_icon").css({color: "red"});
+                        }
+                    }
+                }
+            });
+
+            // 其余详细信息
+            $.get('market/getRTInfo', {stockCode: stockCode}, (result) => {
+                let RTInfos = $('#RTInfo_seg > tr > td');
+                RTInfos[0].innerHTML = result.today_open;
+                RTInfos[1].innerHTML = result.high;
+                RTInfos[2].innerHTML = result.yesterday_close;
+                RTInfos[3].innerHTML = result.low;
+                RTInfos[4].innerHTML = result.volume + '万手';
+                RTInfos[5].innerHTML = result.amplitude + '%';
+                RTInfos[6].innerHTML = result.volume_of_transaction + '亿元';
+
+                if(result.today_open > result.yesterday_close)
+                    $(RTInfos[0]).css({color: "red"});
+                else
+                    $(RTInfos[0]).css({color: "green"});
+
+                $(RTInfos[1]).css({color: "red"});
+                $(RTInfos[3]).css({color: "green"});
+            });
+        }
+
+        function getCharts(stockCode) {
+            $('#firstTab').tab('show');
+
+            getBasicData(stockCode);
+
+            // 分时图数据
+            $.ajax({
+                type: "get",
+                url: 'http://img1.money.126.net/data/hs/time/today/' + getAnotherFullStockName(stockCode) + '.json',
+                dataType: "jsonp",
+                async: true,
+                cache: true,
+                beforeSend: function () {
+                    $('#stockSeg').css('display', 'block');
+                    $('#timeSharingChart').resize();
+                    timeSharingChart.resize();
+                    timeSharingChart.showLoading();
+                },
+                success: (result) => {
+                    let timeSharingData = splitTimeSharingData(result);
+                    timeSharingChart.hideLoading();
+                    loadTimeSharingChart(timeSharingData);
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求分时图数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            });
+
+            // 日K数据
+            $.ajax({
+                type: "post",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "market/getDailyKLine", //请求发送到TestServlet处
+                data: {stockCode: stockCode},
+                dataType: "json", //返回数据形式为json
+                beforeSend: function () {
+                    daily_KLineChart.showLoading();
+                    daily_KDJChart.showLoading();
+                },
+                success: function (result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        daily_KLineChart.hideLoading();
+                        daily_KDJChart.hideLoading();
+                        setDailyData(result);
+                        loadDailyKLineChart(no_daily_data);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求日K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+
+            // 周K数据
+            $.ajax({
+                type: "post",
+                async: true,
+                url: "single-stock/getWeeklyKLine",
+                data: $("#stock_form").serialize(),
+                dataType: "json", //返回数据形式为json
+                beforeSend: function (XHR) {
+                    weekly_KLineChart.showLoading();
+                    weekly_KDJChart.showLoading();
+                },
+                success: function (result) {
+                    if (result) {
+                        weekly_KLineChart.hideLoading();
+                        weekly_KDJChart.hideLoading();
+                        setWeeklyData(result);
+                        loadWeeklyKLineChart(no_weekly_data);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求周K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+
+            // 月K数据
+            $.ajax({
+                type: "post",
+                async: true,
+                url: "single-stock/getMonthlyKLine",
+                data: $("#stock_form").serialize(),
+                dataType: "json", //返回数据形式为json
+                beforeSend: function (XHR) {
+                    monthly_KLineChart.showLoading();
+                    monthly_KDJChart.showLoading();
+                },
+                success: function (result) {
+                    if (result) {
+                        monthly_KLineChart.hideLoading();
+                        monthly_KDJChart.hideLoading();
+                        setMonthlyData(result);
+                        loadMonthlyKLineChart(no_monthly_data);
+                    }
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请求月K数据失败，请稍后再试！</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // TODO Switch Code
+            $("#stock_form").submit(function (e) {
+
+            });
+        });
+
+        // 更新分时图，每分钟更新一次
+        window.setInterval(function () {
+            let stockCode = '';
+            if($('#stock_code').innerHTML !== '')
+                stockCode = $('#stock_code').innerHTML.substring(2);
+            getBasicData(stockCode);
+        }, 60000);
+    </script>
 </head>
-
 <body>
-<!-- Main container -->
-<div class="page-container bloc-fill-screen">
-    <% include Components/navigator.ejs %>
 
-    <!-- ScrollToTop Button -->
-    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+<% include Components/navigator.ejs %>
+
+<div class="container">
+    <!--Main Block Of Market-->
+    <div class="col-sm-12" id="stockSeg" style="display: block;">
+
+        <!--Basic Infos of a stock-->
+        <div class="col-sm-6">
+            <div class="row">
+                <!--Names-->
+                <div class="col-sm-6 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                    <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
+                    <h5 id="stock_code" style="color: #337ab7"></h5>
+                </div>
+
+                <!--Numbers-->
+                <div class="col-sm-6" style="padding-left: 10px;padding-right: 0px">
+                    <div class="row">
+                        <div class="col-sm-5 text-right" style="height: 102px;padding-left: 10px;padding-right: 0px">
+                            <h1 id="current_price" style="height: 102px;"></h1>
+                        </div>
+                        <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                            <h1>
+                                <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
+                            </h1>
+                        </div>
+                        <div class="col-sm-4 text-center" style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                            <h4 id="chg"></h4>
+                            <h4 id="chg_p"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                </colgroup>
+                <tbody id="RTInfo_seg">
+                <tr>
+                    <th>今开:</th>
+                    <td>--</td>
+                    <th>最高:</th>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <th>昨收：</th>
+                    <td>--</td>
+                    <th>最低:</th>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <th>成交量:</th>
+                    <td>--</td>
+                    <th>振幅:</th>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <th>成交额:</th>
+                    <td>--</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="col-sm-12" style="height: 20px;"></div>
+
+        <!--Headers of All kinds of Charts-->
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs nav-justified" id="mainTab">
+                <li class="active"><a id="firstTab" href="#timeSharing">分时</a></li>
+                <li><a href="#dailyKLine">日K</a></li>
+                <li><a href="#weeklyKLine">周K</a></li>
+                <li><a href="#monthlyKLine">月K</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-12" style="height: 20px;"></div>
+
+        <!-- Echarts Modules All kinds of charts-->
+        <div class="col-sm-12 tab-content">
+            <div id="timeSharing" class="tab-pane active">
+                <% include EChartsModule/timeSharingChart.ejs %>
+            </div>
+            <div id="dailyKLine" class="tab-pane">
+                <% include EChartsModule/dailyKLineChart.ejs %>
+                <script src="/echarts/chartsIniters/Market/dailyKLineIniter.js"></script>
+            </div>
+            <div id="weeklyKLine" class="tab-pane">
+                <% include EChartsModule/weeklyKLineChart.ejs %>
+                <script src="/echarts/chartsIniters/Market/weeklyKLineIniter.js"></script>
+            </div>
+            <div id="monthlyKLine" class="tab-pane">
+                <% include EChartsModule/monthlyKLIneChart.ejs %>
+                <script src="/echarts/chartsIniters/Market/monthlyKLineIniter.js"></script>
+            </div>
+        </div>
+
+        <!--标签页监听-->
+        <script>
+            $('#mainTab > li > a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                $(this).resize();
+                if ($(this).attr('href') === '#timeSharing')
+                    timeSharingChart.resize();
+                if ($(this).attr('href') === '#dailyKLine') {
+                    daily_KLineChart.resize();
+                    daily_KDJChart.resize();
+                }
+                if ($(this).attr('href') === '#weeklyKLine') {
+                    weekly_KLineChart.resize();
+                    weekly_KDJChart.resize();
+                }
+                if ($(this).attr('href') === '#monthlyKLine') {
+                    monthly_KLineChart.resize();
+                    monthly_KDJChart.resize();
+                }
+            });
+        </script>
+    </div>
+
+
+    <!--scrollToTop按钮-->
+    <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
-    <!-- ScrollToTop Button END-->
-
-    <!-- Main container END -->
-    <% include Components/footer.ejs %>
 </div>
+
 </body>
+
+<% include Components/footer.ejs %>
 </html>

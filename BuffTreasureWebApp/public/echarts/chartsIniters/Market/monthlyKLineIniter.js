@@ -1,117 +1,14 @@
 // 基于准备好的dom，初始化echarts实例
-let daily_KLineChart = echarts.init(document.getElementById('dailyKLineChart'), 'shine');
-let daily_KDJChart = echarts.init(document.getElementById('daily_KDJChart'), 'shine');
-let daily_MACDChart = echarts.init(document.getElementById('daily_MACDChart'), 'shine');
-let daily_RSIChart = echarts.init(document.getElementById('daily_RSIChart'), 'shine');
-let daily_BOLLChart = echarts.init(document.getElementById('daily_BOLLChart'), 'shine');
-let daily_WRChart = echarts.init(document.getElementById('daily_WRChart'), 'shine');
-let daily_BIASChart = echarts.init(document.getElementById('daily_BIASChart'), 'shine');
+let monthly_KLineChart = echarts.init(document.getElementById('monthlyKLineChart'), 'shine');
+let monthly_KDJChart = echarts.init(document.getElementById('monthly_KDJChart'), 'shine');
+let monthly_MACDChart = echarts.init(document.getElementById('monthly_MACDChart'), 'shine');
+let monthly_RSIChart = echarts.init(document.getElementById('monthly_RSIChart'), 'shine');
+let monthly_BOLLChart = echarts.init(document.getElementById('monthly_BOLLChart'), 'shine');
+let monthly_WRChart = echarts.init(document.getElementById('monthly_WRChart'), 'shine');
+let monthly_BIASChart = echarts.init(document.getElementById('monthly_BIASChart'), 'shine');
 
-let no_daily_data = [];
-let before_daily_data = [];
-let after_daily_data = [];
-
-function get_MA_data(KLineValue) {
-    let result = [];
-    for(let i = 0; i < KLineValue.length; i++) {
-        result.push(KLineValue[i][1]);
-    }
-    return result;
-}
-
-function get_no_KLineData(rawData) {
-    return {
-        categoryData: rawData.categoryData,
-        KLineValue: rawData.KLineValue_no_adj,
-        adjs: get_MA_data(rawData.KLineValue_no_adj),
-        changeRates: rawData.changeRates,
-        volumns: rawData.volumns,
-        turnOverRates: rawData.turnOverRates,
-        kIndexes: rawData.kIndexes,
-        dIndexes: rawData.dIndexes,
-        jIndexes: rawData.jIndexes,
-        difs: rawData.difs,
-        deas: rawData.deas,
-        macds: rawData.macds,
-        rsi6s: rawData.rsi6s,
-        rsi12s: rawData.rsi12s,
-        rsi24s: rawData.rsi24s,
-        BIAS6: rawData.BIAS6,
-        BIAS12: rawData.BIAS12,
-        BIAS24: rawData.BIAS24,
-        Boll: rawData.Boll,
-        upper: rawData.upper,
-        lower: rawData.lower,
-        WR1: rawData.WR1,
-        WR2: rawData.WR2
-    };
-}
-
-function get_before_KLineData(rawData) {
-    return {
-        categoryData: rawData.categoryData,
-        KLineValue: rawData.KLineValue_before_adj,
-        adjs: get_MA_data(rawData.KLineValue_before_adj),
-        changeRates: rawData.changeRates,
-        volumns: rawData.volumns,
-        turnOverRates: rawData.turnOverRates,
-        kIndexes: rawData.kIndexes,
-        dIndexes: rawData.dIndexes,
-        jIndexes: rawData.jIndexes,
-        difs: rawData.difs_before_adj,
-        deas: rawData.deas_before_adj,
-        macds: rawData.macds_before_adj,
-        rsi6s: rawData.rsi6s,
-        rsi12s: rawData.rsi12s,
-        rsi24s: rawData.rsi24s,
-        BIAS6: rawData.BIAS6,
-        BIAS12: rawData.BIAS12,
-        BIAS24: rawData.BIAS24,
-        Boll: rawData.Boll_before_adj,
-        upper: rawData.upper_before_adj,
-        lower: rawData.lower_before_adj,
-        WR1: rawData.WR1,
-        WR2: rawData.WR2
-    };
-}
-
-function get_after_KLineData(rawData) {
-    return {
-        categoryData: rawData.categoryData,
-        KLineValue: rawData.KLineValue_after_adj,
-        adjs: get_MA_data(rawData.KLineValue_after_adj),
-        changeRates: rawData.changeRates,
-        volumns: rawData.volumns,
-        turnOverRates: rawData.turnOverRates,
-        kIndexes: rawData.kIndexes,
-        dIndexes: rawData.dIndexes,
-        jIndexes: rawData.jIndexes,
-        difs: rawData.difs_after_adj,
-        deas: rawData.deas_after_adj,
-        macds: rawData.macds_after_adj,
-        rsi6s: rawData.rsi6s,
-        rsi12s: rawData.rsi12s,
-        rsi24s: rawData.rsi24s,
-        BIAS6: rawData.BIAS6,
-        BIAS12: rawData.BIAS12,
-        BIAS24: rawData.BIAS24,
-        Boll: rawData.Boll_after_adj,
-        upper: rawData.upper_after_adj,
-        lower: rawData.lower_after_adj,
-        WR1: rawData.WR1,
-        WR2: rawData.WR2
-    };
-}
-
-
-function setDailyData(data) {
-    no_daily_data = get_no_KLineData(data);
-    before_daily_data = get_before_KLineData(data);
-    after_daily_data = get_after_KLineData(data);
-}
-
-function loadDailyKLineChart(objData) {
-    let daily_KLineChartOption = {
+function loadMonthlyKLineChart(objData) {
+    let monthly_KLineChartOption = {
         title: {
             show: false,
             text: '个股',
@@ -130,8 +27,7 @@ function loadDailyKLineChart(objData) {
             formatter: function (params) {
                 let res = '';
                 let index = params[0].dataIndex;
-                let turnOverRate = daily_KLineChartOption.series[5].turnOverRates[index];
-                let changeRate = daily_KLineChartOption.series[0].changeRates[index];
+                let changeRate = monthly_KLineChartOption.series[0].changeRates[index];
 
                 for (let i = 0; i < params.length; i++) {
                     let value = params[i].value;
@@ -140,11 +36,10 @@ function loadDailyKLineChart(objData) {
                         if (value !== '-')
                             value = Math.round(params[i].value * 100) / 100;
                         res = res + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>' + params[i].seriesName + ': ' + value;
-                        res = res + '<br/>换手率' + ': ' + Math.round(turnOverRate * 100) / 100 + '%';
                         if (i === 0)
                             res += '<br/>';
                     } else if (params[i].seriesName === '日K') {
-                        res = res + '日K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
+                        res = res + '月K' + '<br/>开盘价: ' + value[0] + '  收盘价: ' + value[1] + '<br/>最低价: ' + value[2] + ' 最高价: ' + value[3] + '<br/>涨跌幅: ' + Math.round(changeRate * 100) / 100 + '%<br/>';
                     } else {
                         if (value !== '-')
                             value = Math.round(params[i].value * 100) / 100;
@@ -160,7 +55,7 @@ function loadDailyKLineChart(objData) {
             }
         },
         legend: {
-            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            data: ['月K', 'MA5', 'MA10', 'MA20', 'MA30'],
         },
         axisPointer: {
             link: {xAxisIndex: 'all'},
@@ -293,7 +188,7 @@ function loadDailyKLineChart(objData) {
             }
         ]
     };
-    let daily_KDJChartOption = {
+    let monthly_KDJChartOption = {
         title: {
             show: false,
             text: 'KDJ',
@@ -428,7 +323,7 @@ function loadDailyKLineChart(objData) {
             },
         ]
     };
-    let daily_MACDChartOption = {
+    let monthly_MACDChartOption = {
         title: {
             show: false,
             text: 'MACD',
@@ -518,7 +413,6 @@ function loadDailyKLineChart(objData) {
             {
                 name: 'MACD',
                 type: 'bar',
-                barWidth: 1,
                 data: objData.macds,
                 itemStyle: {
                     normal: {
@@ -549,7 +443,7 @@ function loadDailyKLineChart(objData) {
             }
         ]
     };
-    let daily_RSIChartOption = {
+    let monthly_RSIChartOption = {
         title: {
             show: false,
             text: 'RSI',
@@ -684,7 +578,7 @@ function loadDailyKLineChart(objData) {
             },
         ]
     };
-    let daily_BOLLChartOption = {
+    let monthly_BOLLChartOption = {
         title: {
             show: false,
             text: 'BOLL',
@@ -811,7 +705,7 @@ function loadDailyKLineChart(objData) {
             },
         ]
     };
-    let daily_WRChartOption = {
+    let monthly_WRChartOption = {
         title: {
             show: false,
             text: 'WR',
@@ -932,7 +826,7 @@ function loadDailyKLineChart(objData) {
             }
         ]
     };
-    let daily_BIASChartOption = {
+    let monthly_BIASChartOption = {
         title: {
             show: false,
             text: 'BIAS',
@@ -987,7 +881,7 @@ function loadDailyKLineChart(objData) {
             {
                 type: 'category',
                 data: objData.categoryData,
-                axisLabel: {show: false},
+                axisLabel: {show: false}
             }
         ],
         yAxis: [
@@ -1061,25 +955,25 @@ function loadDailyKLineChart(objData) {
     };
 
     // 使用刚指定的配置项和数据显示图表
-    daily_KLineChart.setOption(daily_KLineChartOption);
-    daily_KDJChart.setOption(daily_KDJChartOption);
-    daily_MACDChart.setOption(daily_MACDChartOption);
-    daily_RSIChart.setOption(daily_RSIChartOption);
-    daily_BOLLChart.setOption(daily_BOLLChartOption);
-    daily_WRChart.setOption(daily_WRChartOption);
-    daily_BIASChart.setOption(daily_BIASChartOption);
+    monthly_KLineChart.setOption(monthly_KLineChartOption);
+    monthly_KDJChart.setOption(monthly_KDJChartOption);
+    monthly_MACDChart.setOption(monthly_MACDChartOption);
+    monthly_RSIChart.setOption(monthly_RSIChartOption);
+    monthly_BOLLChart.setOption(monthly_BOLLChartOption);
+    monthly_WRChart.setOption(monthly_WRChartOption);
+    monthly_BIASChart.setOption(monthly_BIASChartOption);
 }
 
-echarts.connect([daily_KLineChart, daily_KDJChart, daily_MACDChart, daily_RSIChart, daily_BOLLChart, daily_WRChart, daily_BIASChart]);
+echarts.connect([monthly_KLineChart, monthly_KDJChart, monthly_MACDChart, monthly_RSIChart, monthly_BOLLChart, monthly_WRChart, monthly_BIASChart]);
 
 setTimeout(() => {
     window.onresize = function () {
-        daily_KLineChart.resize();
-        daily_KDJChart.resize();
-        daily_MACDChart.resize();
-        daily_RSIChart.resize();
-        daily_BOLLChart.resize();
-        daily_WRChart.resize();
-        daily_BIASChart.resize();
+        monthly_KLineChart.resize();
+        monthly_KDJChart.resize();
+        monthly_MACDChart.resize();
+        monthly_RSIChart.resize();
+        monthly_BOLLChart.resize();
+        monthly_WRChart.resize();
+        monthly_BIASChart.resize();
     }
 }, 200);

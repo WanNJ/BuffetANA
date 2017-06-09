@@ -198,6 +198,10 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
     res.render('User/quantitative-loading');
 });
 
+router.get('/quantitative-analysis/process', function (req, res, next) {
+    res.send("100");
+});
+
 router.get('/quantitative-analysis/result', function (req, res, next) {
     let body = req.session.strategyData;
 

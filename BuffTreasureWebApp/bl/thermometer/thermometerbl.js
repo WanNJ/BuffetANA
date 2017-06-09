@@ -46,7 +46,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
         //根据计算的参数 获得分类
         /**
          *
-         * @param temp
+         * @param temp 温度
          * @param earnEffect50
          * @param earnEffectAll
          * @param lastUpToday

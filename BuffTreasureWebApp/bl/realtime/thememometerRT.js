@@ -8,7 +8,18 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
 
 /**
  * 获得当前的市场温度参数
- * @param callBack
+ * 形式和数据库里的一样
+ * @param callBack (err,doc)
+ * {
+ *   limitUp: 7,
+      limitDown: 1,
+      halfLimitUp: 42,
+      halfLimitDown: 4,
+      temperature: 87.5,
+      lastLimitUp: '0.00000',
+      lastLimitDown: '-0.26000',
+      lastTurnOver: '62.00000',
+      moneyEffect: '37.78990' }
  */
 exports.getCurrentThermometor = (callback) =>{
     stockRTDB.getAllRTInfo((err,doc)=>{
@@ -155,4 +166,50 @@ exports.getCurrentThermometor = (callback) =>{
         }
 
     });
+}
+
+/**
+ * 获得当前市场环境的分类
+ * @param callback
+ * 形如（err，doc）
+ * doc ： String
+ * eg：  'LowAndOpposite'
+ */
+exports.getCurrentENV = (callback) =>{
+    this.getCurrentThermometor((err,doc)=>{
+        /**
+         *
+         * @param temp 温度
+         * @param earnEffect50
+         * @param earnEffectAll
+         * @param lastUpToday
+         * @param lastDownToday
+         */
+        let getClassify = function(temp , earnEffect50, earnEffectAll, lastUpToday, lastDownToday) {
+            let w = temp * 0.3 + earnEffect50 *0.3 + earnEffectAll*0.4;
+            let q = lastUpToday - lastDownToday;
+            let strw;
+            let strq;
+            // console.log(w)
+
+            //console.log(w)
+            if(w > 69)
+                strw = 'High'
+            else if(w < 69)
+                strw = 'Low';
+            else
+                return 'Normal';
+            if(q > 4.8)
+                strq = 'Same';
+            else if(q < 4.8)
+                strq = 'Opposite';
+            else
+                return 'Normal';
+            return `${strw}And${strq}`;
+        }
+
+        let result = getClassify(doc['temperature'],doc['lastTurnOver'],doc['moneyEffect'],doc['lastLimitUp'],doc['lastLimitDown']);
+        callback(err,result)
+
+    })
 }

@@ -52,6 +52,7 @@ let strategySchema = new Schema({
     markLS:{},// low and same 情况下的分数
     markLO:{},// low and opposite 情况下的分数
 
-}, {collection: 'strategies'});
+}, {collection: 'strategies',
+    versionKey: false});
 
 module.exports =  mongoose.model('strategies', strategySchema);

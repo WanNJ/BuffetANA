@@ -4,6 +4,7 @@
 
 let strategyDAO = require('./strategyPickle');
 let statisticTool = require('../tool/statisticTool');
+let strategyDB = require('../../models/strategy').strategyDB;
 
 // 腌制好的所有数据，用于各种图表的计算
 let pickleDatas;
@@ -131,6 +132,24 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                 };
                 results.push(result);
             }
+            let strategy = {
+                beginDate: beginDate,
+                endDate: endDate,
+                stockPoolConditionVO: stockPoolConditionVO,
+                rank: rank,
+                filter: filter,
+                tradeModelVO: tradeModelVO,
+                envSpecDay: envSpecDay,
+                markNormal: results[0]["strategyEstimateResult"],// 正常情况下 情况下的分数
+                markHS: results[1]["strategyEstimateResult"],// high and same 情况下的分数
+                markHO: results[2]["strategyEstimateResult"],// high and opposite 情况下的分数
+                markLS: results[3]["strategyEstimateResult"],// low and same 情况下的分数
+                markLO: results[4]["strategyEstimateResult"],// low and opposite 情况下的分数
+            };
+            strategyDB.saveStrategy(strategy, (err) => {
+                if (err)
+                    callback(err, null);
+            });
             callback(null, results);
         }
     });

@@ -100,37 +100,24 @@ exports.addToSelfSelectStock = (userName, stock, callback) => {
  * 获得某一用户的所有自选股票
  * @param userName
  * @param callback 形如(err, docs) => {}
- * docs是JSON格式，其中的键名集合是所有的自选股的代码，键名对应的值是一个数组
- * {
- *      股票代码    股票名称    现价   涨跌幅(已经乘过100，单位为"%")
- *      "000001": ["平安银行", 9.42, 0.11]
- *      "000002": ["万科A",    32.2  2.3]
+ * docs是数组格式
+ * [
+ *        股票名称    股票代码
+ *      ["平安银行", "000001"],
+ *      ["万科A",    "000002"],
  *      ...
- * }
+ * ]
  */
 exports.getSelfSelectStock = (userName, callback) => {
     userDB.getSelfSelectStock(userName, (err, docs) => {
         if (err)
             callback(err, null);
         else {
-            let stocks = {};
-            let count = 0;
+            let stocks = [];
             docs["selfSelectStock"].forEach(t => {
-                RTTool.obtainRTInfoByCode(t["stockCode"], (err, stockRTInfo) => {
-                    if (err)
-                        callback(err, null);
-                    else {
-                        let info = [];
-                        info.push(t["stockName"]);
-                        info.push(stockRTInfo["now_price"]);
-                        info.push(stockRTInfo["change_rate"]);
-                        stocks[t["stockCode"]] = info;
-                    }
-                    count++;
-                    if (count === docs["selfSelectStock"].length)
-                        callback(null, stocks);
-                });
+                stocks.push([t["stockName"], t["stockCode"]]);
             });
+            callback(null, stocks);
         }
     });
 };

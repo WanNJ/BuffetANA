@@ -170,7 +170,6 @@ function obtainRTInfo(code, callback) {
                     "amplitude": jd['data'][code]['qt'][code][43],
                     "PE_ratio": jd['data'][code]['qt'][code][39]
                 };
-                console.log(stockRTInfo);
                 callback(null, stockRTInfo);
             }
         });

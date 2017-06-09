@@ -193,9 +193,13 @@ router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
     });
 });
 
+router.post('/quantitative-analysis/loading', function (req, res, next) {
+    req.session.strategyData = req.body;
+    res.render('User/quantitative-loading');
+});
 
-router.post('/quantitative-analysis/result', function (req, res, next) {
-    let body = req.body;
+router.get('/quantitative-analysis/result', function (req, res, next) {
+    let body = req.session.strategyData;
 
     let beginDate = new Date(body.beginDate);
     let endDate = new Date(body.endDate);
@@ -220,7 +224,7 @@ router.post('/quantitative-analysis/result', function (req, res, next) {
         if(err){
             //TODO
         }else {
-            res.render('User/quantitative-result', {
+            res.render('User/quantitative-result',{
                 strategyScores: finalResult.strategyScores,
 
                 normal_historyDatas: finalResult.normal_historyDatas,

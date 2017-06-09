@@ -588,7 +588,7 @@
     }
 
     function standardPost(url, args) {
-        let form = $("<form method='post'></form>");
+        let form = $("<form method='post' target='_blank'></form>");
         form.attr({"action": url});
         for (let arg in args) {
             let input = $("<input type='hidden'>");
@@ -653,7 +653,7 @@
     }
 
     function start() {
-        standardPost('result', collect_data());
+        standardPost('loading', collect_data());
     }
 
     function save(name,overwrite=false) {
@@ -765,6 +765,8 @@
         dynamic_hold_change($("#dynamic-hold").val());
         $("#max-win-rate").val(data.maxWinRate);
         $("#max-lose-rate").val(data.maxLoseRate);
+
+        $('#strategy-name').val(data.strategyName);
     }
 </script>
 </body>

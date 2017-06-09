@@ -1443,3 +1443,9 @@ fieldset[disabled] .my-link:focus {
 	color: #337ab7;
 	text-decoration: none;
 }
+.vertical-center{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

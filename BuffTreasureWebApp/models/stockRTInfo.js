@@ -54,5 +54,18 @@ exports.stockRTInfoDB = {
             else
                 callback(null, true);
         });
+    },
+
+    /**
+     * 获取所有的实时股票数据
+     * @param callBack
+     * 形如 (err,doc)
+     */
+    getAllRTInfo:(callback)=>{
+        stockRTInfo.find((err, doc) => {
+            doc.sort(function(a,b){
+                return a['code']-b['code']})
+            callback(err, doc)
+        });
     }
 };

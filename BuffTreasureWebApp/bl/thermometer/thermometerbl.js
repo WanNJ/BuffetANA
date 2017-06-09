@@ -205,6 +205,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                     let downNum = 0;     //今日下跌股票个数
                     let moneyEffect;    //率前50只个股赚钱效应
 
+                   js = 0;
                    today.forEach((data,i) => {
 
                        if(data['volume']!==0) {
@@ -226,15 +227,21 @@ exports.getDailyEnvironment  = (date , callback) =>{
                                }
                            }
 
-                           //计算昨日涨停跌停今天的平均涨幅
-                           let lastInfo = before[i];
+                           while(js< before.length && before[js]['code']<data['code']){
+                               console.log(before[js]['code'],data['code'])
+                               js++;
+                           }
 
-                           if(lastInfo['changeRate'] >= 10){
-                               yesUpNum++;
-                               yesUpValue += data['changeRate'];
-                           }else if(lastInfo['changeRate'] <= -10){
-                               yesDownNum++;
-                               yesDownValue += data['changeRate'];
+                           if(js< before.length && before[js]['code']===data['code']) {
+                               let lastInfo = before[js];
+
+                               if (lastInfo['changeRate'] >= 10) {
+                                   yesUpNum++;
+                                   yesUpValue += data['change_rate'];
+                               } else if (lastInfo['changeRate'] <= -10) {
+                                   yesDownNum++;
+                                   yesDownValue += data['change_rate'];
+                               }
                            }
                        }
                    });

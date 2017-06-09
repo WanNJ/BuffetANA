@@ -3,6 +3,7 @@ let strategyBl = require('../bl/strategy/strategybl');
 let storeMap = require('../bl/functionMap/storeMap');
 let industrybl = require('../bl/industryandbench/industrybl');
 let userbl = require('../bl/userbl');
+let singleStockService = require('../bl/singleStockbl');
 let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
@@ -12,12 +13,12 @@ let sendMessage = (res, err, docs) => {
         throw err;
     }
     else {
-        result="";
-        docs.forEach((i)=>{
-            result+=i+",";
+        result = "";
+        docs.forEach((i) => {
+            result += i + ",";
         });
-        if(result.length>0){
-            result=result.substr(0,result.length-1);
+        if (result.length > 0) {
+            result = result.substr(0, result.length - 1);
         }
         res.send(result);
     }
@@ -166,28 +167,28 @@ router.get('/quantitative-analysis/chmap', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/allIndustries', function (req, res, next) {
-    industrybl.getAllIndustries((err, docs) => sendMessage(res, err, docs) );
+    industrybl.getAllIndustries((err, docs) => sendMessage(res, err, docs));
 });
 
 router.get('/quantitative-analysis/allBoards', function (req, res, next) {
-    industrybl.getAllBoards((err, docs) => sendMessage(res, err, docs) );
+    industrybl.getAllBoards((err, docs) => sendMessage(res, err, docs));
 });
 
 router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
-    userbl.getAllStrategy(req.session.user,(err, docs) => {
-        if(err){
+    userbl.getAllStrategy(req.session.user, (err, docs) => {
+        if (err) {
             throw err;
-        }else {
+        } else {
             res.send(docs);
         }
     });
 });
 
 router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
-    userbl.loadStrategy(req.session.user,req.params.name,(err, docs) => {
-        if(err){
+    userbl.loadStrategy(req.session.user, req.params.name, (err, docs) => {
+        if (err) {
             throw err;
-        }else {
+        } else {
             res.send(docs);
         }
     });
@@ -210,13 +211,13 @@ router.get('/quantitative-analysis/result', function (req, res, next) {
 
     let excludeST = body.excludeST === 'on';
 
-    let benches = body.benches===""? null:body.benches.split(",");
-    let industries = body.industries===""? null:body.industries.split(",");
+    let benches = body.benches === "" ? null : body.benches.split(",");
+    let industries = body.industries === "" ? null : body.industries.split(",");
     let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
     let rank = JSON.parse(body.rank);
     let filter = JSON.parse(body.filter);
-    let tradeModelVo = body.dynamic_hold==="on"?
-        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate)):
+    let tradeModelVo = body.dynamic_hold === "on" ?
+        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate)) :
         new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
     let envSpyDay = Number(body.marketObserve);
 
@@ -225,10 +226,10 @@ router.get('/quantitative-analysis/result', function (req, res, next) {
         let finalResult = splitStrategyResult(data);
         console.log(finalResult);
 
-        if(err){
+        if (err) {
             //TODO
-        }else {
-            res.render('User/quantitative-result',{
+        } else {
+            res.render('User/quantitative-result', {
                 strategyScores: finalResult.strategyScores,
 
                 normal_historyDatas: finalResult.normal_historyDatas,
@@ -265,29 +266,49 @@ router.get('/quantitative-analysis/result', function (req, res, next) {
 
 router.post('/quantitative-analysis/save', function (req, res, next) {
     let body = req.body;
-    if(body["benches[]"]!==undefined){
-        body["benches"]=body["benches[]"];
+    if (body["benches[]"] !== undefined) {
+        body["benches"] = body["benches[]"];
         delete body["benches[]"];
     }
-    if(body["industries[]"]!==undefined){
-        body["industries"]=body["industries[]"];
+    if (body["industries[]"] !== undefined) {
+        body["industries"] = body["industries[]"];
         delete body["industries[]"];
     }
     let userName = req.session.user;
 
-    userbl.saveStrategy(userName,body,(err, docs) => {
-        if(err){
+    userbl.saveStrategy(userName, body, (err, docs) => {
+        if (err) {
             throw err;
-        }else {
+        } else {
             res.send(docs);  //docs可能的值： 'SUCCESS' 'DUPLICATED' true false
         }
     });
 });
 
-/* GET users listing. */
-router.get('/:id', function (req, res, next) {
-    console.log('Request URL:', req.originalUrl);
-    res.send('User requests to get: ' + req.params.id);
+router.get('/:id/personalStocks', function (req, res, next) {
+    if (req.session.user === req.params.id) {
+        userbl.getSelfSelectStock(req.params.id, (err, docs) => {
+            if (err)
+                res.render('error');
+            else {
+                let stockInfos = [];
+                res.locals.stockNames = docs;
+                for(let i = 0; i < docs.length; i++) {
+                    singleStockService.getRTInfo(docs[i][1], (err, docs) => {
+                        if (err)
+                            res.render('error');
+                        else
+                            stockInfos.push(docs);
+                    });
+                }
+
+                res.locals.stockInfos = stockInfos;
+                res.render('User/personalStocks');
+            }
+        });
+    } else {
+        res.render('error');
+    }
 });
 
 module.exports = router;

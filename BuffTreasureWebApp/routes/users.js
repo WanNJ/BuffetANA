@@ -174,7 +174,6 @@ router.get('/quantitative-analysis/allBoards', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
-    console.log("user:"+req.session.user);
     userbl.getAllStrategy(req.session.user,(err, docs) => {
         if(err){
             throw err;

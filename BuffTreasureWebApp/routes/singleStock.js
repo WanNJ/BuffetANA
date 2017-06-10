@@ -136,4 +136,49 @@ router.post('/addToPersonalStock', (req, res, next) => {
     }
 });
 
+router.post('/pressStockGood', (req, res, next) => {
+    comment.pressStockGood(req.body.stockCode, req.session.user, (err) => {
+        if(err)
+            res.send('ERROR');
+        else
+            res.send('SUCCESS');
+    });
+});
+
+router.post('/pressStockBad', (req, res, next) => {
+    comment.pressStockBad(req.body.stockCode, req.session.user, (err) => {
+        if(err)
+            res.send('ERROR');
+        else
+            res.send('SUCCESS');
+    });
+});
+
+router.post('/pressContentGood', (req, res, next) => {
+    comment.pressContentGood(req.body.content_id, req.session.user, (err) => {
+        if(err)
+            res.send('ERROR');
+        else
+            res.send('SUCCESS');
+    });
+});
+
+router.post('/pressContentBad', (req, res, next) => {
+    comment.pressContentBad(req.body.content_id, req.session.user, (err) => {
+        if(err)
+            res.send('ERROR');
+        else
+            res.send('SUCCESS');
+    });
+});
+
+router.post('/commentStock', (req, res, next) => {
+    comment.commentStock(req.body.stockCode, req.session.user, req.body.content, (err) => {
+        if(err)
+            res.send('ERROR');
+        else
+            res.send('SUCCESS');
+    });
+});
+
 module.exports = router;

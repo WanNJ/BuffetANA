@@ -12,14 +12,23 @@
             </div>
         </div>
         <div class="post-description">
-            <p><%= comment.comment_content %></p>
-            <div  id="<%= comment._id%>" class="stats">
+            <p><%= comment.content %></p>
+            <div id="<%= comment._id%>" class="stats">
+                <% if (comment.clickAble) { %>
                 <a href="#" class="btn btn-default stat-item">
                     <i class="fa fa-thumbs-up icon"></i><%= comment.like %>
                 </a>
                 <a href="#" class="btn btn-default stat-item">
                     <i class="fa fa-thumbs-down icon"></i><%= comment.dislike %>
                 </a>
+                <% } else { %>
+                <a href="#" class="btn btn-default stat-item disabled">
+                    <i class="fa fa-thumbs-up icon"></i><%= comment.like %>
+                </a>
+                <a href="#" class="btn btn-default stat-item disabled">
+                    <i class="fa fa-thumbs-down icon"></i><%= comment.dislike %>
+                </a>
+                <% } %>
             </div>
         </div>
     </div>

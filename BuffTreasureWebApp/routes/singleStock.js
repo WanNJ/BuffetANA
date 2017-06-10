@@ -20,10 +20,8 @@ router.get('/getStockComments', (req, res, next) => {
         if (err)
             res.render('error');
         else {
-            console.log(comments);
             res.locals.overall_like = comments.like;
             res.locals.overall_dislike = comments.dislike;
-            console.log('dislike:', comments.dislike);
             res.locals.overall_clickAble = comments.clickAble;
             res.locals.allComments = comments.contents;
             res.render('Components/comment');

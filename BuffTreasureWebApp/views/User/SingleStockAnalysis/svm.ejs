@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <% include ../../Components/settings.html %>
+    <script src="/echarts/echarts.min.js"></script>
+    <title>BUFF-SVM</title>
+</head>
+<body>
+<!-- Main container -->
+<div class="page-container">
+    <% include ../../Components/navigator.ejs %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-icon">
+                        <span class="fa fa-4x fa-arrow-up"></span>
+                    </div>
+                    <div class="info text-center">
+                        <h4 class="text-center">看涨</h4>
+                        <p>嗨, WAN！您在2017年6月10日对个股——平安银行（000001）的BUFF-SVM分析结果已经得出，初步预测结果为——<br><strong>今日涨</strong><br>
+                            其中可信度表示在多大程度上该预测结果可信。风险系数表示在多大可能上该预测可能出现问题。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 0px">
+        <div class="box col-md-12">
+            <div class="col-md-6" style="padding-right: 10px; padding-left: 40px;">
+                <div class="well well-sm">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h1 class="display-1">85%</h1>
+                            <div class="rating">
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                            </div>
+                            <h4 class="small">可信度</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-right: 40px; padding-left: 10px;">
+                <div class="well well-sm">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <h1 class="display-1">29%</h1>
+                                <div class="rating">
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                                <h4 class="small">风险系数</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 text-left" style="padding-right: 40px; padding-left: 40px;">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="svm_chart" class="col-md-12" style="height: 500px"></div>
+        </div>
+    </div>
+
+    <script>
+        let svm_chart = echarts.init(document.getElementById('svm_chart'));
+        let data = [];
+        eval('data = <%= JSON.stringify(data) %>;');
+        let svm_option = option = {
+            title: {
+                text: '行业内相关股分析',
+                left: 'center'
+            },
+            grid: {
+                top: '10%',
+                height: '80%',
+                left: 50,
+                right: 80
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            xAxis: {
+                name: '基准股价',
+                scale: true,
+                type: 'value',
+                axisLabel : {
+                    formatter: '{value} 元'
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+            },
+            yAxis: {
+                name: '比较股价',
+                scale: true,
+                type: 'value',
+                axisLabel : {
+                    formatter: '{value} 元'
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+            },
+            series: {
+                name: '散点',
+                type: 'scatter',
+
+                data: data
+            }
+        };
+
+        svm_chart.setOption(svm_option);
+
+        setTimeout(() => {
+            window.onresize = function () {
+                svm_chart.resize();
+            }
+        }, 200);
+    </script>
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+    <!-- ScrollToTop Button END-->
+
+</div>
+<!-- Main container END -->
+</body>
+
+<% include ../../Components/footer.ejs %>
+</html>

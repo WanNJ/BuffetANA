@@ -146,7 +146,7 @@
                 success: (result) => {
                     $("#hot-stocks-list").empty();
                     for(let i=0; i<5;i++){
-                        let hotStocksRow="<tr><td><a class='btn-link' href='/single-stock?stockCode="+'000001'+"&stockName="+result[i][0]+"'></a></td><td></td><td></td></tr>";
+                        let hotStocksRow="<tr><td><a class='btn-link' href='/single-stock?stockCode="+result[i][3]+"&stockName="+result[i][0]+"'></a></td><td></td><td></td></tr>";
                         $("#hot-stocks-list").append(hotStocksRow);
                         $("#hot-stocks-list tr:last td:eq(0) a").text(result[i][0]);
                         $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);

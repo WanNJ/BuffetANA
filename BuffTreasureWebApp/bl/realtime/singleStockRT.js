@@ -94,7 +94,7 @@ exports.updateAllStockRTInfo = (callback) => {
   }
  */
 exports.getHotBoard = (callback) => {
-    exec('python' + ' ../bl/realtime/hot_board.py', function(err, stdout, stderr){
+    exec('python3' + ' ../bl/realtime/hot_board.py', function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }

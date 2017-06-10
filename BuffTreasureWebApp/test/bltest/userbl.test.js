@@ -17,7 +17,7 @@ mongoose.connection.on('open', function () {
 describe('userbl', function() {
     describe('#signUp()', function() {
         it('just a test', function(done) {
-            userbl.signUp('slowtime','123456', '151250134@smail.nju.edu.cn',function (err, doc) {
+            userbl.signUp('wsw','123', '151250134@smail.nju.edu.cn',function (err, doc) {
                 if (err) {
                     done(err);
                 }
@@ -31,7 +31,7 @@ describe('userbl', function() {
     });
     describe('#addToSelfSelectStock1()', function() {
         it('just a test', function(done) {
-            userbl.addToSelfSelectStock('slowtime',{ "stockCode" : "000001", "stockName" : "平安银行" },function (err, doc) {
+            userbl.addToSelfSelectStock('ty',{ "stockCode" : "000001", "stockName" : "平安银行" },function (err, doc) {
                 if (err) {
                     done(err);
 
@@ -93,7 +93,7 @@ describe('userbl', function() {
             strategy["markHO"] = 40;
             strategy["markLS"] = 80;
             strategy["markLO"] = 60;
-            userbl.saveStrategy('slowtime', strategy, function (err, doc) {
+            userbl.saveStrategy('ty', strategy, function (err, doc) {
                 if (err) {
                     done(err);
                 }
@@ -128,6 +128,34 @@ describe('userbl', function() {
                 }
                 else {
                     console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getUnreadMessage()', function() {
+        it('获得ty用户的所有未读消息', function(done) {
+            userbl.getUnreadMessage('ty', function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    expect(doc.length).to.be.equal(2);
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#markAsRead()', function() {
+        it('将ty用户的2017-06-10T02:43:55.408Z这一时间的未读消息标记为已读', function(done) {
+            userbl.markAsRead('ty', new Date('2017-06-10T02:43:55.408Z'), function (err, isOK) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    expect(isOK).to.be.equal(true);
+                    console.log(isOK);
                     done();
                 }
             });

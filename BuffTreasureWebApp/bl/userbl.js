@@ -292,14 +292,15 @@ exports.loadStrategy = (userName, strategyName, callback) => {
  * @param callback (err, unreadMessages) => {}
  * unreadMessages是一个未读消息数组，如果没有未读消息则数组长度为0，如果有未读消息，那么消息类型是JSON，如下所示
  * {
- *      "time":       Date类型，消息的生成时间
+ *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
  *      "isRead":     true/false,
  *      "type":      'analysis1'/'analysis2'/'analysis3'/'thumbs_up'
  *      "toString":  '你的xxx股票分析结果已出，请点击查看'/'xxx赞了你的评论'
  *      "content":   '000001'/
  *                    {
  *                          "CR": [0.29, '低']              风险系数
- *                          "upOrDown": ['54.29', '1']
+ *                          "upOrDown": ['54.29', '1']      可信度（已乘100，单位为"%"，预测今日涨（'1'代表涨，'2'代表跌）
+ *                          // 下面的几个属性，依据'analysis1'/'analysis2'/'analysis3'的不同而不同
  *                    }
  * }
  */
@@ -315,5 +316,31 @@ exports.getUnreadMessage = (userName, callback) => {
             });
             callback(null, unreadMessages);
         }
+    });
+};
+
+
+/**
+ * 将未读消息标记为已读
+ * @param userName 用户名称
+ * @param time 这条未读消息的生成日期
+ * @param callback (err, isOK) => {}
+ *
+ * 如果成功，则isOK为true，否则为false
+ */
+exports.markAsRead = (userName, time, callback) => {
+    userDB.getAllMessage(userName, (err, messageQueue) => {
+        for (let i = 0; i < messageQueue["message"].length; i++) {
+            if ((messageQueue["message"][i]["time"] - time) === 0) {
+                messageQueue["message"][i]["isRead"] = true;
+                break;
+            }
+        }
+        userDB.overrideMessage(userName, messageQueue["message"], (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
+        });
     });
 };

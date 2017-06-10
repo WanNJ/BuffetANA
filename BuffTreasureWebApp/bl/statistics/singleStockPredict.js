@@ -57,3 +57,16 @@ exports.isUpOrDown = (code, open_price, callback) => {
         }
     });
 };
+
+
+exports.SVMAnalyze = (holdingDays) => {
+
+};
+
+exports.NNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
+
+};
+
+exports.CNNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
+
+};

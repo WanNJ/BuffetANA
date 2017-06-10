@@ -881,37 +881,49 @@
         </button>
     </div>
     <div class="collapse" id="analysis-collapse">
-        <div class="well text-center">
-            <div class="" style="display: inline">
-                <div style="padding-right: 50px;display: inline">
-                    <span >模型：</span>
-                    <select class="form-control" style="max-width: 120px;display: inline">
-                        <option selected="selected">SVM+NN</option>
-                        <option >CNN</option>
-                    </select>
-                </div>
-                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                    持股天数：
-                    <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
-                    天
-                </div>
-                <div class="" col-sm-6 style="display: inline;margin-top: 5px;">
-                    <span>考虑市场环境</span>
-                    <div class="switch" style="display: inline-flex;margin-left: 10px;">
-                        <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
-                        <label for="market-environment"></label>
+        <div class="well">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span >模型：</span>
+                        <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;">
+                            <option selected="selected">SVM</option>
+                            <option >NN</option>
+                            <option >CNN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <span style="line-height: 35px;">持股天数：</span>
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
+                        <span>天</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>高级：</span>
+                        <div class="switch" style="display: inline-flex;margin-top: 5px;margin-left: 56px;">
+                            <input id="advanced-options" class="cmn-toggle cmn-toggle-round" type="checkbox" value="off" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                            <label for="advanced-options"></label>
+                        </div>
                     </div>
                 </div>
-                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
-                    迭代量：
-                    <input style="max-width: 50px;margin-left: 28px;" required="required" value="1" pattern="[0-9]{1,}" id="reserve-days" onchange="number_validate(this,1,5)"/>
-                </div>
-                <div style="padding-right: 50px;">
-                    <span >学习方式：</span>
-                    <select class="form-control" style="max-width: 120px;display: inline-flex">
-                        <option selected="selected">分批</option>
-                        <option >全部</option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>考虑市场环境：</span>
+                        <div class="switch" style="display: inline-flex;margin-top: 5px;">
+                            <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                            <label for="market-environment"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <span style="line-height: 35px">迭代量：</span>
+                        <input style="max-width: 50px;margin-left: 40px;" required="required" value="1" pattern="[0-9]{1,}" id="iteration-quantity" onchange="number_validate(this,1,5)"/>
+                    </div>
+                    <div class="col-md-4">
+                        <span style="width: 150px;line-height: 36px;">学习方式：</span>
+                        <select class="form-control" style="max-width: 120px;display: inline-flex;margin-left: 25px">
+                            <option selected="selected">分批</option>
+                            <option >全部</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

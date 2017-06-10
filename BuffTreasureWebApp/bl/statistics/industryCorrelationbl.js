@@ -13,6 +13,8 @@ let statisticTool = require('../tool/statisticTool');
  * @param callback 形如(err, industryCorrelationVO) => {}
  * industryCorrelationVO是一个JSON对象，格式如下
  * {
+ *      "CR" : [0.29, "低"],             风险系数
+  *     "upOrDown" : ["54.29", "1"],     可信度（单位为%），1表示涨，0表示跌
  *      "code": {String}                 股票代码
  *      "name": {String}                 股票名称
  *      "correlation": {Number}          两个股票的相关度，其绝对值小于1；正，则为正相关；负则为负相关；绝对值为1时，表示线性相关

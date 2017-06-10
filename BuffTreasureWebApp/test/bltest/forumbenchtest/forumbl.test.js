@@ -17,12 +17,40 @@ mongoose.connection.on('open', function () {
 describe('forumbl', function() {
     describe('#getAllStockComment()', function() {
         it('打印000002 号股票的信息', function(done) {
-            forumbl.getAllStockComment('000001','NJUty',(err, doc) => {
+            forumbl.getAllStockComment('000002','NJUty',(err, doc) => {
                 if (err) {
                     done(err);
                 }
                 else {
                     console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+
+    describe('#pressStockBad()', function() {
+        it('打印000002 号股票的信息', function(done) {
+            forumbl.pressStockBad('000002','NJUty',(err, doc) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+
+                    done();
+                }
+            });
+        });
+    });
+
+    describe('#commentStock()', function() {
+        it('评论', function(done) {
+            forumbl.commentStock('000002','NJUty','iiiiiiiiii',(err, doc) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+
                     done();
                 }
             });

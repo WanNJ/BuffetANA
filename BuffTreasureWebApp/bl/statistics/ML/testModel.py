@@ -44,10 +44,10 @@ def getPredictResult(code,holdingDays):
     # print(train_y)
 
     x = tf.placeholder("float", shape=[None, 9*holdingDays])
-    y_ = tf.placeholder("float", shape=[None, 10])
+    y_ = tf.placeholder("float", shape=[None, 6])
 
-    W = weight_variable(shape=[9*holdingDays,10])
-    b = bias_variable(shape=[10])
+    W = weight_variable(shape=[9*holdingDays,6])
+    b = bias_variable(shape=[6])
 
     sess = tf.InteractiveSession()
     sess.run(tf.global_variables_initializer())
@@ -61,9 +61,13 @@ def getPredictResult(code,holdingDays):
     train_step = tf.train.GradientDescentOptimizer(0.0001).minimize(cross_entropy)
 
     #print(train_x)
+    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 
-    for i in range(600):
-        sess.run(train_step,feed_dict={x: data, y_: labels})
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+
+
+    for i in range(2000):
+        sess.run(train_step,feed_dict={x: data[:-200], y_: labels[:-200]})
 
     resultHead = dl.head(0)
 
@@ -73,9 +77,14 @@ def getPredictResult(code,holdingDays):
 
     resultArray =sess.run(yy)[0]
 
+    acc = (accuracy.eval(feed_dict={
+        x: data[-200:], y_: labels[-200:]}))
+
     result = {}
 
     js = 0;
+
+    result["accuracy"] = str(acc)
     for st in resultHead:
         result[st] = str(resultArray[js])
         js += 1
@@ -88,6 +97,7 @@ code = sys.argv[1]
 holdingPerioud = sys.argv[2]
 
 out = [getPredictResult(code,int(holdingPerioud))]
+
 
 import json
 print(json.dumps(out))

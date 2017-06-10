@@ -18,19 +18,16 @@ def pre_deal_data(code , holdingPeriods):
 
     heads = []
 
-    label0 = {'less10':1,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label1 = {'less10':0,'10-7.5':1,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label2 = {'less10':0,'10-7.5':0,'7.5-5':1,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label3 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':1,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label4 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':1,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label5 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':1,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label6 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':1,'5.5-7.5':0,'7.5-10':0,'more10':0}
-    label7 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':1,'7.5-10':0,'more10':0}
-    label8 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':1,'more10':0}
-    label9 = {'less10':0,'10-7.5':0,'7.5-5':0,'5-2.5':0,'2.5-0':0,'0-2.5':0,'2.5-5.5':0,'5.5-7.5':0,'7.5-10':0,'more10':1}
+    label0 = {'less10':1,'10-5':0,'5-0':0,'0-5':0,'5-10':0,'more10':0}
+    label1 = {'less10':0,'10-5':1,'5-0':0,'0-5':0,'5-10':0,'more10':0}
+    label2 = {'less10':0,'10-5':0,'5-0':1,'0-5':0,'5-10':0,'more10':0}
+    label3 = {'less10':0,'10-5':0,'5-0':0,'0-5':1,'5-10':0,'more10':0}
+    label4 = {'less10':0,'10-5':0,'5-0':0,'0-5':0,'5-10':1,'more10':0}
+    label5 = {'less10':0,'10-5':0,'5-0':0,'0-5':0,'5-10':0,'more10':1}
+
 
     labelhead = list(label0.keys())
-    labels = [label0,label1,label2,label3,label4,label5,label6,label7,label8,label9]
+    labels = [label0,label1,label2,label3,label4,label5]
     labelset = []
 
     for i in range(holdingPeriods):
@@ -70,11 +67,11 @@ def pre_deal_data(code , holdingPeriods):
         content = {}
         for i in range(holdingPeriods,len(data) - holdingPeriods):
             change = 100*(data[i+holdingPeriods-1]['close']-data[i]['close'])/data[i]['close']
-            ll = int((change+10)/2.5)+1
+            ll = int((change+10)/5)+1
             if ll < 0:
                 ll = 0
-            if ll > 9:
-                ll = 9
+            if ll > 5:
+                ll = 5
             #print(ll)
             label = labels[ll]
             labelset.append(label)
@@ -99,7 +96,7 @@ def pre_deal_data(code , holdingPeriods):
             writer.writerow(l)
 
     with open('predict.csv', 'w', encoding='gbk') as f1:
-        l = len(data)
+        l = len(data)-30
         fieldnames = heads
         writer = csv.DictWriter(f1, fieldnames=fieldnames)
         writer.writeheader()

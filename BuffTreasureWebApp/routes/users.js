@@ -1,5 +1,6 @@
 let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
+let strategyRT = require('../bl/strategy/strategyRT');
 let singleStockRT = require('../bl/realtime/singleStockRT');
 let singleStockbl = require('../bl/singleStockbl');
 let storeMap = require('../bl/functionMap/storeMap');
@@ -25,6 +26,14 @@ let sendMessage = (res, err, docs) => {
         res.send(result);
     }
 };
+
+function sendDirectly(res, err, docs) {
+    if(err){
+        console.error(err);
+    }else {
+        res.send(docs);
+    }
+}
 
 function splitStrategyResult(rawData) {
     let strategyScores = rawData[0].strategyEstimateResult;
@@ -157,23 +166,27 @@ router.get('/quantitative-analysis/stockRecommend', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/stockRecommend/hotBoard', function (req, res, next) {
-    singleStockRT.getHotBoard((err,docs) => {
-        if(err){
-            throw err;
-        }else {
-            res.send(docs);
-        }
-    });
+    singleStockRT.getHotBoard((err,docs) => sendDirectly(res,err,docs));
 });
 
 router.get('/quantitative-analysis/stockRecommend/hotStocks', function (req, res, next) {
-    singleStockbl.getHotStocks((err,docs) => {
-        if(err){
-            throw err;
-        }else {
-            res.send(docs);
-        }
-    });
+    singleStockbl.getHotStocks((err,docs) => sendDirectly(res,err,docs));
+});
+
+router.get('/quantitative-analysis/stockRecommend/highScore', function (req, res, next) {
+    strategyRT.getRccomandStockHighScore((err,docs) => sendDirectly(res,err,docs));
+});
+
+router.get('/quantitative-analysis/stockRecommend/profit', function (req, res, next) {
+    strategyRT.getRccomandStockProfit((err,docs) => sendDirectly(res,err,docs));
+});
+
+router.get('/quantitative-analysis/stockRecommend/winRate', function (req, res, next) {
+    strategyRT.getRccomandStockWinRate((err,docs) => sendDirectly(res,err,docs));
+});
+
+router.get('/quantitative-analysis/stockRecommend/antiRiskAbility', function (req, res, next) {
+    strategyRT.getRccomandStockAntiRiskAbility((err,docs) => sendDirectly(res,err,docs));
 });
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
@@ -197,23 +210,11 @@ router.get('/quantitative-analysis/allBoards', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
-    userbl.getAllStrategy(req.session.user, (err, docs) => {
-        if (err) {
-            throw err;
-        } else {
-            res.send(docs);
-        }
-    });
+    userbl.getAllStrategy(req.session.user, (err, docs) => sendDirectly(res,err,docs));
 });
 
 router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
-    userbl.loadStrategy(req.session.user, req.params.name, (err, docs) => {
-        if (err) {
-            throw err;
-        } else {
-            res.send(docs);
-        }
-    });
+    userbl.loadStrategy(req.session.user, req.params.name, (err, docs) => sendDirectly(res,err,docs));
 });
 
 router.post('/quantitative-analysis/loading', function (req, res, next) {

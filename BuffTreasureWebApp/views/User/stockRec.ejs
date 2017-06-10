@@ -73,21 +73,42 @@
                                 推荐股票
                             </h2>
                         </div>
-                        <div class="panel-body">
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-black">N泰安</a>
+                        <div class="panel-body ">
+                            <div class="panel col-sm-6 col-md-3">
+                                <div class="panel-heading">
+                                    <h4 class="mg-clear text-center tc-black">
+                                        综合能力
+                                    </h4>
+                                </div>
+                                <div class="panel-body" id="high-score">
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-black">N海鸥</a>
+                            <div class="panel col-sm-6 col-md-3">
+                                <div class="panel-heading">
+                                    <h4 class="mg-clear text-center tc-black">
+                                        盈利能力
+                                    </h4>
+                                </div>
+                                <div class="panel-body" id="profit">
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-lg btn-block btn-black">庞大集团</a>
+                            <div class="panel col-sm-6 col-md-3">
+                                <div class="panel-heading">
+                                    <h4 class="mg-clear text-center tc-black">
+                                        选股能力(策略胜率)能力
+                                    </h4>
+                                </div>
+                                <div class="panel-body" id="win-rate">
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-d btn-lg btn-block">安科控股</a>
-                            </div>
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-d btn-lg btn-block">北京科悦<span class="special-tag-for-editing-text-with-html"></span></a>
+                            <div class="panel col-sm-6 col-md-3">
+                                <div class="panel-heading">
+                                    <h4 class="mg-clear text-center tc-black">
+                                        抗风险能力能力
+                                    </h4>
+                                </div>
+                                <div class="panel-body" id="anti-risk-ability">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +146,7 @@
                 success: (result) => {
                     $("#hot-stocks-list").empty();
                     for(let i=0; i<5;i++){
-                        let hotStocksRow="<tr><td><a class='btn-link'></a></td><td></td><td></td></tr>";
+                        let hotStocksRow="<tr><td><a class='btn-link' onclick='toSingleStockView($(this).text())'></a></td><td></td><td></td></tr>";
                         $("#hot-stocks-list").append(hotStocksRow);
                         $("#hot-stocks-list tr:last td:eq(0) a").text(result[i][0]);
                         $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);
@@ -133,7 +154,127 @@
                     }
                 },
             });
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/highScore", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#high-score").empty();
+                    let holdDaysRow="<div class='text-left'> \
+                                        <h5>推荐持仓天数：<mark style='margin-left: 20px'><strong></strong></mark><span>天</span></h5> \
+                                    </div>";
+                    $("#high-score").append(holdDaysRow);
+                    $("#high-score div:last h5 mark strong").text(result[0]);
+                    for(let i=1; i<4;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#high-score").append(buttonRow);
+                        $("#high-score div:last a").text(result[i][1]);
+                    }
+                    for(let i=4; i<6;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#high-score").append(buttonRow);
+                        $("#high-score div:last a").text(result[i][1]);
+                    }
+                },
+            });
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/profit", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#profit").empty();
+                    let holdDaysRow="<div class='text-left'> \
+                                        <h5>推荐持仓天数：<mark style='margin-left: 20px'><strong></strong></mark><span>天</span></h5> \
+                                    </div>";
+                    $("#profit").append(holdDaysRow);
+                    $("#profit div:last h5 mark strong").text(result[0]);
+                    for(let i=1; i<4;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#profit").append(buttonRow);
+                        $("#profit div:last a").text(result[i][1]);
+                    }
+                    for(let i=4; i<6;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#profit").append(buttonRow);
+                        $("#profit div:last a").text(result[i][1]);
+                    }
+                },
+            });
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/winRate", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#win-rate").empty();
+                    let holdDaysRow="<div class='text-left'> \
+                                        <h5>推荐持仓天数：<mark style='margin-left: 20px'><strong></strong></mark><span>天</span></h5> \
+                                    </div>";
+                    $("#win-rate").append(holdDaysRow);
+                    $("#win-rate div:last h5 mark strong").text(result[0]);
+                    for(let i=1; i<4;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#win-rate").append(buttonRow);
+                        $("#win-rate div:last a").text(result[i][1]);
+                    }
+                    for(let i=4; i<6;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#win-rate").append(buttonRow);
+                        $("#win-rate div:last a").text(result[i][1]);
+                    }
+                },
+            });
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/antiRiskAbility", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#anti-risk-ability").empty();
+                    let holdDaysRow="<div class='text-left'> \
+                                        <h5>推荐持仓天数：<mark style='margin-left: 20px'><strong></strong></mark><span>天</span></h5> \
+                                    </div>";
+                    $("#anti-risk-ability").append(holdDaysRow);
+                    $("#anti-risk-ability div:last h5 mark strong").text(result[0]);
+                    for(let i=1; i<4;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#anti-risk-ability").append(buttonRow);
+                        $("#anti-risk-ability div:last a").text(result[i][1]);
+                    }
+                    for(let i=4; i<6;i++){
+                        let buttonRow="<div class='text-center'> \
+                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text())'></a> \
+                                       </div>";
+                        $("#anti-risk-ability").append(buttonRow);
+                        $("#anti-risk-ability div:last a").text(result[i][1]);
+                    }
+                },
+            });
         });
+
+        function toSingleStockView(stockName, stockCode) {
+            if(stockCode){
+
+            }else {
+                console.log(stockName);
+            }
+        }
     </script>
 </div>
 </body>

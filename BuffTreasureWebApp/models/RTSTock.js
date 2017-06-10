@@ -2,10 +2,6 @@
  * Created by wshwbluebird on 2017/6/10.
  */
 
-
-/**
- * Created by wshwbluebird on 2017/5/28.
- */
 let RTStockSchema = require('./RTStockSchema');
 
 exports.RTStockDB ={

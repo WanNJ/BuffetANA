@@ -57,7 +57,7 @@ describe('singleStockbl', function() {
     });
     describe('#getLatestStockInfo()', function() {
         it('显示最近浏览过的股票的现价和涨跌幅', function(done) {
-            singleStockbl.getLatestStockInfo(['000001', '000002', '603158'], (err, results) => {
+            singleStockbl.getLatestStockRTInfo(['000001', '000002', '603158'], (err, results) => {
                 if (err) {
                     done(err);
                 }

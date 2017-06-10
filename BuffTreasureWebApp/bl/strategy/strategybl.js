@@ -5,6 +5,7 @@
 let strategyDAO = require('./strategyPickle');
 let statisticTool = require('../tool/statisticTool');
 let strategyDB = require('../../models/strategy').strategyDB;
+let strategyTool = require('./strategyTool');
 
 // 腌制好的所有数据，用于各种图表的计算
 let pickleDatas;
@@ -146,10 +147,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                 markLS: results[3]["strategyEstimateResult"],// low and same 情况下的分数
                 markLO: results[4]["strategyEstimateResult"],// low and opposite 情况下的分数
             };
-            strategyDB.saveStrategy(strategy, (err) => {
-                if (err)
-                    callback(err, null);
-            });
+            saveStrategy(strategy);
             callback(null, results);
         }
     });
@@ -160,6 +158,76 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
 /**
  * ================================下面是一些私有的计算方法，并不是调用的接口=================================
  */
+
+
+/**
+ * 保存策略
+ * @param strategy
+ */
+function saveStrategy(strategy) {
+    strategyDB.getAllStrategy((err, strategies) => {
+        if (!err) {
+            for (let i = 0; i < strategies.length; i++) {
+                // 两个策略是否相同
+                if (strategyTool.compareTo(strategies[i], strategy)) {
+                    // 策略相同，回测区间不相同
+                    if ((strategy["beginDate"] - strategies[i]["beginDate"]) !== 0 || (strategy["endDate"] - strategies[i]["endDate"]) !== 0) {
+                        // 回测区间不同，且新策略的回测区间更加接近现在的日期
+                        if ((strategy["endDate"] - strategies[i]["endDate"]) > 0) {
+                            strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                if (!err) {
+                                    strategyDB.saveStrategy(strategy, (err, data) => {
+                                        if (err)
+                                            console.log('save strategy error');
+                                    })
+                                }
+                            });
+                        }
+                    }
+                    // 策略相同，回测区间也相同
+                    else {
+                        // 新策略的持股数更接近5
+                        if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) > Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
+                            strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                if (!err) {
+                                    strategyDB.saveStrategy(strategy, (err, data) => {
+                                        if (err)
+                                            console.log('save strategy error');
+                                    })
+                                }
+                            });
+                        }
+                        // 两个策略的持股数一样接近5
+                        else if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) === Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
+                            // 新策略的得分高
+                            if (strategies[i]["markNormal"]["strategyScore"] < strategy["markNormal"]["strategyScore"]) {
+                                strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                    if (!err) {
+                                        strategyDB.saveStrategy(strategy, (err, data) => {
+                                            if (err)
+                                                console.log('save strategy error');
+                                        })
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                // 两个策略不一样，直接添加
+                else {
+                    strategyDB.saveStrategy(strategy, (err, data) => {
+                        if (err)
+                            console.log('Save Strategy Failed');
+                    });
+                }
+            }
+
+        }
+    });
+}
+
 
 
 /**

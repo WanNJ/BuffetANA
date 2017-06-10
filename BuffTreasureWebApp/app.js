@@ -81,6 +81,7 @@ app.use((err, req, res, next) => {
 });
 
 // 为了解决DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated
+
 mongoose.Promise = global.Promise;
 // 数据库连接 MongoDB
 mongoose.connect('mongodb://localhost/allInfo');

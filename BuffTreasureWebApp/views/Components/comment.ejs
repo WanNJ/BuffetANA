@@ -42,10 +42,10 @@
 <script>
     $('#overall > h4 > a').click(function (e) {
         e.preventDefault();
-        if($(this)[0].attributes[2].nodeValue === 'true')
-            return;
 
         <% if(typeof user !== "undefined") { %>
+        if($(this)[0].attributes[2])
+            return;
         let btnType = $(this).children()[0].outerHTML.substring(13, 25);
         if(btnType === 'fa-thumbs-up') {
             $.post("single-stock/pressStockGood",{stockCode: currentStockCode}, function(result){
@@ -70,10 +70,10 @@
 
     $('.stats > a').click(function (e) {
         e.preventDefault();
-        if($(this)[0].attributes[2].nodeValue === 'true')
-            return;
 
         <% if(typeof user !== "undefined") { %>
+        if($(this)[0].attributes[2])
+            return;
         let type = $(this).children()[0].outerHTML.substring(13, 25);
         console.log($(this).parent()[0].id);
         let content_id = $(this).parent()[0].id;

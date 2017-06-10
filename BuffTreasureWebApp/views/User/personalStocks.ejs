@@ -41,11 +41,22 @@
                     <tr>
                         <td><%= stockNames[i][0] %></td>
                         <td><%= stockNames[i][1] %></td>
-                        <td><%= stockInfos[i].now_price %></td>
-                        <td><%= stockInfos[i].change_price %></td>
-                        <td><%= stockInfos[i].change_rate %>%</td>
+                        <% if(stockInfos[i].change_price >= 0) { %>
+                        <td style="color: red"><%= stockInfos[i].now_price %></td>
+                        <td style="color: red"><%= stockInfos[i].change_price %></td>
+                        <td style="color: red"><%= stockInfos[i].change_rate %>%</td>
+                        <% } else { %>
+                        <td style="color: green"><%= stockInfos[i].now_price %></td>
+                        <td style="color: green"><%= stockInfos[i].change_price %></td>
+                        <td style="color: green"><%= stockInfos[i].change_rate %>%</td>
+                        <% } %>
                         <td><%= stockInfos[i].yesterday_close %></td>
-                        <td><%= stockInfos[i].today_open %></td>
+
+                        <% if(stockInfos[i].today_open >= stockInfos[i].yesterday_close) { %>
+                        <td style="color: red"><%= stockInfos[i].today_open %></td>
+                        <% } else { %>
+                        <td style="color: green"><%= stockInfos[i].today_open %></td>
+                        <% } %>
                         <td><%= stockInfos[i].high %></td>
                         <td><%= stockInfos[i].low %></td>
                         <td><%= stockInfos[i].volume %></td>

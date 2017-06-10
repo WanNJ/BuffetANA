@@ -128,7 +128,7 @@
                     for(let i=0; i<5;i++){
                         let hotStocksRow="<tr><td><a class='btn-link'></a></td><td></td><td></td></tr>";
                         $("#hot-stocks-list").append(hotStocksRow);
-                        $("#hot-stocks-list tr:last td:eq(0)").text(result[i][0]);
+                        $("#hot-stocks-list tr:last td:eq(0) a").text(result[i][0]);
                         $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);
                         $("#hot-stocks-list tr:last td:eq(2)").text((result[i][2]>0?"+":"") +result[i][2]+"%");
                     }

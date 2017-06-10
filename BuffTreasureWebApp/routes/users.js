@@ -168,7 +168,7 @@ router.get('/quantitative-analysis/stockRecommend/hotBoard', function (req, res,
 });
 
 router.get('/quantitative-analysis/stockRecommend/hotStocks', function (req, res, next) {
-    singleStockRT.getHotStocks((err,docs) => {
+    singleStockbl.getHotStocks((err,docs) => {
         if(err){
             throw err;
         }else {

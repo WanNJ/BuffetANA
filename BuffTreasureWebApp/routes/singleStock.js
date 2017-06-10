@@ -20,15 +20,15 @@ router.get('/getStockComments', (req, res, next) => {
         if (err)
             res.render('error');
         else {
-            res.locals.overall_like = result.like;
-            res.locals.overall_dislike = result.dislike;
-            res.locals.overall_clickAble = result.clickAlbe;
-            res.locals.allComments = result.contents;
+            console.log(comments);
+            res.locals.overall_like = comments.like;
+            res.locals.overall_dislike = comments.dislike;
+            res.locals.overall_clickAble = comments.clickAble;
+            res.locals.allComments = comments.contents;
             res.render('Components/comment');
         }
     });
 });
-
 
 router.get('/getHotStockList', (req, res, next) => {
     singleStockService.getHotStocks((err, infos) => {

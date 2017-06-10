@@ -3,7 +3,7 @@
  */
 
 
-let strategyRT = require("../../../bl/strategy/strategyRT");
+let strategyRT = require("../../../bl/strategy/strategyPredict");
 let StockPoolConditionVO = require("../../../vo/StockPoolConditionVO").StockPoolConditionVO;
 let TradeModelVO = require("../../../vo/TradeModelVO").TradeModelVO;
 

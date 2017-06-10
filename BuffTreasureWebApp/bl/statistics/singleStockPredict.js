@@ -63,4 +63,10 @@ exports.SVMAnalyze = (holdingDays) => {
 
 };
 
-exports.NNAnalyze = (holdingDays)
+exports.NNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
+
+};
+
+exports.CNNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
+
+};

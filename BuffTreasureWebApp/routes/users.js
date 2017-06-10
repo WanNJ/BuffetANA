@@ -190,17 +190,29 @@ router.get('/quantitative-analysis/stockRecommend/antiRiskAbility', function (re
 });
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
-    let data={
-        "1" : [],
-        "2" : [],
-        "3" : [],
-        "4" : [],
-        "5" : [],
-    };
-    res.render('User/strategyRec',data);
+    console.log("begin");
+    strategyRT.getRtStrategyALL((err,docs) => {
+        if(err){
+            console.error(err);
+        }else {
+            console.log("send");
+            res.render('User/strategyRec',docs);
+        }
+    });
+    // res.render('User/strategyRec',{
+    //     "HighAndSame": ['id'  ,'HighAndSame综合得分' ,'HighAndSame盈利能力' ,'HighAndSame绝对收益' ,'HighAndSame选股能力' ,'HighAndSame抗风险能力' ,'HighAndSame稳定性'],
+    //     "HighAndOpposite": ['id' ,'HighAndOpposite综合得分' ,'HighAndOpposite盈利能力' ,'HighAndOpposite绝对收益' ,'HighAndOpposite选股能力' ,'HighAndOpposite抗风险能力' ,'HighAndOpposite稳定性'],
+    //     "LowAndSame": ['id' ,'LowAndSame综合得分' ,'LowAndSame盈利能力' ,'LowAndSame绝对收益' ,'LowAndSame选股能力' ,'LowAndSame抗风险能力' ,'LowAndSame稳定性'],
+    //     "LowAndOpposite": ['id' ,'LowAndOpposite综合得分' ,'LowAndOpposite盈利能力' ,'LowAndOpposite绝对收益' ,'LowAndOpposite选股能力' ,'LowAndOpposite抗风险能力' ,'LowAndOpposite稳定性'],
+    //     "Normal": ['id' ,'Normal综合得分' ,'Normal盈利能力' ,'Normal绝对收益' ,'Normal选股能力' ,'Normal抗风险能力' ,'Normal稳定性'],
+    // });
 });
 
 router.get('/quantitative-analysis/choose', function (req, res, next) {
+    if(req.query.strategyID !== undefined) {
+        res.locals.strategyID = req.query.strategyID;
+    }
+
     res.render('User/quantitative-choose');
 });
 

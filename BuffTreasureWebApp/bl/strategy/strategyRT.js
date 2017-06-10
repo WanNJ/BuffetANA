@@ -106,13 +106,12 @@ exports.getRccomandStockAntiRiskAbility = (callback)=>{
  * doc{JSON} 形式
  * 形如：
  * {
- * "HighAndSame": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
- * "HighAndOpposite": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
- * "LowAndSame": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
- * "LowAndOpposite": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
- * "Normal": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
- *
- * }
+ "HighAndSame": ['id'  ,'HighAndSame综合得分' ,'HighAndSame盈利能力' ,'HighAndSame绝对收益' ,'HighAndSame选股能力' ,'HighAndSame抗风险能力' ,'HighAndSame稳定性'],
+ "HighAndOpposite": ['id' ,'HighAndOpposite综合得分' ,'HighAndOpposite盈利能力' ,'HighAndOpposite绝对收益' ,'HighAndOpposite选股能力' ,'HighAndOpposite抗风险能力' ,'HighAndOpposite稳定性'],
+ "LowAndSame": ['id' ,'LowAndSame综合得分' ,'LowAndSame盈利能力' ,'LowAndSame绝对收益' ,'LowAndSame选股能力' ,'LowAndSame抗风险能力' ,'LowAndSame稳定性'],
+ "LowAndOpposite": ['id' ,'LowAndOpposite综合得分' ,'LowAndOpposite盈利能力' ,'LowAndOpposite绝对收益' ,'LowAndOpposite选股能力' ,'LowAndOpposite抗风险能力' ,'LowAndOpposite稳定性'],
+ "Normal": ['id' ,'Normal综合得分' ,'Normal盈利能力' ,'Normal绝对收益' ,'Normal选股能力' ,'Normal抗风险能力' ,'Normal稳定性'],
+ }
  *
  */
 exports.getRtStrategyALL = (callback) =>{

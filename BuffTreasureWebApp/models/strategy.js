@@ -10,13 +10,19 @@ const mapTable = {
     'HighAndSame':'markHS',
     'Normal':'markNormal'
 
-}
+};
 
 exports.strategyDB ={
     saveStrategy :(strategy,callback)=>{
         let newStrategy = new strategySchema(strategy);
         newStrategy.save((err, data) => {
             callback(err, data);
+        });
+    },
+
+    removeStrategy: (strategyKey, callback) => {
+        strategySchema.remove({_id: strategyKey}, (err) => {
+            callback(err);
         });
     },
 
@@ -48,4 +54,4 @@ exports.strategyDB ={
             callback(err, doc.slice(0,num))
         });
     },
-}
+};

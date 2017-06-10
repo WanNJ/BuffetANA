@@ -19,6 +19,10 @@ let market = require('./routes/market');
 let app = express();
 
 let realTimeTool = require('./bl/realtime/singleStockRT');
+
+let singleStockbl = require('./bl/singleStockbl');
+
+let strategyRTTool = require('./bl/realtime/strategyRT');
 // 视图引擎设置
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -95,5 +99,28 @@ process.on('exit', () => {
 //     else
 //         console.log("Update real time info succeed");
 // });
+
+// setInterval(realTimeTool.updateHotBoard, 300000, (err, isOK) => {
+//     if (err)
+//         console.log("Update hot board info failed");
+//     else
+//         console.log("Update hot board info succeed");
+// });
+
+// setInterval(singleStockbl.updateHotStocks, 300000, (err, isOK) => {
+//     if (err)
+//         console.log("Update hot stocks info failed");
+//     else
+//         console.log("Update hot stocks info succeed");
+// });
+
+// setInterval(strategyRTTool.WriteRTStockToDB, 300000, (err) => {
+//     if (err)
+//         console.log("Update RT stocks info failed");
+//     else
+//         console.log("Update RT stocks info succeed");
+// });
+
+
 
 module.exports = app;

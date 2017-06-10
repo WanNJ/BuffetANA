@@ -95,7 +95,7 @@
                             <div class="panel col-sm-6 col-md-3">
                                 <div class="panel-heading">
                                     <h4 class="mg-clear text-center tc-black">
-                                        选股能力(策略胜率)能力
+                                        选股能力(策略胜率)
                                     </h4>
                                 </div>
                                 <div class="panel-body" id="win-rate">
@@ -104,7 +104,7 @@
                             <div class="panel col-sm-6 col-md-3">
                                 <div class="panel-heading">
                                     <h4 class="mg-clear text-center tc-black">
-                                        抗风险能力能力
+                                        抗风险能力
                                     </h4>
                                 </div>
                                 <div class="panel-body" id="anti-risk-ability">
@@ -146,7 +146,7 @@
                 success: (result) => {
                     $("#hot-stocks-list").empty();
                     for(let i=0; i<5;i++){
-                        let hotStocksRow="<tr><td><a class='btn-link' onclick='toSingleStockView($(this).text())'></a></td><td></td><td></td></tr>";
+                        let hotStocksRow="<tr><td><a class='btn-link' href='/single-stock?stockCode="+'000001'+"&stockName="+result[i][0]+"'></a></td><td></td><td></td></tr>";
                         $("#hot-stocks-list").append(hotStocksRow);
                         $("#hot-stocks-list tr:last td:eq(0) a").text(result[i][0]);
                         $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);
@@ -168,14 +168,14 @@
                     $("#high-score div:last h5 mark strong").text(result[0]);
                     for(let i=1; i<4;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-info' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#high-score").append(buttonRow);
                         $("#high-score div:last a").text(result[i][1]);
                     }
                     for(let i=4; i<6;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-success' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#high-score").append(buttonRow);
                         $("#high-score div:last a").text(result[i][1]);
@@ -196,14 +196,14 @@
                     $("#profit div:last h5 mark strong").text(result[0]);
                     for(let i=1; i<4;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-info' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#profit").append(buttonRow);
                         $("#profit div:last a").text(result[i][1]);
                     }
                     for(let i=4; i<6;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-success' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#profit").append(buttonRow);
                         $("#profit div:last a").text(result[i][1]);
@@ -224,14 +224,14 @@
                     $("#win-rate div:last h5 mark strong").text(result[0]);
                     for(let i=1; i<4;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-info' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#win-rate").append(buttonRow);
                         $("#win-rate div:last a").text(result[i][1]);
                     }
                     for(let i=4; i<6;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-success' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#win-rate").append(buttonRow);
                         $("#win-rate div:last a").text(result[i][1]);
@@ -252,14 +252,14 @@
                     $("#anti-risk-ability div:last h5 mark strong").text(result[0]);
                     for(let i=1; i<4;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-info' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-info' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#anti-risk-ability").append(buttonRow);
                         $("#anti-risk-ability div:last a").text(result[i][1]);
                     }
                     for(let i=4; i<6;i++){
                         let buttonRow="<div class='text-center'> \
-                                            <a class='btn btn-lg btn-block btn-success' onclick='toSingleStockView($(this).text(),"+result[i][0]+")'></a> \
+                                            <a class='btn btn-lg btn-block btn-success' href='/single-stock?stockCode="+result[i][0]+"&stockName="+result[i][1]+"'></a> \
                                        </div>";
                         $("#anti-risk-ability").append(buttonRow);
                         $("#anti-risk-ability div:last a").text(result[i][1]);

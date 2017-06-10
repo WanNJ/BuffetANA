@@ -177,7 +177,7 @@
 
             $.get('single-stock/getStockBoard', {stockCode: stockCode}, (result) => {
                 $('#block_table > tbody').html('');
-                
+
                 for (let i = 0; i < result.length; i++) {
                     let appendedStr = '<tr><th>' + result[i] + '</th></tr>';
                     $('#block_table > tbody').append(appendedStr);
@@ -862,65 +862,18 @@
 <div class="col-sm-12" style="height: 30px"></div>
 <HR width="80%" color=black SIZE=5>
 
-<div class="bordered-div">
-    <h1 class="display-1 text-center">讨论区</h1>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading">
-                    <div class="pull-left image">
-                        <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
-                    </div>
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <a href="#"><b>Ryan Haywood</b></a>
-                            made a post.
-                        </div>
-                        <h6 class="text-muted time">1 minute ago</h6>
-                    </div>
-                </div>
-                <div class="post-description">
-                    <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
-                    <div class="stats">
-                        <a href="#" class="btn btn-default stat-item">
-                            <i class="fa fa-thumbs-up icon"></i>2
-                        </a>
-                        <a href="#" class="btn btn-default stat-item">
-                            <i class="fa fa-thumbs-down icon"></i>12
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading">
-                    <div class="pull-left image">
-                        <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
-                    </div>
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <a href="#"><b>Ryan Haywood</b></a>
-                            made a post.
-                        </div>
-                        <h6 class="text-muted time">1 minute ago</h6>
-                    </div>
-                </div>
-                <div class="post-description">
-                    <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
-                    <div class="stats">
-                        <a href="#" class="btn btn-default stat-item">
-                            <i class="fa fa-thumbs-up icon"></i>2
-                        </a>
-                        <a href="#" class="btn btn-default stat-item">
-                            <i class="fa fa-thumbs-down icon"></i>12
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<div id="comments_seg" class="col-md-12 bordered-div"></div>
+
+<script>
+    function getComments(stockCode) {
+        $.get('single-stock/getStockComments', {stockCode: stockCode}, (result) => {
+            $('#comments_seg').html(result);
+        });
+    }
+
+    getComments('000001');
+</script>
 
 </body>
 

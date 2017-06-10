@@ -1,0 +1,27 @@
+<div class="col-sm-12">
+    <div class="panel panel-white post panel-shadow" style="margin-left: 13px; margin-right: 13px; margin-top: 10px">
+        <div class="post-heading">
+            <div class="pull-left image">
+                <img src="/img/man.png" class="img-circle avatar" alt="user profile image">
+            </div>
+            <div class="pull-left meta">
+                <div class="title h5"><b><%= comment.username %></b>
+                    说道：
+                </div>
+                <h6 class="text-muted time"><%= comment.date %></h6>
+            </div>
+        </div>
+        <div class="post-description">
+            <p><%= comment.comment_content %></p>
+            <div  id="<%= comment._id%>" class="stats">
+                <a href="#" class="btn btn-default stat-item">
+                    <i class="fa fa-thumbs-up icon"></i><%= comment.like %>
+                </a>
+                <a href="#" class="btn btn-default stat-item">
+                    <i class="fa fa-thumbs-down icon"></i><%= comment.dislike %>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

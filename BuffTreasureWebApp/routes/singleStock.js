@@ -3,6 +3,7 @@ let allStockBl = require('../bl/allStockbl');
 let singleStockService = require('../bl/singleStockbl');
 let industryService = require('../bl/industryandbench/industrybl');
 let userBl = require('../bl/userbl');
+let comment = require('../bl/forum/forumbl').forumbl;
 let router = express.Router();
 
 router.get('/getAllStockList', (req, res, next) => {
@@ -13,6 +14,21 @@ router.get('/getAllStockList', (req, res, next) => {
             res.send(allStocks);
     });
 });
+
+router.get('/getStockComments', (req, res, next) => {
+    comment.getAllStockComment(req.query.stockCode, req.session.user, (err, comments) => {
+        if (err)
+            res.render('error');
+        else {
+            res.locals.overall_like = result.like;
+            res.locals.overall_dislike = result.dislike;
+            res.locals.overall_clickAble = result.clickAlbe;
+            res.locals.allComments = result.contents;
+            res.render('Components/comment');
+        }
+    });
+});
+
 
 router.get('/getHotStockList', (req, res, next) => {
     singleStockService.getHotStocks((err, infos) => {

@@ -1,0 +1,37 @@
+<h1 class="display-1 text-center">讨论区</h1>
+
+<div class="col-sm-12 panel panel-white post" style="margin-left: 13px; margin-right: 13px; margin-top: 10px;">
+    <h4 class="post-heading" style="height: 20px; margin-bottom: 50px;">您对这支股票的看法：
+        <a href="#" class="btn btn-default stat-item">
+            <i class="fa fa-thumbs-up icon"></i><%= overall_like %>
+        </a>
+        <a href="#" class="btn btn-default stat-item">
+            <i class="fa fa-thumbs-down icon"></i><%= overall_dislike %>
+        </a>
+    </h4>
+</div>
+
+<div class="col-md-12">
+    <div class="widget-area no-padding blank" style="border: 2px solid #F2F2F2;">
+        <div class="status-upload">
+            <form>
+                <textarea placeholder="添加自己的评论..."></textarea>
+                <button type="submit" class="btn btn-success btn-block" style="float: none"><i
+                            class="fa fa-share"></i>发表
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div style="height: 20px;"></div>
+
+<!--<% if(typeof allComments !== "undefined") { %>-->
+
+<!--<div class="row">-->
+<!--<% allComments.cotents.forEach(function (comment) { %>-->
+<!--<% include Components/commentSeg.ejs %>-->
+<!--<% }) %>-->
+<!--</div>-->
+
+<!--<% } %>-->

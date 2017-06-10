@@ -69,20 +69,21 @@
 
             <div class="col-md-12 text-left" style="padding-right: 40px; padding-left: 40px;">
                 <table class="table table-bordered">
+                    <caption>同行业中正相关度最高的个股</caption>
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
+                        <th>股票名称</th>
+                        <th>股票代码</th>
+                        <th>相关度</th>
+                        <th>预测盈利率</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th><%= stockName %></th>
+                        <td><%= stockCode %></td>
+                        <td><%= correlation %></td>
+                        <td><%= profitRate %>%</td>
                     </tr>
                     </tbody>
                 </table>

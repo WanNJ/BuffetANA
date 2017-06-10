@@ -137,17 +137,17 @@ function splitStrategyResult(rawData) {
     };
 }
 
-// router.use(function (req, res, next) {
-//     let sess = req.session;
-//
-//     if (sess.user) {
-//         next();
-//     } else {
-//         req.session.alertType = "alert-danger";
-//         req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
-//         res.redirect('/sign-in');
-//     }
-// });
+router.use(function (req, res, next) {
+    let sess = req.session;
+
+    if (sess.user) {
+        next();
+    } else {
+        req.session.alertType = "alert-danger";
+        req.session.alertMessage = "您还未登录，请先登录后再使用该功能！";
+        res.redirect('/sign-in');
+    }
+});
 
 router.get('/comparison', function (req, res, next) {
     res.render('User/comparison');
@@ -558,11 +558,18 @@ router.get('/:id/analysisResult/SVM', (req, res, next) => {
     for(let i = 0; i < result.base.length; i++) {
         finalResult.push([result.base[i], result.compare[i]]);
     }
+
+    res.locals.stockName = result.name;
+    res.locals.stockCode = result.code;
+    res.locals.correlation = Math.round(result.correlation * 100)/100;
+    res.locals.profitRate = Math.round(result.profitRate * 10000)/100;
+
     res.locals.data = finalResult;
     res.render('User/SingleStockAnalysis/svm');
 });
 
 router.get('/:id/analysisResult/NN', (req, res, next) => {
+
     let data = {
         "time": {"$date": 1497063463279},
         "isRead": false,

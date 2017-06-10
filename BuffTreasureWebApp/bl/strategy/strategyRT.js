@@ -94,7 +94,7 @@ exports.getRccomandStockWinRate = (callback)=>{
  * @param callback
  */
 exports.getRccomandStockAntiRiskAbility = (callback)=>{
-    RTStockDB.getStock('chooseStockAbility',(err,doc)=>{
+    RTStockDB.getStwock('chooseStockAbility',(err,doc)=>{
         callback(err,doc)
     })
 }

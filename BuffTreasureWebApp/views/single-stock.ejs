@@ -11,6 +11,7 @@
     <!--Jquery-UI-->
     <script src="/js/jquery-ui.min.js"></script>
     <script type="text/javascript">
+        let currentStockCode = "";
         let dataZoomLength = 60;
 
         function calculateMA(dayCount, adjDatas) {
@@ -71,6 +72,7 @@
         }
 
         function getBasicData(stockCode) {
+            currentStockCode = stockCode;
             let fullStockCode = getFullStockCode(stockCode);
 
             // 标题信息和五档盘口
@@ -493,10 +495,12 @@
 
         // 更新分时图，每分钟更新一次
         window.setInterval(function () {
-            let stockCode = '';
-            if ($('#stock_code').innerHTML !== '')
-                stockCode = $('#stock_code').innerHTML.substring(2);
-            getBasicData(stockCode);
+            let stockCode = "";
+            if ($('#stock_code')[0].innerHTML !== '')
+                stockCode = $('#stock_code')[0].innerHTML;
+
+            console.log($('#stock_code')[0].innerHTML.substring(3, 9));
+            getBasicData(stockCode.substring(3, 9));
         }, 60000);
     </script>
 </head>
@@ -859,11 +863,13 @@
     <% } %>
 </div>
 
-<div class="col-sm-12" style="height: 30px"></div>
+<div class="col-md-12" style="height: 30px"></div>
 <HR width="80%" color=black SIZE=5>
 
 
-<div id="comments_seg" class="col-md-12 bordered-div"></div>
+<div id="comments_seg" class="col-md-12 bordered-div ">
+    <% include Components/comment.ejs %>
+</div>
 
 <script>
     function getComments(stockCode) {
@@ -872,7 +878,7 @@
         });
     }
 
-    getComments('000001');
+//    getComments('000001');
 </script>
 
 </body>

@@ -59,4 +59,42 @@ exports.contentDB = {
 
     },
 
+    getAllContent:(code,userID,callback)=>{
+        contentSchema.find({'code': code} , (err, data) => {
+            if(data.length===0){
+                callback(err,[])
+            }
+            else{
+
+                function contains(arr, obj) {
+                    var i = arr.length;
+                    while (i--) {
+                        if (arr[i] === obj) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                result = []
+                for(let i = 0 ; i< data.length ; i++){
+                    d = data[i];
+                    let temp ={
+                        "like":d['good'].length,
+                        "dislike":d['bad'].length,
+                        "date":d['date'] ,
+                        "clickAble": !(contains(d['good'],userID) || contains(d['bad'],userID)),
+                        "content": d['content'],
+                        "username ":d['userID'],
+                        "_id" :d['_id']
+                    }
+                    result.push(temp)
+
+                }
+                callback(err,result)
+            }
+
+        });
+    }
+
 }

@@ -4,6 +4,7 @@
 
 
 let contentDB = require('../../models/content').contentDB;
+let forumDB = require('../../models/forum').forumDB;
 
 exports.forumbl = {
 
@@ -14,7 +15,9 @@ exports.forumbl = {
      * @param callback 形如 （err）={}
      */
     pressStockGood:(code,userID,callback)=>{
-
+        forumDB.pressGood(code,userID,(err)=>{
+            callback(err)
+        })
     },
 
     /**
@@ -24,7 +27,9 @@ exports.forumbl = {
      * @param callback 形如 （err）={}
      */
     pressStockBad:(code,userID,callback)=>{
-
+        forumDB.pressBad(code,userID,(err)=>{
+            callback(err)
+        })
     },
 
     /**
@@ -34,7 +39,9 @@ exports.forumbl = {
      * @param callback 形如 （err）={}
      */
     pressContentGood:(content_id,userID,callback)=>{
-
+        contentDB.pressGood(content_id,userID,(err)=>{
+            callback(err)
+        })
     },
 
     /**
@@ -44,7 +51,9 @@ exports.forumbl = {
      * @param callback 形如 （err）={}
      */
     pressContentBad:(content_id,userID,callback)=>{
-
+        contentDB.pressBad(content_id,userID,(err)=>{
+            callback(err)
+        })
     },
 
     /**
@@ -55,7 +64,9 @@ exports.forumbl = {
      * @param callback 形如 （err）={}
      */
     commentStock: (code,userID,content,callback)=>{
-
+        contentDB.addContent(code,userID,content,(err)=>{
+            callback(err)
+        })
     },
 
     /**
@@ -80,11 +91,18 @@ exports.forumbl = {
      *  "date":{Date} 评论的时间
      *  "clickAble":{Bool} 可否对这条评论点赞或者点差 true 可以
      *  "content":{String}
+     *  "username ":{String}
      *  "_id" :{String}
      * }
      *
      */
     getAllStockComment:(code,userID,callBack)=>{
+        forumDB.getForumInfo(code,userID,(err,forum)=>{
+            contentDB.getAllContent(code,userID,(err,content)=>{
+                forum['contents'] = content
+                callBack(err,forum)
+            })
 
+        })
     }
 }

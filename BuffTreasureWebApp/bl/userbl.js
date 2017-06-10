@@ -38,7 +38,8 @@ exports.signUp = (username, password, email, callback) => {
                 password : password,
                 email : email,
                 selfSelectedStock : [],
-                strategy: []
+                strategy: [],
+                message: []
             };
             userDB.registerUser(user, (err, data) => {
                 callback(err, true);
@@ -280,6 +281,39 @@ exports.loadStrategy = (userName, strategyName, callback) => {
                 }
             }
             callback(null, strategy);
+        }
+    });
+};
+
+
+/**
+ * 获得未读消息
+ * @param userName 用户名称
+ * @param callback (err, unreadMessages) => {}
+ * unreadMessages是一个未读消息数组，如果没有未读消息则数组长度为0，如果有未读消息，那么消息类型是JSON，如下所示
+ * {
+ *      "time":       Date类型，消息的生成时间
+ *      "isRead":     true/false,
+ *      "type":      'analysis1'/'analysis2'/'analysis3'/'thumbs_up'
+ *      "toString":  '你的xxx股票分析结果已出，请点击查看'/'xxx赞了你的评论'
+ *      "content":   '000001'/
+ *                    {
+ *                          "CR": [0.29, '低']              风险系数
+ *                          "upOrDown": ['54.29', '1']
+ *                    }
+ * }
+ */
+exports.getUnreadMessage = (userName, callback) => {
+    userDB.getAllMessage(userName, (err, messageQueue) => {
+        if (err)
+            callback(err, null);
+        else {
+            let unreadMessages = [];
+            messageQueue["message"].forEach(m => {
+                if (!m["isRead"])
+                    unreadMessages.push(m);
+            });
+            callback(null, unreadMessages);
         }
     });
 };

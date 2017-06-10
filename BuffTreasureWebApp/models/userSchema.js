@@ -11,7 +11,8 @@ const userSchema = new Schema({
     password : String,
     email : String,
     selfSelectStock : Array,    // 自选股
-    strategy: Array             // 保存的策略
+    strategy: Array,            // 保存的策略
+    message: Array              // 消息队列
 }, {
     collection: 'user',
     versionKey: false

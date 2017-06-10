@@ -62,6 +62,13 @@ exports.userDB = {
         });
     },
 
+
+    /**
+     * 覆盖原来的重名策略
+     * @param userName
+     * @param strategy
+     * @param callback
+     */
     overrideStrategy: (userName, strategy, callback) => {
         User.updateOne({username: userName}, {$set: {strategy: strategy}}, (err) => {
             if (err)
@@ -79,6 +86,49 @@ exports.userDB = {
     getAllStrategy: (userName, callback) => {
         User.findOne({username: userName}, ['strategy'], (err, strategy) => {
             callback(err, strategy);
+        });
+    },
+
+
+    /**
+     * 获得用户所有的消息队列
+     * @param userName
+     * @param callback
+     */
+    getAllMessage: (userName, callback) => {
+        User.findOne({username: userName}, ['message'], (err, message) => {
+            callback(err, message);
+        });
+    },
+
+
+    /**
+     * 添加未读消息
+     * @param userName
+     * @param message
+     * @param callback
+     */
+    addUnreadMessage: (userName, message, callback) => {
+        User.updateOne({username: userName}, {$push: {message: message}}, (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
+        });
+    },
+
+    /**
+     * 为了实现将未读消息标记为已读的功能，需要重写原来的整个消息队列
+     * @param userName
+     * @param message
+     * @param callback
+     */
+    overrideMessage: (userName, message, callback) => {
+        User.updateOne({username: userName}, {$set: {message: message}}, (err) => {
+            if (err)
+                callback(err, false);
+            else
+                callback(null, true);
         });
     }
 };

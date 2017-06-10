@@ -154,7 +154,6 @@ router.get('/quantitative-analysis', function (req, res, next) {
 
 router.get('/quantitative-analysis/stockRecommend', function (req, res, next) {
     res.render('User/stockRec');
-
 });
 
 router.get('/quantitative-analysis/stockRecommend/hotBoard', function (req, res, next) {

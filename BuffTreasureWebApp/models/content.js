@@ -60,7 +60,7 @@ exports.contentDB = {
     },
 
     getAllContent:(code,userID,callback)=>{
-        contentSchema.find({'code': code} , (err, data) => {
+        contentSchema.find({'code': code},null , {sort:{'date':'desc'}} , (err, data) => {
             if(data.length===0){
                 callback(err,[])
             }

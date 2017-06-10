@@ -81,6 +81,7 @@ exports.forumbl = {
      *  "date":{Date} 评论的时间
      *  "clickAble":{Bool} 可否对这条评论点赞或者点差 true 可以
      *  "content":{String}
+     *  "_id" :{String}
      * }
      *
      */

@@ -27,6 +27,8 @@ exports.calculateStockRt = (callback) =>{
             return new Promise((resolve,reject)=>{
                 strategyDB.getBestStrategyByEnv(env,cap,1,(err,doc)=>{
                     let temp = doc[0]['stockPoolConditionVO']
+                    // console.log(cap)
+                    // console.log(doc[0]['_id'])
                     let stockpool = new StockPool(temp.stockPool,temp.benches,temp.industries,temp.excludeST)
                     stockRTRec.getRTPickleData(stockpool,doc[0]['rank'],doc[0]['filter'],(err,stocks)=>{
                         result[cap] = [doc[0]['tradeModelVO'].holdingDays];

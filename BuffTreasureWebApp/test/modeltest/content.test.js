@@ -22,7 +22,7 @@ let contentDB = require('../../models/content').contentDB;
 describe('测试conten', function() {
     describe('#addContent()', function() {
         it('增加评论', function(done) {
-            contentDB.addContent('000001',"NJUBBD",'不怎么样01', function (err, docs) {
+            contentDB.addContent('000001',"NJUBBD",'不怎么样02', function (err, docs) {
                 if (err) {
                     done(err);
                 }

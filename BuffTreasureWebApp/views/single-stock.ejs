@@ -874,6 +874,50 @@
 <div class="col-md-12" style="height: 30px"></div>
 <HR width="80%" color=black SIZE=5>
 
+<div>
+    <div class="text-right">
+        <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#analysis-collapse" aria-expanded="false" aria-controls="analysis-collapse">
+            分析这只股票
+        </button>
+    </div>
+    <div class="collapse" id="analysis-collapse">
+        <div class="well text-center">
+            <div class="" style="display: inline">
+                <div style="padding-right: 50px;display: inline">
+                    <span >模型：</span>
+                    <select class="form-control" style="max-width: 120px;display: inline">
+                        <option selected="selected">SVM+NN</option>
+                        <option >CNN</option>
+                    </select>
+                </div>
+                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                    持股天数：
+                    <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
+                    天
+                </div>
+                <div class="" col-sm-6 style="display: inline;margin-top: 5px;">
+                    <span>考虑市场环境</span>
+                    <div class="switch" style="display: inline-flex;margin-left: 10px;">
+                        <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                        <label for="market-environment"></label>
+                    </div>
+                </div>
+                <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
+                    迭代量：
+                    <input style="max-width: 50px;margin-left: 28px;" required="required" value="1" pattern="[0-9]{1,}" id="reserve-days" onchange="number_validate(this,1,5)"/>
+                </div>
+                <div style="padding-right: 50px;">
+                    <span >学习方式：</span>
+                    <select class="form-control" style="max-width: 120px;display: inline-flex">
+                        <option selected="selected">分批</option>
+                        <option >全部</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="comments_seg" class="col-md-12 bordered-div "></div>
 
 </body>

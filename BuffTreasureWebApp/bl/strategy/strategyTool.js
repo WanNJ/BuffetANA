@@ -246,7 +246,7 @@ let rankMap = require('../functionMap/rankMap').funtionMap;
  */
 exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                                             beginDate, endDate, rank, filter,
-                                            projection,use =0, callback ) =>{
+                                            projection, use , callback ) =>{
 
     /**
      *
@@ -370,7 +370,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
     };
 
-    operatePromise(codeList,0,AllPickleDataList,projection).then(list =>callback(null,list)).catch(e=>callback(e,null));
+    operatePromise(codeList,0,AllPickleDataList,projection,use).then(list =>callback(null,list)).catch(e=>callback(e,null));
 
 };
 

@@ -130,14 +130,14 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
         return new Promise((resolve,reject) =>{
             //console.log('ere')
             strategyTool.setRankAndFilterToPickleDataList
-            (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,(err,list) =>{
-                //console.log(list)
+            (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,0,(err,list) =>{
                 resolve(list);
             })
         })
     };
 
     let filterAndRank = function (AllDataList,holdNumber) {
+
         //console.log(AllDataList['Normal'][0])
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < keys.length ; i++){

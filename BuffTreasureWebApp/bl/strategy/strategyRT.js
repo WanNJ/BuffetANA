@@ -32,9 +32,6 @@ let strategyDB = require('')
  * @param callback
  */
 exports.getRccomandStockHighScore = (callback)=>{
-    thermometer.getCurrentENV((err,env)=>{
-
-    })
 
 }
 

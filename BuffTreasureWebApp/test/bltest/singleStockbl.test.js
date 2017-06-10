@@ -81,14 +81,27 @@ describe('singleStockbl', function() {
             });
         });
     });
-    describe('#getHotStocks()', function() {
-        it('显示热门股票信息', function(done) {
-            singleStockbl.getHotStocks((err, hot_stocks) => {
+    describe('#updateHotStocks()', function() {
+        it('更新热门股票信息', function(done) {
+            singleStockbl.updateHotStocks((err, isOK) => {
                 if (err) {
                     done(err);
                 }
                 else {
-                    console.log(hot_stocks);
+                    console.log(isOK);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getHotStocks()', function() {
+        it('获得热门股票信息', function(done) {
+            singleStockbl.getHotStocks((err, hotStcoks) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(hotStcoks);
                     done();
                 }
             });

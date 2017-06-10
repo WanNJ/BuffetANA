@@ -3,6 +3,15 @@
  */
 let strategySchema = require('./strategySchema');
 
+const mapTable = {
+    'LowAndOpposite':'markLO',
+    'HighAndOpposite':'markHO',
+    'LowAndSame':'markLS',
+    'HighAndSame':'markHS',
+    'Normal':'markNormL'
+
+}
+
 exports.strategyDB ={
     saveStrategy :(strategy,callback)=>{
         let newStrategy = new strategySchema(strategy);
@@ -31,7 +40,7 @@ exports.strategyDB ={
      * @param callback
      */
     getBestStrategyByEnv: (env, cap , num ,callback) => {
-        let str = env+"."+cap;
+        let str = mapTable[env]+"."+cap;
         let arg = {};
         arg[str] = 'desc';
         let select = {sort:arg}

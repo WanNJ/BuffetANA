@@ -6,6 +6,7 @@ const statisticTool = require('./tool/statisticTool');
 const RTTool = require('./realtime/singleStockRT');
 const exec = require('child_process').exec;
 const allStockDB = require('../models/allstock').allStockDB;
+const hotDB = require('../models/hotStockAndBoard').hotDB;
 
 
 /**
@@ -1254,7 +1255,21 @@ exports.getCompanyInfo = (code, callback) => {
  * [['平安银行', '9.04', '0.11']...]
  */
 exports.getHotStocks = (callback) => {
-    exec('python3' + ' ../bl/hot_stock.py', function (err, stdout, stderr) {
+    hotDB.getHotStocks((err, hotStocks) => {
+        if (err)
+            callback(err, null);
+        else
+            callback(null, hotStocks["hot"]);
+    });
+};
+
+
+/**
+ * 更新热门股票
+ * @param callback
+ */
+exports.updateHotStocks = (callback) => {
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function (err, stdout, stderr) {
         if (err) {
             callback(err, null);
         }
@@ -1278,7 +1293,12 @@ exports.getHotStocks = (callback) => {
                         for (let i = 0; i < infos.length; i++) {
                             infos[i].unshift(names[i]);
                         }
-                        callback(null, infos.slice(0, 10));
+                        hotDB.updateHotStocks(infos.slice(0, 10), (err, isOK) => {
+                            if (err)
+                                callback(err, isOK);
+                            else
+                                callback(null, isOK);
+                        });
                     }
                 });
             }).catch((err) => {
@@ -1287,7 +1307,6 @@ exports.getHotStocks = (callback) => {
         }
     });
 };
-
 /**
  * =======================================以下是私有方法==============================================
  */

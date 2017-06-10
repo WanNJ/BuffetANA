@@ -5,6 +5,7 @@ const request = require("superagent");
 const allStockDB = require('../../models/allstock').allStockDB;
 const stockRTDB = require('../../models/stockRTInfo').stockRTInfoDB;
 const exec = require('child_process').exec;
+const hotDB = require('../../models/hotStockAndBoard').hotDB;
 
 /**
  * 获得个股实时的信息
@@ -94,20 +95,44 @@ exports.updateAllStockRTInfo = (callback) => {
   }
  */
 exports.getHotBoard = (callback) => {
-    exec('python3' + ' ../bl/realtime/hot_board.py', function(err, stdout, stderr){
+    hotDB.getHotBoards((err, hotBoards) => {
+        if (err)
+            callback(err, null);
+        else {
+            let boards = {};
+            hotBoards["hot"].forEach(t => {
+                boards[t[0]] = [t[1], t[2]];
+            });
+            callback(null, boards);
+        }
+    });
+};
+
+
+/**
+ * 更新热门板块
+ * @param callback
+ */
+exports.updateHotBoard = (callback) => {
+    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/realtime/hot_board.py', function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }
         if(stdout) {
-            let boards = {};
+            let boards = [];
             stdout.split(';').forEach(t => {
                 let s = t.split(',');
                 // 为了去除末尾的\n
                 let temp = s[2].replace('\n', '');
                 temp = temp.replace('\r', '');
-                boards[s[0]] = [s[1], temp];
+                boards.push([s[0], s[1], temp]);
             });
-            callback(null, boards);
+            hotDB.updateHotBoards(boards, (err) => {
+                if (err)
+                    callback(err, false);
+                else
+                    callback(null, true)
+            });
         }
     });
 };

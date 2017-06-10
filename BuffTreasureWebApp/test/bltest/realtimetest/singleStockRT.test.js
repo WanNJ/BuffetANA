@@ -51,4 +51,17 @@ describe('singleStockRT', function() {
             });
         });
     });
+    describe('#updateHotBoard()', function() {
+        it('should update the hot boards', function(done) {
+            realTimeTool.updateHotBoard((err, isOK) => {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(isOK);
+                    done();
+                }
+            });
+        });
+    });
 });

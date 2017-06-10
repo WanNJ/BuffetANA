@@ -110,7 +110,7 @@ describe('thermometerDB', function() {
 
     describe('#getBestStrategyByEnv()', function() {
         it('should save successfully', function(done) {
-            strategyDB.getBestStrategyByEnv('HighAndSame','strategyScore',1,function (err, docs) {
+            strategyDB.getBestStrategyByEnv('HighAndSame','strategyScore',2,function (err, docs) {
                 if (err) {
                     done(err);
                 }

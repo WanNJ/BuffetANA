@@ -71,6 +71,12 @@
             };
         }
 
+        function getComments(stockCode) {
+            $.get('single-stock/getStockComments', {stockCode: stockCode}, (result) => {
+                $('#comments_seg').html(result);
+            });
+        }
+
         function getBasicData(stockCode) {
             currentStockCode = stockCode;
             let fullStockCode = getFullStockCode(stockCode);
@@ -119,6 +125,7 @@
                             $("#current_price").css({color: "red"});
                             $("#chg").css({color: "red"});
                             $("#chg_p").css({color: "red"});
+                            $("#imp_icon").removeClass("fa-arrow-down");
                             $("#imp_icon").addClass("fa-arrow-up");
                             $("#imp_icon").css({color: "red"});
                         }
@@ -535,8 +542,8 @@
 
         <div>
             <ul class="nav nav-tabs nav-justified" id="left_side_tab">
-                <li class="active" data-toggle="tooltip" data-placement="top" title="历史浏览记录"><a
-                            href="#recent_stock_seg"><span class="glyphicon glyphicon-eye-open"
+                <li class="active" data-toggle="tooltip" data-placement="top" title="历史搜索记录"><a
+                            href="#recent_stock_seg"><span class="glyphicon glyphicon-search"
                                                            aria-hidden="true"></span></a></li>
                 <li data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
                                 class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
@@ -828,13 +835,13 @@
                 </table>
             </div>
             <div id="industry_seg" class="tab-pane">
-                <table id="industry_table" class="table table-hover" style="font-size: small">
+                <table id="industry_table" class="table" style="font-size: small">
                     <tbody>
                     </tbody>
                 </table>
             </div>
             <div id="block_seg" class="tab-pane">
-                <table id="block_table" class="table table-hover" style="font-size: small">
+                <table id="block_table" class="table" style="font-size: small">
                     <tbody>
                     </tbody>
                 </table>
@@ -848,7 +855,6 @@
             $(this).tab('show');
         });
     </script>
-
 
     <!--scrollToTop按钮-->
     <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
@@ -869,14 +875,6 @@
 <HR width="80%" color=black SIZE=5>
 
 <div id="comments_seg" class="col-md-12 bordered-div "></div>
-
-<script>
-    function getComments(stockCode) {
-        $.get('single-stock/getStockComments', {stockCode: stockCode}, (result) => {
-            $('#comments_seg').html(result);
-        });
-    }
-</script>
 
 </body>
 

@@ -17,7 +17,7 @@ mongoose.connection.on('open', function () {
 describe('forumbl', function() {
     describe('#getAllStockComment()', function() {
         it('打印000002 号股票的信息', function(done) {
-            forumbl.getAllStockComment('000002','NJUty',(err, doc) => {
+            forumbl.getAllStockComment('000001','NJUty',(err, doc) => {
                 if (err) {
                     done(err);
                 }
@@ -31,7 +31,7 @@ describe('forumbl', function() {
 
     describe('#pressStockBad()', function() {
         it('打印000002 号股票的信息', function(done) {
-            forumbl.pressStockBad('000002','NJUty',(err, doc) => {
+            forumbl.pressStockBad('000004','NJUty',(err, doc) => {
                 if (err) {
                     done(err);
                 }

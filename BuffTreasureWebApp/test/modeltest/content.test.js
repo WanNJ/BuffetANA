@@ -22,7 +22,7 @@ let contentDB = require('../../models/content').contentDB;
 describe('测试conten', function() {
     describe('#addContent()', function() {
         it('增加评论', function(done) {
-            contentDB.addContent('000001',"NJUBBD",'不怎么样02', function (err, docs) {
+            contentDB.addContent('000001',"NJUBBD",'不怎么样01', function (err, docs) {
                 if (err) {
                     done(err);
                 }
@@ -36,7 +36,7 @@ describe('测试conten', function() {
 
     describe('#pressGood()', function() {
         it('点赞', function(done) {
-            contentDB.pressGood('5938efdddf3ab9029c1b4e44',"NJUBBE", function (err, docs) {
+            contentDB.pressGood('593ba86716dc285464427c58',"NJUBBR", function (err, docs) {
                 if (err) {
                     done(err);
                 }
@@ -56,6 +56,20 @@ describe('测试conten', function() {
                 }
                 else {
                     console.log('good');
+                    done();
+                }
+            });
+        });
+    });
+
+    describe('#getAllContent()', function() {
+        it('找到所有', function(done) {
+            contentDB.getAllContent('000001',"NJUBBD", function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
                     done();
                 }
             });

@@ -35,12 +35,26 @@ describe('pressGood', function() {
 
     describe('#pressBad()', function() {
         it('点赞', function(done) {
-            forumDB.pressBad('000002',"NJUTY", function (err, docs) {
+            forumDB.pressBad('000002',"NJUrr", function (err, docs) {
                 if (err) {
                     done(err);
                 }
                 else {
                     console.log('bad');
+                    done();
+                }
+            });
+        });
+    });
+
+    describe('#getForumInfo()', function() {
+        it('获取', function(done) {
+            forumDB.getForumInfo('000002',"NJUrt", function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
                     done();
                 }
             });

@@ -65,4 +65,35 @@ exports.forumDB ={
 
         });
     },
+
+    getForumInfo:(code,userID,callback)=>{
+        forumSchema.findOne({'code':code},['bad','good'],(err, data) =>{
+            let result = {}
+            if(data === null){
+                result['like'] = 0;
+                result['bad'] = 0;
+                result['clickAble'] = true;
+                result['contents'] = []
+                callback(err,result)
+            }else{
+                function contains(arr, obj) {
+                    var i = arr.length;
+                    while (i--) {
+                        if (arr[i] === obj) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                result['like'] = data['good'].length;
+                result['bad'] = data['bad'].length;
+                result['clickAble'] = !(contains(data['good'],userID) || contains(data['bad'],userID));
+                result['content'] = []
+                callback(err,result)
+            }
+
+        });
+    }
+
 }

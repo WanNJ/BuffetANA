@@ -8,7 +8,7 @@ const mapTable = {
     'HighAndOpposite':'markHO',
     'LowAndSame':'markLS',
     'HighAndSame':'markHS',
-    'Normal':'markNormL'
+    'Normal':'markNormal'
 
 }
 

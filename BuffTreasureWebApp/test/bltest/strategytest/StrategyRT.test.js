@@ -99,4 +99,25 @@ describe('#getRccomandStockWinRate()', function() {
 
 });
 
+describe('#getRtStrategyALL()', function() {
+    it('选择策略', function(done) {
+
+        strategyRT.getRtStrategyALL((err,data) => {
+            if (err) {
+                console.log('wrong');
+                done(err);
+            }
+            else {
+                //console.log();
+                console.log(data)
+                done();
+            }
+        });
+    });
+
+
+
+});
+
+
 

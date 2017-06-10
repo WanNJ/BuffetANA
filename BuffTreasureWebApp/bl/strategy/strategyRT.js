@@ -3,6 +3,7 @@
  */
 
 let RTStockDB = require('../../models/RTSTock').RTStockDB;
+let StrategyDB = require('../../models/strategy').strategyDB;
 
 
 /**
@@ -116,5 +117,39 @@ exports.getRccomandStockAntiRiskAbility = (callback)=>{
  */
 exports.getRtStrategyALL = (callback) =>{
 
+    const mapTable = {
+        'LowAndOpposite':'markLO',
+        'HighAndOpposite':'markHO',
+        'LowAndSame':'markLS',
+        'HighAndSame':'markHS',
+        'Normal':'markNormal'
+
+    }
+    let getBestStrategy = function (env,data) {
+        return new Promise((resolve,reject)=>{
+            StrategyDB.getBestStrategyByEnv(env,'strategyScore',1,(err,datas)=>{
+                let doc = datas[0][mapTable[env]]
+                let list = [];
+                list.push(datas[0]['_id'])
+                list.push(doc['strategyScore']);
+                list.push(doc['profitAbility']);
+                list.push(doc['absoluteProfit']);
+                list.push(doc['chooseStockAbility']);
+                list.push(doc['antiRiskAbility']);
+                list.push(doc['stability'])
+                data[env] = list;
+                resolve(list)
+            })
+
+        })
+    }
+
+    getBestStrategy('HighAndSame',{})
+        .then(t=>getBestStrategy('HighAndOpposite',t))
+        .then(t=>getBestStrategy('LowAndSame',t))
+        .then(t=>getBestStrategy('LowAndOpposite',t))
+        .then(t=>getBestStrategy('Normal',t))
+        .then(t=>callback(null,t))
+        .catch(r=>callback(r,null))
 }
 

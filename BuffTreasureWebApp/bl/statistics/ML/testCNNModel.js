@@ -10,10 +10,10 @@ exports.CNNPredict ={
      *
      * @param code
      * @param holdingPeriod
-     * @param speedMode
-     * @param isENV
-     * @param testMode
-     * @param beginStr
+     * @param speedMode  1,2,3,4,5
+     * @param isENV      true/false
+     * @param testMode   All/batch
+     * @param beginStr 
      * @param callback
      */
     betterPredict : (code,holdingPeriod,speedMode,isENV,testMode,beginStr,callback)=>{

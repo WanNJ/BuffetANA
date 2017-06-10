@@ -345,6 +345,9 @@
                     }, 2000);
                 }
             })
+
+            // 评论数据
+            getComments(stockCode);
         }
     </script>
     <script type="text/javascript">
@@ -499,7 +502,6 @@
             if ($('#stock_code')[0].innerHTML !== '')
                 stockCode = $('#stock_code')[0].innerHTML;
 
-            console.log($('#stock_code')[0].innerHTML.substring(3, 9));
             getBasicData(stockCode.substring(3, 9));
         }, 60000);
     </script>
@@ -875,8 +877,6 @@
             $('#comments_seg').html(result);
         });
     }
-
-    getComments('000001');
 </script>
 
 </body>

@@ -42,6 +42,8 @@
 <script>
     $('#overall > h4 > a').click(function (e) {
         e.preventDefault();
+        if($(this)[0].attributes[2].nodeValue === 'true')
+            return;
 
         <% if(typeof user !== "undefined") { %>
         let btnType = $(this).children()[0].outerHTML.substring(13, 25);
@@ -68,11 +70,13 @@
 
     $('.stats > a').click(function (e) {
         e.preventDefault();
+        if($(this)[0].attributes[2].nodeValue === 'true')
+            return;
 
         <% if(typeof user !== "undefined") { %>
         let type = $(this).children()[0].outerHTML.substring(13, 25);
-        let content_id = $(this).parent()[0].getId();
-
+        console.log($(this).parent()[0].id);
+        let content_id = $(this).parent()[0].id;
 
         if(type === 'fa-thumbs-up') {
             $.post("single-stock/pressContentGood", {content_id: content_id, stockCode: currentStockCode}, function(result){
@@ -96,7 +100,6 @@
 
     $('#submitCommentBtn').click(function (e) {
         e.preventDefault();
-
 
         <% if(typeof user !== "undefined") { %>
         let comment = $('#commentArea').val();

@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <% include ../Components/settings.html %>
+    <title>BUFF-个股分析</title>
+</head>
+<body>
+<div class="page-container">
+
+    <% include ../Components/navigator.ejs %>
+
+    <div class="bloc bgc-white l-bloc ">
+        <div class="container">
+            <!--搜索模块-->
+            <div class="col-sm-10 col-sm-offset-1 jumbotron">
+                <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" name="query" id="search_area" autocomplete="off"
+                               placeholder="搜索个股..."
+                               required>
+                        <span class="input-group-btn">
+                            <button id="searchButton" class="btn btn-default" type="submit">搜索</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+
+    <% include ../Components/footer.ejs %>
+</div>
+</body>
+
+</html>

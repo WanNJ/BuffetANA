@@ -190,7 +190,14 @@ router.get('/quantitative-analysis/stockRecommend/antiRiskAbility', function (re
 });
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
-    res.render('User/strategyRec');
+    let data={
+        "1" : [],
+        "2" : [],
+        "3" : [],
+        "4" : [],
+        "5" : [],
+    };
+    res.render('User/strategyRec',data);
 });
 
 router.get('/quantitative-analysis/choose', function (req, res, next) {
@@ -306,6 +313,10 @@ router.post('/quantitative-analysis/save', function (req, res, next) {
             res.send(docs);  //docs可能的值： 'SUCCESS' 'DUPLICATED' true false
         }
     });
+});
+
+router.get('/stock-analysis', function (req, res, next) {
+    res.render("User/stock-analysis");
 });
 
 router.get('/:id/personalStocks', (req, res, next) => {

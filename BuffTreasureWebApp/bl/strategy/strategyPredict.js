@@ -40,6 +40,7 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
     set.add('date');
     let pro = [...set]
 
+
     /**
      *
      * @param stockList
@@ -66,7 +67,9 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
 
     let getCodeList = function () {
         return new Promise((resolve,reject) => {
-            strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
+                if(stockPoolConditionVO.benches===null) stockPoolConditionVO.benches = []
+                if(stockPoolConditionVO.industries===null) stockPoolConditionVO.industries = []
+                strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
                 resolve(list);
             })
         })

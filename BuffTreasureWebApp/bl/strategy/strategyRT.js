@@ -2,8 +2,8 @@
  * Created by wshwbluebird on 2017/6/9.
  */
 
-let thermometer = require('../realtime/thememometerRT');
-let strategyDB = require('')
+let RTStockDB = require('../../models/RTSTock').RTStockDB;
+
 
 /**
  *
@@ -32,7 +32,9 @@ let strategyDB = require('')
  * @param callback
  */
 exports.getRccomandStockHighScore = (callback)=>{
-
+    RTStockDB.getStock('strategyScore',(err,doc)=>{
+        callback(err,doc)
+    })
 }
 
 /**
@@ -49,14 +51,15 @@ exports.getRccomandStockHighScore = (callback)=>{
  * @param callback
  */
 exports.getRccomandStockProfit = (callback)=>{
-    thermometer.getCurrentENV((err,env)=>{
-
+    RTStockDB.getStock('profitAbility',(err,doc)=>{
+        callback(err,doc)
     })
 
 }
 
 
 /**
+ * chooseStockAbility
  * 按选股能力(策略胜率)能力推荐的股票 5 只
  * 返回结果为数组 长度为6 的数组   index = 0 的地方 为推荐的持仓天数
  * index = 1 - 5 分别是一个长度为5 的二维数组 第一位为股票代码 ，第二位为股票名字
@@ -70,8 +73,8 @@ exports.getRccomandStockProfit = (callback)=>{
  * @param callback
  */
 exports.getRccomandStockWinRate = (callback)=>{
-    thermometer.getCurrentENV((err,env)=>{
-
+    RTStockDB.getStock('antiRiskAbility',(err,doc)=>{
+        callback(err,doc)
     })
 
 }
@@ -91,8 +94,7 @@ exports.getRccomandStockWinRate = (callback)=>{
  * @param callback
  */
 exports.getRccomandStockAntiRiskAbility = (callback)=>{
-    thermometer.getCurrentENV((err,env)=>{
-
+    RTStockDB.getStock('chooseStockAbility',(err,doc)=>{
+        callback(err,doc)
     })
-
 }

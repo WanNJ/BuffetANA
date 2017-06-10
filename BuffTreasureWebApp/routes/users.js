@@ -153,44 +153,22 @@ router.get('/quantitative-analysis', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/stockRecommend', function (req, res, next) {
-    let hotBoard;
-    let hotStocks;
-    let promise1 = new Promise((reject, resolve) => {
-        singleStockRT.getHotBoard((err,docs) => {
-            if(err){
-                reject(err);
-            }else {
-               resolve(docs);
-            }
-        });
-    });
-
-    let promise2 =  new Promise((reject, resolve) => {
-        singleStockbl.getHotStocks((err,docs) => {
-            if(err){
-                reject(err);
-            }else {
-                resolve(docs);
-            }
-        });
-    });
-
-    Promise.all([promise1, promise2]).then(results => {
-        let data={
-            "hotBoard":results[0],
-            "hotStocks" :results[1],
-        };
-        res.render('User/stockRec',data);
-    }).catch(err => {
-        console.error(err);
-        throw err;
-    });
-
+    res.render('User/stockRec');
 
 });
 
 router.get('/quantitative-analysis/stockRecommend/hotBoard', function (req, res, next) {
     singleStockRT.getHotBoard((err,docs) => {
+        if(err){
+            throw err;
+        }else {
+            res.send(docs);
+        }
+    });
+});
+
+router.get('/quantitative-analysis/stockRecommend/hotStocks', function (req, res, next) {
+    singleStockRT.getHotStocks((err,docs) => {
         if(err){
             throw err;
         }else {

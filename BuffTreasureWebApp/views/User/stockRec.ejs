@@ -29,32 +29,8 @@
                                             <th>涨跌幅</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td><%= Object.keys(hotBoard)[0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[0]][0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[0]][1] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= Object.keys(hotBoard)[1] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[1]][0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[1]][1] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= Object.keys(hotBoard)[2] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[2]][0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[2]][1] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= Object.keys(hotBoard)[3] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[3]][0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[3]][1] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= Object.keys(hotBoard)[0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[4]][0] %></td>
-                                            <td><%= hotBoard[Object.keys(hotBoard)[4]][1] %>%</td>
-                                        </tr>
+                                        <tbody id="hot-board-list">
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -81,40 +57,10 @@
                                             <th>涨跌幅</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td><%= hotStocks[0][0] %></td>
-                                            <td><%= hotStocks[0][1] %></td>
-                                            <td><%= hotStocks[0][2] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= hotStocks[1][0] %></td>
-                                            <td><%= hotStocks[1][1] %></td>
-                                            <td><%= hotStocks[1][2] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= hotStocks[2][0] %></td>
-                                            <td><%= hotStocks[2][1] %></td>
-                                            <td><%= hotStocks[2][2] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= hotStocks[3][0] %></td>
-                                            <td><%= hotStocks[3][1] %></td>
-                                            <td><%= hotStocks[3][2] %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td><%= hotStocks[4][0] %></td>
-                                            <td><%= hotStocks[4][1] %></td>
-                                            <td><%= hotStocks[4][2] %>%</td>
-                                        </tr>
+                                        <tbody id="hot-stocks-list">
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="text-center">
-                                <a href="index.html" class="a-btn">更多</a>
                             </div>
                         </div>
                     </div>
@@ -145,14 +91,6 @@
                                 <a href="index.html" class="btn btn-d btn-lg btn-block">北京科悦<span class="special-tag-for-editing-text-with-html"></span></a>
                             </div>
                         </div>
-                        <div class="panel-footer">
-                            <div class="text-center">
-                                <a href="index.html" class="a-btn"></a>
-                                <gpan>
-                                    更多
-                                </gpan>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -162,6 +100,42 @@
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/hotBoard", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#hot-board-list").empty();
+                    for(let key in result){
+                        let hotBoardRow="<tr><td></td><td></td><td></td></tr>";
+                        $("#hot-board-list").append(hotBoardRow);
+                        $("#hot-board-list tr:last td:eq(0)").text(key);
+                        $("#hot-board-list tr:last td:eq(1)").text(result[key][0]);
+                        $("#hot-board-list tr:last td:eq(2)").text((result[key][1]>0?"+":"") +result[key][1]+"%");
+                    }
+                },
+            });
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "stockRecommend/hotStocks", //请求发送到TestServlet处
+                dataType: "json", //返回数据形式为json
+                success: (result) => {
+                    $("#hot-stocks-list").empty();
+                    for(let i=0; i<5;i++){
+                        let hotStocksRow="<tr><td><a class='btn-link'></a></td><td></td><td></td></tr>";
+                        $("#hot-stocks-list").append(hotStocksRow);
+                        $("#hot-stocks-list tr:last td:eq(0)").text(result[i][0]);
+                        $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);
+                        $("#hot-stocks-list tr:last td:eq(2)").text((result[i][2]>0?"+":"") +result[i][2]+"%");
+                    }
+                },
+            });
+        });
+    </script>
 </div>
 </body>
 

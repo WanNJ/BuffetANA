@@ -1292,6 +1292,7 @@ exports.updateHotStocks = (callback) => {
                     else {
                         for (let i = 0; i < infos.length; i++) {
                             infos[i].unshift(names[i]);
+                            infos[i].push(hot_codes[i]);
                         }
                         hotDB.updateHotStocks(infos.slice(0, 10), (err, isOK) => {
                             if (err)

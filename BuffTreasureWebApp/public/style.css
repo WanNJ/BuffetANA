@@ -78,11 +78,11 @@ a,button{outline: none!important;} /* Prevent ugly blue glow on chrome and safar
 	bottom: 20px;
 }
 .blocs-hero-btn-dwn{
-	width: 58px;
-	height: 58px;
+	width: 30px;
+	height: 30px;
 	display: block;
 	margin:0 auto;
-	line-height: 58px;
+	line-height: 30px;
 	padding: 0;
 	border-radius: 50%;
 	text-align: center;

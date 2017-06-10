@@ -46,6 +46,8 @@
         <% if(typeof user !== "undefined") { %>
         if($(this)[0].attributes[2])
             return;
+
+        $(this).attr("disabled", "true");
         let btnType = $(this).children()[0].outerHTML.substring(13, 25);
         if(btnType === 'fa-thumbs-up') {
             $.post("single-stock/pressStockGood",{stockCode: currentStockCode}, function(result){
@@ -74,6 +76,10 @@
         <% if(typeof user !== "undefined") { %>
         if($(this)[0].attributes[2])
             return;
+
+        $(this).attr("disabled", "true");
+        $($(this).context.nextSibling).attr("disabled", "true");
+
         let type = $(this).children()[0].outerHTML.substring(13, 25);
         console.log($(this).parent()[0].id);
         let content_id = $(this).parent()[0].id;

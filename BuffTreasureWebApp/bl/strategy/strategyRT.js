@@ -98,3 +98,23 @@ exports.getRccomandStockAntiRiskAbility = (callback)=>{
         callback(err,doc)
     })
 }
+
+/**
+ * 高温 ，趋同
+ * @param callback 形如(err,doc)
+ * doc{JSON} 形式
+ * 形如：
+ * {
+ * "HighAndSame": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
+ * "HighAndOpposite": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
+ * "LowAndSame": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
+ * "LowAndOpposite": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
+ * "Normal": [id  ，综合得分， 盈利能力 ，绝对收益 ， 选股能力， 抗风险能力 ，稳定性]
+ *
+ * }
+ *
+ */
+exports.getRtStrategyALL = (callback) =>{
+
+}
+

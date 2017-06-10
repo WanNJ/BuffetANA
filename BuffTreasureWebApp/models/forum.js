@@ -71,7 +71,7 @@ exports.forumDB ={
             let result = {}
             if(data === null){
                 result['like'] = 0;
-                result['bad'] = 0;
+                result['dislike'] = 0;
                 result['clickAble'] = true;
                 result['contents'] = []
                 callback(err,result)
@@ -87,7 +87,7 @@ exports.forumDB ={
                 }
 
                 result['like'] = data['good'].length;
-                result['bad'] = data['bad'].length;
+                result['dislike'] = data['dislike'].length;
                 result['clickAble'] = !(contains(data['good'],userID) || contains(data['bad'],userID));
                 result['content'] = []
                 callback(err,result)

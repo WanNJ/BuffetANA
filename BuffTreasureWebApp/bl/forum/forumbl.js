@@ -4,7 +4,6 @@
 
 
 let contentDB = require('../../models/content').contentDB;
-let contentDB = require('../../models/content').contentDB;
 
 exports.forumbl = {
 

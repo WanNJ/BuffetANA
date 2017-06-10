@@ -99,6 +99,7 @@ exports.forumbl = {
     getAllStockComment:(code,userID,callBack)=>{
         forumDB.getForumInfo(code,userID,(err,forum)=>{
             contentDB.getAllContent(code,userID,(err,content)=>{
+
                 forum['contents'] = content
                 callBack(err,forum)
             })

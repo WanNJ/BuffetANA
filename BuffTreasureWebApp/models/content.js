@@ -85,7 +85,7 @@ exports.contentDB = {
                         "date":d['date'] ,
                         "clickAble": !(contains(d['good'],userID) || contains(d['bad'],userID)),
                         "content": d['content'],
-                        "username ":d['userID'],
+                        "username":d['userID'],
                         "_id" :d['_id']
                     }
                     result.push(temp)

@@ -87,7 +87,7 @@ exports.forumDB ={
                 }
 
                 result['like'] = data['good'].length;
-                result['dislike'] = data['dislike'].length;
+                result['dislike'] = data['bad'].length;
                 result['clickAble'] = !(contains(data['good'],userID) || contains(data['bad'],userID));
                 result['content'] = []
                 callback(err,result)

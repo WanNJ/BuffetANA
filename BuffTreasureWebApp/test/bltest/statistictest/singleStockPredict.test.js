@@ -20,8 +20,28 @@ mongoose.connection.on('open', function () {
 
 describe('singleStockPredict', function() {
     describe('#SVMAnalyze()', function () {
-        it('should show if 000017 is up today', function (done) {
+        it('SVM', function (done) {
             statistics.SVMAnalyze('ty', '000001', 8.78, 5, new Date(), (err, isOK) => {
+                if (err)
+                    done(err);
+                else {
+                    console.log(isOK);
+                    done();
+                }
+            });
+        });
+        it('CNN', function (done) {
+            statistics.CNNAnalyze('ty', '000001', 1, false, 4, 'ALL', new Date(), (err, isOK) => {
+                if (err)
+                    done(err);
+                else {
+                    console.log(isOK);
+                    done();
+                }
+            });
+        });
+        it('NN', function (done) {
+            statistics.NNAnalyze('ty', '000002', 5, new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {

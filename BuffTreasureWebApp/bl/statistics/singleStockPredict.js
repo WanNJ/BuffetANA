@@ -7,6 +7,8 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
 const exec = require('child_process').exec;
 const industryCorrelationTool = require('./industryCorrelationbl');
 const userDB = require('../../models/user').userDB;
+const CNNModel = require('./ML/testCNNModel').CNNPredict;
+const NNModel = require('./ML/testEasyModel').NNPredict;
 
 
 /**
@@ -16,6 +18,7 @@ const userDB = require('../../models/user').userDB;
  * @param open_price {Number} 股票当天开盘价，在个股页面直接获取，不要用户填写，如果没有开盘价，则禁用SVM模型
  * @param holdingDays {Number} 持股天数，需要用户填写
  * @param time {Date} 用户进行个股分析时的时间
+ * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
 exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) => {
     async.parallel([
@@ -36,7 +39,7 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) =
                 time: time,
                 isRead: false,
                 type: 'error',
-                codeOrName: '代码为' + code + '的股票分析结果出错',
+                codeOrName: '代码为' + code + '的股票SVM分析结果出错',
                 content: {
                     code: code,
                     open: open_price,
@@ -82,33 +85,127 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) =
 
 /**
  * 使用NN模型进行个股分析
- * @param userName
- * @param code
- * @param holdingDays
- * @param isMarket
- * @param iterationNum
- * @param learningWay
- * @param time
- * @constructor
+ * @param userName {String} 用户名称
+ * @param code {String} 股票代码
+ * @param holdingDays {Number} 持股天数，需要用户填写
+ * @param time {Date} 用户进行个股分析时的时间
+ * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.NNAnalyze = (userName, code, holdingDays, isMarket, iterationNum, learningWay, time) => {
-
+exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
+    NNModel.EasyPredict(code, holdingDays, (err, result) => {
+        let message = {};
+        if (err) {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'error',
+                codeOrName: '代码为' + code + '的股票NN分析结果出错',
+                content: {
+                    code: code,
+                    holdingDays: holdingDays,
+                }
+            };
+        }
+        else {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'NN',
+                codeOrName: code,
+                content: {
+                    code: code,
+                    holdingDays: holdingDays,
+                    less10: result["less10"],
+                    "10-5": result["10-5"],
+                    "5-0": result["5-0"],
+                    "0-5": result["0-5"],
+                    "5-10": result["5-10"],
+                    more10: result["more10"],
+                    accuracy: result["accuracy"]
+                }
+            };
+        }
+        userDB.addUnreadMessage(userName, message, (err) => {
+            if (err) {
+                console.log('Something wrong has happened when saving ' +  userName + "'s message!");
+                callback(err, null);
+            }
+            else {
+                callback(null, "ok");
+            }
+        })
+    })
 };
 
 
 /**
  * 使用CNN模型进行个股分析
- * @param userName
- * @param code
- * @param holdingDays
- * @param isMarket
- * @param iterationNum
- * @param learningWay
- * @param time
- * @constructor
+ * @param userName 用户名称
+ * @param code 股票代码
+ * @param holdingDays 持股天数
+ * @param isMarket 是否考虑市场环境（默认为false）
+ * @param iterationNum 迭代量（默认为4）
+ * @param learningWay 学习方式（默认为'ALL'）
+ * @param time {Date} 用户进行个股分析时的时间
+ * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.CNNAnalyze = (userName, code, holdingDays, isMarket, iterationNum, learningWay, time) => {
-
+exports.CNNAnalyze = (userName, code, holdingDays, isMarket=false, iterationNum=4, learningWay='ALL', time, callback) => {
+    CNNModel.betterPredict(code, holdingDays, iterationNum, isMarket, "2006-04-05", learningWay, (err, result) => {
+        let message = {};
+        if (err) {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'error',
+                codeOrName: '代码为' + code + '的股票CNN分析结果出错',
+                content: {
+                    code: code,
+                    holdingDays: holdingDays,
+                    iterationNum: iterationNum,
+                    isMarket: isMarket,
+                    learningWay: learningWay,
+                    beginStr: "2006-04-05"
+                }
+            };
+        }
+        else {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'CNN',
+                codeOrName: code,
+                content: {
+                    code: code,
+                    holdingDays: holdingDays,
+                    iterationNum: iterationNum,
+                    isMarket: isMarket,
+                    learningWay: learningWay,
+                    beginStr: "2006-04-05",
+                    process: result["process"],
+                    less10: result["less10"],
+                    "10-7_5": result["10-7.5"],
+                    "7_5-5": result["7.5-5"],
+                    "5-2_5": result["5-2.5"],
+                    "0-2_5": result["0-2.5"],
+                    "2_5-0": result["2.5-0"],
+                    "2_5-5": result["2.5-5"],
+                    "5-7_5": result["5-7.5"],
+                    "7_5-10": result["7.5-10"],
+                    more10: result["more10"],
+                    accuracy: result["accuracy"]
+                }
+            };
+        }
+        userDB.addUnreadMessage(userName, message, (err) => {
+            if (err) {
+                console.log('Something wrong has happened when saving ' +  userName + "'s message!");
+                callback(err, null);
+            }
+            else {
+                callback(null, "ok");
+            }
+        })
+    });
 };
 
 

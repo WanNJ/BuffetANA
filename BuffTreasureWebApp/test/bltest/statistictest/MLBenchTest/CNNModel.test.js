@@ -11,7 +11,7 @@ let expect = require('chai').expect;
 describe('betterPredict', function() {
     describe('#betterPredict()', function () {
         it('should show the result of 00000t NN predicr', function (done) {
-            predict.betterPredict('000001', 1,4,false ,'2006-04-05','ALL',(err, result) => {
+            predict.betterPredict('000001', 1,4,false ,'2006-04-05','batch',(err, result) => {
                 if (err) {
                     done(err);
                 }

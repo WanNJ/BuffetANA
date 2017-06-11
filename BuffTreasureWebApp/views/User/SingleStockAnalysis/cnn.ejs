@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+    <% include ../../Components/settings.html %>
+    <script src="/echarts/echarts.min.js"></script>
+    <title>BUFF-CNN</title>
+</head>
+<body>
+<!-- Main container -->
+<div class="page-container">
+    <% include ../../Components/navigator.ejs %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-icon">
+                        <span class="fa fa-4x fa-laptop"></span>
+                    </div>
+                    <div class="info text-center">
+                        <h4 class="text-center">CNN机器学习</h4>
+                        <p>嗨, WAN！您在2017年6月10日对个股——平安银行（000001）的BUFF-CNN分析结果已经得出，以下给出该分析方法<br>
+                            随着学习次数的增加 模型准确率在测试集上的表现的变化情况和各种变化情况的概率。<br>
+                            其中，测试结果取概率最大时，在测试集上的准确度为——
+                        </p>
+                        <h2>72%</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px">
+        <div id="cnn_line_chart" class="col-md-8" style="height: 500px"></div>
+        <div id="cnn_pie_chart" class="col-md-4" style="height: 500px"></div>
+    </div>
+
+    <script>
+        let cnn_line_chart = echarts.init(document.getElementById('cnn_line_chart'));
+        let cnn_pie_chart = echarts.init(document.getElementById('cnn_pie_chart'));
+
+        let line_y_data = [];
+        let line_x_data = [];
+        let pie_data = [];
+
+        for (let i = 0; i <  '<%= line_y_data.length %>'; i++) {
+            line_x_data.push(i);
+        }
+
+        eval('line_y_data = <%= JSON.stringify(line_y_data) %>;');
+        eval('pie_data = <%= JSON.stringify(pie_data) %>;');
+
+        let cnn_line_option = {
+            title: {
+                text: '模型准确率变化趋势图',
+                show: true,
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            axisPointer: {
+                link: {xAxisIndex: 'all'},
+                label: {
+                    backgroundColor: '#777'
+                }
+            },
+            toolbox: {
+                right: 100,
+                feature: {
+                    saveAsImage: {},
+                    restore: {}
+                }
+            },
+            grid: [
+                {
+                    top: '10%',
+                    height: '75%'
+                }
+            ],
+            xAxis: {
+                name: '学习次数',
+                type: 'category',
+                data: line_x_data,
+                splitNumber: 20
+            }
+            ,
+            yAxis: {
+                name: '准确率',
+                type: 'value',
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                axisLabel : {
+                    formatter: '{value}'
+                },
+            }
+            ,
+            dataZoom: [
+                {
+                    type: 'inside',
+                },
+                {
+                    show: true,
+                    realtime: true,
+                    type: 'slider'
+                }
+            ],
+            series: {
+                name: '准确率',
+                type: 'line',
+                data: line_y_data,
+            }
+
+        };
+
+        let cnn_pie_option = {
+            title: {
+                text: '涨跌幅概率分布图',
+                show: true,
+                left: 'center'
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data: ['小于-10%', '-10% ~ -7.5%', '-7.5% ~ -5%', '-5% ~ -2.5%', '-2.5% ~ 0', '0 ~ 2.5%', '2.5% ~5%', '5% ~ 7.5%', '7.5% ~ 10%', '大于 10%']
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}<br/> 比例 : {d}%"
+            },
+            series: [
+                {
+                    name: '概率分布',
+                    type: 'pie',
+                    radius: '70%',
+                    center: ['50%', '50%'],
+                    data: [
+                        {value: pie_data[0], name: '小于-10%'},
+                        {value: pie_data[1], name: '-10% ~ -7.5%'},
+                        {value: pie_data[2], name: '-7.5% ~ -5%'},
+                        {value: pie_data[3], name: '-5% ~ -2.5%'},
+                        {value: pie_data[4], name: '-2.5% ~ 0'},
+                        {value: pie_data[5], name: '0 ~ 2.5%'},
+                        {value: pie_data[6], name: '2.5% ~5%'},
+                        {value: pie_data[7], name: '5% ~ 7.5%'},
+                        {value: pie_data[8], name: '7.5% ~ 10%'},
+                        {value: pie_data[9], name: '大于 10%'}
+                    ],
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        };
+
+        cnn_line_chart.setOption(cnn_line_option);
+        cnn_pie_chart.setOption(cnn_pie_option);
+
+        setTimeout(() => {
+            window.onresize = function () {
+                cnn_line_chart.resize();
+                cnn_pie_chart.resize();
+            }
+        }, 200);
+    </script>
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                class="fa fa-chevron-up"></span></a>
+    <!-- ScrollToTop Button END-->
+
+</div>
+<!-- Main container END -->
+</body>
+
+<% include ../../Components/footer.ejs %>
+</html>

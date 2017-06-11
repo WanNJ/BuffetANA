@@ -191,12 +191,12 @@ router.get('/quantitative-analysis/stockRecommend/antiRiskAbility', function (re
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
     console.log("begin");
-    strategyRT.getRtStrategyALL((err,docs) => {
-        if(err){
+    strategyRT.getRtStrategyALL((err, docs) => {
+        if (err) {
             console.error(err);
-        }else {
+        } else {
             console.log("send");
-            res.render('User/strategyRec',docs);
+            res.render('User/strategyRec', docs);
         }
     });
     // res.render('User/strategyRec',{
@@ -209,7 +209,7 @@ router.get('/quantitative-analysis/strategyRecommend', function (req, res, next)
 });
 
 router.get('/quantitative-analysis/choose', function (req, res, next) {
-    if(req.query.strategyID !== undefined) {
+    if (req.query.strategyID !== undefined) {
         res.locals.strategyID = req.query.strategyID;
     }
 
@@ -235,16 +235,16 @@ router.post('/quantitative-analysis/getStrategy', function (req, res, next) {
         beginDate: "2016/01/01",
         endDate: "2017/01/01",
         stockPool: "自选股票池",
-        benches: ["板块1","板块2"],
-        industries: ["行业1","行业2"],
+        benches: ["板块1", "板块2"],
+        industries: ["行业1", "行业2"],
         excludeST: "off",
-        rank:JSON.stringify({
-            "r1":  ["MA","asd",10,0.4],
-            "r2":  ["MOM","des",20,0.6],
+        rank: JSON.stringify({
+            "r1": ["MA", "asd", 10, 0.4],
+            "r2": ["MOM", "des", 20, 0.6],
         }),
-        filter:JSON.stringify({
-            "f1":   ["volume",">",1000000],
-            "f2":   ["turnOverRate","<",0.05],
+        filter: JSON.stringify({
+            "f1": ["volume", ">", 1000000],
+            "f2": ["turnOverRate", "<", 0.05],
         }),
         reserveDays: "3",
         numberOfStock: "4",
@@ -599,18 +599,19 @@ router.get('/:id/analysisResult/SVM', (req, res, next) => {
             60.5054]
     };
     let finalResult = [];
-    for(let i = 0; i < result.base.length; i++) {
+    for (let i = 0; i < result.base.length; i++) {
         finalResult.push([result.base[i], result.compare[i]]);
     }
 
     res.locals.stockName = result.name;
     res.locals.stockCode = result.code;
-    res.locals.correlation = Math.round(result.correlation * 100)/100;
-    res.locals.profitRate = Math.round(result.profitRate * 10000)/100;
+    res.locals.correlation = Math.round(result.correlation * 100) / 100;
+    res.locals.profitRate = Math.round(result.profitRate * 10000) / 100;
 
     res.locals.data = finalResult;
     res.render('User/SingleStockAnalysis/svm');
 });
+
 
 router.get('/:id/analysisResult/NN', (req, res, next) => {
 
@@ -636,28 +637,26 @@ router.get('/:id/analysisResult/NN', (req, res, next) => {
     };
 });
 
+
 router.get('/:id/analysisResult/CNN', (req, res, next) => {
-    let data = {
-        "time": {"$date": 1497063933805},
-        "isRead": false,
-        "type": "analysis2",
-        "toString": "你的代码为000002的股票分析结果已出，请点击查看",
-        "content": {
-            "CR": [0.29, "低"],
-            "upOrDown": ["54.29", "1"],
-            "process": [0.019999999552965164, 0.30000001192092896, 0.30000001192092896, 0.2800000011920929, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.27000001072883606, 0.14000000059604645, 0.14000000059604645, 0.009999999776482582, 0.019999999552965164, 0.019999999552965164, 0.09000000357627869, 0.28999999165534973, 0.3100000023841858, 0.28999999165534973, 0.28999999165534973, 0.30000001192092896, 0.3100000023841858, 0.4099999964237213, 0.5199999809265137, 0.5199999809265137, 0.5699999928474426, 0.5600000023841858, 0.5699999928474426, 0.6100000143051147, 0.6100000143051147, 0.5799999833106995, 0.6600000262260437, 0.7099999785423279, 0.6899999976158142, 0.7200000286102295, 0.7400000095367432, 0.7200000286102295, 0.6600000262260437, 0.7599999904632568, 0.7900000214576721, 0.7900000214576721, 0.7900000214576721],
-            "5-7_5": 2.819275832735002E-4,
-            "0-2_5": 8.666887879371643E-5,
-            "7_5-5": 0.12415958195924759,
-            "accuracy": 0.7900000214576721,
-            "7_5-10": 3.8002902874723077E-4,
-            "10-7_5": 0.3716028332710266,
-            "more10": 0.012712066993117332,
-            "5-2_5": 0.047767940908670425,
-            "2_5-5": 1.1517480743350461E-4,
-            "2_5-0": 0.003162472043186426,
-            "less10": 0.439731240272522
-        }
+    let rawData = {
+        "process": [0.019999999552965164, 0.30000001192092896, 0.30000001192092896, 0.2800000011920929, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.27000001072883606, 0.14000000059604645, 0.14000000059604645, 0.009999999776482582, 0.019999999552965164, 0.019999999552965164, 0.09000000357627869, 0.28999999165534973, 0.3100000023841858, 0.28999999165534973, 0.28999999165534973, 0.30000001192092896, 0.3100000023841858, 0.4099999964237213, 0.5199999809265137, 0.5199999809265137, 0.5699999928474426, 0.5600000023841858, 0.5699999928474426, 0.6100000143051147, 0.6100000143051147, 0.5799999833106995, 0.6600000262260437, 0.7099999785423279, 0.6899999976158142, 0.7200000286102295, 0.7400000095367432, 0.7200000286102295, 0.6600000262260437, 0.7599999904632568, 0.7900000214576721, 0.7900000214576721, 0.7900000214576721],
+        "5-7_5": 2.819275832735002E-4,
+        "0-2_5": 8.666887879371643E-5,
+        "7_5-5": 0.12415958195924759,
+        "accuracy": 0.7900000214576721,
+        "7_5-10": 3.8002902874723077E-4,
+        "10-7_5": 0.3716028332710266,
+        "more10": 0.012712066993117332,
+        "5-2_5": 0.047767940908670425,
+        "2_5-5": 1.1517480743350461E-4,
+        "2_5-0": 0.003162472043186426,
+        "less10": 0.439731240272522
     };
+
+    res.locals.line_y_data = rawData.process;
+    res.locals.pie_data = [123, 23, 347, 134, 134, 342, 324, 234, 242, 56];
+
+    res.render('User/SingleStockAnalysis/cnn');
 });
 module.exports = router;

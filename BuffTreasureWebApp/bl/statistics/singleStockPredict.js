@@ -17,7 +17,7 @@ const userDB = require('../../models/user').userDB;
  * @param holdingDays {Number} 持股天数，需要用户填写
  * @param time {Date} 用户进行个股分析时的时间
  */
-exports.SVMAnalyze = (userName, code, open_price, holdingDays, time) => {
+exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) => {
     async.parallel([
         function (callback) {
             industryCorrelationTool.getIndustryCorrelationResult(code, holdingDays, callback);
@@ -48,8 +48,8 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time) => {
             message = {
                 time: time,
                 isRead: false,
-                type: 'error',
-                codeOrName: '代码为' + code + '的股票分析结果出错',
+                type: 'SVM',
+                codeOrName: code,
                 content: {
                     code: code,
                     open: open_price,
@@ -66,8 +66,13 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time) => {
             };
         }
         userDB.addUnreadMessage(userName, message, (err) => {
-            if (err)
+            if (err) {
                 console.log('Something wrong has happened when saving ' +  userName + "'s message!");
+                callback(err, null);
+            }
+            else {
+                callback(null, "ok");
+            }
         });
     });
 };

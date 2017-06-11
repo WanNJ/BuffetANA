@@ -206,8 +206,28 @@ exports.getRtStrategyALL = (callback) =>{
      strategyScore: 54 } }
 
  */
+
+
 exports.getStragtegyByID=(strategyKey,callback)=>{
     StrategyDB.getStrategyByID(strategyKey,(err,doc)=>{
-        callback(err,doc);
+
+        let result = {
+            beginDate:doc['beginDate'].toISOString().slice(0,10).replace(/-/g,'/'),
+            endDate:doc['endDate'].toISOString().slice(0,10).replace(/-/g,'/'),
+            stockPool:doc['stockPoolConditionVO'].stockPool,
+            industries: doc['stockPoolConditionVO'].industries,
+            benches: doc['stockPoolConditionVO'].benches,
+            excludeST:doc['stockPoolConditionVO'].excludeST?"on":"off",
+            rank:JSON.stringify(doc['rank']),
+            filter:JSON.stringify(doc['filter']),
+            reserveDays:doc['tradeModelVO'].holdingDays,
+            numberOfStock:doc['tradeModelVO'].holdingNums,
+            marketObserve:doc['envSpecDay'],
+            dynamic_hold:(doc['tradeModelVO'].loseRate!==null || doc['tradeModelVO'].winRate!==null)?"on":"off",
+            maxWinRate: doc['tradeModelVO'].winRate,
+            maxLoseRate:doc['tradeModelVO'].loseRate
+        }
+        //console.log(result)
+        callback(err,result);
     })
 }

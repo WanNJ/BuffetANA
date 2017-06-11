@@ -14,6 +14,53 @@
         let currentStockCode = "";
         let dataZoomLength = 60;
 
+        /**
+         * 检测用户输入的数字是否合法，如果不合法就将对象的值改为默认值，并将输入框的颜色变为淡黄色提示用户
+         * e.g:
+         * number_validate($("#my_input"));
+         * number_validate($("#my_input"),-2,3);
+         *
+         * @param obj 输入值的来源，一般是<input>的jQuery对象
+         * @param lowval 允许值的下限
+         * @param hival 允许值的上限
+         * @param defaultVal 默认值
+         */
+        function number_validate(obj, lowval=-Infinity, hival=Infinity ,defaultVal=3){
+            if(/^-{0,1}[0-9]{1,}$/.test($(obj).val()) && (($(obj).val() >= lowval) && ($(obj).val() <= hival))){
+                $(obj).css("background-color","white");
+            }else {
+                $(obj).val(defaultVal);
+                $(obj).css("background-color","#FFFFCC");
+            }
+        }
+
+        function analysisStock(){
+            let data={
+                "model": $("#model option:selected").val(),
+                "holdingDays": $("#holding-days").val(),
+                "advancedOptions": $("#advanced-options").val(),
+                "isMarket": $("#market-environment").val(),
+                "iterationNum": $("#iteration-quantity").val(),
+                "learningWay": $("#learning-way option:selected").val(),
+            };
+            $.ajax({
+                type: "post",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                data: data,
+                url: "single-stock/analysisStock", //请求发送到TestServlet处
+                success: (result) => {
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>'+result+'</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
+                },
+                error: function(request, err){
+                    console.error(err);
+                },
+            });
+        }
+
         function calculateMA(dayCount, adjDatas) {
             let result = [];
             let len = adjDatas.length;
@@ -876,7 +923,8 @@
 
 <div>
     <div class="text-right">
-        <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#analysis-collapse" aria-expanded="false" aria-controls="analysis-collapse">
+        <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#analysis-collapse"
+                aria-expanded="false" aria-controls="analysis-collapse">
             分析这只股票
         </button>
     </div>
@@ -886,43 +934,68 @@
                 <div class="row">
                     <div class="col-md-4">
                         <span >模型：</span>
-                        <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;">
+                        <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;" id="model">
                             <option selected="selected">SVM</option>
                             <option >NN</option>
                             <option >CNN</option>
                         </select>
+                        <script type="text/javascript">
+                            $("#model").change(()=>{
+                                if($("#model option:selected").val()==="SVM"){
+                                    $("#advanced-options").attr('checked',false);
+                                    $("#other-option").collapse('hide');
+                                    $("#advanced-collapse").collapse('hide');
+                                }else {
+                                    $("#other-option").collapse('show');
+                                }
+                            })
+                        </script>
                     </div>
                     <div class="col-md-4">
                         <span style="line-height: 35px;">持股天数：</span>
-                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
+                        <input class="text-center" style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}"
+                               id="holding-days" onchange="number_validate(this,1,60)"/>
                         <span>天</span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 collapse" id="other-option">
                         <span>高级：</span>
                         <div class="switch" style="display: inline-flex;margin-top: 5px;margin-left: 56px;">
-                            <input id="advanced-options" class="cmn-toggle cmn-toggle-round" type="checkbox" value="off" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                            <input id="advanced-options" class="cmn-toggle cmn-toggle-round" type="checkbox" value="off"
+                                   data-toggle="collapse" data-target="#advanced-collapse" aria-controls="advanced-collapse" aria-expanded="false"
+                                   onclick="$(this).val($(this).val()==='on'? 'off':'on')">
                             <label for="advanced-options"></label>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <span>考虑市场环境：</span>
-                        <div class="switch" style="display: inline-flex;margin-top: 5px;">
-                            <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked" onclick="$(this).val($(this).val()==='on'? 'off':'on')">
-                            <label for="market-environment"></label>
+                <div class="collapse" id="advanced-collapse">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span>考虑市场环境：</span>
+                            <div class="switch" style="display: inline-flex;margin-top: 5px;">
+                                <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked"
+                                       onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                                <label for="market-environment"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <span style="line-height: 35px">迭代量：</span>
+                            <input class="text-center" style="max-width: 50px;margin-left: 40px;" required="required" value="1" pattern="[0-9]{1,}"
+                                   id="iteration-quantity" onchange="number_validate(this,1,5)"/>
+                        </div>
+                        <div class="col-md-4">
+                            <span style="width: 150px;line-height: 36px;">学习方式：</span>
+                            <select class="form-control" style="max-width: 120px;display: inline-flex;margin-left: 25px" id="learning-way">
+                                <option selected="selected">分批</option>
+                                <option >全部</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <span style="line-height: 35px">迭代量：</span>
-                        <input style="max-width: 50px;margin-left: 40px;" required="required" value="1" pattern="[0-9]{1,}" id="iteration-quantity" onchange="number_validate(this,1,5)"/>
-                    </div>
-                    <div class="col-md-4">
-                        <span style="width: 150px;line-height: 36px;">学习方式：</span>
-                        <select class="form-control" style="max-width: 120px;display: inline-flex;margin-left: 25px">
-                            <option selected="selected">分批</option>
-                            <option >全部</option>
-                        </select>
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="text-center">
+                        <button class="btn btn-primary" style="min-width: 150px;" onclick="analysisStock()">
+                            走你
+                        </button>
                     </div>
                 </div>
             </div>

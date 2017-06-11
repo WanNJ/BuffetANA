@@ -1,6 +1,7 @@
 let express = require('express');
 let allStockBl = require('../bl/allStockbl');
 let singleStockService = require('../bl/singleStockbl');
+let singleStockPredict = require('../bl/statistics/singleStockPredict');
 let industryService = require('../bl/industryandbench/industrybl');
 let userBl = require('../bl/userbl');
 let comment = require('../bl/forum/forumbl').forumbl;
@@ -178,6 +179,38 @@ router.post('/commentStock', (req, res, next) => {
         else
             res.send('SUCCESS');
     });
+});
+
+router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
+    let model = req.body.model;
+    if(model==="SVM"){
+        singleStockPredict.SVMAnalyze(req.body.holdingDays);
+        req.session.alertType = "alert-success";
+        req.session.alertMessage = "SVM分析中，分析完毕后在网页右上角会有提示";
+        res.send("SVMAnalyzing");
+    }else  if(model==="NN"){
+        if(req.body.advancedOptions==="on"){
+            singleStockPredict.NNAnalyze(req.body.holdingDays,req.body.isMarket==="on"? true:false,req.body.iterationNum,req.body.learningWay);
+        }else {
+            singleStockPredict.NNAnalyze(req.body.holdingDays);
+        }
+        req.session.alertType = "alert-success";
+        req.session.alertMessage = "NN分析中，分析完毕后在网页右上角会有提示";
+        res.send("NNAnalyzing");
+    }else  if(model==="CNN"){
+        if(req.body.advancedOptions==="on"){
+            singleStockPredict.CNNAnalyze(req.body.holdingDays,req.body.isMarket==="on"? true:false,req.body.iterationNum,req.body.learningWay);
+        }else {
+            singleStockPredict.CNNAnalyze(req.body.holdingDays);
+        }
+        req.session.alertType = "alert-success";
+        req.session.alertMessage = "CNN分析中，分析完毕后在网页右上角会有提示";
+        res.send("CNNAnalyzing");
+    }else {
+        req.session.alertType = "alert-warning";
+        req.session.alertMessage = "不能识别分析模型:"+model;
+        res.send("unrecognize model:"+model);
+    }
 });
 
 module.exports = router;

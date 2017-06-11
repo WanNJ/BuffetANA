@@ -228,6 +228,38 @@ router.get('/quantitative-analysis/allBoards', function (req, res, next) {
     industrybl.getAllBoards((err, docs) => sendMessage(res, err, docs));
 });
 
+router.post('/quantitative-analysis/getStrategy', function (req, res, next) {
+    //strategyRT.getStragtegyByID(req.body.strategyID,(err, docs) => sendMessage(res, err, docs))
+    res.send({
+        strategyName: "strategyName",
+        beginDate: "2016/01/01",
+        endDate: "2017/01/01",
+        stockPool: "自选股票池",
+        benches: ["板块1","板块2"],
+        industries: ["行业1","行业2"],
+        excludeST: "off",
+        rank:JSON.stringify({
+            "r1":  ["MA","asd",10,0.4],
+            "r2":  ["MOM","des",20,0.6],
+        }),
+        filter:JSON.stringify({
+            "f1":   ["volume",">",1000000],
+            "f2":   ["turnOverRate","<",0.05],
+        }),
+        reserveDays: "3",
+        numberOfStock: "4",
+        marketObserve: "5",
+        dynamic_hold: "on",
+        maxWinRate: "6",
+        maxLoseRate: "7",
+        markNormal: "80",// 正常情况下 情况下的分数
+        markHS: "80",// high and same 情况下的分数
+        markHO: "80",// high and opposite 情况下的分数
+        markLS: "80",// low and same 情况下的分数
+        markLO: "80",// low and opposite 情况下的分数
+    });
+});
+
 router.get('/quantitative-analysis/allStrategy', function (req, res, next) {
     userbl.getAllStrategy(req.session.user, (err, docs) => sendDirectly(res, err, docs));
 });

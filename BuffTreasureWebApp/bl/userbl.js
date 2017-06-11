@@ -240,7 +240,7 @@ exports.getAllStrategy = (userName, callback) => {
  * @param callback (err, strategy) => {}
  * strategy形如:
  * {
-    strategyName: String
+    strategyName: String,
     beginDate: Date,
     endDate: Date,
     stockPoolCondition: {},
@@ -253,7 +253,7 @@ exports.getAllStrategy = (userName, callback) => {
     markHO:Number,// high and opposite 情况下的分数
     markLS:Number,// low and same 情况下的分数
     markLO:Number,// low and opposite 情况下的分数
- * }
+ }
  * stockPoolCondition {stockPoolConditionVO} 股票池选择条件
  * rank:("r1"、"r2"这些key值随便取什么都可以，只要不重复)
  *                   策略名称  升序／降序   观察期   权重

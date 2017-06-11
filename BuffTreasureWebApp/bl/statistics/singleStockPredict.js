@@ -1,11 +1,35 @@
 /**
  * Created by slow_time on 2017/6/3.
  */
-
-// Coefficient of Variation 变异系数
 const statisticTool = require('../tool/statisticTool');
 const singleStockDB = require('../../models/singleStock').singleStockDB;
 const exec = require('child_process').exec;
+const industryCorrelationTool = require('./industryCorrelationbl');
+
+
+/**
+ * 使用SVM模型进行个股分析
+ * @param code 股票代码
+ * @param now_price 股票现价，在个股页面直接获取，不要用户填写，如果没有现价，则禁用SVM模型
+ * @param holdingDays 持股天数，需要用户填写
+ */
+exports.SVMAnalyze = (code, now_price, holdingDays) => {
+    
+};
+
+exports.NNAnalyze = (code, holdingDays, isMarket, iterationNum, learningWay) => {
+
+};
+
+exports.CNNAnalyze = (code, holdingDays, isMarket, iterationNum, learningWay) => {
+
+};
+
+
+/**
+ * ===================================以下是私有方法===================================
+ */
+
 
 /**
  * 获得某支股票的风险系数
@@ -14,7 +38,7 @@ const exec = require('child_process').exec;
  * doc是一个数组，eg: [0.5, '高'] 第一个是风险系数，Number类型(已经保留了两位小数)
  * 第二个是风险程度，String类型（只有'高', '中', '低'三种可能）
  */
-exports.getCoefficientOfRisk = (code, callback) => {
+function getCoefficientOfRisk(code, callback) {
     singleStockDB.getStockInfoByCode(code, (err, docs) => {
         if (err)
             callback(err, null);
@@ -31,7 +55,7 @@ exports.getCoefficientOfRisk = (code, callback) => {
             callback(null, result);
         }
     });
-};
+}
 
 
 /**
@@ -45,7 +69,7 @@ exports.getCoefficientOfRisk = (code, callback) => {
  *  可信度（已乘100，单位为"%"）            预测今日涨（'1'代表涨，'2'代表跌）
  * ['53.23',                             '1']
  */
-exports.isUpOrDown = (code, open_price, callback) => {
+function isUpOrDown(code, open_price, callback) {
     exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/statistics/StockPredict.py ' +code + ' ' + open_price, function(err, stdout, stderr){
         if(err) {
             callback(err, null);
@@ -56,17 +80,4 @@ exports.isUpOrDown = (code, open_price, callback) => {
             callback(null, [...result]);
         }
     });
-};
-
-
-exports.SVMAnalyze = (holdingDays) => {
-
-};
-
-exports.NNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
-
-};
-
-exports.CNNAnalyze = (holdingDays, isMarket, iterationNum, learningWay) => {
-
-};
+}

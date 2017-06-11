@@ -115,8 +115,23 @@ describe('#getRtStrategyALL()', function() {
         });
     });
 
+    describe('#getStragtegyByID()', function() {
+        it('根据id获取策略', function (done) {
+            strategyRT.getStragtegyByID('593b594c2dd1ad40f7c85c8b', (err, data) => {
+                if (err) {
+                    console.log('wrong');
+                    done(err);
+                }
+                else {
+                    //console.log();
+                    console.log(data)
+                    done();
+                }
+            });
 
+        });
 
+    })
 });
 
 

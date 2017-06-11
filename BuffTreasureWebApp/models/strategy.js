@@ -54,4 +54,14 @@ exports.strategyDB ={
             callback(err, doc.slice(0,num))
         });
     },
+
+    /**
+     * 形如err,doc
+     */
+    getStrategyByID:(strategyKey,callback)=>{
+        strategySchema.findOne({_id: strategyKey},(err,doc)=>{
+            callback(err,doc);
+        })
+    }
+
 };

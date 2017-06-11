@@ -152,3 +152,62 @@ exports.getRtStrategyALL = (callback) =>{
         .catch(r=>callback(r,null))
 }
 
+/**
+ * 根据strategy的ID 获取strategy
+ * @param strategyKey
+ * @param callback (err,doc)
+ * doc形式{JSON}:
+ * { _id: 593b594c2dd1ad40f7c85c8b,
+  beginDate: 2015-01-01T00:00:00.000Z,
+  endDate: 2017-03-17T00:00:00.000Z,
+  stockPoolConditionVO:
+   { excludeST: false,
+     industries: [],
+     benches: [],
+     stockPool: '沪深300' },
+  rank: { r1: [ 'MA', 'asd', 10, 1 ], r2: [ 'MOM', 'desc', 9, 1 ] },
+  filter: { f1: [ 'turnOverRate', '<', 1 ] },
+  tradeModelVO: { loseRate: null, winRate: null, holdingNums: 2, holdingDays: 2 },
+  envSpecDay: 3,
+  markNormal:
+   { profitAbility: 5,
+     stability: 17,
+     chooseStockAbility: 9,
+     absoluteProfit: 1,
+     antiRiskAbility: 14,
+     strategyScore: 46 },
+  markHS:
+   { profitAbility: 7,
+     stability: 17,
+     chooseStockAbility: 11,
+     absoluteProfit: 2,
+     antiRiskAbility: 18,
+     strategyScore: 55 },
+  markHO:
+   { profitAbility: 8,
+     stability: 17,
+     chooseStockAbility: 11,
+     absoluteProfit: 2,
+     antiRiskAbility: 19,
+     strategyScore: 57 },
+  markLS:
+   { profitAbility: 3,
+     stability: 16,
+     chooseStockAbility: 9,
+     absoluteProfit: 0,
+     antiRiskAbility: 16,
+     strategyScore: 44 },
+  markLO:
+   { profitAbility: 7,
+     stability: 17,
+     chooseStockAbility: 10,
+     absoluteProfit: 4,
+     antiRiskAbility: 16,
+     strategyScore: 54 } }
+
+ */
+exports.getStragtegyByID=(strategyKey,callback)=>{
+    StrategyDB.getStrategyByID(strategyKey,(err,doc)=>{
+        callback(err,doc);
+    })
+}

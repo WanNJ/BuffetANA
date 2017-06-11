@@ -73,13 +73,36 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time) => {
 };
 
 
+// TODO 以下两个接口的参数我是按照界面来定的，具体的接口参数需要问wsw！！！！！！
 
-
-exports.NNAnalyze = (code, holdingDays, isMarket, iterationNum, learningWay) => {
+/**
+ * 使用NN模型进行个股分析
+ * @param userName
+ * @param code
+ * @param holdingDays
+ * @param isMarket
+ * @param iterationNum
+ * @param learningWay
+ * @param time
+ * @constructor
+ */
+exports.NNAnalyze = (userName, code, holdingDays, isMarket, iterationNum, learningWay, time) => {
 
 };
 
-exports.CNNAnalyze = (code, holdingDays, isMarket, iterationNum, learningWay) => {
+
+/**
+ * 使用CNN模型进行个股分析
+ * @param userName
+ * @param code
+ * @param holdingDays
+ * @param isMarket
+ * @param iterationNum
+ * @param learningWay
+ * @param time
+ * @constructor
+ */
+exports.CNNAnalyze = (userName, code, holdingDays, isMarket, iterationNum, learningWay, time) => {
 
 };
 

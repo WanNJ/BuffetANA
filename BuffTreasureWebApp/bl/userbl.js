@@ -313,7 +313,7 @@ exports.getUnreadMessageCount = (userName, callback) => {
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
  *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
- *      "stockCode":   '000001'
+ *      "codeOrName":   '000001'
  * }
  */
 exports.getAllMessages = (userName, callback) => {
@@ -328,13 +328,13 @@ exports.getAllMessages = (userName, callback) => {
                     unreadMessages.push({
                         "time": m["time"],
                         "type": m["type"],
-                        "stockCode": m["stockCode"]
+                        "codeOrName": m["codeOrName"]
                     });
                 else
                     readMessages.push({
                         "time": m["time"],
                         "type": m["type"],
-                        "stockCode": m["stockCode"]
+                        "codeOrName": m["codeOrName"]
                     });
             });
             callback(null, readMessages, unreadMessages);
@@ -381,7 +381,7 @@ exports.markAsRead = (userName, time, callback) => {
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
  *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
- *      "stockCode":   '000001'
+ *      "codeOrName":   '000001'
  *      "content":    {JSON} 根据type类型的不同，内容不同，具体详见不同的接口
  * }
  */

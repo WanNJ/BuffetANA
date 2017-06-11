@@ -36,7 +36,7 @@ describe('user', function() {
                 time: new Date(),
                 isRead: false,
                 type: 'thumbs_up',
-                toString: 'slowtime 赞了你的评论',
+                codeOrName: 'slowtime 赞了你的评论',
                 content: '000001'
             };
             user.addUnreadMessage('ty', message, function (err, isOK) {
@@ -54,7 +54,7 @@ describe('user', function() {
                 time: new Date(),
                 isRead: false,
                 type: 'analysis1',
-                toString: '你的代码为000001的股票分析结果已出，请点击查看',
+                codeOrName: '你的代码为000001的股票分析结果已出，请点击查看',
                 content: {
                     "CR": [0.29, '低'],
                     "upOrDown": ['54.29', '1'],
@@ -85,7 +85,7 @@ describe('user', function() {
                 time: new Date(),
                 isRead: false,
                 type: 'analysis2',
-                toString: '你的代码为000002的股票分析结果已出，请点击查看',
+                codeOrName: '你的代码为000002的股票分析结果已出，请点击查看',
                 content: {
                     "CR": [0.29, '低'],
                     "upOrDown": ['54.29', '1'],

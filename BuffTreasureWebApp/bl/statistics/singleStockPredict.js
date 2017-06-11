@@ -1,21 +1,79 @@
 /**
  * Created by slow_time on 2017/6/3.
  */
+const async = require("async/index.js");
 const statisticTool = require('../tool/statisticTool');
 const singleStockDB = require('../../models/singleStock').singleStockDB;
 const exec = require('child_process').exec;
 const industryCorrelationTool = require('./industryCorrelationbl');
+const userDB = require('../../models/user').userDB;
 
 
 /**
  * 使用SVM模型进行个股分析
- * @param code 股票代码
- * @param now_price 股票现价，在个股页面直接获取，不要用户填写，如果没有现价，则禁用SVM模型
- * @param holdingDays 持股天数，需要用户填写
+ * @param userName {String} 用户名称
+ * @param code {String} 股票代码
+ * @param open_price {Number} 股票当天开盘价，在个股页面直接获取，不要用户填写，如果没有开盘价，则禁用SVM模型
+ * @param holdingDays {Number} 持股天数，需要用户填写
+ * @param time {Date} 用户进行个股分析时的时间
  */
-exports.SVMAnalyze = (code, now_price, holdingDays) => {
-    
+exports.SVMAnalyze = (userName, code, open_price, holdingDays, time) => {
+    async.parallel([
+        function (callback) {
+            industryCorrelationTool.getIndustryCorrelationResult(code, holdingDays, callback);
+        },
+        function (callback) {
+            getCoefficientOfRisk(code, callback);
+        },
+        function (callback) {
+            isUpOrDown(code, open_price, callback);
+        }
+    ],
+    function (err, results) {
+        let message = {};
+        if (err) {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'error',
+                codeOrName: '代码为' + code + '的股票分析结果出错',
+                content: {
+                    code: code,
+                    open: open_price,
+                    holdingDays: holdingDays,
+                }
+            };
+        }
+        else {
+            message = {
+                time: time,
+                isRead: false,
+                type: 'error',
+                codeOrName: '代码为' + code + '的股票分析结果出错',
+                content: {
+                    code: code,
+                    open: open_price,
+                    holdingDays: holdingDays,
+                    relatedCode: results[0]["code"],
+                    relatedName: results[0]["name"],
+                    correlation: results[0]["correlation"],
+                    profitRate: results[0]["profitRate"],
+                    base: results[0]["base"],
+                    compare: results[0]["compare"],
+                    CR: results[1],
+                    upOrDown: results[2]
+                }
+            };
+        }
+        userDB.addUnreadMessage(userName, message, (err) => {
+            if (err)
+                console.log('Something wrong has happened when saving ' +  userName + "'s message!");
+        });
+    });
 };
+
+
+
 
 exports.NNAnalyze = (code, holdingDays, isMarket, iterationNum, learningWay) => {
 

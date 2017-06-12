@@ -3,7 +3,7 @@
  */
 let userDB = require('../models/user.js').userDB;
 let allStockDB = require('../models/allstock').allStockDB;
-let RTTool = require('./realtime/singleStockRT');
+const md5 = require('md5');
 
 /**
  * 用户登录
@@ -15,7 +15,7 @@ exports.login = (username, password, callback) => {
   userDB.getPasswordByName(username, (err, doc) => {
       if (doc === null)
           callback(err, false);
-      else if (doc["password"] !== password)
+      else if (doc["password"] !== md5(password))
           callback(err, false);
       else
           callback(err, true);
@@ -35,7 +35,7 @@ exports.signUp = (username, password, email, callback) => {
         if (doc === null) {
             let user = {
                 username : username,
-                password : password,
+                password : md5(password),
                 email : email,
                 selfSelectedStock : [],
                 strategy: [],

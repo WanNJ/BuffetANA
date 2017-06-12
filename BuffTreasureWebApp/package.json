@@ -24,7 +24,8 @@
     "serve-favicon": "~2.3.2",
     "session-file-store": "latest",
     "superagent": "^3.5.2",
-    "iconv-lite": "latest"
+    "iconv-lite": "latest",
+    "md5": "latest"
   },
   "devDependencies": {
     "chai": "^3.5.0",

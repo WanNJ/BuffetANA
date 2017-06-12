@@ -7,6 +7,7 @@ let expect = require('chai').expect;
 // 数据库连接 MongoDB
 // MongoDB
 let mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
@@ -17,7 +18,21 @@ mongoose.connection.on('open', function () {
 describe('userbl', function() {
     describe('#signUp()', function() {
         it('just a test', function(done) {
-            userbl.signUp('wsw','123', '151250134@smail.nju.edu.cn',function (err, doc) {
+            userbl.signUp('时间很慢','123456', '151250136@smail.nju.edu.cn',function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    //使用断言
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#login()', function() {
+        it('just a test', function(done) {
+            userbl.login('时间很慢','123456',function (err, doc) {
                 if (err) {
                     done(err);
                 }

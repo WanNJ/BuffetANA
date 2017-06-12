@@ -34,11 +34,13 @@ exports.forumbl = {
 
     /**
      * 某一客户对某一个评论点赞的动作
+     * @param stockCode 股票代码
+     * @param stockName 股票名称
      * @param content_id  评论的ID
      * @param userID  点赞用户的 用户名(用户名和id 是一个东西)
      * @param callback 形如 （err）={}
      */
-    pressContentGood:(content_id,userID,callback)=>{
+    pressContentGood:(stockCode, stockName, content_id,userID,callback)=>{
         contentDB.pressGood(content_id,userID,(err)=>{
             callback(err)
         })
@@ -46,11 +48,13 @@ exports.forumbl = {
 
     /**
      * 某一客户对某一支股票点差的动作
+     * @param stockCode 股票代码
+     * @param stockName 股票名称
      * @param content_id  评论的ID
      * @param userID  点赞用户的 用户名(用户名和id 是一个东西)
      * @param callback 形如 （err）={}
      */
-    pressContentBad:(content_id,userID,callback)=>{
+    pressContentBad:(stockCode, stockName, content_id,userID,callback)=>{
         contentDB.pressBad(content_id,userID,(err)=>{
             callback(err)
         })

@@ -12,7 +12,6 @@ $(document).ready(function()
     {
         event.preventDefault();
         let height=0;
-        console.log($(this).closest('.bloc'));
         for(let i=0;i<$('.bloc').length;i++){
             height+=$('.bloc:eq('+i+')').height();
             if($(this).closest('.bloc').is($('.bloc:eq('+i+')'))){

@@ -57,6 +57,9 @@ let largestBackRate;
  * @param tradeModelVO {TradeModelVO} 交易模型
  * @param envSpecDay {Number}  市场观察期
  *
+ * @param setProcess 设置回测进度的函数，形如 (process) => {}
+ * process ：Number类型，可选范围：0-99
+ * 内部调用例子：setProcess(56);  //告诉浏览器回测进度到56%了
  * @param callback 形如 (err, data) => {}
  * data {Array}  data[0]    data[1]             data[2]             data[3]                data[4]
  *               normal     市场温度高，趋同性强   市场温度高 趋反性强   市场温度低，趋同性强      市场温度低，趋反性强
@@ -105,7 +108,7 @@ let largestBackRate;
                                  }, ...]
   }
  */
-exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) {
+exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, setProcess, callback) {
     strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
         rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
         if (err)

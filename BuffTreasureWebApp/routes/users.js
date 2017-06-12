@@ -269,73 +269,91 @@ router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
 });
 
 router.post('/quantitative-analysis/loading', function (req, res, next) {
-    req.session.strategyData = req.body;
-    res.render('User/quantitative-loading');
+    if(req.session.strategyProcess){
+        res.send("上一次回测还没完成，请先等待其完成");
+    }else {
+        req.session.strategyData = req.body;
+
+        let body = req.body;
+
+        let beginDate = new Date(body.beginDate);
+        let endDate = new Date(body.endDate);
+
+        let excludeST = body.excludeST === 'on';
+
+        let benches = body.benches === "" ? null : body.benches.split(",");
+        let industries = body.industries === "" ? null : body.industries.split(",");
+        let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
+        let rank = JSON.parse(body.rank);
+        let filter = JSON.parse(body.filter);
+        let tradeModelVo = body.dynamic_hold === "on" ?
+            new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate)) :
+            new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
+        let envSpyDay = Number(body.marketObserve);
+
+        req.session.strategyProcess = 0;
+
+        console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);
+        strategyBl.getBackResults(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay, (process) =>{
+            req.session.strategyProcess = process;
+        }, (err, data) => {
+            let finalResult = splitStrategyResult(data);
+            console.log(finalResult);
+
+            if (err) {
+                console.error(err);
+            } else {
+                req.session.strategyResult = finalResult;
+                req.session.strategyProcess = 100;
+            }
+        });
+        res.render('User/quantitative-loading');
+    }
 });
 
 router.get('/quantitative-analysis/process', function (req, res, next) {
-    res.send("100");
+    let process = req.session.strategyProcess;
+    if(process == undefined){
+        process=0;
+    }
+    res.send(process.toString());
 });
 
 router.get('/quantitative-analysis/result', function (req, res, next) {
-    let body = req.session.strategyData;
+    let finalResult = req.session.strategyResult;
+    res.render('User/quantitative-result', {
+        strategyScores: finalResult.strategyScores,
 
-    let beginDate = new Date(body.beginDate);
-    let endDate = new Date(body.endDate);
+        normal_historyDatas: finalResult.normal_historyDatas,
+        highAndSame_historyDatas: finalResult.highAndSame_historyDatas,
+        highAndOpp_historyDatas: finalResult.highAndOpp_historyDatas,
+        lowAndSame_historyDatas: finalResult.lowAndSame_historyDatas,
+        lowAndOpp_historyDatas: finalResult.lowAndOpp_historyDatas,
 
-    let excludeST = body.excludeST === 'on';
+        backDetails: finalResult.backDetails,
 
-    let benches = body.benches === "" ? null : body.benches.split(",");
-    let industries = body.industries === "" ? null : body.industries.split(",");
-    let stockPoolCdtVO = new StockPoolConditionVO(body.stockPool, benches, industries, excludeST);
-    let rank = JSON.parse(body.rank);
-    let filter = JSON.parse(body.filter);
-    let tradeModelVo = body.dynamic_hold === "on" ?
-        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock), Number(body.maxWinRate), Number(body.maxLoseRate)) :
-        new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
-    let envSpyDay = Number(body.marketObserve);
+        base_Dates: finalResult.base_Dates,
+        normal_Dates: finalResult.normal_Dates,
+        highAndSame_Dates: finalResult.highAndSame_Dates,
+        highAndOpp_Dates: finalResult.highAndOpp_Dates,
+        lowAndSame_Dates: finalResult.lowAndSame_Dates,
+        lowAndOpp_Dates: finalResult.lowAndOpp_Dates,
 
-    console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);
-    strategyBl.getBackResults(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay, (err, data) => {
-        let finalResult = splitStrategyResult(data);
-        console.log(finalResult);
+        base_profitRates: finalResult.base_profitRates,
+        normal_profitRates: finalResult.normal_profitRates,
+        highAndSame_profitRates: finalResult.highAndSame_profitRates,
+        highAndOpp_profitRates: finalResult.highAndOpp_profitRates,
+        lowAndSame_profitRates: finalResult.lowAndSame_profitRates,
+        lowAndOpp_profitRates: finalResult.lowAndOpp_profitRates,
 
-        if (err) {
-            //TODO
-        } else {
-            res.render('User/quantitative-result', {
-                strategyScores: finalResult.strategyScores,
-
-                normal_historyDatas: finalResult.normal_historyDatas,
-                highAndSame_historyDatas: finalResult.highAndSame_historyDatas,
-                highAndOpp_historyDatas: finalResult.highAndOpp_historyDatas,
-                lowAndSame_historyDatas: finalResult.lowAndSame_historyDatas,
-                lowAndOpp_historyDatas: finalResult.lowAndOpp_historyDatas,
-
-                backDetails: finalResult.backDetails,
-
-                base_Dates: finalResult.base_Dates,
-                normal_Dates: finalResult.normal_Dates,
-                highAndSame_Dates: finalResult.highAndSame_Dates,
-                highAndOpp_Dates: finalResult.highAndOpp_Dates,
-                lowAndSame_Dates: finalResult.lowAndSame_Dates,
-                lowAndOpp_Dates: finalResult.lowAndOpp_Dates,
-
-                base_profitRates: finalResult.base_profitRates,
-                normal_profitRates: finalResult.normal_profitRates,
-                highAndSame_profitRates: finalResult.highAndSame_profitRates,
-                highAndOpp_profitRates: finalResult.highAndOpp_profitRates,
-                lowAndSame_profitRates: finalResult.lowAndSame_profitRates,
-                lowAndOpp_profitRates: finalResult.lowAndOpp_profitRates,
-
-                normal_pieDatas: finalResult.normal_pieDatas,
-                highAndSame_pieDatas: finalResult.highAndSame_pieDatas,
-                highAndOpp_pieDatas: finalResult.highAndOpp_pieDatas,
-                lowAndSame_pieDatas: finalResult.lowAndSame_pieDatas,
-                lowAndOpp_pieDatas: finalResult.lowAndOpp_pieDatas
-            });
-        }
+        normal_pieDatas: finalResult.normal_pieDatas,
+        highAndSame_pieDatas: finalResult.highAndSame_pieDatas,
+        highAndOpp_pieDatas: finalResult.highAndOpp_pieDatas,
+        lowAndSame_pieDatas: finalResult.lowAndSame_pieDatas,
+        lowAndOpp_pieDatas: finalResult.lowAndOpp_pieDatas
     });
+    delete req.session.strategyProcess;
+    delete req.session.strategyResult;
 });
 
 router.post('/quantitative-analysis/save', function (req, res, next) {

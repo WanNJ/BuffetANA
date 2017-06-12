@@ -440,7 +440,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "get",
-            async: false, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             url: "chmap", //请求发送到TestServlet处
             dataType: "json", //返回数据形式为json
             success: (result) => {
@@ -449,7 +449,7 @@
         });
         $.ajax({
             type: "get",
-            async: false, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             url: "allIndustries", //请求发送到TestServlet处
             success: (result) => {
                 allIndustries=result.split(",");
@@ -464,7 +464,7 @@
         });
         $.ajax({
             type: "get",
-            async: false, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             url: "allBoards", //请求发送到TestServlet处
             success: (result) => {
                 allBoards=result.split(",");
@@ -481,7 +481,7 @@
         <% if(typeof strategyID !== "undefined") { %>
         $.ajax({
             type: "post",
-            async: false, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             data: {"strategyID": "<%= strategyID %>"},
             url: "getStrategy", //请求发送到TestServlet处
             success: (result) => {

@@ -211,6 +211,18 @@ exports.getRtStrategyALL = (callback) =>{
 exports.getStragtegyByID=(strategyKey,callback)=>{
     StrategyDB.getStrategyByID(strategyKey,(err,doc)=>{
 
+        let ranks = doc['rank']
+        ranks = ranks==null?[]:ranks;
+        console.log(ranks)
+        for (let r in ranks){
+            let test = ranks[r][1]
+            if(test==='des'||test==='desc'){
+                ranks[r][1] = 'des'
+            }else{
+                ranks[r][1] = "asd"
+            }
+        }
+
         let result = {
             beginDate:doc['beginDate'].toISOString().slice(0,10).replace(/-/g,'/'),
             endDate:doc['endDate'].toISOString().slice(0,10).replace(/-/g,'/'),
@@ -218,7 +230,7 @@ exports.getStragtegyByID=(strategyKey,callback)=>{
             industries: doc['stockPoolConditionVO'].industries,
             benches: doc['stockPoolConditionVO'].benches,
             excludeST:doc['stockPoolConditionVO'].excludeST?"on":"off",
-            rank:JSON.stringify(doc['rank']),
+            rank:JSON.stringify(ranks),
             filter:JSON.stringify(doc['filter']),
             reserveDays:doc['tradeModelVO'].holdingDays,
             numberOfStock:doc['tradeModelVO'].holdingNums,

@@ -736,8 +736,8 @@
         $("#date-to").val(data.endDate);
         $("#stock-pool").val(data.stockPool);
         stock_pool_change($("#stock-pool").val());
-        let benches = data.benches===undefined? new Array():data.benches;
-        let industries = data.industries===undefined? new Array():data.industries;
+        let benches = data.benches==null? new Array():data.benches;
+        let industries = data.industries==null? new Array():data.industries;
         $("#boards li a input:checkbox").each(function () {
             $(this).attr('checked',false);
         });

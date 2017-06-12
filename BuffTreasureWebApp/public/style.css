@@ -1793,6 +1793,39 @@ body .no-padding {
 	text-align: center;
 }
 
+.thermometer {
+
+}
+.thermometer-10 {
+	background-image: url(img/thermometer-10.png);
+}
+.thermometer-20 {
+	background-image: url(img/thermometer-20.png);
+}
+.thermometer-30 {
+	background-image: url(img/thermometer-30.png);
+}
+.thermometer-40 {
+	background-image: url(img/thermometer-40.png);
+}
+.thermometer-50 {
+	background-image: url(img/thermometer-50.png);
+}
+.thermometer-60 {
+	background-image: url(img/thermometer-60.png);
+}
+.thermometer-70 {
+	background-image: url(img/thermometer-70.png);
+}
+.thermometer-80 {
+	background-image: url(img/thermometer-80.png);
+}
+.thermometer-90 {
+	background-image: url(img/thermometer-90.png);
+}
+.thermometer-100 {
+	background-image: url(img/thermometer-100.png);
+}
 li.no_act_link .open {
 	color: transparent;
 	background-color: transparent;

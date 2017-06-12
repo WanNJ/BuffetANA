@@ -9,11 +9,77 @@
 <div class="page-container">
     <% include ../Components/navigator.ejs %>
 
+    <!-- bloc-1 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-1">
+        <div class="container bloc-md b-divider-dashed">
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" id="thermometer-viewport">
+                    <img src="/img/thermometer-20.png" class="img-responsive center-block tada animated thermometer"
+                         data-container="#thermometer-viewport" data-toggle="popover" data-placement="left" data-trigger="click"
+                         data-viewport="#thermometer-viewport" title="10°" data-content="市场较弱，操作难度大。"
+                         data-template='<div class="popover" style="max-width:190px;" role="tooltip"><div class="arrow"></div><h1 class="popover-title text-center" style="font-size: 36px;color: deepskyblue;font-weight: bold;"></h1><div class="popover-content"></div></div>'>
+                </div>
+            </div>
+            <a class="blocs-hero-btn-dwn scroll-hero" href="#"><span class="fa fa-chevron-down" style="color: black"></span></a>
+        </div>
+    </div>
+    <!-- bloc-1 END -->
+
+    <!-- bloc-2 -->
+    <div class="bloc bgc-white l-bloc" id="bloc-2">
+        <div class="container bloc-md b-divider-dashed">
+            <div class="row tada animated">
+                <div class="col-sm-12 text-center">
+                    <a class="btn btn-xl btn-black "><span
+                                class="et-icon-heart icon-spacer icon-md icon-white"></span>立即体验</a>
+                </div>
+            </div>
+            <a class="blocs-hero-btn-dwn scroll-hero" href="#"><span class="fa fa-chevron-down" style="color: black"></span></a>
+        </div>
+    </div>
+    <!-- bloc-2 END -->
+
     <!-- ScrollToTop Button -->
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
 
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+            $(".thermometer").click();
+        });
+
+        var thermometerDescribe = [
+            "市场已经爆炸了，醒醒吧，别炒股了。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场较弱，操作难度大。",
+            "市场温度好到傻子都能赚钱。",
+        ];
+
+        /**
+         * 改变温度计的显示
+         * @param value 温度的值，Number类型，取值范围0-100
+         * @param text 该温度下的说明
+         */
+        function changeThermometer(value = 10, text) {
+            let level=parseInt(value/10);
+            $(".thermometer").attr("src","/img/thermometer-"+level*10+".png");
+            $(".thermometer").attr("data-original-title",value+"°");
+            if(text===undefined){
+                text = thermometerDescribe[level];
+            }
+            $(".thermometer").attr("data-content",text);
+            $(".thermometer").popover('show')
+        }
+    </script>
 </div>
 <!-- Main container END -->
 </body>

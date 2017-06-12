@@ -5,6 +5,7 @@
 
 let contentDB = require('../../models/content').contentDB;
 let forumDB = require('../../models/forum').forumDB;
+const userDB = require('../../models/user').userDB;
 
 exports.forumbl = {
 
@@ -36,27 +37,89 @@ exports.forumbl = {
      * 某一客户对某一个评论点赞的动作
      * @param stockCode 股票代码
      * @param stockName 股票名称
+     * @param userName 当前登陆的用户名称
+     * @param time 点赞时的时间
      * @param content_id  评论的ID
      * @param userID  点赞用户的 用户名(用户名和id 是一个东西)
      * @param callback 形如 （err）={}
      */
-    pressContentGood:(stockCode, stockName, content_id,userID,callback)=>{
+    pressContentGood:(stockCode, stockName, userName, time, content_id,userID,callback)=>{
         contentDB.pressGood(content_id,userID,(err)=>{
-            callback(err)
-        })
+            let message = {};
+            if (err) {
+                message = {
+                    time: time,
+                    isRead: false,
+                    type: 'error',
+                    codeOrName: '点赞出错',
+                    stockName: stockName,
+                    content: {
+                        content_id: content_id,
+                        userID: userID
+                    }
+                }
+            }
+            else {
+                message = {
+                    time: time,
+                    isRead: false,
+                    type: 'thumbs_up',
+                    codeOrName: stockCode,
+                    stockName: stockName,
+                    content: {
+                        content_id: content_id,
+                        userID: userID
+                    }
+                }
+            }
+            userDB.addUnreadMessage(userName, message, (err) => {
+                callback(err);
+            });
+        });
     },
 
     /**
      * 某一客户对某一支股票点差的动作
      * @param stockCode 股票代码
      * @param stockName 股票名称
+     * @param userName 当前登陆的用户名称
+     * @param time 点赞时的时间
      * @param content_id  评论的ID
      * @param userID  点赞用户的 用户名(用户名和id 是一个东西)
      * @param callback 形如 （err）={}
      */
-    pressContentBad:(stockCode, stockName, content_id,userID,callback)=>{
+    pressContentBad:(stockCode, stockName, userName, time, content_id,userID,callback)=>{
         contentDB.pressBad(content_id,userID,(err)=>{
-            callback(err)
+            let message = {};
+            if (err) {
+                message = {
+                    time: time,
+                    isRead: false,
+                    type: 'error',
+                    codeOrName: '点踩出错',
+                    stockName: stockName,
+                    content: {
+                        content_id: content_id,
+                        userID: userID
+                    }
+                }
+            }
+            else {
+                message = {
+                    time: time,
+                    isRead: false,
+                    type: 'thumbs_down',
+                    codeOrName: stockCode,
+                    stockName: stockName,
+                    content: {
+                        content_id: content_id,
+                        userID: userID
+                    }
+                }
+            }
+            userDB.addUnreadMessage(userName, message, (err) => {
+                callback(err);
+            });
         })
     },
 

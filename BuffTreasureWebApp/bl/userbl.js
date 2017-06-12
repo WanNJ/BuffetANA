@@ -310,7 +310,7 @@ exports.getUnreadMessageCount = (userName, callback) => {
  * readMessages和unreadMessages分别是已读和未读消息数组，如果没有相应类型的消息则对应的消息数组长度为0，如果有消息，那么消息类型是JSON，如下所示
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
- *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
+ *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'thumbs_up'/'error'
  *      "codeOrName":   '000001'
  *      "stockName": '平安银行'
  * }
@@ -373,7 +373,7 @@ exports.markAsRead = (userName, time, callback) => {
  * messageContent的内容
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
- *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
+ *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'thumbs_down'/'error'
  *      "codeOrName":   '000001'
  *      "stockName":    '平安银行'
  *      "content":    {JSON} 根据type类型的不同，内容不同，具体详见不同的接口

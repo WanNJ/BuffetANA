@@ -21,7 +21,7 @@ mongoose.connection.on('open', function () {
 describe('singleStockPredict', function() {
     describe('#SVMAnalyze()', function () {
         it('SVM', function (done) {
-            statistics.SVMAnalyze('ty', '000001', 8.78, 5, new Date(), (err, isOK) => {
+            statistics.SVMAnalyze('wnj', '000001', '平安银行', 8.78, 5, new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {
@@ -31,7 +31,7 @@ describe('singleStockPredict', function() {
             });
         });
         it('CNN', function (done) {
-            statistics.CNNAnalyze('ty', '000001', 1, false, 4, 'ALL', new Date(), (err, isOK) => {
+            statistics.CNNAnalyze('wnj', '000001', '平安银行', 1, false, 4, 'ALL', new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {
@@ -41,7 +41,7 @@ describe('singleStockPredict', function() {
             });
         });
         it('NN', function (done) {
-            statistics.NNAnalyze('ty', '000002', 5, new Date(), (err, isOK) => {
+            statistics.NNAnalyze('wnj', '000002', '万科 A', 5, new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {

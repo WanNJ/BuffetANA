@@ -148,6 +148,20 @@ describe('userbl', function() {
             });
         });
     });
+    describe('#getAllMessages()', function() {
+        it('just a te', function(done) {
+            userbl.getAllMessages('ty', function (err, doc1, doc2) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(doc1.length);
+                    console.log(doc2.length);
+                    done();
+                }
+            });
+        });
+    });
     describe('#getUnreadMessageCount()', function() {
         it('获得ty用户的所有未读消息', function(done) {
             userbl.getUnreadMessageCount('ty', function (err, count) {

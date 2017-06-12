@@ -36,10 +36,11 @@ describe('user', function() {
                 time: new Date(),
                 isRead: false,
                 type: 'thumbs_up',
-                codeOrName: 'slowtime 赞了你的评论',
-                content: '000001'
+                codeOrName: '000001',
+                stockName: '平安银行',
+                content: {}
             };
-            user.addUnreadMessage('ty', message, function (err, isOK) {
+            user.addUnreadMessage('wnj', message, function (err, isOK) {
                 if (err) {
                     done(err);
                 }

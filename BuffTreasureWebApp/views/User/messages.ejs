@@ -9,58 +9,130 @@
 <!-- Main container -->
 <div class="page-container">
     <% include ../Components/navigator.ejs %>
+    <div class="bloc bgc-white">
 
-    <div class="container">
-        <div class="content-container">
+        <div class="bloc bgc-white container">
             <div class="col-md-12">
-                <h1 class="content-title">我的消息</h1>
+                <h1 class="content-title text-center">我的消息</h1>
 
                 <ul class="mail-list">
+                    <% unreadMsg.forEach(function (msg) { %>
+                    <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a href="">
-                            <span class="mail-sender">You Tube</span>
-                            <span class="mail-subject">New subscribers!</span>
-                            <span class="mail-message-preview">You have ten more subscriptions click her...</span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/svm?<%= msg.time %>">
+                            <span class="mail-sender">SVM——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的SVM分析结果已经得出。<br>
+                            点击查看结果...</span>
                         </a>
                     </li>
+                    <% } else if(msg.type == 'CNN') { %>
                     <li>
-                        <a href="">
-                            <span class="mail-sender">You Tube</span>
-                            <span class="mail-subject">New subscribers!</span>
-                            <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>">
+                            <span class="mail-sender">CNN——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的CNN分析结果已经得出。<br>
+                            点击查看结果...</span>
                         </a>
                     </li>
+                    <% } else if((msg.type == 'NN')) { %>
                     <li>
-                        <a href="">
-                            <span class="mail-sender">You Tube</span>
-                            <span class="mail-subject">New subscribers!</span>
-                            <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/nn?<%= msg.time %>">
+                            <span class="mail-sender">NN——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的NN分析结果已经得出。<br>
+                            点击查看结果...</span>
                         </a>
                     </li>
+                    <% } else if((msg.type == 'thumbs_up')) { %>
                     <li>
-                        <a href="">
-                            <span class="mail-sender">You Tube</span>
-                            <span class="mail-subject">New subscribers!</span>
-                            <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
+                        <a class="unread"
+                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>">
+                            <span class="mail-sender">点赞消息</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
+                                给您在<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）点了赞。<br>
+                            点击查看结果...</span>
                         </a>
                     </li>
+                    <% } %>
+                    <% }) %>
+
+                    <% readMsg.forEach(function (msg) { %>
+                    <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a href="">
-                            <span class="mail-sender">You Tube</span>
-                            <span class="mail-subject">New subscribers!</span>
-                            <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
+                        <a href="/user/<%= username %>/msg-result/svm?<%= msg.time %>">
+                            <span class="mail-sender">SVM——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的SVM分析结果已经得出。<br>
+                            点击查看结果...</span>
                         </a>
                     </li>
+                    <% } else if(msg.type == 'CNN') { %>
+                    <li>
+                        <a href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>">
+                            <span class="mail-sender">CNN——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的CNN分析结果已经得出。<br>
+                            点击查看结果...</span>
+                        </a>
+                    </li>
+                    <% } else if((msg.type == 'NN')) { %>
+                    <li>
+                        <a href="/user/<%= username %>/msg-result/nn?<%= msg.time %>">
+                            <span class="mail-sender">NN——<%= msg.stockName %></span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）进行的NN分析结果已经得出。<br>
+                            点击查看结果...</span>
+                        </a>
+                    </li>
+                    <% } else if((msg.type == 'thumbs_up')) { %>
+                    <li>
+                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>">
+                            <span class="mail-sender">点赞消息</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
+                                给您在<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）点了赞。<br>
+                            点击查看结果...</span>
+                        </a>
+                    </li>
+                    <% } %>
+                    <% }) %>
                 </ul>
             </div>
         </div>
+
+        <!-- ScrollToTop Button -->
+        <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                    class="fa fa-chevron-up"></span></a>
+        <!-- ScrollToTop Button END-->
+
+        <script>
+            console.log($('.mail-list')[0].innerHTML);
+            if ($('.mail-list')[0].children.length === 0) {
+                $('h1').hide();
+                $('.content-title').after('<div class="text-center"><div class="row"> <div class="col-md-2 col-md-offset-5"> <img src="/img/question.png" class="img-responsive img-circle nav-center"/> </div><div class="col-md-12"><h3 class="statement-bloc-text text-center">"您的消息空空如也，快去个股做一些专属分析吧！" </h3></div></div></div>');
+            }
+
+            $('.mail-list > li > a').click(function (e) {
+                e.preventDefault();
+                console.log($(this)[0].children[1].innerHTML);
+                $(this).removeClass('unread');
+                $.post("/user/<%= username %>/markAsRead", {time: $(this)[0].children[1].innerHTML}, function(result){
+                    if(result === 'ERROR')
+                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                });
+            });
+        </script>
     </div>
-
-    <!-- ScrollToTop Button -->
-    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
-                class="fa fa-chevron-up"></span></a>
-    <!-- ScrollToTop Button END-->
-
 </div>
 <!-- Main container END -->
 </body>

@@ -38,7 +38,7 @@
                         <ul class="dropdown-menu text-center">
                             <li class="text-center">您好!  <em><strong> <%= user %></strong></em></li>
                             <li role="separator" class="divider"></li>
-                            <li class="text-center"><a href="#">我的消息 <sup><span id="unread_badge" class="badge" style="background-color: red;"></span></sup></a></li>
+                            <li class="text-center"><a href="/user/<%= user %>/allMsg">我的消息 <sup><span id="unread_badge" class="badge" style="background-color: red;"></span></sup></a></li>
                             <li class="text-center"><a href="/user/<%= user %>/personalStocks">我的自选股</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="text-center"><a href="/logout">登出</a></li>
@@ -46,7 +46,29 @@
                     </li><span class="badge" id="all_unread_badge" style="background-color: red;"></span>
                 </ul>
                 <script>
-                    //TODO 设置定时询问未读消息的代码
+                    $.get('/user/<%= user %>/getUnreadMsgNum', (result) => {
+                        if(result !== "0" && result !== $('#all_unread_badge')[0].innerHTML) {
+                            $('#all_unread_badge')[0].innerHTML = result;
+                            $('#unread_badge')[0].innerHTML = result;
+                            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-info fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>Hi,there！您有了新消息!</strong></div>');
+                        } else if (result === "0"  && $('#all_unread_badge')[0].innerHTML.length !== 0) {
+                            $('#all_unread_badge')[0].innerHTML = '';
+                            $('#unread_badge')[0].innerHTML = '';
+                        }
+                    });
+
+                    window.setInterval(function () {
+                        $.get('/user/<%= user %>/getUnreadMsgNum', (result) => {
+                            if(result !== "0" && result !== $('#all_unread_badge')[0].innerHTML) {
+                                $('#all_unread_badge')[0].innerHTML = result;
+                                $('#unread_badge')[0].innerHTML = result;
+                                $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-info fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>Hi,there！您有了新消息!</strong></div>');
+                            } else if (result === "0"  && $('#all_unread_badge')[0].innerHTML.length !== 0) {
+                                $('#all_unread_badge')[0].innerHTML = '';
+                                $('#unread_badge')[0].innerHTML = '';
+                            }
+                        });
+                    }, 3000);
                 </script>
                 <% }else { %>
                     <a class="navbar-brand navbar-right" href="/"><img src="/img/favicon.ico" alt="logo" height="62"/></a>

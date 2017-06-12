@@ -25,17 +25,17 @@
          * @param hival 允许值的上限
          * @param defaultVal 默认值
          */
-        function number_validate(obj, lowval=-Infinity, hival=Infinity ,defaultVal=3){
-            if(/^-{0,1}[0-9]{1,}$/.test($(obj).val()) && (($(obj).val() >= lowval) && ($(obj).val() <= hival))){
-                $(obj).css("background-color","white");
-            }else {
+        function number_validate(obj, lowval = -Infinity, hival = Infinity, defaultVal = 3) {
+            if (/^-{0,1}[0-9]{1,}$/.test($(obj).val()) && (($(obj).val() >= lowval) && ($(obj).val() <= hival))) {
+                $(obj).css("background-color", "white");
+            } else {
                 $(obj).val(defaultVal);
-                $(obj).css("background-color","#FFFFCC");
+                $(obj).css("background-color", "#FFFFCC");
             }
         }
 
-        function analysisStock(){
-            let data={
+        function analysisStock() {
+            let data = {
                 "model": $("#model option:selected").val(),
                 "holdingDays": $("#holding-days").val(),
                 "advancedOptions": $("#advanced-options").val(),
@@ -49,13 +49,13 @@
                 data: data,
                 url: "single-stock/analysisStock", //请求发送到TestServlet处
                 success: (result) => {
-                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>'+result+'</strong></div>');
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>' + result + '</strong></div>');
 
                     window.setTimeout(function () {
                         $("#bottom-alert").alert("close");
                     }, 2000);
                 },
-                error: function(request, err){
+                error: function (request, err) {
                     console.error(err);
                 },
             });
@@ -564,447 +564,457 @@
 
 <% include Components/navigator.ejs %>
 
-<br>
-<div class="container">
-    <!--搜索模块-->
-    <div class="col-sm-10 col-sm-offset-1 jumbotron">
-        <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control" name="query" id="search_area" autocomplete="off"
-                       placeholder="搜索个股..."
-                       required>
-                <span class="input-group-btn">
+<div class="bloc bgc-white">
+
+    <div class="container" style="padding-top: 30px; padding-bottom: 50px">
+        <!--搜索模块-->
+        <div class="col-sm-10 col-sm-offset-1">
+            <form id="stock_form" action="single-stock/search" method="post" name="search_for_stock">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" name="query" id="search_area" autocomplete="off"
+                           placeholder="搜索个股..."
+                           required>
+                    <span class="input-group-btn">
                 <button id="searchButton" class="btn btn-default" type="submit">搜索</button>
             </span>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="page-container">
-
-    <!--Recently Browsed-->
-    <div class="col-md-2 center-block" style="padding-right: 0px;padding-left: 20px;">
-        <div class="col-sm-12" style="height: 50px;"></div>
-
-        <div>
-            <ul class="nav nav-tabs nav-justified" id="left_side_tab">
-                <li class="active" data-toggle="tooltip" data-placement="top" title="历史搜索记录"><a
-                            href="#recent_stock_seg"><span class="glyphicon glyphicon-search"
-                                                           aria-hidden="true"></span></a></li>
-                <li data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
-                                class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-sm-12 tab-content">
-            <div id="recent_stock_seg" class="tab-pane active">
-                <table id="recent_stock_table" class="table table-hover" style="font-size: 13px">
-                    <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>代码</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div id="hot_stock_seg" class="tab-pane">
-                <table id="hot_stock_table" class="table table-hover" style="font-size: small">
-                    <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>价格</th>
-                        <th>涨跌幅</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#left_side_tab').find('a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-
-        $(document).ready(function () {
-            $.get('single-stock/getHotStockList', (result) => {
-                for (let i = 0; i < result.length; i++) {
-                    let appendedStr = '<tr><th>' + result[i][0] + '</th><td>' + result[i][1] + '</td><td>' + result[i][2] + '%' + '</td></tr>';
-                    $('#hot_stock_table > tbody').append(appendedStr);
-                }
-            });
-        });
-    </script>
-
-    <!--Main Block Of Single Stock-->
-    <div class="col-sm-8" id="stockSeg" style="display: block;">
-
-        <!--Basic Infos of a stock-->
-        <div class="col-sm-6">
-            <div class="row">
-                <!--Names-->
-                <div class="col-sm-4 text-center" target="_blank" data-toggle="tooltip" data-placement="top"
-                     title="点击查看公司信息" style="height: 102px;padding-left: 0px;padding-right: 0px">
-                    <a class="my-link" id="stock_name_link" href="#"><h1 id="stock_name"
-                                                                         style="color: #337ab7;font-weight: bold;"></h1>
-                    </a>
-                    <h5 id="stock_code" style="color: #337ab7"></h5>
                 </div>
+            </form>
+        </div>
+    </div>
 
-                <!--Numbers-->
-                <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
-                    <div class="row">
-                        <div class="col-sm-5 text-right" style="height: 102px;padding-left: 10px;padding-right: 0px">
-                            <h1 id="current_price" style="height: 102px;"></h1>
+    <div class="page-container">
+
+        <!--Recently Browsed-->
+        <div class="col-md-2 center-block" style="padding-right: 0px;padding-left: 20px;">
+            <div class="col-sm-12" style="height: 50px;"></div>
+
+            <div>
+                <ul class="nav nav-tabs nav-justified" id="left_side_tab">
+                    <li class="active" data-toggle="tooltip" data-placement="top" title="历史搜索记录"><a
+                                href="#recent_stock_seg"><span class="glyphicon glyphicon-search"
+                                                               aria-hidden="true"></span></a></li>
+                    <li data-toggle="tooltip" data-placement="top" title="当前热门股票"><a href="#hot_stock_seg"><span
+                                    class="glyphicon glyphicon-fire" aria-hidden="true"></span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-12 tab-content">
+                <div id="recent_stock_seg" class="tab-pane active">
+                    <table id="recent_stock_table" class="table table-hover" style="font-size: 13px">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>代码</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="hot_stock_seg" class="tab-pane">
+                    <table id="hot_stock_table" class="table table-hover" style="font-size: small">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>价格</th>
+                            <th>涨跌幅</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#left_side_tab').find('a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+            $(document).ready(function () {
+                $.get('single-stock/getHotStockList', (result) => {
+                    for (let i = 0; i < result.length; i++) {
+                        let appendedStr = '<tr><th>' + result[i][0] + '</th><td>' + result[i][1] + '</td><td>' + result[i][2] + '%' + '</td></tr>';
+                        $('#hot_stock_table > tbody').append(appendedStr);
+                    }
+                });
+            });
+        </script>
+
+        <!--Main Block Of Single Stock-->
+        <div class="col-sm-8" id="stockSeg" style="display: block;">
+
+            <!--Basic Infos of a stock-->
+            <div class="col-sm-6">
+                <div class="row">
+                    <!--Names-->
+                    <div class="col-sm-4 text-center" target="_blank" data-toggle="tooltip" data-placement="top"
+                         title="点击查看公司信息" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                        <a class="my-link" id="stock_name_link" href="#"><h1 id="stock_name"
+                                                                             style="color: #337ab7;font-weight: bold;"></h1>
+                        </a>
+                        <h5 id="stock_code" style="color: #337ab7"></h5>
+                    </div>
+
+                    <!--Numbers-->
+                    <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
+                        <div class="row">
+                            <div class="col-sm-5 text-right"
+                                 style="height: 102px;padding-left: 10px;padding-right: 0px">
+                                <h1 id="current_price" style="height: 102px;"></h1>
+                            </div>
+                            <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                                <h1>
+                                    <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
+                                </h1>
+                            </div>
+                            <div class="col-sm-4 text-center"
+                                 style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                                <h4 id="chg"></h4>
+                                <h4 id="chg_p"></h4>
+                            </div>
                         </div>
-                        <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
-                            <h1>
-                                <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
-                            </h1>
-                        </div>
-                        <div class="col-sm-4 text-center"
-                             style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
-                            <h4 id="chg"></h4>
-                            <h4 id="chg_p"></h4>
+                    </div>
+                    <!--Add to personal Button-->
+                    <div class="col-sm-3" style="padding-left: 15px;padding-right: 0px">
+                        <div class="row">
+                            <div class="col-sm-12 text-center"
+                                 style="height: 102px;padding-top:19px;  line-height: 10px;">
+                                <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
+                                        style="height: 40px;">
+                                    <span class="fa fa-plus"></span> 加入自选股
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--Add to personal Button-->
-                <div class="col-sm-3" style="padding-left: 15px;padding-right: 0px">
+            </div>
+            <div class="col-sm-6">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="15%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col width="20%">
+                    </colgroup>
+                    <tbody id="RTInfo_seg">
+                    <tr>
+                        <th>今开:</th>
+                        <td>--</td>
+                        <th>成交量:</th>
+                        <td>--</td>
+                        <th>振幅:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>最高:</th>
+                        <td>--</td>
+                        <th>成交额:</th>
+                        <td>--</td>
+                        <th>换手率:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>最低:</th>
+                        <td>--</td>
+                        <th>总市值:</th>
+                        <td>--</td>
+                        <th>市净率:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>昨收：</th>
+                        <td>--</td>
+                        <th>流通市值:</th>
+                        <td>--</td>
+                        <th>市盈率<sup>TTM</sup>：</th>
+                        <td>--</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-sm-12" style="height: 20px;"></div>
+            <!--Headers of All kinds of Charts-->
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs nav-justified" id="mainTab">
+                    <li class="active"><a id="firstTab" href="#timeSharing">分时</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#dailyKLine" role="button">
+                            日K <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#no_daily">不复权</a></li>
+                            <li><a href="#before_daily">前复权</a></li>
+                            <li><a href="#after_daily">后复权</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#weeklyKLine" role="button">
+                            周K <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#no_weekly">不复权</a></li>
+                            <li><a href="#before_weekly">前复权</a></li>
+                            <li><a href="#after_weekly">后复权</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#monthlyKLine" role="button">
+                            月K <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#no_monthly">不复权</a></li>
+                            <li><a href="#before_monthly">前复权</a></li>
+                            <li><a href="#after_monthly">后复权</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-12" style="height: 20px;"></div>
+
+            <!-- Echarts Modules All kinds of charts-->
+            <div class="col-sm-12 tab-content">
+                <div id="timeSharing" class="tab-pane active">
+                    <% include EChartsModule/timeSharingChart.ejs %>
+                </div>
+                <div id="dailyKLine" class="tab-pane">
+                    <script src="/echarts/chartsIniters/SingleStock/singleDailyKLineUtil.js"></script>
+                    <% include EChartsModule/dailyKLineChart.ejs %>
+                    <script src="/echarts/chartsIniters/SingleStock/dailyKLineIniter.js"></script>
+                </div>
+                <div id="weeklyKLine" class="tab-pane">
+                    <script src="/echarts/chartsIniters/SingleStock/singleWeeklyKLineUtil.js"></script>
+                    <% include EChartsModule/weeklyKLineChart.ejs %>
+                    <script src="/echarts/chartsIniters/SingleStock/weeklyKLineIniter.js"></script>
+                </div>
+                <div id="monthlyKLine" class="tab-pane">
+                    <script src="/echarts/chartsIniters/SingleStock/singleMonthlyKLineUtil.js"></script>
+                    <% include EChartsModule/monthlyKLIneChart.ejs %>
+                    <script src="/echarts/chartsIniters/SingleStock/monthlyKLineIniter.js"></script>
+                </div>
+            </div>
+
+            <!--标签页监听-->
+            <script>
+                $('#mainTab > li > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                    $(this).resize();
+                    if ($(this).attr('href') === '#timeSharing')
+                        timeSharingChart.resize();
+                    if ($(this).attr('href') === '#dailyKLine') {
+                        daily_KLineChart.resize();
+                        daily_KDJChart.resize();
+                    }
+                    if ($(this).attr('href') === '#weeklyKLine') {
+                        weekly_KLineChart.resize();
+                        weekly_KDJChart.resize();
+                    }
+                    if ($(this).attr('href') === '#monthlyKLine') {
+                        monthly_KLineChart.resize();
+                        monthly_KDJChart.resize();
+                    }
+                });
+            </script>
+            <script>
+                $('li.dropdown').mouseover(function () {
+                    $(this).addClass('open');
+                }).mouseout(function () {
+                    $(this).removeClass('open');
+                });
+            </script>
+        </div>
+
+        <!-- Right Side -->
+        <div class="col-md-2 center-block" style="padding-right: 20px;padding-left: 0px;">
+            <div class="col-sm-12" style="height: 50px;"></div>
+
+            <div>
+                <ul class="nav nav-tabs nav-justified" id="right_side_tab">
+                    <li class="active"><a href="#five_seg">五档</a></li>
+                    <li><a href="#industry_seg">行业</a></li>
+                    <li><a href="#block_seg">板块</a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-12 tab-content">
+                <div id="five_seg" class="tab-pane active">
+                    <table id="five_table" class="table" style="font-size: 13px">
+                        <tbody>
+                        <tr>
+                            <th>卖五</th>
+                        </tr>
+                        <tr>
+                            <th>卖四</th>
+                        </tr>
+                        <tr>
+                            <th>卖三</th>
+                        </tr>
+                        <tr>
+                            <th>卖二</th>
+                        </tr>
+                        <tr>
+                            <th>卖一</th>
+                        </tr>
+                        <tr>
+                            <th>买一</th>
+                        </tr>
+                        <tr>
+                            <th>买二</th>
+                        </tr>
+                        <tr>
+                            <th>买三</th>
+                        </tr>
+                        <tr>
+                            <th>买四</th>
+                        </tr>
+                        <tr>
+                            <th>买五</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="industry_seg" class="tab-pane">
+                    <table id="industry_table" class="table" style="font-size: small">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="block_seg" class="tab-pane">
+                    <table id="block_table" class="table" style="font-size: small">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#right_side_tab').find('a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        </script>
+
+        <!--scrollToTop按钮-->
+        <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                    class="fa fa-chevron-up"></span></a>
+
+        <% if(typeof stockCode !== "undefined") { %>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#search_area').val('<%= stockCode %>' + '(' + '<%= stockName %>' + ')');
+                getCharts('<%= stockCode %>');
+                $('#search_area').val('');
+            });
+        </script>
+        <% } %>
+    </div>
+
+    <div class="col-md-12" style="height: 30px"></div>
+    <HR width="80%" color=black SIZE=5>
+
+    <div>
+        <div class="text-right">
+            <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#analysis-collapse"
+                    aria-expanded="false" aria-controls="analysis-collapse">
+                分析这只股票
+            </button>
+        </div>
+        <div class="collapse" id="analysis-collapse">
+            <div class="well">
+                <div class="container">
                     <div class="row">
-                        <div class="col-sm-12 text-center"
-                             style="height: 102px;padding-top:19px;  line-height: 10px;">
-                            <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
-                                    style="height: 40px;">
-                                <span class="fa fa-plus"></span> 加入自选股
+                        <div class="col-md-4">
+                            <span>模型：</span>
+                            <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;"
+                                    id="model">
+                                <option selected="selected">SVM</option>
+                                <option>NN</option>
+                                <option>CNN</option>
+                            </select>
+                            <script type="text/javascript">
+                                $("#model").change(() => {
+                                    if ($("#model option:selected").val() === "CNN") {
+                                        $("#other-option").collapse('show');
+                                    } else {
+                                        $("#advanced-options").attr('checked', false);
+                                        $("#other-option").collapse('hide');
+                                        $("#advanced-collapse").collapse('hide');
+                                    }
+                                })
+                            </script>
+                        </div>
+                        <div class="col-md-4">
+                            <span style="line-height: 35px;">持股天数：</span>
+                            <input class="text-center" style="max-width: 50px;margin-left: 28px;" required="required"
+                                   value="3" pattern="[0-9]{1,}"
+                                   id="holding-days" onchange="number_validate(this,1,60)"/>
+                            <span>天</span>
+                        </div>
+                        <div class="col-md-4 collapse" id="other-option">
+                            <span>高级：</span>
+                            <div class="switch" style="display: inline-flex;margin-top: 5px;margin-left: 56px;">
+                                <input id="advanced-options" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                       value="off"
+                                       data-toggle="collapse" data-target="#advanced-collapse"
+                                       aria-controls="advanced-collapse" aria-expanded="false"
+                                       onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                                <label for="advanced-options"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse" id="advanced-collapse">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>考虑市场环境：</span>
+                                <div class="switch" style="display: inline-flex;margin-top: 5px;">
+                                    <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                           checked="checked"
+                                           onclick="$(this).val($(this).val()==='on'? 'off':'on')">
+                                    <label for="market-environment"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <span style="line-height: 35px">迭代量：</span>
+                                <input class="text-center" style="max-width: 50px;margin-left: 40px;"
+                                       required="required" value="1" pattern="[0-9]{1,}"
+                                       id="iteration-quantity" onchange="number_validate(this,1,5)"/>
+                            </div>
+                            <div class="col-md-4">
+                                <span style="width: 150px;line-height: 36px;">学习方式：</span>
+                                <select class="form-control"
+                                        style="max-width: 120px;display: inline-flex;margin-left: 25px"
+                                        id="learning-way">
+                                    <option selected="selected">分批</option>
+                                    <option>全部</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px">
+                        <div class="text-center">
+                            <button class="btn btn-primary" style="min-width: 150px;" onclick="analysisStock()">
+                                走你
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <table border="0" cellpadding="0" cellspacing="0">
-                <colgroup>
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="15%">
-                    <col width="20%">
-                    <col width="20%">
-                    <col width="20%">
-                </colgroup>
-                <tbody id="RTInfo_seg">
-                <tr>
-                    <th>今开:</th>
-                    <td>--</td>
-                    <th>成交量:</th>
-                    <td>--</td>
-                    <th>振幅:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>最高:</th>
-                    <td>--</td>
-                    <th>成交额:</th>
-                    <td>--</td>
-                    <th>换手率:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>最低:</th>
-                    <td>--</td>
-                    <th>总市值:</th>
-                    <td>--</td>
-                    <th>市净率:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>昨收：</th>
-                    <td>--</td>
-                    <th>流通市值:</th>
-                    <td>--</td>
-                    <th>市盈率<sup>TTM</sup>：</th>
-                    <td>--</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-        <div class="col-sm-12" style="height: 20px;"></div>
-        <!--Headers of All kinds of Charts-->
-        <div class="col-sm-12">
-            <ul class="nav nav-tabs nav-justified" id="mainTab">
-                <li class="active"><a id="firstTab" href="#timeSharing">分时</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#dailyKLine" role="button">
-                        日K <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#no_daily">不复权</a></li>
-                        <li><a href="#before_daily">前复权</a></li>
-                        <li><a href="#after_daily">后复权</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#weeklyKLine" role="button">
-                        周K <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#no_weekly">不复权</a></li>
-                        <li><a href="#before_weekly">前复权</a></li>
-                        <li><a href="#after_weekly">后复权</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#monthlyKLine" role="button">
-                        月K <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#no_monthly">不复权</a></li>
-                        <li><a href="#before_monthly">前复权</a></li>
-                        <li><a href="#after_monthly">后复权</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="col-sm-12" style="height: 20px;"></div>
-
-        <!-- Echarts Modules All kinds of charts-->
-        <div class="col-sm-12 tab-content">
-            <div id="timeSharing" class="tab-pane active">
-                <% include EChartsModule/timeSharingChart.ejs %>
-            </div>
-            <div id="dailyKLine" class="tab-pane">
-                <script src="/echarts/chartsIniters/SingleStock/singleDailyKLineUtil.js"></script>
-                <% include EChartsModule/dailyKLineChart.ejs %>
-                <script src="/echarts/chartsIniters/SingleStock/dailyKLineIniter.js"></script>
-            </div>
-            <div id="weeklyKLine" class="tab-pane">
-                <script src="/echarts/chartsIniters/SingleStock/singleWeeklyKLineUtil.js"></script>
-                <% include EChartsModule/weeklyKLineChart.ejs %>
-                <script src="/echarts/chartsIniters/SingleStock/weeklyKLineIniter.js"></script>
-            </div>
-            <div id="monthlyKLine" class="tab-pane">
-                <script src="/echarts/chartsIniters/SingleStock/singleMonthlyKLineUtil.js"></script>
-                <% include EChartsModule/monthlyKLIneChart.ejs %>
-                <script src="/echarts/chartsIniters/SingleStock/monthlyKLineIniter.js"></script>
-            </div>
-        </div>
-
-        <!--标签页监听-->
-        <script>
-            $('#mainTab > li > a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-                $(this).resize();
-                if ($(this).attr('href') === '#timeSharing')
-                    timeSharingChart.resize();
-                if ($(this).attr('href') === '#dailyKLine') {
-                    daily_KLineChart.resize();
-                    daily_KDJChart.resize();
-                }
-                if ($(this).attr('href') === '#weeklyKLine') {
-                    weekly_KLineChart.resize();
-                    weekly_KDJChart.resize();
-                }
-                if ($(this).attr('href') === '#monthlyKLine') {
-                    monthly_KLineChart.resize();
-                    monthly_KDJChart.resize();
-                }
-            });
-        </script>
-        <script>
-            $('li.dropdown').mouseover(function () {
-                $(this).addClass('open');
-            }).mouseout(function () {
-                $(this).removeClass('open');
-            });
-        </script>
     </div>
 
-    <!-- Right Side -->
-    <div class="col-md-2 center-block" style="padding-right: 20px;padding-left: 0px;">
-        <div class="col-sm-12" style="height: 50px;"></div>
-
-        <div>
-            <ul class="nav nav-tabs nav-justified" id="right_side_tab">
-                <li class="active"><a href="#five_seg">五档</a></li>
-                <li><a href="#industry_seg">行业</a></li>
-                <li><a href="#block_seg">板块</a></li>
-            </ul>
-        </div>
-
-        <div class="col-sm-12 tab-content">
-            <div id="five_seg" class="tab-pane active">
-                <table id="five_table" class="table" style="font-size: 13px">
-                    <tbody>
-                    <tr>
-                        <th>卖五</th>
-                    </tr>
-                    <tr>
-                        <th>卖四</th>
-                    </tr>
-                    <tr>
-                        <th>卖三</th>
-                    </tr>
-                    <tr>
-                        <th>卖二</th>
-                    </tr>
-                    <tr>
-                        <th>卖一</th>
-                    </tr>
-                    <tr>
-                        <th>买一</th>
-                    </tr>
-                    <tr>
-                        <th>买二</th>
-                    </tr>
-                    <tr>
-                        <th>买三</th>
-                    </tr>
-                    <tr>
-                        <th>买四</th>
-                    </tr>
-                    <tr>
-                        <th>买五</th>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="industry_seg" class="tab-pane">
-                <table id="industry_table" class="table" style="font-size: small">
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div id="block_seg" class="tab-pane">
-                <table id="block_table" class="table" style="font-size: small">
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#right_side_tab').find('a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-    </script>
-
-    <!--scrollToTop按钮-->
-    <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
-                class="fa fa-chevron-up"></span></a>
-
-    <% if(typeof stockCode !== "undefined") { %>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#search_area').val('<%= stockCode %>' + '(' + '<%= stockName %>' + ')');
-            getCharts('<%= stockCode %>');
-            $('#search_area').val('');
-        });
-    </script>
-    <% } %>
+    <div id="comments_seg" class="col-md-12 bordered-div"></div>
 </div>
-
-<div class="col-md-12" style="height: 30px"></div>
-<HR width="80%" color=black SIZE=5>
-
-<div>
-    <div class="text-right">
-        <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#analysis-collapse"
-                aria-expanded="false" aria-controls="analysis-collapse">
-            分析这只股票
-        </button>
-    </div>
-    <div class="collapse" id="analysis-collapse">
-        <div class="well">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <span >模型：</span>
-                        <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;" id="model">
-                            <option selected="selected">SVM</option>
-                            <option >NN</option>
-                            <option >CNN</option>
-                        </select>
-                        <script type="text/javascript">
-                            $("#model").change(()=>{
-                                if($("#model option:selected").val()==="CNN"){
-                                    $("#other-option").collapse('show');
-                                }else {
-                                    $("#advanced-options").attr('checked',false);
-                                    $("#other-option").collapse('hide');
-                                    $("#advanced-collapse").collapse('hide');
-                                }
-                            })
-                        </script>
-                    </div>
-                    <div class="col-md-4">
-                        <span style="line-height: 35px;">持股天数：</span>
-                        <input class="text-center" style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}"
-                               id="holding-days" onchange="number_validate(this,1,60)"/>
-                        <span>天</span>
-                    </div>
-                    <div class="col-md-4 collapse" id="other-option">
-                        <span>高级：</span>
-                        <div class="switch" style="display: inline-flex;margin-top: 5px;margin-left: 56px;">
-                            <input id="advanced-options" class="cmn-toggle cmn-toggle-round" type="checkbox" value="off"
-                                   data-toggle="collapse" data-target="#advanced-collapse" aria-controls="advanced-collapse" aria-expanded="false"
-                                   onclick="$(this).val($(this).val()==='on'? 'off':'on')">
-                            <label for="advanced-options"></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="advanced-collapse">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <span>考虑市场环境：</span>
-                            <div class="switch" style="display: inline-flex;margin-top: 5px;">
-                                <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked"
-                                       onclick="$(this).val($(this).val()==='on'? 'off':'on')">
-                                <label for="market-environment"></label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <span style="line-height: 35px">迭代量：</span>
-                            <input class="text-center" style="max-width: 50px;margin-left: 40px;" required="required" value="1" pattern="[0-9]{1,}"
-                                   id="iteration-quantity" onchange="number_validate(this,1,5)"/>
-                        </div>
-                        <div class="col-md-4">
-                            <span style="width: 150px;line-height: 36px;">学习方式：</span>
-                            <select class="form-control" style="max-width: 120px;display: inline-flex;margin-left: 25px" id="learning-way">
-                                <option selected="selected">分批</option>
-                                <option >全部</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 20px">
-                    <div class="text-center">
-                        <button class="btn btn-primary" style="min-width: 150px;" onclick="analysisStock()">
-                            走你
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="comments_seg" class="col-md-12 bordered-div "></div>
-
 </body>
 
 <% include Components/footer.ejs %>

@@ -409,273 +409,6 @@ router.get('/:id/personalStocks', (req, res, next) => {
     }
 });
 
-router.get('/:id/analysisResult/SVM', (req, res, next) => {
-    let result = {
-        code: '601166',
-        name: '兴业银行',
-        correlation: 0.6680266834659534,
-        profitRate: 0.01064398379685759,
-        base: [1039.1063,
-            1027.7,
-            1035.6842,
-            1049.3718,
-            1058.4972,
-            1055.0751,
-            1047.0903,
-            1025.4186,
-            1031.122,
-            1039.106,
-            1043.6687,
-            1042.528,
-            1051.6532,
-            1083.5909,
-            1104.1217,
-            1085.8717,
-            1089.2932,
-            1083.5897,
-            1084.7307,
-            1072.1836,
-            1072.1836,
-            1075.6049,
-            1076.7451,
-            1077.8853,
-            1074.463,
-            1080.1663,
-            1082.4476,
-            1077.885,
-            1077.885,
-            1074.4627,
-            1073.3217,
-            1072.1807,
-            1072.1807,
-            1069.8991,
-            1044.8057,
-            1048.2275,
-            1033.3992,
-            1040.2434,
-            1035.681,
-            1035.681,
-            1044.8063,
-            1043.6654,
-            1031.1185,
-            1033.3993,
-            1032.2585,
-            1033.3991,
-            1034.5399,
-            1040.2433,
-            1043.6647,
-            1041.3833,
-            1034.5393,
-            1036.8204,
-            1032.2585,
-            1036.821,
-            1035.6805,
-            1034.5402,
-            1041.3837,
-            1053.9303,
-            1050.5082,
-            1043.6641,
-            1044.8049,
-            1045.9458,
-            1043.6646,
-            1042.5239,
-            1034.5392,
-            1041.3826,
-            1039.101,
-            1040.2419,
-            1043.6633,
-            1034.5385,
-            1042.5231,
-            1047.0852,
-            1051.6473,
-            1052.7883,
-            1052.7883,
-            1050.5069,
-            1047.0854,
-            1053.9291,
-            1067.6165,
-            1077.8817,
-            1080.1625,
-            1097.2712,
-            1098.4123,
-            1097.2722,
-            1089.2873,
-            1094.9908,
-            1089.2881,
-            1079.0227,
-            1082.4443,
-            1081.3033,
-            1085.8653,
-            1100.6928,
-            1083.5836,
-            1074.4588,
-            1072.1777,
-            1055.0689,
-            1055.0689,
-            1049.3663,
-            1039.1003,
-            1044.8029],
-        compare: [57.226,
-            57.4471,
-            56.968,
-            57.0417,
-            57.4471,
-            56.968,
-            57.5207,
-            57.0786,
-            56.9312,
-            56.6732,
-            57.1523,
-            57.3734,
-            57.5945,
-            57.8893,
-            58.3314,
-            59.6211,
-            60.5055,
-            59.5106,
-            59.1789,
-            59.0315,
-            59.1052,
-            58.921,
-            59.2895,
-            59.1789,
-            58.8473,
-            58.6999,
-            58.7367,
-            59.1789,
-            59.2158,
-            59.1052,
-            59.1421,
-            59.1052,
-            58.6999,
-            58.9209,
-            58.9947,
-            58.8473,
-            58.1103,
-            58.2209,
-            57.9629,
-            58.4419,
-            58.5893,
-            58.4419,
-            58.9578,
-            58.8841,
-            58.6262,
-            58.9947,
-            58.8841,
-            58.9578,
-            58.8473,
-            59.0684,
-            59.1052,
-            58.921,
-            58.9947,
-            59.2895,
-            58.8842,
-            59.2158,
-            59.1789,
-            59.4,
-            59.8422,
-            60.1739,
-            59.9159,
-            59.6579,
-            59.6948,
-            59.9527,
-            60.1002,
-            60.6529,
-            60.4318,
-            60.7266,
-            60.2844,
-            59.9896,
-            60.395,
-            59.658,
-            60.2844,
-            60.0264,
-            60.0264,
-            59.9527,
-            60.0264,
-            59.9158,
-            59.8053,
-            60.2106,
-            60.5054,
-            61.4266,
-            61.3161,
-            62.2741,
-            62.0531,
-            62.5321,
-            62.0531,
-            62.2741,
-            62.1636,
-            62.311,
-            62.2742,
-            62.0531,
-            62.3847,
-            63.3796,
-            63.7481,
-            62.8637,
-            63.2691,
-            61.2056,
-            60.8002,
-            60.5054]
-    };
-    let finalResult = [];
-    for (let i = 0; i < result.base.length; i++) {
-        finalResult.push([result.base[i], result.compare[i]]);
-    }
-
-    res.locals.stockName = result.name;
-    res.locals.stockCode = result.code;
-    res.locals.correlation = Math.round(result.correlation * 100) / 100;
-    res.locals.profitRate = Math.round(result.profitRate * 10000) / 100;
-
-    res.locals.data = finalResult;
-    res.render('User/SingleStockAnalysis/svm');
-});
-
-
-router.get('/:id/analysisResult/NN', (req, res, next) => {
-    let rawData = {
-        "5-7_5": 2.819275832735002E-4,
-        "0-2_5": 8.666887879371643E-5,
-        "7_5-5": 0.12415958195924759,
-        "accuracy": 0.7900000214576721,
-        "7_5-10": 3.8002902874723077E-4,
-        "10-7_5": 0.3716028332710266,
-        "more10": 0.012712066993117332,
-        "5-2_5": 0.047767940908670425,
-        "2_5-5": 1.1517480743350461E-4,
-        "2_5-0": 0.003162472043186426,
-        "less10": 0.439731240272522
-    };
-
-    res.locals.pie_data = [123, 23, 347, 134, 134, 342, 324, 234, 242, 56];
-
-    res.render('User/SingleStockAnalysis/nn');
-});
-
-
-router.get('/:id/analysisResult/CNN', (req, res, next) => {
-    let rawData = {
-        "process": [0.019999999552965164, 0.30000001192092896, 0.30000001192092896, 0.2800000011920929, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.27000001072883606, 0.14000000059604645, 0.14000000059604645, 0.009999999776482582, 0.019999999552965164, 0.019999999552965164, 0.09000000357627869, 0.28999999165534973, 0.3100000023841858, 0.28999999165534973, 0.28999999165534973, 0.30000001192092896, 0.3100000023841858, 0.4099999964237213, 0.5199999809265137, 0.5199999809265137, 0.5699999928474426, 0.5600000023841858, 0.5699999928474426, 0.6100000143051147, 0.6100000143051147, 0.5799999833106995, 0.6600000262260437, 0.7099999785423279, 0.6899999976158142, 0.7200000286102295, 0.7400000095367432, 0.7200000286102295, 0.6600000262260437, 0.7599999904632568, 0.7900000214576721, 0.7900000214576721, 0.7900000214576721],
-        "5-7_5": 2.819275832735002E-4,
-        "0-2_5": 8.666887879371643E-5,
-        "7_5-5": 0.12415958195924759,
-        "accuracy": 0.7900000214576721,
-        "7_5-10": 3.8002902874723077E-4,
-        "10-7_5": 0.3716028332710266,
-        "more10": 0.012712066993117332,
-        "5-2_5": 0.047767940908670425,
-        "2_5-5": 1.1517480743350461E-4,
-        "2_5-0": 0.003162472043186426,
-        "less10": 0.439731240272522
-    };
-
-    res.locals.line_y_data = rawData.process;
-    res.locals.pie_data = [123, 23, 347, 134, 134, 342, 324, 234, 242, 56];
-
-    res.render('User/SingleStockAnalysis/cnn');
-});
-
-
-
 router.get('/:id/getUnreadMsgNum', (req, res, next) => {
     if (req.params.id !== req.session.user) {
         res.send('NOT_QUALIFIED');
@@ -684,26 +417,8 @@ router.get('/:id/getUnreadMsgNum', (req, res, next) => {
         userbl.getUnreadMessageCount(req.params.id, (err, count) => {
             if(err)
                 res.send('ERROR');
-            else
-                res.send(count);
-        });
-    }
-});
-
-router.get('/:id/allMsg', (req, res, next) => {
-    if (req.params.id !== req.session.user) {
-        res.send('NOT_QUALIFIED');
-    }
-    else {
-        userbl.getAllMessages(req.params.id, (err, readMessages, unReadMessages) => {
-            if(err)
-                res.send('ERROR');
             else {
-                res.locals.username = req.params.id;
-                res.locals.unreadMsg = unReadMessages;
-                res.locals.readMsg = readMessages;
-
-                res.render('User/messages');
+                res.send(count.toString());
             }
         });
     }
@@ -714,7 +429,7 @@ router.post('/:id/markAsRead', (req, res, next) => {
         res.send('NOT_QUALIFIED');
     }
     else {
-        userbl.markAsRead(req.params.id, req.body.time, req.body.content, (err) => {
+        userbl.markAsRead(req.params.id, new Date(req.body.time), (err) => {
             if (err)
                 res.send('ERROR');
             else
@@ -742,20 +457,51 @@ router.get('/:id/allMsg', (req, res, next) => {
     }
 });
 
-router.get('/:id/single-analysis-result/:type', (req, res, next) => {
+router.get('/:id/msg-result/:type', (req, res, next) => {
     if (req.params.id !== req.session.user) {
         res.send('NOT_QUALIFIED');
     }
     else {
-        userbl.getOneMessageContent(req.params.id, (err, readMessages, unReadMessages) => {
+        userbl.getOneMessageContent(req.params.id, req.query.time, (err, msg) => {
             if(err)
                 res.send('ERROR');
             else {
                 res.locals.username = req.params.id;
-                res.locals.unreadMsg = unReadMessages;
-                res.locals.readMsg = readMessages;
+                res.locals.time = msg.time;
 
-                res.render('User/messages');
+                if (req.params.type === 'thumbs_up') {
+                    //TODO 重定向到个股界面
+                    res.redirect();
+                }
+                else {
+                    res.locals.stockCode = msg.codeOrName;
+                    res.locals.stockName = msg.stockName;
+
+                    if(req.params.type === 'svm') {
+                        let finalResult = [];
+                        for (let i = 0; i < msg.content.base.length; i++) {
+                            finalResult.push([msg.content.base[i], msg.content.compare[i]]);
+                        }
+
+                        res.locals.correlation = Math.round(msg.content.correlation * 100) / 100;
+                        res.locals.profitRate = Math.round(msg.content.profitRate * 10000) / 100;
+
+                        res.locals.data = finalResult;
+
+                        res.render('User/SingleStockAnalysis/svm');
+                    } else if (req.params.type === 'cnn') {
+                        res.locals.line_y_data = msg.content.process;
+                        res.locals.pie_data = [];
+                        res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+
+                        res.render('User/SingleStockAnalysis/cnn');
+                    } else if (req.params.type === 'nn') {
+                        res.locals.pie_data = [];
+                        res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+
+                        res.render('User/SingleStockAnalysis/nn');
+                    }
+                }
             }
         });
     }

@@ -13,8 +13,13 @@ ul.mail-list li a{
 ul.mail-list li:last-child a{
     border-bottom:none;
 }
-ul.mail-list li a:hover{
+
+ul.mail-list li a.unread{
     background-color:#DBF9FF;
+}
+
+ul.mail-list li a:hover{
+    background-color: rgb(239, 239, 239);
 }
 ul.mail-list li span{
     display:block;

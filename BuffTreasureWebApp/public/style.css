@@ -1453,7 +1453,7 @@ fieldset[disabled] .my-link:focus {
 .bordered-div {
 	position: relative;
 	padding: 39px 19px 14px;
-	background-color: #fff;
+	background-color: #ffffff;
 	border: 1px solid #ddd;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;

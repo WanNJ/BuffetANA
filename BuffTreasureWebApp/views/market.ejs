@@ -265,163 +265,166 @@
 <body>
 
 <% include Components/navigator.ejs %>
+<div class="bloc bgc-white">
 
-<div class="container">
+    <div class="container">
 
-    <div class="col-sm-12">
-        <ul class="nav nav-tabs nav-justified" id="marketTab">
-            <li class="active"><a href="sh000001">上证指数</a></li>
-            <li><a href="sz399001">深证成指</a></li>
-            <li><a href="sh000300">沪深300(SH)</a></li>
-            <li><a href="sz399300">沪深300(SZ)</a></li>
-        </ul>
-    </div>
-    <div class="col-sm-12" style="height: 20px"></div>
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs nav-justified" id="marketTab">
+                <li class="active"><a href="sh000001">上证指数</a></li>
+                <li><a href="sz399001">深证成指</a></li>
+                <li><a href="sh000300">沪深300(SH)</a></li>
+                <li><a href="sz399300">沪深300(SZ)</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-12" style="height: 20px"></div>
 
-    <script>
-        $('#marketTab > li > a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-            console.log($(this).attr('href'));
-            if ($(this).attr('href') === 'sh000001')
-                getCharts('sh000001');
-            if ($(this).attr('href') === 'sz399001')
-                getCharts('sz399001');
-            if ($(this).attr('href') === 'sh000300')
-                getCharts('sh000300');
-            if ($(this).attr('href') === 'sz399300')
-                getCharts('sz399300');
-        });
-    </script>
+        <script>
+            $('#marketTab > li > a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                console.log($(this).attr('href'));
+                if ($(this).attr('href') === 'sh000001')
+                    getCharts('sh000001');
+                if ($(this).attr('href') === 'sz399001')
+                    getCharts('sz399001');
+                if ($(this).attr('href') === 'sh000300')
+                    getCharts('sh000300');
+                if ($(this).attr('href') === 'sz399300')
+                    getCharts('sz399300');
+            });
+        </script>
 
-    <!--Main Block Of Market-->
-    <div class="col-sm-12" id="stockSeg" style="display: block;">
+        <!--Main Block Of Market-->
+        <div class="col-sm-12" id="stockSeg" style="display: block;">
 
-        <!--Basic Infos of a stock-->
-        <div class="col-sm-6">
-            <div class="row">
-                <!--Names-->
-                <div class="col-sm-5 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
-                    <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
-                    <h5 id="stock_code" style="color: #337ab7"></h5>
-                </div>
+            <!--Basic Infos of a stock-->
+            <div class="col-sm-6">
+                <div class="row">
+                    <!--Names-->
+                    <div class="col-sm-5 text-center" style="height: 102px;padding-left: 0px;padding-right: 0px">
+                        <h1 id="stock_name" style="color: #337ab7;font-weight: bold;"></h1>
+                        <h5 id="stock_code" style="color: #337ab7"></h5>
+                    </div>
 
-                <!--Numbers-->
-                <div class="col-sm-7" style="padding-left: 10px;padding-right: 0px">
-                    <div class="row">
-                        <div class="col-sm-7 text-center" style="height: 102px;padding-left: 10px;padding-right: 0px">
-                            <h1 id="current_price" style="height: 102px;"></h1>
-                        </div>
-                        <div class="col-sm-2" style="padding-left: 7px;padding-right: 0px">
-                            <h1>
-                                <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
-                            </h1>
-                        </div>
-                        <div class="col-sm-3 text-center"
-                             style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
-                            <h4 id="chg"></h4>
-                            <h4 id="chg_p"></h4>
+                    <!--Numbers-->
+                    <div class="col-sm-7" style="padding-left: 10px;padding-right: 0px">
+                        <div class="row">
+                            <div class="col-sm-7 text-center"
+                                 style="height: 102px;padding-left: 10px;padding-right: 0px">
+                                <h1 id="current_price" style="height: 102px;"></h1>
+                            </div>
+                            <div class="col-sm-2" style="padding-left: 7px;padding-right: 0px">
+                                <h1>
+                                    <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
+                                </h1>
+                            </div>
+                            <div class="col-sm-3 text-center"
+                                 style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
+                                <h4 id="chg"></h4>
+                                <h4 id="chg_p"></h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <table border="0" cellpadding="0" cellspacing="0">
-                <colgroup>
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                </colgroup>
-                <tbody id="RTInfo_seg">
-                <tr>
-                    <th>今开:</th>
-                    <td>--</td>
-                    <th>最高:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>昨收：</th>
-                    <td>--</td>
-                    <th>最低:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>成交量:</th>
-                    <td>--</td>
-                    <th>振幅:</th>
-                    <td>--</td>
-                </tr>
-                <tr>
-                    <th>成交额:</th>
-                    <td>--</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-        <div class="col-sm-12" style="height: 20px;"></div>
-
-        <!--Headers of All kinds of Charts-->
-        <div class="col-sm-12">
-            <ul class="nav nav-tabs nav-justified" id="mainTab">
-                <li class="active"><a id="firstTab" href="#timeSharing">分时</a></li>
-                <li><a href="#dailyKLine">日K</a></li>
-                <li><a href="#weeklyKLine">周K</a></li>
-                <li><a href="#monthlyKLine">月K</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-12" style="height: 20px;"></div>
-
-        <!-- Echarts Modules All kinds of charts-->
-        <div class="col-sm-12 tab-content">
-            <div id="timeSharing" class="tab-pane active">
-                <% include EChartsModule/timeSharingChart.ejs %>
+            <div class="col-sm-6">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                    </colgroup>
+                    <tbody id="RTInfo_seg">
+                    <tr>
+                        <th>今开:</th>
+                        <td>--</td>
+                        <th>最高:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>昨收：</th>
+                        <td>--</td>
+                        <th>最低:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>成交量:</th>
+                        <td>--</td>
+                        <th>振幅:</th>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <th>成交额:</th>
+                        <td>--</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <div id="dailyKLine" class="tab-pane">
-                <% include EChartsModule/dailyKLineChart.ejs %>
-                <script src="/echarts/chartsIniters/Market/dailyKLineIniter.js"></script>
+
+
+            <div class="col-sm-12" style="height: 20px;"></div>
+
+            <!--Headers of All kinds of Charts-->
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs nav-justified" id="mainTab">
+                    <li class="active"><a id="firstTab" href="#timeSharing">分时</a></li>
+                    <li><a href="#dailyKLine">日K</a></li>
+                    <li><a href="#weeklyKLine">周K</a></li>
+                    <li><a href="#monthlyKLine">月K</a></li>
+                </ul>
             </div>
-            <div id="weeklyKLine" class="tab-pane">
-                <% include EChartsModule/weeklyKLineChart.ejs %>
-                <script src="/echarts/chartsIniters/Market/weeklyKLineIniter.js"></script>
+            <div class="col-sm-12" style="height: 20px;"></div>
+
+            <!-- Echarts Modules All kinds of charts-->
+            <div class="col-sm-12 tab-content">
+                <div id="timeSharing" class="tab-pane active">
+                    <% include EChartsModule/timeSharingChart.ejs %>
+                </div>
+                <div id="dailyKLine" class="tab-pane">
+                    <% include EChartsModule/dailyKLineChart.ejs %>
+                    <script src="/echarts/chartsIniters/Market/dailyKLineIniter.js"></script>
+                </div>
+                <div id="weeklyKLine" class="tab-pane">
+                    <% include EChartsModule/weeklyKLineChart.ejs %>
+                    <script src="/echarts/chartsIniters/Market/weeklyKLineIniter.js"></script>
+                </div>
+                <div id="monthlyKLine" class="tab-pane">
+                    <% include EChartsModule/monthlyKLIneChart.ejs %>
+                    <script src="/echarts/chartsIniters/Market/monthlyKLineIniter.js"></script>
+                </div>
             </div>
-            <div id="monthlyKLine" class="tab-pane">
-                <% include EChartsModule/monthlyKLIneChart.ejs %>
-                <script src="/echarts/chartsIniters/Market/monthlyKLineIniter.js"></script>
-            </div>
+
+            <!--标签页监听-->
+            <script>
+                $('#mainTab > li > a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                    $(this).resize();
+                    if ($(this).attr('href') === '#timeSharing')
+                        timeSharingChart.resize();
+                    if ($(this).attr('href') === '#dailyKLine') {
+                        daily_KLineChart.resize();
+                        daily_KDJChart.resize();
+                    }
+                    if ($(this).attr('href') === '#weeklyKLine') {
+                        weekly_KLineChart.resize();
+                        weekly_KDJChart.resize();
+                    }
+                    if ($(this).attr('href') === '#monthlyKLine') {
+                        monthly_KLineChart.resize();
+                        monthly_KDJChart.resize();
+                    }
+                });
+            </script>
         </div>
 
-        <!--标签页监听-->
-        <script>
-            $('#mainTab > li > a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-                $(this).resize();
-                if ($(this).attr('href') === '#timeSharing')
-                    timeSharingChart.resize();
-                if ($(this).attr('href') === '#dailyKLine') {
-                    daily_KLineChart.resize();
-                    daily_KDJChart.resize();
-                }
-                if ($(this).attr('href') === '#weeklyKLine') {
-                    weekly_KLineChart.resize();
-                    weekly_KDJChart.resize();
-                }
-                if ($(this).attr('href') === '#monthlyKLine') {
-                    monthly_KLineChart.resize();
-                    monthly_KDJChart.resize();
-                }
-            });
-        </script>
+
+        <!--scrollToTop按钮-->
+        <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+                    class="fa fa-chevron-up"></span></a>
     </div>
-
-
-    <!--scrollToTop按钮-->
-    <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
-                class="fa fa-chevron-up"></span></a>
 </div>
 
 </body>

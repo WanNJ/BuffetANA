@@ -1792,3 +1792,8 @@ body .no-padding {
 	padding-top: 10px;
 	text-align: center;
 }
+
+li.no_act_link .open {
+	color: transparent;
+	background-color: transparent;
+}

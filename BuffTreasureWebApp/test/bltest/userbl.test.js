@@ -148,15 +148,15 @@ describe('userbl', function() {
             });
         });
     });
-    describe('#getUnreadMessage()', function() {
+    describe('#getUnreadMessageCount()', function() {
         it('获得ty用户的所有未读消息', function(done) {
-            userbl.getUnreadMessage('ty', function (err, doc) {
+            userbl.getUnreadMessageCount('ty', function (err, count) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    expect(doc.length).to.be.equal(2);
-                    console.log(doc);
+                    expect(count).to.be.equal(7);
+                    console.log(count);
                     done();
                 }
             });

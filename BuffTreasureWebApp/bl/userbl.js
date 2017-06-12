@@ -297,7 +297,12 @@ exports.getUnreadMessageCount = (userName, callback) => {
         if (err)
             callback(err, null);
         else {
-            callback(null, messageQueue["message"].length);
+            let count = 0;
+            messageQueue["message"].forEach(m => {
+                if (!m["isRead"])
+                    count++;
+            });
+            callback(null, count);
         }
     });
 };

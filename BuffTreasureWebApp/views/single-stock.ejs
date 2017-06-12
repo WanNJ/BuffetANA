@@ -941,12 +941,12 @@
                         </select>
                         <script type="text/javascript">
                             $("#model").change(()=>{
-                                if($("#model option:selected").val()==="SVM"){
+                                if($("#model option:selected").val()==="CNN"){
+                                    $("#other-option").collapse('show');
+                                }else {
                                     $("#advanced-options").attr('checked',false);
                                     $("#other-option").collapse('hide');
                                     $("#advanced-collapse").collapse('hide');
-                                }else {
-                                    $("#other-option").collapse('show');
                                 }
                             })
                         </script>

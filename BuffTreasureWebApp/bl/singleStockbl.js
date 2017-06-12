@@ -165,7 +165,7 @@ exports.getDailyData = (code, callback) => {
 
                 // 后复权
                 let high_after = data["high"] * data["afterAdjClose"] / data["close"];
-                let low_after = data["low"] * data["afterAdjClose"] / data["close"]
+                let low_after = data["low"] * data["afterAdjClose"] / data["close"];
                 DI = (data["afterAdjClose"] * 2 + high_after + low_after) / 4;
                 EMA12 = 2 / 13 * DI + 11 / 13 * beforeEMA12_after_adj;
                 EMA26 = 2 / 27 * DI + 25 / 27 * beforeEMA26_after_adj;

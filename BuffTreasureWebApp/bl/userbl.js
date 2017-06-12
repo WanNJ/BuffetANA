@@ -285,7 +285,6 @@ exports.loadStrategy = (userName, strategyName, callback) => {
     });
 };
 
-
 /**
  * ！！！！！！！！！！！！！为小人提供的接口！！！！！！！！！
  * 获得未读消息的数目
@@ -303,7 +302,6 @@ exports.getUnreadMessageCount = (userName, callback) => {
     });
 };
 
-
 /**
  * ！！！！！！！！！！！！！！！这个是供生成消息列表界面的调用的接口！！！！！！！！！！！！！！！
  * 获得未读和已读消息列表
@@ -314,6 +312,7 @@ exports.getUnreadMessageCount = (userName, callback) => {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
  *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
  *      "codeOrName":   '000001'
+ *      "stockName": '平安银行'
  * }
  */
 exports.getAllMessages = (userName, callback) => {
@@ -342,16 +341,11 @@ exports.getAllMessages = (userName, callback) => {
     });
 };
 
-
-
-
 /**
  * 将未读消息标记为已读
  * @param userName 用户名称
  * @param time 这条未读消息的生成日期
- * @param callback (err, messageContent) => {}
- *
- * 如果成功，则isOK为true，否则为false
+ * @param callback (err) => {}
  */
 exports.markAsRead = (userName, time, callback) => {
     userDB.getAllMessage(userName, (err, messageQueue) => {
@@ -362,10 +356,7 @@ exports.markAsRead = (userName, time, callback) => {
             }
         }
         userDB.overrideMessage(userName, messageQueue["message"], (err) => {
-            if (err)
-                callback(err, false);
-            else
-                callback(null, true);
+            callback(err);
         });
     });
 };
@@ -382,6 +373,7 @@ exports.markAsRead = (userName, time, callback) => {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
  *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'error'
  *      "codeOrName":   '000001'
+ *      "stockName":    '平安银行'
  *      "content":    {JSON} 根据type类型的不同，内容不同，具体详见不同的接口
  * }
  */

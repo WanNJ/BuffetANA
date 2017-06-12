@@ -655,4 +655,92 @@ router.get('/:id/analysisResult/CNN', (req, res, next) => {
 
     res.render('User/SingleStockAnalysis/cnn');
 });
+
+
+
+router.get('/:id/getUnreadMsgNum', (req, res, next) => {
+    if (req.params.id !== req.session.user) {
+        res.send('NOT_QUALIFIED');
+    }
+    else {
+        userbl.getUnreadMessageCount(req.params.id, (err, count) => {
+            if(err)
+                res.send('ERROR');
+            else
+                res.send(count);
+        });
+    }
+});
+
+router.get('/:id/allMsg', (req, res, next) => {
+    if (req.params.id !== req.session.user) {
+        res.send('NOT_QUALIFIED');
+    }
+    else {
+        userbl.getAllMessages(req.params.id, (err, readMessages, unReadMessages) => {
+            if(err)
+                res.send('ERROR');
+            else {
+                res.locals.username = req.params.id;
+                res.locals.unreadMsg = unReadMessages;
+                res.locals.readMsg = readMessages;
+
+                res.render('User/messages');
+            }
+        });
+    }
+});
+
+router.post('/:id/markAsRead', (req, res, next) => {
+    if (req.params.id !== req.session.user) {
+        res.send('NOT_QUALIFIED');
+    }
+    else {
+        userbl.markAsRead(req.params.id, req.body.time, req.body.content, (err) => {
+            if (err)
+                res.send('ERROR');
+            else
+                res.send('SUCCESS');
+        });
+    }
+});
+
+router.get('/:id/allMsg', (req, res, next) => {
+    if (req.params.id !== req.session.user) {
+        res.send('NOT_QUALIFIED');
+    }
+    else {
+        userbl.getAllMessages(req.params.id, (err, readMessages, unReadMessages) => {
+            if(err)
+                res.send('ERROR');
+            else {
+                res.locals.username = req.params.id;
+                res.locals.unreadMsg = unReadMessages;
+                res.locals.readMsg = readMessages;
+
+                res.render('User/messages');
+            }
+        });
+    }
+});
+
+router.get('/:id/single-analysis-result/:type', (req, res, next) => {
+    if (req.params.id !== req.session.user) {
+        res.send('NOT_QUALIFIED');
+    }
+    else {
+        userbl.getOneMessageContent(req.params.id, (err, readMessages, unReadMessages) => {
+            if(err)
+                res.send('ERROR');
+            else {
+                res.locals.username = req.params.id;
+                res.locals.unreadMsg = unReadMessages;
+                res.locals.readMsg = readMessages;
+
+                res.render('User/messages');
+            }
+        });
+    }
+});
+
 module.exports = router;

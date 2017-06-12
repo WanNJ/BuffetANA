@@ -125,10 +125,7 @@ exports.userDB = {
      */
     overrideMessage: (userName, message, callback) => {
         User.updateOne({username: userName}, {$set: {message: message}}, (err) => {
-            if (err)
-                callback(err, false);
-            else
-                callback(null, true);
+            callback(err);
         });
     }
 };

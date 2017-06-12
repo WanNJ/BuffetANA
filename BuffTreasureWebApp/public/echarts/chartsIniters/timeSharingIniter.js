@@ -40,14 +40,14 @@ function loadTimeSharingChart(objData) {
             {
                 top: '10%',
                 height: '55%',
-                left: 35,
-                right: 0
+                left: 45,
+                right: 10
             },
             {
                 top: '72%',
                 height: '15%',
                 left: 35,
-                right: 0
+                right: 10
             }
         ],
         xAxis: [

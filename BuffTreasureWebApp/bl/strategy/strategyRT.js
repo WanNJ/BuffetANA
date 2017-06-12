@@ -137,7 +137,7 @@ exports.getRtStrategyALL = (callback) =>{
                 list.push(doc['antiRiskAbility']);
                 list.push(doc['stability'])
                 data[env] = list;
-                resolve(list)
+                resolve(data)
             })
 
         })

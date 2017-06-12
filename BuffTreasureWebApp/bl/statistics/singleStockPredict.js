@@ -15,12 +15,13 @@ const NNModel = require('./ML/testEasyModel').NNPredict;
  * 使用SVM模型进行个股分析
  * @param userName {String} 用户名称
  * @param code {String} 股票代码
+ * @param stockName {String} 股票名称
  * @param open_price {Number} 股票当天开盘价，在个股页面直接获取，不要用户填写，如果没有开盘价，则禁用SVM模型
  * @param holdingDays {Number} 持股天数，需要用户填写
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) => {
+exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time, callback) => {
     async.parallel([
         function (callback) {
             industryCorrelationTool.getIndustryCorrelationResult(code, holdingDays, callback);
@@ -40,6 +41,7 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) =
                 isRead: false,
                 type: 'error',
                 codeOrName: '代码为' + code + '的股票SVM分析结果出错',
+                stockName: stockName,
                 content: {
                     code: code,
                     open: open_price,
@@ -53,6 +55,7 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) =
                 isRead: false,
                 type: 'SVM',
                 codeOrName: code,
+                stockName: stockName,
                 content: {
                     code: code,
                     open: open_price,
@@ -81,17 +84,16 @@ exports.SVMAnalyze = (userName, code, open_price, holdingDays, time, callback) =
 };
 
 
-// TODO 以下两个接口的参数我是按照界面来定的，具体的接口参数需要问wsw！！！！！！
-
 /**
  * 使用NN模型进行个股分析
  * @param userName {String} 用户名称
  * @param code {String} 股票代码
+ * @param stockName {String} 股票名称
  * @param holdingDays {Number} 持股天数，需要用户填写
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
+exports.NNAnalyze = (userName, code, stockName, holdingDays, time, callback) => {
     NNModel.EasyPredict(code, holdingDays, (err, result) => {
         let message = {};
         if (err) {
@@ -100,6 +102,7 @@ exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
                 isRead: false,
                 type: 'error',
                 codeOrName: '代码为' + code + '的股票NN分析结果出错',
+                stockName: stockName,
                 content: {
                     code: code,
                     holdingDays: holdingDays,
@@ -112,6 +115,7 @@ exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
                 isRead: false,
                 type: 'NN',
                 codeOrName: code,
+                stockName: stockName,
                 content: {
                     code: code,
                     holdingDays: holdingDays,
@@ -142,6 +146,7 @@ exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
  * 使用CNN模型进行个股分析
  * @param userName 用户名称
  * @param code 股票代码
+ * @param stockName {String} 股票名称
  * @param holdingDays 持股天数
  * @param isMarket 是否考虑市场环境（默认为false）
  * @param iterationNum 迭代量（默认为4）
@@ -149,7 +154,7 @@ exports.NNAnalyze = (userName, code, holdingDays, time, callback) => {
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.CNNAnalyze = (userName, code, holdingDays, isMarket=false, iterationNum=4, learningWay='ALL', time, callback) => {
+exports.CNNAnalyze = (userName, code, stockName, holdingDays, isMarket=false, iterationNum=4, learningWay='ALL', time, callback) => {
     CNNModel.betterPredict(code, holdingDays, iterationNum, isMarket, "2006-04-05", learningWay, (err, result) => {
         let message = {};
         if (err) {
@@ -158,6 +163,7 @@ exports.CNNAnalyze = (userName, code, holdingDays, isMarket=false, iterationNum=
                 isRead: false,
                 type: 'error',
                 codeOrName: '代码为' + code + '的股票CNN分析结果出错',
+                stockName: stockName,
                 content: {
                     code: code,
                     holdingDays: holdingDays,
@@ -174,6 +180,7 @@ exports.CNNAnalyze = (userName, code, holdingDays, isMarket=false, iterationNum=
                 isRead: false,
                 type: 'CNN',
                 codeOrName: code,
+                stockName: stockName,
                 content: {
                     code: code,
                     holdingDays: holdingDays,

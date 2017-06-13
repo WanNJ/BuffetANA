@@ -3,7 +3,7 @@
 <head>
     <% include ../../Components/settings.html %>
     <script src="/echarts/echarts.min.js"></script>
-    <title>BUFF-NN</title>
+    <title>BUFF-RFC</title>
 </head>
 <body>
 <!-- Main container -->
@@ -18,27 +18,55 @@
                         <span class="fa fa-4x fa-lightbulb-o"></span>
                     </div>
                     <div class="info text-center">
-                        <h4 class="text-center">NN机器学习</h4>
-                        <p>嗨, WAN！您在2017年6月10日对个股——平安银行（000001）的BUFF-NN分析结果已经得出，以下给出该分析方法分析出的各种变化情况的概率。
+                        <h4 class="text-center">RFC机器学习</h4>
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-RFC分析结果已经得出<br>
+                            以下给出该分析方法分析出的对该股票影响最大的参数及其相对重要性，并给出了该个股各种变化情况的概率。<br>
+                            其中，测试结果取概率最大时，在测试集上的准确度为——
                         </p>
+                        <h2><%= accuracy %>%</h2>
                     </div>
                 </div>
+            </div>
+            <div class="box col-md-12">
+                <table class="text-left table table-bordered">
+                    <caption class="text-center">预测时参数</caption>
+                    <thead>
+                    <tr>
+                        <th>股票名称</th>
+                        <th>预测时间</th>
+                        <th>持仓天数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th><%= stockName %></th>
+                        <td><%= time.toLocaleString() %></td>
+                        <td><%= holdingDays %>天</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <div class="row" style="margin-top: 20px">
-        <div id="nn_pie_chart" class="col-md-12" style="height: 500px"></div>
+        <div id="rfc_bar_chart" class="col-md-8" style="height: 500px"></div>
+        <div id="rfc_pie_chart" class="col-md-4" style="height: 500px"></div>
     </div>
 
     <script>
-        let nn_pie_chart = echarts.init(document.getElementById('nn_pie_chart'));
+        let rfc_pie_chart = echarts.init(document.getElementById('rfc_pie_chart'));
+        let rfc_bar_chart = echarts.init(document.getElementById('rfc_bar_chart'));
 
         let pie_data = [];
+        let bar_x_data = [];
+        let bar_y_data = [];
 
         eval('pie_data = <%= JSON.stringify(pie_data) %>;');
+        eval('bar_x_data = <%= JSON.stringify(bar_x_data) %>;');
+        eval('bar_y_data = <%- JSON.stringify(bar_y_data) %>;');
 
-        let nn_pie_option = {
+        let rfc_pie_option = {
             title: {
                 text: '涨跌幅概率分布图',
                 show: true,
@@ -47,7 +75,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
-                data: ['小于 -10%', '-10% ~ -5%', '-5% ~ 0', '0 ~ 5%', '5% ~ 10%', '大于 10%']
+                data: ['小于 -2.5%', '大于 2.5%', '-2.5% ～ 2.5%']
             },
             tooltip: {
                 trigger: 'item',
@@ -55,17 +83,14 @@
             },
             series: [
                 {
-                    name: '概率分布',
+                    name: '涨幅概率分布',
                     type: 'pie',
-                    radius: '70%',
+                    radius: '55%',
                     center: ['50%', '50%'],
                     data: [
-                        {value: pie_data[0], name: '小于 -10%'},
-                        {value: pie_data[1], name: '-10% ~ -5%'},
-                        {value: pie_data[2], name: '-5% ~ 0'},
-                        {value: pie_data[3], name: '0 ~ 5%'},
-                        {value: pie_data[4], name: '5% ~ 10%'},
-                        {value: pie_data[5], name: '大于 10%'}
+                        {value: pie_data[0], name: '小于 -2.5%'},
+                        {value: pie_data[1], name: '大于 2.5%'},
+                        {value: pie_data[2], name: '-2.5% ～ 2.5%'}
                     ],
                     animationType: 'scale',
                     animationEasing: 'elasticOut',
@@ -75,12 +100,51 @@
                 }
             ]
         };
+        let rfc_bar_option = {
+            title: {
+                left: 'center',
+                text: '股票参数对该支个股的重要性',
+                subtext: '重要性越高，表示该参数对该个股价格影响权重越高'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['重要性'],
+                show: false
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+            },
+            yAxis: {
+                type: 'category',
+                data: bar_y_data
+            },
+            series: [
+                {
+                    name: '重要性',
+                    type: 'bar',
+                    data: bar_x_data
+                }
+            ]
+        };
 
-        nn_pie_chart.setOption(nn_pie_option);
+        rfc_pie_chart.setOption(rfc_pie_option);
+        rfc_bar_chart.setOption(rfc_bar_option);
 
         setTimeout(() => {
             window.onresize = function () {
-                nn_pie_chart.resize();
+                rfc_pie_chart.resize();
+                rfc_bar_chart.resize();
             }
         }, 200);
     </script>

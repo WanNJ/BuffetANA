@@ -14,14 +14,47 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box">
+                    <% if(isUp == "1") { %>
                     <div class="box-icon">
                         <span class="fa fa-4x fa-arrow-up"></span>
                     </div>
                     <div class="info text-center">
                         <h4 class="text-center">看涨</h4>
-                        <p>嗨, WAN！您在2017年6月10日对个股——平安银行（000001）的BUFF-SVM分析结果已经得出，初步预测结果为——<br><strong>今日涨</strong><br>
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日涨</strong><br>
                             其中可信度表示在多大程度上该预测结果可信。风险系数表示在多大可能上该预测可能出现问题。
                         </p>
+                    </div>
+                    <% } else { %>
+                    <div class="box-icon">
+                        <span class="fa fa-4x fa-arrow-down"></span>
+                    </div>
+                    <div class="info text-center">
+                        <h4 class="text-center">看跌</h4>
+                        <p>嗨, WAN！您在<%= time %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日跌</strong><br>
+                            其中可信度表示在多大程度上该预测结果可信。风险系数表示在多大可能上该预测可能出现问题。
+                        </p>
+                    </div>
+                    <% } %>
+                    <div class="box col-md-12">
+                        <table class="text-left table table-bordered">
+                            <caption class="text-center">预测时参数</caption>
+                            <thead>
+                            <tr>
+                                <th>股票名称</th>
+                                <th>预测时间</th>
+                                <th>当日开盘价</th>
+                                <th>持仓天数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th><%= stockName %></th>
+                                <td><%= time.toLocaleString() %></td>
+                                <td><%= open %>元</td>
+                                <td><%= holdingDays %>天</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -34,13 +67,14 @@
                 <div class="well well-sm">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h1 class="display-1">85%</h1>
+                            <h1 class="display-1"><%= reliablity %>%</h1>
                             <div class="rating">
+                                <% for(let i = 0; i < reliablity/20; i++) { %>
                                 <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
+                                <% } %>
+                                <% for(let i = 0; i < 5 - reliablity/20; i++) { %>
                                 <span class="glyphicon glyphicon-star-empty"></span>
+                                <% } %>
                             </div>
                             <h4 class="small">可信度</h4>
                         </div>
@@ -52,13 +86,14 @@
                     <div class="row">
                         <div class="row">
                             <div class="col-xs-12 col-md-12 text-center">
-                                <h1 class="display-1">29%</h1>
+                                <h1 class="display-1"><%= CR %></h1>
                                 <div class="rating">
+                                    <% for(let i = 0; i < Math.round(CR/0.2); i++) { %>
                                     <span class="glyphicon glyphicon-star"></span>
+                                    <% } %>
+                                    <% for(let i = 0; i < 5 - Math.round(CR/0.2); i++) { %>
                                     <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <% } %>
                                 </div>
                                 <h4 class="small">风险系数</h4>
                             </div>
@@ -69,7 +104,7 @@
 
             <div class="col-md-12 text-left" style="padding-right: 40px; padding-left: 40px;">
                 <table class="table table-bordered">
-                    <caption>同行业中正相关度最高的个股</caption>
+                    <caption class="text-center">同行业中正相关度最高的个股</caption>
                     <thead>
                     <tr>
                         <th>股票名称</th>
@@ -80,8 +115,8 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th><%= stockName %></th>
-                        <td><%= stockCode %></td>
+                        <th><%= relatedName %></th>
+                        <td><%= relatedCode %></td>
                         <td><%= correlation %></td>
                         <td><%= profitRate %>%</td>
                     </tr>

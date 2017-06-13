@@ -492,8 +492,17 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                         finalResult.push([msg.content.base[i], msg.content.compare[i]]);
                     }
 
+                    res.locals.open = msg.content.open;
+                    res.locals.holdingDays = msg.content.holdingDays;
                     res.locals.correlation = Math.round(msg.content.correlation * 100) / 100;
                     res.locals.profitRate = Math.round(msg.content.profitRate * 10000) / 100;
+
+                    res.locals.relatedCode = msg.content.relatedCode;
+                    res.locals.relatedName = msg.content.relatedName;
+
+                    res.locals.CR = msg.content.CR[0];
+                    res.locals.reliablity = msg.content.upOrDown[0];
+                    res.locals.isUp = msg.content.upOrDown[1];
 
                     res.locals.data = finalResult;
 
@@ -514,21 +523,42 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                         msg.content["more10"]
 
                     ];
-                    console.log(res.locals.pie_data);
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+                    res.locals.holdingDays = msg.content.holdingDays;
+                    res.locals.iterationNum = msg.content.iterationNum;
+                    if(msg.content.isMarket)
+                        res.locals.isMarket = '是';
+                    else
+                        res.locals.isMarket = '否';
+
+                    if(msg.content.learningWay === 'ALL')
+                        res.locals.learningWay = '全部';
+                    else
+                        res.locals.learningWay = '分批';
 
                     res.render('User/SingleStockAnalysis/cnn');
                 }
                 else if (req.params.type === 'rfc') {
                     res.locals.pie_data = [
-                        parseFloat(msg.content["less10"]),
-                        parseFloat(msg.content["10-5"]),
-                        parseFloat(msg.content["5-0"]),
-                        parseFloat(msg.content["0-5"]),
-                        parseFloat(msg.content["5-10"]),
-                        parseFloat(msg.content["more10"])
+                        parseFloat(msg.content["down"]),
+                        parseFloat(msg.content["up"]),
+                        parseFloat(msg.content["smooth"])
                     ];
+                    res.locals.holdingDays = msg.content.holdingDays;
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+
+                    let bar_x_data = [];
+                    let bar_y_data = [];
+
+                    for(let i = msg.content.importance.length - 1; i >= 0; i--) {
+                        bar_y_data.push(new String(msg.content.importance[i][0]));
+                        bar_x_data.push(msg.content.importance[i][1]);
+                    }
+
+                    console.log();
+
+                    res.locals.bar_x_data = bar_x_data;
+                    res.locals.bar_y_data = bar_y_data;
 
                     res.render('User/SingleStockAnalysis/rfc');
                 }

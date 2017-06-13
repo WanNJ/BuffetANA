@@ -19,14 +19,39 @@
                     </div>
                     <div class="info text-center">
                         <h4 class="text-center">CNN机器学习</h4>
-                        <p>嗨, WAN！您在2017年6月10日对个股——平安银行（000001）的BUFF-CNN分析结果已经得出，以下给出该分析方法<br>
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-CNN分析结果已经得出，以下给出该分析方法<br>
                             随着学习次数的增加 模型准确率在测试集上的表现的变化情况和各种变化情况的概率。<br>
                             其中，测试结果取概率最大时，在测试集上的准确度为——
                         </p>
-                        <h2>72%</h2>
+                        <h2><%= accuracy %>%</h2>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="box col-md-12">
+            <table class="text-left table table-bordered">
+                <caption class="text-center">预测时参数</caption>
+                <thead>
+                <tr>
+                    <th>股票名称</th>
+                    <th>分析时间</th>
+                    <th>持仓天数</th>
+                    <th>迭代次数</th>
+                    <th>是否考虑市场环境</th>
+                    <th>学习方式</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th><%= stockName %></th>
+                    <td><%= time.toLocaleString() %></td>
+                    <td><%= holdingDays %></td>
+                    <td><%= iterationNum %></td>
+                    <td><%= isMarket %></td>
+                    <td><%= learningWay %></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

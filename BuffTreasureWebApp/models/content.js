@@ -33,11 +33,12 @@ exports.contentDB = {
      * @param callback
      */
     pressGood :(c_id,userID,callback)=>{
-        contentSchema.findOne({'_id':c_id},'good',(err, data) => {
+        contentSchema.findOne({'_id':c_id},['good', 'code'],(err, data) => {
             let goodList = data['good'];
             goodList.push(userID);
-            contentSchema.update({'_id':c_id},{$set: {"good": goodList}},(err,doc)=>{
-                callback(err,doc)
+            let stockCode = data["code"];
+            contentSchema.update({'_id':c_id},{$set: {"good": goodList}},(err)=>{
+                callback(err, stockCode);
             })
         });
     },
@@ -49,11 +50,12 @@ exports.contentDB = {
      * @param callback
      */
     pressBad: (c_id,userID,callback) => {
-         contentSchema.findOne({'_id': c_id}, 'bad', (err, data) => {
+         contentSchema.findOne({'_id': c_id}, ['bad', 'code'], (err, data) => {
              let goodList = data['bad'];
              goodList.push(userID);
-             contentSchema.update({'_id': c_id}, {$set: {"bad": goodList}}, (err, doc) => {
-                 callback(err, doc)
+             let stockCode = data["code"];
+             contentSchema.update({'_id': c_id}, {$set: {"bad": goodList}}, (err) => {
+                 callback(err, stockCode);
              })
          });
 

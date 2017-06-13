@@ -17,6 +17,19 @@ mongoose.connection.on('open', function () {
 
 describe('allStockDB', function() {
 
+    describe('#getNameByCode()', function() {
+        it('should be 平安银行', function(done) {
+            allStockDB.getNameByCode('000001', function (err, doc) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(doc);
+                    done();
+                }
+            });
+        });
+    });
     describe('#getStocksByBench()', function() {
         it('should obtain 299 records', function(done) {
             allStockDB.getStocksByBench(['沪深300'], function (err, docs) {

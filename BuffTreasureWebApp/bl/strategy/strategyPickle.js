@@ -34,7 +34,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
     let parameterCheck = (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay)=>{
         return new Promise((resolve,reject) => {
 
-            if (endDate - beginDate < 24000 * 3600 * 365 ) {
+            if (endDate - beginDate < 24000 * 3600 * 365 * 0 ) {
                 throw new Error('回测时间不能小于1年')
             }
 

@@ -18,8 +18,8 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
       temperature: 87.5,
       lastLimitUp: '0.00000',
       lastLimitDown: '-0.26000',
-      lastTurnOver: '62.00000',
-      moneyEffect: '37.78990' }
+      lastTurnOver: '62.00000',//换手率前50只股票的赚钱效应
+      moneyEffect: '37.78990' }//赚钱效应
  */
 exports.getCurrentThermometor = (callback) =>{
     stockRTDB.getAllRTInfo((err,doc)=>{

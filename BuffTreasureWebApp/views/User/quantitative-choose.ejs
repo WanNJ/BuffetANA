@@ -334,17 +334,17 @@
                 <div class="container-fluid">
                     <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
                         市场观察期：
-                        <input style="max-width: 50px;" required="required" value="3" pattern="[0-9]{1,}" id="market-observe" onchange="number_validate(this,1,60)"/>
+                        <input style="max-width: 50px;" required="required" value="3" pattern="[0-9]{1,}" id="market-observe" onchange="number_validate(this,1,10)"/>
                         天
                     </div>
                     <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
                         持仓期：
-                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="reserve-days" onchange="number_validate(this,1,60)"/>
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="reserve-days" onchange="number_validate(this,1,100)"/>
                         天
                     </div>
                     <div style="padding-left: 10px;padding-right: 50px;display: inline-block">
                         持股数：
-                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,60)"/>
+                        <input style="max-width: 50px;margin-left: 28px;" required="required" value="3" pattern="[0-9]{1,}" id="number-of-stock" onchange="number_validate(this,1,40)"/>
                     </div>
                 </div>
                 <div class="container-fluid">
@@ -675,6 +675,8 @@
             message="选择的板块不能为空";
         }else if(data.stockPool==="自选股票池" && data.industries.length===0){
             message="选择的行业不能为空";
+        }else if(data.rank==="{}"){
+            message="排名条件不能为空";
         }else if(data.rank==="{}"){
             message="排名条件不能为空";
         }

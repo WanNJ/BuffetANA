@@ -485,7 +485,7 @@ exports.markAsRead = (userName, time, callback) => {
                     more10: 1.6069167330101664e-8,         涨幅大于10% 的概率
                     accuracy: 0.7200000286102295,  测试结果取概率最大时，在测试集上的准确度
                 }
- * NN:
+ * RFC:
  * content: {
  *                  // 个股分析时传的参数
                     code:  '000001',   // 分析的股票代码

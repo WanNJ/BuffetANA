@@ -89,7 +89,7 @@ exports.forumbl = {
                 let message = {};
                 if (err) {
                     message = {
-                        time: time,
+                        time: new Date(),
                         isRead: false,
                         type: 'error',
                         codeOrName: '点踩出错',
@@ -102,7 +102,7 @@ exports.forumbl = {
                 }
                 else {
                     message = {
-                        time: time,
+                        time: new Date(),
                         isRead: false,
                         type: 'thumbs_down',
                         codeOrName: stockCode,

@@ -391,7 +391,7 @@ exports.markAsRead = (userName, time, callback) => {
  * content: {
  *                  // 个股分析时传的参数
                     code: '000001',   // 分析的股票代码
-                    open: 9.8, // 分析的股票的现价
+                    open: 9.8, // 分析的股票的开盘价
                     holdingDays: 5, // 持仓天数
                     // 分析的结果
                     relatedCode: '000017',  // 最相关股票代码

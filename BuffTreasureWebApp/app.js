@@ -4,6 +4,8 @@ let path = require('path');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
 
+let gzippo = require('gzippo');
+
 // session解析
 let session = require('express-session');
 
@@ -55,7 +57,9 @@ app.use( (req, res, next) => {
 });
 
 // 静态文件加载，所有public目录下的文件现在可以访问，访问静态资源文件时，express.static 中间件会根据目录添加的顺序查找所需的文件
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+// 压缩为GZIP，提高性能
+app.use(gzippo.staticGzip(path.join(__dirname, 'public')));
 
 // 加载处理请求的路由模块
 app.use('/', index);

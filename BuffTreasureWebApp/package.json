@@ -17,15 +17,16 @@
     "eventproxy": "^0.3.5",
     "express": "~4.14.1",
     "express-session": "latest",
+    "gzippo": "^0.2.0",
+    "iconv-lite": "latest",
     "jquery": "latest",
+    "md5": "latest",
     "mocha": "^3.3.0",
     "mongoose": "^4.9.7",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
     "session-file-store": "latest",
-    "superagent": "^3.5.2",
-    "iconv-lite": "latest",
-    "md5": "latest"
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

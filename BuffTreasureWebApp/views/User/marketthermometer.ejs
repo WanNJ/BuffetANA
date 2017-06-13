@@ -10,8 +10,23 @@
     <% include ../Components/navigator.ejs %>
 
     <!-- bloc-1 -->
-    <div class="bloc bgc-white l-bloc" id="bloc-1">
+    <div class="bloc bg-mountainsdusk l-bloc" id="bloc-1">
         <div class="container bloc-md b-divider-dashed">
+            <div class="row">
+                <div class="item">
+                    <div class="item-inner">
+                        <div class="">
+                            <img src="/img/rain.png">
+                        </div>
+                        <div class="">
+                            涨停股票数
+                        </div>
+                        <div class="">
+                            20
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" id="thermometer-viewport">
                     <img src="/img/thermometer-20.png" class="img-responsive center-block tada animated thermometer"
@@ -71,6 +86,11 @@
          */
         function changeThermometer(value = 10, text) {
             let level=parseInt(value/10);
+            if(level<0){
+                level=0;
+            }else if(level>10){
+                level=10;
+            }
             $(".thermometer").attr("src","/img/thermometer-"+level*10+".png");
             $(".thermometer").attr("data-original-title",value+"°");
             if(text===undefined){

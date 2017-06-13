@@ -1826,6 +1826,25 @@ body .no-padding {
 .thermometer-100 {
 	background-image: url(img/thermometer-100.png);
 }
+
+.item {
+    position: relative;
+    float: left;
+    width: 143px;
+    height: 150px;
+    text-align: center;
+    background: rgba(0, 0, 0, .3);
+    overflow: hidden;
+}
+.item-inner {
+    padding: 10px 0 0;
+}
+.item-inner > div{
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+
 li.no_act_link .open {
 	color: transparent;
 	background-color: transparent;

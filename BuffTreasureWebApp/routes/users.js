@@ -2,6 +2,7 @@ let express = require('express');
 let strategyBl = require('../bl/strategy/strategybl');
 let strategyRT = require('../bl/strategy/strategyRT');
 let singleStockRT = require('../bl/realtime/singleStockRT');
+let thememometerRT = require('../bl/realtime/thememometerRT');
 let singleStockbl = require('../bl/singleStockbl');
 let storeMap = require('../bl/functionMap/storeMap');
 let industrybl = require('../bl/industryandbench/industrybl');
@@ -163,7 +164,25 @@ router.get('/comparison', function (req, res, next) {
 });
 
 router.get('/marketthermometer', function (req, res, next) {
-    res.render('User/marketthermometer');
+    // thememometerRT.getCurrentThermometor((err,thermometer)=>{
+    //     let data=thermometer;
+    //     thememometerRT.getCurrentENV((err,currentENV)=>{
+    //         data.currentENV=currentENV;
+    //         res.render('User/marketthermometer',data);
+    //     });
+    // });
+    res.render('User/marketthermometer',{
+        limitUp: 7,
+        limitDown: 1,
+        halfLimitUp: 42,
+        halfLimitDown: 4,
+        temperature: 87.5,
+        lastLimitUp: '0.00000',
+        lastLimitDown: '-0.26000',
+        lastTurnOver: '62.00000',//换手率前50只股票的赚钱效应
+        moneyEffect: '37.78990', //赚钱效应
+        currentENV: '低温反转',
+    });
 });
 
 router.get('/quantitative-analysis', function (req, res, next) {
@@ -199,12 +218,10 @@ router.get('/quantitative-analysis/stockRecommend/antiRiskAbility', function (re
 });
 
 router.get('/quantitative-analysis/strategyRecommend', function (req, res, next) {
-    console.log("begin");
     strategyRT.getRtStrategyALL((err, docs) => {
         if (err) {
             console.error(err);
         } else {
-            console.log("send");
             res.render('User/strategyRec', docs);
         }
     });

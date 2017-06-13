@@ -679,6 +679,8 @@
             message="排名条件不能为空";
         }else if(data.rank==="{}"){
             message="排名条件不能为空";
+        }else if(new Date(data.endDate).getTime()-new Date(data.beginDate).getTime() < 365 * 24 * 60 * 60 * 1000){
+            message="回测时间不能少于一年";
         }
 
         if(message===""){

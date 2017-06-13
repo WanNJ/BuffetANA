@@ -1857,6 +1857,24 @@ body .no-padding {
     margin-top: 5px;
 }
 
+.text-box {
+	margin-bottom: 40px;
+}
+.text-box h2{
+	color: black;
+	font-weight: bold;
+}
+.text-box h5{
+	color: black;
+	font-weight: bold;
+}
+.text-box p{
+	color: grey;
+}
+.text-box .glyphicon{
+	font-size: 50px;
+}
+
 .nav .no_act_link.open > a,
 .nav .no_act_link.open > a:hover,
 .nav .no_act_link.open > a:focus {

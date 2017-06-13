@@ -7,68 +7,100 @@
 <body>
 <!-- Main container -->
 <div class="page-container">
-    <% include ../Components/navigator.ejs %>
 
     <!-- bloc-1 -->
     <div class="bloc bg-sunningLand l-bloc" id="bloc-1">
+        <% include ../Components/navigator.ejs %>
         <div class="container bloc-md b-divider-dashed">
             <div class="row">
                 <div class="item">
                     <div class="item-inner">
                         <div class="">
+                            <% if(limitUp<5) { %>
+                            <img src="/img/thunderstorm.png">
+                            <% }else if(limitUp>=5 && limitUp<12) { %>
                             <img src="/img/rain.png">
+                            <% }else if(limitUp>=12 && limitUp<20) { %>
+                            <img src="/img/cloudyDay.png">
+                            <% }else { %>
+                            <img src="/img/sunning.png">
+                            <% } %>
                         </div>
                         <div class="">
                             涨停股票数
                         </div>
                         <div class="" style="color: #f85640">
-                            <span>20</span>
+                            <span><%= limitUp %></span>
                         </div>
                     </div>
                 </div>
                 <div class="item">
                     <div class="item-inner">
                         <div class="">
+                            <% if(limitUp<10) { %>
+                            <img src="/img/thunderstorm.png">
+                            <% }else if(limitUp>=10 && limitUp<22) { %>
                             <img src="/img/rain.png">
+                            <% }else if(limitUp>=22 && limitUp<40) { %>
+                            <img src="/img/cloudyDay.png">
+                            <% }else { %>
+                            <img src="/img/sunning.png">
+                            <% } %>
                         </div>
                         <div class="">
                             涨5%股票数
                         </div>
                         <div class="" style="color: #f85640">
-                            <span>20</span>
+                            <span><%= halfLimitUp %></span>
                         </div>
                     </div>
                 </div>
                 <div class="item">
                     <div class="item-inner">
                         <div class="">
+                            <% if(limitUp<5) { %>
+                            <img src="/img/sunning.png">
+                            <% }else if(limitUp>=5 && limitUp<12) { %>
+                            <img src="/img/cloudyDay.png">
+                            <% }else if(limitUp>=12 && limitUp<20) { %>
                             <img src="/img/rain.png">
+                            <% }else { %>
+                            <img src="/img/thunderstorm.png">
+                            <% } %>
                         </div>
                         <div class="">
                             跌停股票数
                         </div>
                         <div class="" style="color: #19f074">
-                            <span>20</span>
+                            <span><%= limitDown %></span>
                         </div>
                     </div>
                 </div>
                 <div class="item">
                     <div class="item-inner">
                         <div class="">
+                            <% if(limitUp<10) { %>
+                            <img src="/img/sunning.png">
+                            <% }else if(limitUp>=10 && limitUp<22) { %>
+                            <img src="/img/cloudyDay.png">
+                            <% }else if(limitUp>=22 && limitUp<40) { %>
                             <img src="/img/rain.png">
+                            <% }else { %>
+                            <img src="/img/thunderstorm.png">
+                            <% } %>
                         </div>
                         <div class="">
                             跌5%股票数
                         </div>
                         <div class="" style="color: #19f074">
-                            <span>20</span>
+                            <span><%= halfLimitDown %></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" id="thermometer-viewport">
-                    <img src="/img/thermometer-20.png" class="img-responsive center-block tada animated thermometer"
+                    <img src="/img/thermometer-20.png" class="img-responsive center-block swing animated thermometer"
                          data-container="#thermometer-viewport" data-toggle="popover" data-placement="left" data-trigger="click"
                          data-viewport="#thermometer-viewport" title="10°" data-content="市场较弱，操作难度大。"
                          data-template='<div class="popover" style="max-width:190px;" role="tooltip"><div class="arrow"></div><h1 class="popover-title text-center" style="font-size: 36px;color: deepskyblue;font-weight: bold;"></h1><div class="popover-content"></div></div>'>
@@ -80,15 +112,72 @@
     <!-- bloc-1 END -->
 
     <!-- bloc-2 -->
-    <div class="bloc bgc-white l-bloc" id="bloc-2">
+    <div class="bloc bgc-white" id="bloc-2">
         <div class="container bloc-md b-divider-dashed">
-            <div class="row tada animated">
-                <div class="col-sm-12 text-center">
-                    <a class="btn btn-xl btn-black "><span
-                                class="et-icon-heart icon-spacer icon-md icon-white"></span>立即体验</a>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="animated fadeInLeft">
+                        <img class="hidden-sm hidden-xs" style="margin-top: 20px;" src="/img/redMan.png">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <header class="section-header animated fadeInDown">
+                        <blockquote class="text-box" style="margin-top: 15px">
+                            <h2 class="section-title">
+                                <%= currentENV %>
+                            </h2>
+                        </blockquote>
+                    </header>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-box animated slideInUp">
+                                <div class="fp-icon-small">
+                                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                </div>
+                                <div class="text">
+                                    <h5 class="title">昨日涨停股，今日均涨幅：<span style="color: #f85640"><%= lastLimitUp %>%</span></h5>
+                                    <p>We will introduce you to new people and their favorite food spots every day!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-box animated slideInUp">
+                                <div class="fp-icon-small">
+                                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                                </div>
+                                <div class="text">
+                                    <h5 class="title">昨日跌停股，今日均涨幅：<span style="color: #19f074"><%= lastLimitDown %>%</span></h5>
+                                    <p>See someone you like? Ask them to Dine!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-box animated slideInUp">
+                                <div class="fp-icon-small">
+                                    <span class="glyphicon glyphicon-yen" aria-hidden="true"></span>
+                                </div>
+                                <div class="text">
+                                    <h5 class="title">赚钱效应：<span style="color: #357ff2"><%= moneyEffect %>%</span></h5>
+                                    <p>We will introduce you to new people and their favorite food spots every day!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-box animated slideInUp">
+                                <div class="fp-icon-small">
+                                    <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
+                                </div>
+                                <div class="text">
+                                    <h5 class="title">换手率前50只股票的赚钱效应：<span style="color: #357ff2"><%= lastTurnOver %>%</span></h5>
+                                    <p>See someone you like? Ask them to Dine!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <a class="blocs-hero-btn-dwn scroll-hero" href="#"><span class="fa fa-chevron-down" style="color: black"></span></a>
         </div>
     </div>
     <!-- bloc-2 END -->
@@ -101,20 +190,25 @@
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="popover"]').popover();
-            $(".thermometer").click();
+        });
+
+        $(document).ready(function () {
+            $("#bloc-0").removeClass("bgc-white");
+            $("#bloc-0 a").css("color","white");
+            changeThermometer('<%- temperature %>');
         });
 
         var thermometerDescribe = [
             "市场已经爆炸了，醒醒吧，别炒股了。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
-            "市场较弱，操作难度大。",
+            "市场极差，只有高手能赚钱。",
+            "市场恶劣，下降趋势明显",
+            "市场不景气，空头占据优势。",
+            "市场较弱，操作难度偏大。",
+            "市场一般，环境较为稳定，关键在于你的操作。",
+            "市场较好，大体成上升趋势。",
+            "市场环境好，前景一片光明，上涨趋势强。",
+            "市场人气火爆，多头占优。",
+            "市场非常好，大有撑爆温度计的气势。",
             "市场温度好到傻子都能赚钱。",
         ];
 
@@ -130,13 +224,24 @@
             }else if(level>10){
                 level=10;
             }
+
+            if(value<30){
+                $("#bloc-1").attr("class","bloc l-bloc bg-iceLand");
+            }else if(value>=30 && value<60){
+                $("#bloc-1").attr("class","bloc l-bloc bg-sunningLand");
+            }else {
+                $("#bloc-1").attr("class","bloc l-bloc bg-hotLand");
+            }
+
             $(".thermometer").attr("src","/img/thermometer-"+level*10+".png");
             $(".thermometer").attr("data-original-title",value+"°");
             if(text===undefined){
                 text = thermometerDescribe[level];
             }
             $(".thermometer").attr("data-content",text);
-            $(".thermometer").popover('show')
+            setTimeout(()=>{
+                $(".thermometer").click();
+            },1000);
         }
     </script>
 </div>

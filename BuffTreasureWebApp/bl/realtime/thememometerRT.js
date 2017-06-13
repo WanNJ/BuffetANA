@@ -11,7 +11,7 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
  * 形式和数据库里的一样
  * @param callBack (err,doc)
  * {
- *   limitUp: 7,
+      limitUp: 7,
       limitDown: 1,
       halfLimitUp: 42,
       halfLimitDown: 4,
@@ -19,7 +19,8 @@ const singleStockDB = require('../../models/singleStock').singleStockDB;
       lastLimitUp: '0.00000',
       lastLimitDown: '-0.26000',
       lastTurnOver: '62.00000',//换手率前50只股票的赚钱效应
-      moneyEffect: '37.78990' }//赚钱效应
+      moneyEffect: '37.78990' //赚钱效应
+      }
  */
 exports.getCurrentThermometor = (callback) =>{
     stockRTDB.getAllRTInfo((err,doc)=>{

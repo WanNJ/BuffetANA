@@ -43,31 +43,30 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>用户名</label>
-                                <input type="text" class="form-control" placeholder="Username" id="username_field"
-                                       name="username" required pattern="[0-9a-zA-Z]{2, 12}"
-                                       data-validation-required-message="用户名由字母和数字组成，长度为2～12">
+                                <input type="text" class="form-control" placeholder="用户名由字母和数字组成，长度为2～12" id="username_field"
+                                       name="username" required pattern="[0-9a-zA-Z]{2,12}"
+                                       title="用户名由字母和数字组成，长度为2～12">
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>电子邮箱</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email_field"
-                                       name="email" required
-                                       data-validation-required-message="请输入您的E-mail地址">
+                                <input type="email" class="form-control" placeholder="有效的电子邮箱" id="email_field"
+                                       name="email" required>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>请输入密码</label>
-                                <input type="password" class="form-control" placeholder="Password" id="password_field"
-                                       name="password" pattern=".{6, 20}"
+                                <input type="password" class="form-control" placeholder="密码长度为6～20" id="password_field"
+                                       name="password" pattern=".{6,20}"
                                        required data-validation-required-message="密码长度为6～20">
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>请确认密码</label>
-                                <input type="password" class="form-control" placeholder="Confirm Password"
+                                <input type="password" class="form-control" placeholder="请再次确认密码..."
                                        id="confirm_password_field"
                                        name="confirm_password"
                                        required data-validation-required-message="请确认密码...">

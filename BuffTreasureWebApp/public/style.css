@@ -1844,8 +1844,9 @@ body .no-padding {
     margin-top: 5px;
 }
 
-
-li.no_act_link .open {
-	color: transparent;
+.nav .no_act_link.open > a,
+.nav .no_act_link.open > a:hover,
+.nav .no_act_link.open > a:focus {
 	background-color: transparent;
+	border-color: transparent;
 }

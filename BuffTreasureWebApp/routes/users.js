@@ -429,6 +429,7 @@ router.post('/:id/markAsRead', (req, res, next) => {
         res.send('NOT_QUALIFIED');
     }
     else {
+        console.log(new Date(req.body.time));
         userbl.markAsRead(req.params.id, new Date(req.body.time), (err) => {
             if (err)
                 res.send('ERROR');

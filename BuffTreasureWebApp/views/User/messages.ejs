@@ -136,19 +136,20 @@
         <!-- ScrollToTop Button END-->
 
         <script>
-            console.log($('.mail-list')[0].innerHTML);
             if ($('.mail-list')[0].children.length === 0) {
                 $('h1').hide();
                 $('.content-title').after('<div class="text-center"><div class="row"> <div class="col-md-2 col-md-offset-5"> <img src="/img/question.png" class="img-responsive img-circle nav-center"/> </div><div class="col-md-12"><h3 class="statement-bloc-text text-center">"您的消息空空如也，快去个股做一些专属分析吧！" </h3></div></div></div>');
             }
 
             $('.mail-list > li > a').click(function (e) {
+                e.preventDefault();
                 $(this).removeClass('unread');
-                $.post("/user/<%= username %>/markAsRead", {time: $(this)[0].children[1].innerHTML}, function(result){
+                $.post("/user/<%= username %>/markAsRead", {time: $(this)[0].children[1].innerHTML}, (result) => {
                     if(result === 'ERROR')
                         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                    else if(result === 'SUCCESS')
+                        window.location.replace(($(this).attr('href')));
                 });
-                window.location.reload();
             });
         </script>
     </div>

@@ -41,7 +41,7 @@ exports.forumbl = {
      * @param time 点赞时的时间
      * @param content_id  评论的ID
      * @param userID  点赞用户的 用户名(用户名和id 是一个东西)
-     * @param callback 形如 （err）={}
+     * @param callback 形如 （err）= {}
      */
     pressContentGood:(stockCode, stockName, userName, time, content_id,userID,callback)=>{
         contentDB.pressGood(content_id,userID,(err)=>{

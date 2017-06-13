@@ -1827,7 +1827,7 @@ body .no-padding {
 	background-image: url(img/thermometer-100.png);
 }
 
-li.no_act_link .open {
+li.no_act_link.open {
 	color: transparent;
 	background-color: transparent;
 }

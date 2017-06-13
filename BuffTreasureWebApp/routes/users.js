@@ -229,7 +229,7 @@ router.get('/quantitative-analysis/allBoards', function (req, res, next) {
 });
 
 router.post('/quantitative-analysis/getStrategy', function (req, res, next) {
-    strategyRT.getStragtegyByID(req.body.strategyID,(err, docs) => sendDirectly(res, err, docs))
+    strategyRT.getStragtegyByID(req.body.strategyID, (err, docs) => sendDirectly(res, err, docs))
     // res.send({
     //     strategyName: "strategyName",
     //     beginDate: "2016/01/01",
@@ -269,9 +269,9 @@ router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
 });
 
 router.post('/quantitative-analysis/loading', function (req, res, next) {
-    if(req.session.strategyProcess){
+    if (req.session.strategyProcess) {
         res.send("上一次回测还没完成，请先等待其完成");
-    }else {
+    } else {
         req.session.strategyData = req.body;
 
         let body = req.body;
@@ -294,7 +294,7 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
         req.session.strategyProcess = 0;
 
         console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);
-        strategyBl.getBackResults(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay, (process) =>{
+        strategyBl.getBackResults(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay, (process) => {
             req.session.strategyProcess = process;
         }, (err, data) => {
             let finalResult = splitStrategyResult(data);
@@ -313,8 +313,8 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
 
 router.get('/quantitative-analysis/process', function (req, res, next) {
     let process = req.session.strategyProcess;
-    if(process == undefined){
-        process=0;
+    if (process == undefined) {
+        process = 0;
     }
     res.send(process.toString());
 });
@@ -415,7 +415,7 @@ router.get('/:id/getUnreadMsgNum', (req, res, next) => {
     }
     else {
         userbl.getUnreadMessageCount(req.params.id, (err, count) => {
-            if(err)
+            if (err)
                 res.send('ERROR');
             else {
                 res.send(count.toString());
@@ -444,7 +444,7 @@ router.get('/:id/allMsg', (req, res, next) => {
     }
     else {
         userbl.getAllMessages(req.params.id, (err, readMessages, unReadMessages) => {
-            if(err)
+            if (err)
                 res.send('ERROR');
             else {
                 res.locals.username = req.params.id;
@@ -463,44 +463,40 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
     }
     else {
         userbl.getOneMessageContent(req.params.id, req.query.time, (err, msg) => {
-            if(err)
+            if (err)
                 res.send('ERROR');
             else {
                 res.locals.username = req.params.id;
                 res.locals.time = msg.time;
 
-                if (req.params.type === 'thumbs_up') {
-                    //TODO 重定向到个股界面
-                    res.redirect();
-                }
-                else {
-                    res.locals.stockCode = msg.codeOrName;
-                    res.locals.stockName = msg.stockName;
+                res.locals.stockCode = msg.codeOrName;
+                res.locals.stockName = msg.stockName;
 
-                    if(req.params.type === 'svm') {
-                        let finalResult = [];
-                        for (let i = 0; i < msg.content.base.length; i++) {
-                            finalResult.push([msg.content.base[i], msg.content.compare[i]]);
-                        }
-
-                        res.locals.correlation = Math.round(msg.content.correlation * 100) / 100;
-                        res.locals.profitRate = Math.round(msg.content.profitRate * 10000) / 100;
-
-                        res.locals.data = finalResult;
-
-                        res.render('User/SingleStockAnalysis/svm');
-                    } else if (req.params.type === 'cnn') {
-                        res.locals.line_y_data = msg.content.process;
-                        res.locals.pie_data = [];
-                        res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
-
-                        res.render('User/SingleStockAnalysis/cnn');
-                    } else if (req.params.type === 'nn') {
-                        res.locals.pie_data = [];
-                        res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
-
-                        res.render('User/SingleStockAnalysis/nn');
+                if (req.params.type === 'svm') {
+                    let finalResult = [];
+                    for (let i = 0; i < msg.content.base.length; i++) {
+                        finalResult.push([msg.content.base[i], msg.content.compare[i]]);
                     }
+
+                    res.locals.correlation = Math.round(msg.content.correlation * 100) / 100;
+                    res.locals.profitRate = Math.round(msg.content.profitRate * 10000) / 100;
+
+                    res.locals.data = finalResult;
+
+                    res.render('User/SingleStockAnalysis/svm');
+                }
+                else if (req.params.type === 'cnn') {
+                    res.locals.line_y_data = msg.content.process;
+                    res.locals.pie_data = [];
+                    res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+
+                    res.render('User/SingleStockAnalysis/cnn');
+                }
+                else if (req.params.type === 'nn') {
+                    res.locals.pie_data = [];
+                    res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
+
+                    res.render('User/SingleStockAnalysis/nn');
                 }
             }
         });

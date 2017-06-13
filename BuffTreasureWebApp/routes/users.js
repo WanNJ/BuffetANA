@@ -11,6 +11,15 @@ let router = express.Router();
 let StockPoolConditionVO = require('../vo/StockPoolConditionVO').StockPoolConditionVO;
 let TradeModelVO = require('../vo/TradeModelVO').TradeModelVO;
 
+/**
+ * 用于存储用户的回测进度和结果
+ * @type {{}}  * e.g:某时刻时的值:
+ {
+ "user1": {"process": 20},
+ "user2": {"process": 100, "strategyResult": ...},
+ }
+ */
+let strategyJSON = {};
 let sendMessage = (res, err, docs) => {
     if (err) {
         throw err;
@@ -268,8 +277,17 @@ router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
     userbl.loadStrategy(req.session.user, req.params.name, (err, docs) => sendDirectly(res, err, docs));
 });
 
+router.get('/quantitative-analysis/state', function (req, res, next) {
+    console.log(strategyJSON);
+    if (strategyJSON[req.session.user]) {
+        res.send("上一次回测还没完成，请先等待其完成");
+    } else {
+        res.send("avaliable");
+    }
+});
+
 router.post('/quantitative-analysis/loading', function (req, res, next) {
-    if (req.session.strategyProcess) {
+    if (strategyJSON[req.session.user]) {
         res.send("上一次回测还没完成，请先等待其完成");
     } else {
         req.session.strategyData = req.body;
@@ -291,11 +309,13 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
             new TradeModelVO(Number(body.reserveDays), Number(body.numberOfStock));
         let envSpyDay = Number(body.marketObserve);
 
-        req.session.strategyProcess = 0;
+        strategyJSON[req.session.user]={
+            "process": 0,
+        };
 
         console.log(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay);
         strategyBl.getBackResults(beginDate, endDate, stockPoolCdtVO, rank, filter, tradeModelVo, envSpyDay, (process) => {
-            req.session.strategyProcess = process;
+            strategyJSON[req.session.user].process = process;
         }, (err, data) => {
             let finalResult = splitStrategyResult(data);
             console.log(finalResult);
@@ -303,8 +323,8 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
             if (err) {
                 console.error(err);
             } else {
-                req.session.strategyResult = finalResult;
-                req.session.strategyProcess = 100;
+                strategyJSON[req.session.user].strategyResult = finalResult;
+                strategyJSON[req.session.user].process = 100;
             }
         });
         res.render('User/quantitative-loading');
@@ -312,15 +332,12 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/process', function (req, res, next) {
-    let process = req.session.strategyProcess;
-    if (process == undefined) {
-        process = 0;
-    }
+    let process = strategyJSON[req.session.user].process;
     res.send(process.toString());
 });
 
 router.get('/quantitative-analysis/result', function (req, res, next) {
-    let finalResult = req.session.strategyResult;
+    let finalResult = strategyJSON[req.session.user].strategyResult;
     res.render('User/quantitative-result', {
         strategyScores: finalResult.strategyScores,
 
@@ -352,8 +369,7 @@ router.get('/quantitative-analysis/result', function (req, res, next) {
         lowAndSame_pieDatas: finalResult.lowAndSame_pieDatas,
         lowAndOpp_pieDatas: finalResult.lowAndOpp_pieDatas
     });
-    delete req.session.strategyProcess;
-    delete req.session.strategyResult;
+    delete strategyJSON[req.session.user];
 });
 
 router.post('/quantitative-analysis/save', function (req, res, next) {

@@ -428,6 +428,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 <script type="text/javascript">
@@ -666,9 +668,51 @@
         };
         return data;
     }
+    
+    function valid(data) {
+        let message="";
+        if(data.stockPool==="自选股票池" && data.benches.length===0){
+            message="选择的板块不能为空";
+        }else if(data.stockPool==="自选股票池" && data.industries.length===0){
+            message="选择的行业不能为空";
+        }else if(data.rank==={}){
+            message="排名条件不能为空";
+        }
+
+        if(message===""){
+            return true;
+        }else{
+            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>'+message+'</strong></div>');
+
+            window.setTimeout(function () {
+                $("#bottom-alert").alert("close");
+            }, 2000);
+        }
+    }
 
     function start() {
-        standardPost('loading', collect_data());
+        let data=collect_data();
+        if(valid(data)){
+            $.ajax({
+                type: "get",
+                async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url: "state", //请求发送到TestServlet处
+                success: (result) => {
+                    if(result==="avaliable"){
+                        standardPost('loading', data);
+                    }else {
+                        $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>'+result+'</strong></div>');
+
+                        window.setTimeout(function () {
+                            $("#bottom-alert").alert("close");
+                        }, 2000);
+                    }
+                },
+                error: function(request, err){
+                    console.error(err);
+                },
+            });
+        }
     }
 
     function save(name,overwrite=false) {
@@ -787,7 +831,7 @@
 </body>
 
 <!-- ScrollToTop Button -->
-<a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
+<a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
             class="fa fa-chevron-up"></span></a>
 
 <% include ../Components/footer.ejs %>

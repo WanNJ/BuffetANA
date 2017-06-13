@@ -19,7 +19,7 @@
                     <% unreadMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/svm?<%= msg.time %>">
+                        <a class="unread" href="/user/<%= username %>/msg-result/svm?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">SVM——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -29,7 +29,7 @@
                     </li>
                     <% } else if(msg.type == 'CNN') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>">
+                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">CNN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -39,7 +39,7 @@
                     </li>
                     <% } else if((msg.type == 'NN')) { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/nn?<%= msg.time %>">
+                        <a class="unread" href="/user/<%= username %>/msg-result/nn?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">NN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -50,7 +50,7 @@
                     <% } else if((msg.type == 'thumbs_up')) { %>
                     <li>
                         <a class="unread"
-                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>">
+                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
                             <span class="mail-sender">点赞消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -59,13 +59,23 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } %>
+                    <% } else if (msg.type == 'thumbs_down') { %>
+                    <li>
+                        <a class="unread" href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                            <span class="mail-sender">点踩消息</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
+                                给您在<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）下的评论点了踩。<br>
+                            点击查看结果...</span>
+                        </a>
+                        <% } %>
                     <% }) %>
 
                     <% readMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/svm?<%= msg.time %>">
+                        <a href="/user/<%= username %>/msg-result/svm?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">SVM——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -73,9 +83,9 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } else if(msg.type == 'CNN') { %>
+                    <% } else if (msg.type == 'CNN') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>">
+                        <a href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">CNN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -83,9 +93,9 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } else if((msg.type == 'NN')) { %>
+                    <% } else if (msg.type == 'NN') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/nn?<%= msg.time %>">
+                        <a href="/user/<%= username %>/msg-result/nn?<%= msg.time %>" target="_blank">
                             <span class="mail-sender">NN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -93,9 +103,9 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } else if((msg.type == 'thumbs_up')) { %>
+                    <% } else if(msg.type == 'thumbs_up') { %>
                     <li>
-                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>">
+                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
                             <span class="mail-sender">点赞消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -104,6 +114,16 @@
                             点击查看结果...</span>
                         </a>
                     </li>
+                    <% } else if (msg.type == 'thumbs_down') { %>
+                    <li>
+                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                            <span class="mail-sender">点踩消息</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
+                                给您在<%= msg.stockName %>
+                                （<%= msg.codeOrName %>）下的评论点了踩。<br>
+                            点击查看结果...</span>
+                        </a>
                     <% } %>
                     <% }) %>
                 </ul>
@@ -123,13 +143,12 @@
             }
 
             $('.mail-list > li > a').click(function (e) {
-                e.preventDefault();
-                console.log($(this)[0].children[1].innerHTML);
                 $(this).removeClass('unread');
                 $.post("/user/<%= username %>/markAsRead", {time: $(this)[0].children[1].innerHTML}, function(result){
                     if(result === 'ERROR')
                         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
                 });
+                window.location.reload();
             });
         </script>
     </div>

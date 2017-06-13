@@ -119,13 +119,13 @@ exports.NNAnalyze = (userName, code, stockName, holdingDays, time, callback) => 
                 content: {
                     code: code,
                     holdingDays: holdingDays,
-                    less10: result["less10"],
-                    "10-5": result["10-5"],
-                    "5-0": result["5-0"],
-                    "0-5": result["0-5"],
-                    "5-10": result["5-10"],
-                    more10: result["more10"],
-                    accuracy: result["accuracy"]
+                    less10: result[0]["less10"],
+                    "10-5": result[0]["10-5"],
+                    "5-0": result[0]["5-0"],
+                    "0-5": result[0]["0-5"],
+                    "5-10": result[0]["5-10"],
+                    more10: result[0]["more10"],
+                    accuracy: result[0]["accuracy"]
                 }
             };
         }

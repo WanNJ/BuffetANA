@@ -150,13 +150,13 @@ describe('userbl', function() {
     });
     describe('#getAllMessages()', function() {
         it('just a te', function(done) {
-            userbl.getAllMessages('ty', function (err, doc1, doc2) {
+            userbl.getAllMessages('wnj', function (err, doc1, doc2) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    console.log(doc1.length);
-                    console.log(doc2.length);
+                    console.log(doc1);
+                    console.log(doc2);
                     done();
                 }
             });
@@ -164,12 +164,12 @@ describe('userbl', function() {
     });
     describe('#getUnreadMessageCount()', function() {
         it('获得ty用户的所有未读消息', function(done) {
-            userbl.getUnreadMessageCount('ty', function (err, count) {
+            userbl.getUnreadMessageCount('wnj', function (err, count) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    expect(count).to.be.equal(7);
+                    expect(count).to.be.equal(5);
                     console.log(count);
                     done();
                 }
@@ -178,13 +178,24 @@ describe('userbl', function() {
     });
     describe('#markAsRead()', function() {
         it('将ty用户的2017-06-10T02:43:55.408Z这一时间的未读消息标记为已读', function(done) {
-            userbl.markAsRead('ty', new Date('2017-06-10T02:43:55.408Z'), function (err, isOK) {
+            userbl.markAsRead('wnj', new Date('2017-06-12T14:19:42.022Z'), function (err) {
                 if (err) {
                     done(err);
                 }
                 else {
-                    expect(isOK).to.be.equal(true);
-                    console.log(isOK);
+                    done();
+                }
+            });
+        });
+    });
+    describe('#getOneMessageContent()', function() {
+        it('将ty用户的2017-06-10T02:43:55.408Z这一时间的未读消息标记为已读', function(done) {
+            userbl.getOneMessageContent('wnj', new Date('2017-06-12T14:23:09.574Z'), function (err, message) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(message);
                     done();
                 }
             });

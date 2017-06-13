@@ -1793,7 +1793,7 @@ body .no-padding {
 	text-align: center;
 }
 
-li.no_act_link .open {
+li.no_act_link.open {
 	color: transparent;
 	background-color: transparent;
 }

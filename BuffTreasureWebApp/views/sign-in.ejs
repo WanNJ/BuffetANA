@@ -47,16 +47,16 @@
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>用户名</label>
                                 <input type="text" class="form-control" placeholder="Username" id="username_field"
-                                       name="username" required
-                                       data-validation-required-message="请输入用户名">
+                                       name="username" required pattern="[0-9a-zA-Z]{2, 12}"
+                                       data-validation-required-message="请输入用户名...">
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>密码</label>
                                 <input type="password" class="form-control" placeholder="Password" id="password_field"
-                                       name="password"
-                                       required data-validation-required-message="请输入密码">
+                                       name="password" pattern=".{6, 20}"
+                                       required data-validation-required-message="请输入密码...">
                             </div>
                         </div>
                         <div class="text-center">

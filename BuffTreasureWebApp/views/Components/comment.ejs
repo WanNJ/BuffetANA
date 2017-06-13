@@ -53,14 +53,17 @@
             $.post("single-stock/pressStockGood",{stockCode: currentStockCode}, function(result){
                 if(result === 'ERROR')
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                else
+                    getComments(currentStockCode);
             });
         } else {
             $.post("single-stock/pressStockBad",{stockCode: currentStockCode}, function(result){
                 if(result === 'ERROR')
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                else
+                    getComments(currentStockCode);
             });
         }
-        getComments(currentStockCode);
         <% }else { %>
         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请登录之后再点赞！</strong></div>');
         window.setTimeout(function () {
@@ -88,14 +91,17 @@
             $.post("single-stock/pressContentGood", {content_id: content_id, stockCode: currentStockCode}, function(result){
                 if(result === 'ERROR')
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                else
+                    getComments(currentStockCode);
             });
         } else {
             $.post("single-stock/pressContentBad",{content_id: content_id, stockCode: currentStockCode}, function(result){
                 if(result === 'ERROR')
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+                else
+                    getComments(currentStockCode);
             });
         }
-        getComments(currentStockCode);
         <% }else { %>
         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请登录之后再点赞！</strong></div>');
         window.setTimeout(function () {
@@ -109,13 +115,21 @@
 
         <% if(typeof user !== "undefined") { %>
         let comment = $('#commentArea').val();
+        if (comment.length < 10) {
+            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-warning fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>评论的字数必须大于10！</strong></div>');
+            window.setTimeout(function () {
+                $("#bottom-alert").alert("close");
+            }, 2000);
+            return;
+        }
 
         $.post("single-stock/commentStock", {stockCode: currentStockCode, content: comment}, function(result){
             if(result === 'ERROR')
                 $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
+            else
+                getComments(currentStockCode);
         });
 
-        getComments(currentStockCode);
         <% }else { %>
         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>请登录之后再评论！</strong></div>');
         window.setTimeout(function () {

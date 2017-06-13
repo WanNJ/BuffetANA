@@ -59,11 +59,13 @@
 
                     window.setInterval(function () {
                         $.get('/user/<%= user %>/getUnreadMsgNum', (result) => {
-                            if(result !== "0" && result !== $('#all_unread_badge')[0].innerHTML) {
+                            if (result === 'ERROR' || result === 'NOT_QUALIFIED') {}
+                            else if (result !== "0" && result !== $('#all_unread_badge')[0].innerHTML) {
                                 $('#all_unread_badge')[0].innerHTML = result;
                                 $('#unread_badge')[0].innerHTML = result;
                                 $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-info fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>Hi,there！您有了新消息!</strong></div>');
-                            } else if (result === "0"  && $('#all_unread_badge')[0].innerHTML.length !== 0) {
+                            }
+                            else if (result === "0"  && $('#all_unread_badge')[0].innerHTML.length !== 0) {
                                 $('#all_unread_badge')[0].innerHTML = '';
                                 $('#unread_badge')[0].innerHTML = '';
                             }

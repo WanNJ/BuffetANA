@@ -37,13 +37,13 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } else if((msg.type == 'NN')) { %>
+                    <% } else if((msg.type == 'RFC')) { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/nn?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">NN——<%= msg.stockName %></span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/rfc?time=<%= msg.time %>" target="_blank">
+                            <span class="mail-sender">RFC——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的NN分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的RFC分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
@@ -93,13 +93,13 @@
                             点击查看结果...</span>
                         </a>
                     </li>
-                    <% } else if (msg.type == 'NN') { %>
+                    <% } else if (msg.type == 'RFC') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/nn?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">NN——<%= msg.stockName %></span>
+                        <a href="/user/<%= username %>/msg-result/rfc?time=<%= msg.time %>" target="_blank">
+                            <span class="mail-sender">RFC——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的NN分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的RFC分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>

@@ -3,7 +3,7 @@
 <head>
     <% include ../../Components/settings.html %>
     <script src="/echarts/echarts.min.js"></script>
-    <title>BUFF-CNN</title>
+    <title>BUFF-NN</title>
 </head>
 <body>
 <!-- Main container -->
@@ -28,17 +28,17 @@
     </div>
 
     <div class="row" style="margin-top: 20px">
-        <div id="cnn_pie_chart" class="col-md-12" style="height: 500px"></div>
+        <div id="nn_pie_chart" class="col-md-12" style="height: 500px"></div>
     </div>
 
     <script>
-        let cnn_pie_chart = echarts.init(document.getElementById('cnn_pie_chart'));
+        let nn_pie_chart = echarts.init(document.getElementById('nn_pie_chart'));
 
         let pie_data = [];
 
         eval('pie_data = <%= JSON.stringify(pie_data) %>;');
 
-        let cnn_pie_option = {
+        let nn_pie_option = {
             title: {
                 text: '涨跌幅概率分布图',
                 show: true,
@@ -76,11 +76,11 @@
             ]
         };
 
-        cnn_pie_chart.setOption(cnn_pie_option);
+        nn_pie_chart.setOption(nn_pie_option);
 
         setTimeout(() => {
             window.onresize = function () {
-                cnn_pie_chart.resize();
+                nn_pie_chart.resize();
             }
         }, 200);
     </script>

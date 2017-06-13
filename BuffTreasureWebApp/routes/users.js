@@ -514,23 +514,23 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                         msg.content["more10"]
 
                     ];
+                    console.log(res.locals.pie_data);
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
 
                     res.render('User/SingleStockAnalysis/cnn');
                 }
-                else if (req.params.type === 'nn') {
+                else if (req.params.type === 'rfc') {
                     res.locals.pie_data = [
-                        msg.content["less10"],
-                        msg.content["10-5"],
-                        msg.content["5-0"],
-                        msg.content["0-5"],
-                        msg.content["5-10"],
-                        msg.content["more10"]
+                        parseFloat(msg.content["less10"]),
+                        parseFloat(msg.content["10-5"]),
+                        parseFloat(msg.content["5-0"]),
+                        parseFloat(msg.content["0-5"]),
+                        parseFloat(msg.content["5-10"]),
+                        parseFloat(msg.content["more10"])
                     ];
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
 
-                    console.log(res.locals.pie_data);
-                    res.render('User/SingleStockAnalysis/nn');
+                    res.render('User/SingleStockAnalysis/rfc');
                 }
             }
         });

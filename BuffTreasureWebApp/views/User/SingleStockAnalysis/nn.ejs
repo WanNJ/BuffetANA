@@ -47,7 +47,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
-                data: ['小于 -10%', '-10% ~ -7.5%', '-7.5% ~ -5%', '-5% ~ -2.5%', '-2.5% ~ 0', '0 ~ 2.5%', '2.5% ~5%', '5% ~ 7.5%', '7.5% ~ 10%', '大于 10%']
+                data: ['小于 -10%', '-10% ~ -5%', '-5% ~ 0', '0 ~ 5%', '5% ~ 10%', '大于 10%']
             },
             tooltip: {
                 trigger: 'item',
@@ -60,16 +60,12 @@
                     radius: '70%',
                     center: ['50%', '50%'],
                     data: [
-                        {value: pie_data[0], name: '小于-10%'},
-                        {value: pie_data[1], name: '-10% ~ -7.5%'},
-                        {value: pie_data[2], name: '-7.5% ~ -5%'},
-                        {value: pie_data[3], name: '-5% ~ -2.5%'},
-                        {value: pie_data[4], name: '-2.5% ~ 0'},
-                        {value: pie_data[5], name: '0 ~ 2.5%'},
-                        {value: pie_data[6], name: '2.5% ~5%'},
-                        {value: pie_data[7], name: '5% ~ 7.5%'},
-                        {value: pie_data[8], name: '7.5% ~ 10%'},
-                        {value: pie_data[9], name: '大于 10%'}
+                        {value: pie_data[0], name: '小于 -10%'},
+                        {value: pie_data[1], name: '-10% ~ -5%'},
+                        {value: pie_data[2], name: '-5% ~ 0'},
+                        {value: pie_data[3], name: '0 ~ 5%'},
+                        {value: pie_data[4], name: '5% ~ 10%'},
+                        {value: pie_data[5], name: '大于 10%'}
                     ],
                     animationType: 'scale',
                     animationEasing: 'elasticOut',

@@ -444,8 +444,7 @@ router.post('/:id/markAsRead', (req, res, next) => {
         res.send('NOT_QUALIFIED');
     }
     else {
-        console.log(new Date(req.body.time));
-        userbl.markAsRead(req.params.id, new Date(req.body.time), (err) => {
+        userbl.markAsRead(req.params.id, req.body.time, (err) => {
             if (err)
                 res.send('ERROR');
             else
@@ -484,7 +483,6 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
             else {
                 res.locals.username = req.params.id;
                 res.locals.time = msg.time;
-
                 res.locals.stockCode = msg.codeOrName;
                 res.locals.stockName = msg.stockName;
 
@@ -503,15 +501,35 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                 }
                 else if (req.params.type === 'cnn') {
                     res.locals.line_y_data = msg.content.process;
-                    res.locals.pie_data = [];
+                    res.locals.pie_data = [
+                        msg.content["less10"],
+                        msg.content["10-7_5"],
+                        msg.content["7_5-5"],
+                        msg.content["5-2_5"],
+                        msg.content["2_5-0"],
+                        msg.content["0-2_5"],
+                        msg.content["2_5-5"],
+                        msg.content["5-7_5"],
+                        msg.content["7_5-10"],
+                        msg.content["more10"]
+
+                    ];
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
 
                     res.render('User/SingleStockAnalysis/cnn');
                 }
                 else if (req.params.type === 'nn') {
-                    res.locals.pie_data = [];
+                    res.locals.pie_data = [
+                        msg.content["less10"],
+                        msg.content["10-5"],
+                        msg.content["5-0"],
+                        msg.content["0-5"],
+                        msg.content["5-10"],
+                        msg.content["more10"]
+                    ];
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
 
+                    console.log(res.locals.pie_data);
                     res.render('User/SingleStockAnalysis/nn');
                 }
             }

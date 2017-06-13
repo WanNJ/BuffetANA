@@ -19,7 +19,7 @@
                     <% unreadMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/svm?<%= msg.time %>" target="_blank">
+                        <a class="unread" href="/user/<%= username %>/msg-result/svm?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">SVM——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -29,7 +29,7 @@
                     </li>
                     <% } else if(msg.type == 'CNN') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>" target="_blank">
+                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">CNN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -39,7 +39,7 @@
                     </li>
                     <% } else if((msg.type == 'NN')) { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/nn?<%= msg.time %>" target="_blank">
+                        <a class="unread" href="/user/<%= username %>/msg-result/nn?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">NN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -75,7 +75,7 @@
                     <% readMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/svm?<%= msg.time %>" target="_blank">
+                        <a href="/user/<%= username %>/msg-result/svm?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">SVM——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -85,7 +85,7 @@
                     </li>
                     <% } else if (msg.type == 'CNN') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/cnn?<%= msg.time %>" target="_blank">
+                        <a href="/user/<%= username %>/msg-result/cnn?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">CNN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
@@ -95,7 +95,7 @@
                     </li>
                     <% } else if (msg.type == 'NN') { %>
                     <li>
-                        <a href="/user/<%= username %>/msg-result/nn?<%= msg.time %>" target="_blank">
+                        <a href="/user/<%= username %>/msg-result/nn?time=<%= msg.time %>" target="_blank">
                             <span class="mail-sender">NN——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>

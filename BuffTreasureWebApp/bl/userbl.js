@@ -330,14 +330,14 @@ exports.getAllMessages = (userName, callback) => {
             messageQueue["message"].forEach(m => {
                 if (!m["isRead"])
                     unreadMessages.push({
-                        "time": m["time"],
+                        "time": m["time"].toLocaleString(),
                         "type": m["type"],
                         "codeOrName": m["codeOrName"],
                         "stockName": m["stockName"]
                     });
                 else
                     readMessages.push({
-                        "time": m["time"],
+                        "time": m["time"].toLocaleString(),
                         "type": m["type"],
                         "codeOrName": m["codeOrName"],
                         "stockName": m["stockName"]
@@ -357,7 +357,7 @@ exports.getAllMessages = (userName, callback) => {
 exports.markAsRead = (userName, time, callback) => {
     userDB.getAllMessage(userName, (err, messageQueue) => {
         for (let i = 0; i < messageQueue["message"].length; i++) {
-            if ((messageQueue["message"][i]["time"] - time) === 0) {
+            if (messageQueue["message"][i]["time"].toLocaleString() === time) {
                 messageQueue["message"][i]["isRead"] = true;
                 break;
             }
@@ -503,7 +503,7 @@ exports.getOneMessageContent = (userName, time, callback) => {
         else {
             let messageContent = {};
             for (let i = 0; i < messageQueue["message"].length; i++) {
-                if ((messageQueue["message"][i]["time"] - time) === 0) {
+                if (messageQueue["message"][i]["time"].toLocaleString() === time) {
                     messageContent = messageQueue["message"][i];
                     break;
                 }

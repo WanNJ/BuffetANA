@@ -40,8 +40,8 @@ describe('singleStockPredict', function() {
                 }
             });
         });
-        it('NN', function (done) {
-            statistics.NNAnalyze('wnj', '000002', '万科 A', 5, new Date(), (err, isOK) => {
+        it('RFC', function (done) {
+            statistics.RFCAnalyze('wnj', '000005', '万科 A', 10, new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {

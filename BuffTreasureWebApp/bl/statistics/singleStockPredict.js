@@ -8,7 +8,7 @@ const exec = require('child_process').exec;
 const industryCorrelationTool = require('./industryCorrelationbl');
 const userDB = require('../../models/user').userDB;
 const CNNModel = require('./ML/testCNNModel').CNNPredict;
-const NNModel = require('./ML/testEasyModel').NNPredict;
+const RFCModel = require('./ML/testRFCModel').RFCPredict;
 
 
 /**
@@ -85,7 +85,7 @@ exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time, 
 
 
 /**
- * 使用NN模型进行个股分析
+ * 使用RFC模型进行个股分析
  * @param userName {String} 用户名称
  * @param code {String} 股票代码
  * @param stockName {String} 股票名称
@@ -93,15 +93,15 @@ exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time, 
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.NNAnalyze = (userName, code, stockName, holdingDays, time, callback) => {
-    NNModel.EasyPredict(code, holdingDays, (err, result) => {
+exports.RFCAnalyze = (userName, code, stockName, holdingDays, time, callback) => {
+    RFCModel.rfcPredict(code, holdingDays, (err, result) => {
         let message = {};
         if (err) {
             message = {
                 time: time,
                 isRead: false,
                 type: 'error',
-                codeOrName: '代码为' + code + '的股票NN分析结果出错',
+                codeOrName: '代码为' + code + '的股票RFC分析结果出错',
                 stockName: stockName,
                 content: {
                     code: code,
@@ -113,18 +113,16 @@ exports.NNAnalyze = (userName, code, stockName, holdingDays, time, callback) => 
             message = {
                 time: time,
                 isRead: false,
-                type: 'NN',
+                type: 'RFC',
                 codeOrName: code,
                 stockName: stockName,
                 content: {
                     code: code,
                     holdingDays: holdingDays,
-                    less10: result[0]["less10"],
-                    "10-5": result[0]["10-5"],
-                    "5-0": result[0]["5-0"],
-                    "0-5": result[0]["0-5"],
-                    "5-10": result[0]["5-10"],
-                    more10: result[0]["more10"],
+                    importance: result[0]["importance"],
+                    down: result[0]["down"],
+                    up: result[0]["up"],
+                    smooth: result[0]["smooth"],
                     accuracy: result[0]["accuracy"]
                 }
             };

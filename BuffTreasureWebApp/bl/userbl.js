@@ -315,7 +315,7 @@ exports.getUnreadMessageCount = (userName, callback) => {
  * readMessages和unreadMessages分别是已读和未读消息数组，如果没有相应类型的消息则对应的消息数组长度为0，如果有消息，那么消息类型是JSON，如下所示
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
- *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'thumbs_up'/'error'
+ *      "type":      'SVM'/'RFC'/'CNN'/'thumbs_up'/'thumbs_down'/'error'
  *      "codeOrName":   '000001'
  *      "stockName": '平安银行'
  * }
@@ -382,7 +382,7 @@ exports.markAsRead = (userName, time, callback) => {
  * messageContent的内容
  * {
  *      "time":       Date类型，消息的生成时间，必须得记录，作为这条消息的唯一标识，用于后续的标记为已读
- *      "type":      'SVM'/'NN'/'CNN'/'thumbs_up'/'thumbs_down'/'error'
+ *      "type":      'SVM'/'RFC'/'CNN'/'thumbs_up'/'thumbs_down'/'error'
  *      "codeOrName":   '000001'
  *      "stockName":    '平安银行'
  *      "content":    {JSON} 根据type类型的不同，内容不同，具体详见不同的接口
@@ -491,13 +491,16 @@ exports.markAsRead = (userName, time, callback) => {
                     code:  '000001',   // 分析的股票代码
                     holdingDays: 5, // 持仓天数
                     // 分析的结果
-                    less10: "0.0142207"   涨幅小于-10%   的概率
-                    "10-5": "0.0352829"    涨幅为-10%~-5% 的概率
-                    "5-0": "0.493942"     涨幅为 -5%~0   的概率
-                    "0-5": "0.396603"      涨幅为 0~5%    的概率
-                    "5-10": "0.0341518"    涨幅为 5%~10%  的概率
-                    more10: "0.0257998"  涨幅大于 10%   的概率
-                    accuracy: "0.435"    测试结果取概率最大时，在测试集上的准确度
+                    importance:   参数的重要性   数组  数组内部是是个数组  【参数英文名，参数重要程度】
+                                [["upper", 0.053139083076076496], ["RSI24", 0.04712154636869235]
+                                 , ["RSI6", 0.04457809311730247], ["WR2", 0.03873952958064584]
+                                , ["RSI12", 0.03653828729115833], ["BIAS6", 0.03634901648373344]
+                                , ["J", 0.03580555302817594], ["D", 0.0331165231894777]
+                                , ["DEA", 0.032973472144207906], ["MA30", 0.03283860244233161]]
+                    down:  "0.201818",    下跌 涨幅小于-2.5%
+                    up: "0.267653",      上涨 涨幅大于2.5%
+                    smooth: "0.53053",   平稳 涨幅在-2.5% ～ 2.5% 之间
+                    accuracy: "0.835"   在测试集的准确度
              }
  */
 exports.getOneMessageContent = (userName, time, callback) => {

@@ -330,19 +330,23 @@ exports.getAllMessages = (userName, callback) => {
             messageQueue["message"].forEach(m => {
                 if (!m["isRead"])
                     unreadMessages.push({
-                        "time": m["time"].toLocaleString(),
+                        "time": m["time"],
                         "type": m["type"],
                         "codeOrName": m["codeOrName"],
                         "stockName": m["stockName"]
                     });
                 else
                     readMessages.push({
-                        "time": m["time"].toLocaleString(),
+                        "time": m["time"],
                         "type": m["type"],
                         "codeOrName": m["codeOrName"],
                         "stockName": m["stockName"]
                     });
             });
+            readMessages.sort((a, b) => a["time"] > b["time"]);
+            unreadMessages.sort((a, b) => a["time"] > b["time"]);
+            readMessages.forEach(t => t["time"] = t["time"].toLocaleString());
+            unreadMessages.forEach(t => t["time"] = t["time"].toLocaleString());
             callback(null, readMessages, unreadMessages);
         }
     });

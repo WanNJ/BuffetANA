@@ -9,7 +9,7 @@
     <% include ../Components/navigator.ejs %>
 
     <div class="bloc bgc-white l-bloc" id="bloc-1">
-        <div class="container bloc-lg container-fluid">
+        <div class="container bloc-md container-fluid">
             <div class="section-container home-section-wrap clearfix row">
                 <div class="col-md-3 col-sm-6" style="display: inline">
                     <span >股票池：</span>
@@ -675,7 +675,7 @@
             message="选择的板块不能为空";
         }else if(data.stockPool==="自选股票池" && data.industries.length===0){
             message="选择的行业不能为空";
-        }else if(data.rank==={}){
+        }else if(data.rank==="{}"){
             message="排名条件不能为空";
         }
 

@@ -278,7 +278,6 @@ router.get('/quantitative-analysis/strategy/:name', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/state', function (req, res, next) {
-    console.log(strategyJSON);
     if (strategyJSON[req.session.user]) {
         res.send("上一次回测还没完成，请先等待其完成");
     } else {

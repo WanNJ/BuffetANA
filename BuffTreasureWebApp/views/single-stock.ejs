@@ -33,7 +33,6 @@
                 $(obj).css("background-color", "#FFFFCC");
             }
         }
-
         function analysisStock() {
             let data = {
                 "model": $("#model option:selected").val(),
@@ -60,7 +59,6 @@
                 },
             });
         }
-
         function calculateMA(dayCount, adjDatas) {
             let result = [];
             let len = adjDatas.length;
@@ -77,7 +75,6 @@
             }
             return result;
         }
-
         function getFullStockCode(stockCode) {
             let sub = stockCode.substring(0, 3);
             if (sub === '000' || sub === '200' || sub === '002' || sub === '300')
@@ -117,13 +114,11 @@
                 volumns: volumns
             };
         }
-
         function getComments(stockCode) {
             $.get('single-stock/getStockComments', {stockCode: stockCode}, (result) => {
                 $('#comments_seg').html(result);
             });
         }
-
         function getBasicData(stockCode) {
             currentStockCode = stockCode;
             let fullStockCode = getFullStockCode(stockCode);
@@ -222,7 +217,6 @@
                 $(RTInfos[6]).css({color: "green"});
             });
         }
-
         // 板块行业
         function getIndustry(stockCode) {
             $.get('single-stock/getStockIndustry', {stockCode: stockCode}, (result) => {
@@ -240,7 +234,6 @@
                 }
             });
         }
-
         function getCharts(stockCode) {
             $('#firstTab').tab('show');
 
@@ -435,8 +428,6 @@
             });
 
             let recent_stocks = [];
-
-            //TODO BUG
 
             if (localStorage.getItem('recentStocks')) {
                 recent_stocks = JSON.parse(localStorage.getItem('recentStocks'));
@@ -932,16 +923,6 @@
         <!--scrollToTop按钮-->
         <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                     class="fa fa-chevron-up"></span></a>
-
-        <% if(typeof stockCode !== "undefined") { %>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#search_area').val('<%= stockCode %>' + '(' + '<%= stockName %>' + ')');
-                getCharts('<%= stockCode %>');
-                $('#search_area').val('');
-            });
-        </script>
-        <% } %>
     </div>
 
     <div class="col-md-12" style="height: 30px"></div>

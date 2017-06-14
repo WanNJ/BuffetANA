@@ -207,7 +207,11 @@
                                     <td><%= normal_historyDatas[i].sellTime %></td>
                                     <td><%= Math.round(normal_historyDatas[i].buyPrice * 100) / 100 %></td>
                                     <td><%= Math.round(normal_historyDatas[i].sellPrice * 100) / 100 %></td>
-                                    <td><%= Math.round(normal_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% if (normal_historyDatas[i].yieldRate < 0) { %>
+                                    <td style="color: green"><%= Math.round(normal_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } else { %>
+                                    <td style="color: red"><%= Math.round(normal_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>
@@ -237,7 +241,11 @@
                                     <td><%= highAndSame_historyDatas[i].sellTime %></td>
                                     <td><%= Math.round(highAndSame_historyDatas[i].buyPrice * 100) / 100 %></td>
                                     <td><%= Math.round(highAndSame_historyDatas[i].sellPrice * 100) / 100 %></td>
-                                    <td><%= Math.round(highAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% if (highAndSame_historyDatas[i].yieldRate < 0) { %>
+                                    <td style="color: green"><%= Math.round(highAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } else { %>
+                                    <td style="color: red"><%= Math.round(highAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>
@@ -267,7 +275,11 @@
                                     <td><%= highAndOpp_historyDatas[i].sellTime %></td>
                                     <td><%= Math.round(highAndOpp_historyDatas[i].buyPrice * 100) / 100 %></td>
                                     <td><%= Math.round(highAndOpp_historyDatas[i].sellPrice * 100) / 100 %></td>
-                                    <td><%= Math.round(highAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% if (highAndOpp_historyDatas[i].yieldRate < 0) { %>
+                                    <td style="color: green"><%= Math.round(highAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } else { %>
+                                    <td style="color: red"><%= Math.round(highAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>
@@ -297,7 +309,11 @@
                                     <td><%= lowAndSame_historyDatas[i].sellTime %></td>
                                     <td><%= Math.round(lowAndSame_historyDatas[i].buyPrice * 100) / 100 %></td>
                                     <td><%= Math.round(lowAndSame_historyDatas[i].sellPrice * 100) / 100 %></td>
-                                    <td><%= Math.round(lowAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% if (lowAndSame_historyDatas[i].yieldRate < 0) { %>
+                                    <td style="color: green"><%= Math.round(lowAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } else { %>
+                                    <td style="color: red"><%= Math.round(lowAndSame_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>
@@ -327,7 +343,11 @@
                                     <td><%= lowAndOpp_historyDatas[i].sellTime %></td>
                                     <td><%= Math.round(lowAndOpp_historyDatas[i].buyPrice * 100) / 100 %></td>
                                     <td><%= Math.round(lowAndOpp_historyDatas[i].sellPrice * 100) / 100 %></td>
-                                    <td><%= Math.round(lowAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% if (lowAndOpp_historyDatas[i].yieldRate < 0) { %>
+                                    <td style="color: green"><%= Math.round(lowAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } else { %>
+                                    <td style="color: red"><%= Math.round(lowAndOpp_historyDatas[i].yieldRate * 10000) / 100 %>%</td>
+                                    <% } %>
                                 </tr>
                                 <% } %>
                                 </tbody>

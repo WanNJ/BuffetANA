@@ -57,18 +57,21 @@ describe('#shit()', function() {
         //     'f1' : ["volume", '>', 0]
         // };
         strategyToolPickle.getPickleData(new Date("2015-01-01"),new Date("2017-04-28"),
-            stockPoolConditionVO, rank, filter, tradeModelVO, 3, (err,data) => {
-            if (err) {
-                console.log('wrong');
-                done(err);
-            }
-            else {
-                //console.log();
-                console.log(data['HighAndOpposite'][0].backDatas)
-                console.log('\n');
-                done();
-            }
-        });
+            stockPoolConditionVO, rank, filter, tradeModelVO, 3, (pro)=> {
+                console.log(pro)
+            },
+            (err,data) => {
+                    if (err) {
+                        console.log('wrong');
+                        done(err);
+                    }
+                    else {
+                        //console.log();
+                        console.log(data['HighAndOpposite'][0].backDatas)
+                        console.log('\n');
+                        done();
+                    }
+                });
     });
 
 });

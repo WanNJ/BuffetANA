@@ -3,7 +3,7 @@
 <head>
     <% include ../../Components/settings.html %>
     <script src="/echarts/echarts.min.js"></script>
-    <title>BUFF-RFC</title>
+    <title>BUFF-特征分析</title>
 </head>
 <body>
 <!-- Main container -->
@@ -20,11 +20,22 @@
                     <div class="info text-center">
                         <h4 class="text-center">BUFF-特征分析</h4>
                         <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>
-                            ）的BUFF-特征分析结果已经得出。分析结果——
-                        <ul>
-                            <li>对该股票影响最大的参数及其相对重要性。</li>
-                            <li>该个股今日各种涨跌幅情况出现的概率。</li>
-                        </ul>
+                            ）的BUFF-特征分析结果已经得出。分析结果——<br>
+
+                            <strong>对该股票影响最大的参数及其相对重要性。</strong>
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="柱状图的说明"
+                                   data-content="我们从诸多分析特征中提取了对该股票影响最大的十个供您参考，如果您打算买卖股票请留意这些值的变化，同时您也可以根据这些特征来进行策略回测，定义出更合理的策略。"></a>
+                            </span>
+                            <br>
+                            <strong>该个股今日各种涨跌幅情况出现的概率。</strong>
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="饼图的说明"
+                                   data-content="这是我们根据算法提取的对该股票影响最大的十个特征进行进一步分析得到的预测结果，您也可以参考它在测试数据上的表现来评判它的准确性。"></a>
+                            </span>
+                            <br>
                             当测试结果取概率最大时，在测试集上的准确度为——
                         </p>
                         <h2>
@@ -32,7 +43,7 @@
                             <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="准确率的解释"
-                                   data-content="通过利用我们较为全面的数据，我们为您提供这一模型在过往数据中回溯测试出的预测准确率<br>如果准确率低于50% 请谨慎对待"></a>
+                                   data-content="通过利用我们较为全面的数据，我们为您提供这一模型在过往数据中回溯测试出的预测准确率。如果准确率低于50% 请谨慎对待"></a>
                             </span>
                         </h2>
                     </div>

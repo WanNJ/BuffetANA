@@ -185,7 +185,7 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
     let model = req.body.model;
     if(model==="SVM"){
         singleStockPredict.SVMAnalyze(req.session.user, req.body.stockCode, req.body.stockName, Number(req.body.openPrice),
-            Number(req.body.holdingDays), req.body.time, (err, isOK) => {
+            Number(req.body.holdingDays), undefined, (err, isOK) => {
             if(err){
                 console.error(err);
             }
@@ -193,7 +193,7 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
         res.send("相关性分析 分析中，分析完毕后在网页右上角会有提示");
     }else  if(model==="RFC"){
         singleStockPredict.RFCAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
-            Number(req.body.holdingDays), req.body.time, (err, isOK) => {
+            Number(req.body.holdingDays), undefined, (err, isOK) => {
                 if(err){
                     console.error(err);
                 }
@@ -203,14 +203,14 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
         if(req.body.advancedOptions==="on"){
             singleStockPredict.CNNAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
                 Number(req.body.holdingDays),req.body.isMarket==="on"? true:false,Number(req.body.iterationNum),
-                req.body.learningWay, req.body.time, (err, isOK) => {
+                req.body.learningWay, undefined, (err, isOK) => {
                     if(err){
                         console.error(err);
                     }
             });
         }else {
             singleStockPredict.CNNAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
-                Number(req.body.holdingDays),undefined,undefined,undefined, req.body.time, (err, isOK) => {
+                Number(req.body.holdingDays),undefined,undefined,undefined, undefined, (err, isOK) => {
                     if(err){
                         console.error(err);
                     }

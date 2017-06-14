@@ -47,10 +47,10 @@ MacOS和Linux下运行
 
     mongoose.connect('mongodb://localhost/allInfo');
 
-中localhost改成你的数据库的的ip地址
+以及.py文件中所有的localhost改成你的数据库的的ip地址
 进入到BuffTreasureWebApp/bin下，运行：
 
     node www
 
 即可运行服务器端
-注意：请保证你的"python"命令运行的是python3，而不是python2
+注意：请保证你的"python3"命令可用

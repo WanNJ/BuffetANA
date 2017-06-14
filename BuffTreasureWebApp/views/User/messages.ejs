@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <h1 class="content-title text-center">我的消息</h1>
 
-                <ul class="mail-list">
+                <ul class="mail-list" style="overflow: scroll; height: 600px">
                     <% unreadMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>

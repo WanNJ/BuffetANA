@@ -155,8 +155,73 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                 markLS: results[3]["strategyEstimateResult"],// low and same 情况下的分数
                 markLO: results[4]["strategyEstimateResult"],// low and opposite 情况下的分数
             };
-            saveStrategy(strategy);
-            callback(null, results);
+            strategyDB.getAllStrategy((err, strategies) => {
+                if (!err) {
+                    let same = false;
+                    for (let i = 0; i < strategies.length; i++) {
+
+
+                        // 两个策略是否相同
+                        if (strategyTool.compareTo(strategies[i], strategy)) {
+                            same = true;
+                            // 策略相同，回测区间不相同
+                            if ((strategy["beginDate"] - strategies[i]["beginDate"]) !== 0 || (strategy["endDate"] - strategies[i]["endDate"]) !== 0) {
+                                // 回测区间不同，且新策略的回测区间更加接近现在的日期
+                                if ((strategy["endDate"] - strategies[i]["endDate"]) > 0) {
+                                    strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                        if (!err) {
+                                            strategyDB.saveStrategy(strategy, (err, data) => {
+                                                callback(err, results);
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                            // 策略相同，回测区间也相同
+                            else {
+                                // 新策略的持股数更接近5
+                                if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) > Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
+                                    strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                        if (!err) {
+                                            strategyDB.saveStrategy(strategy, (err, data) => {
+                                                if (err)
+                                                    console.log('save strategy error');
+                                                else
+                                                    callback(null, results);
+                                            })
+                                        }
+                                    });
+                                }
+                                // 两个策略的持股数一样接近5
+                                else if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) === Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
+                                    // 新策略的得分高
+                                    if (strategies[i]["markNormal"]["strategyScore"] < strategy["markNormal"]["strategyScore"]) {
+                                        strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
+                                            if (!err) {
+                                                strategyDB.saveStrategy(strategy, (err, data) => {
+                                                    if (err)
+                                                        console.log('save strategy error');
+                                                    else
+                                                        callback(null, results);
+                                                })
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                    if (!same) {
+                        strategyDB.saveStrategy(strategy, (err, data) => {
+                            callback(err, results);
+                        });
+                    }
+                }
+                else
+                    callback(err, null);
+            });
         }
     });
 };
@@ -174,65 +239,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
  */
 function saveStrategy(strategy) {
     strategyDB.getAllStrategy((err, strategies) => {
-        if (!err) {
-            for (let i = 0; i < strategies.length; i++) {
-                // 两个策略是否相同
-                if (strategyTool.compareTo(strategies[i], strategy)) {
-                    // 策略相同，回测区间不相同
-                    if ((strategy["beginDate"] - strategies[i]["beginDate"]) !== 0 || (strategy["endDate"] - strategies[i]["endDate"]) !== 0) {
-                        // 回测区间不同，且新策略的回测区间更加接近现在的日期
-                        if ((strategy["endDate"] - strategies[i]["endDate"]) > 0) {
-                            strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
-                                if (!err) {
-                                    strategyDB.saveStrategy(strategy, (err, data) => {
-                                        if (err)
-                                            console.log('save strategy error');
-                                    })
-                                }
-                            });
-                        }
-                    }
-                    // 策略相同，回测区间也相同
-                    else {
-                        // 新策略的持股数更接近5
-                        if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) > Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
-                            strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
-                                if (!err) {
-                                    strategyDB.saveStrategy(strategy, (err, data) => {
-                                        if (err)
-                                            console.log('save strategy error');
-                                    })
-                                }
-                            });
-                        }
-                        // 两个策略的持股数一样接近5
-                        else if (Math.abs(strategies[i]["tradeModelVO"]["holdingNums"] - 5) === Math.abs(strategy["tradeModelVO"]["holdingNums"] - 5)) {
-                            // 新策略的得分高
-                            if (strategies[i]["markNormal"]["strategyScore"] < strategy["markNormal"]["strategyScore"]) {
-                                strategyDB.removeStrategy(strategy[i]["_id"], (err) => {
-                                    if (!err) {
-                                        strategyDB.saveStrategy(strategy, (err, data) => {
-                                            if (err)
-                                                console.log('save strategy error');
-                                        })
-                                    }
-                                });
-                            }
-                        }
-                    }
 
-                    break;
-                }
-                // 两个策略不一样，直接添加
-                else {
-                    strategyDB.saveStrategy(strategy, (err, data) => {
-                        if (err)
-                            console.log('Save Strategy Failed');
-                    });
-                }
-            }
-
-        }
     });
 }
 

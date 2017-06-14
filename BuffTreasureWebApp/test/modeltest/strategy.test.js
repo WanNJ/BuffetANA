@@ -34,7 +34,8 @@ describe('thermometerDB', function() {
                 stockPoolConditionVO:new StockPoolConditionVO("沪深300",null,null,false),
                 rank:{
                     "r1" : ["MOM" ,"asc", 10, 1],
-                    "r2" : ["MOM","desc", 9, 1]
+                    "r2" : ["MOM","desc", 8, 1],
+                    "r6" : ["MOM","desc", 8, 1]
                 },
                 filter:{},
                 tradeModelVO:new TradeModelVO(10,10),
@@ -111,6 +112,20 @@ describe('thermometerDB', function() {
     describe('#getBestStrategyByEnv()', function() {
         it('should save successfully', function(done) {
             strategyDB.getBestStrategyByEnv('HighAndSame','strategyScore',2,function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs)
+                    done();
+                }
+            });
+        });
+    });
+
+    describe('#getAllStrategy()', function() {
+        it('should save successfully', function(done) {
+            strategyDB.getAllStrategy(function (err, docs) {
                 if (err) {
                     done(err);
                 }

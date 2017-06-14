@@ -238,10 +238,10 @@ exports.getDailyEnvironment  = (date , callback) =>{
 
                                if (lastInfo['changeRate'] >= 10) {
                                    yesUpNum++;
-                                   yesUpValue += data['change_rate'];
+                                   yesUpValue += data['changeRate'];
                                } else if (lastInfo['changeRate'] <= -10) {
                                    yesDownNum++;
-                                   yesDownValue += data['change_rate'];
+                                   yesDownValue += data['changeRate'];
                                }
                            }
                        }
@@ -254,6 +254,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                     moneyEffect =
                         upNum*100/(downNum+upNum);
 
+                    // console.log(yesDownValue)
                     lastLimitDown = yesDownValue / (yesDownNum===0?1:yesDownNum);
                     lastLimitUp = yesUpValue / (yesUpNum===0?1:yesUpNum);
 
@@ -287,7 +288,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                         "lastTurnOver": lastTurnOver.toFixed(5),  //换手率前50只个股赚钱效应为26%
                         "moneyEffect": moneyEffect.toFixed(5),   //总体赚钱效应在一个总体内赚钱效应  上涨家数与涨跌总家数之比
                      };
-
+                    //console.log(thermometer)
                     return thermometer
 
                 }
@@ -338,7 +339,9 @@ exports.WriteDailyEnvironmentRange  = (beginDate, endDate , callback) =>{
                 reject(new Error('nothing'));
             }else{
                 bl.getDailyEnvironment(date,(err,doc)=>{
+
                     date = new Date(date - 24000 * 3600);
+                    console.log(date)
                     resolve(getWriteOneDayPromise(date));
                 })
             }

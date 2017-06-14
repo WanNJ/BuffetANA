@@ -81,7 +81,8 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
         return new Promise((resolve,reject) =>{
             strategyTool.setRankAndFilterToPickleDataList
             (data['code'],data['pickle'],new Date("2017-06-10"),Date.now(),rank,filter,pro,1
-                ,(pro)=>{//console.log(pro)},(err,list) =>{
+                ,(pro)=>{}
+                ,(err,list) =>{
                 //console.log(list)
                 //console.log(list)
                 resolve(list);

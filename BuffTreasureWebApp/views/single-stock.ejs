@@ -11,6 +11,7 @@
 
     <!--Jquery-UI-->
     <script type="text/javascript">
+        let stockList = [];
         let currentStockCode = "";
         let dataZoomLength = 60;
 
@@ -245,9 +246,73 @@
                 }
             });
         }
+        function updateHistory() {
+            let recent_stocks = [];
+
+            if (localStorage.getItem('recentStocks'))
+                recent_stocks = JSON.parse(localStorage.getItem('recentStocks'));
+
+            $('#recent_stock_table > tbody').html('');
+
+            for (let i = recent_stocks.length - 1; i >= 0; i--) {
+                let appendedStr = '<tr><th>' + recent_stocks[i][0] + '</th><td>' + recent_stocks[i][1] + '</td></tr>';
+                $('#recent_stock_table > tbody').append(appendedStr);
+            }
+
+            $('#recent_stock_table > tbody > tr').click(function (e) {
+                e.preventDefault();
+                $('#search_area').val($(this).children()[1].innerText + '(' + $(this).children()[0].innerText + ')');
+                getCharts($(this).children()[1].innerText);
+                $('#search_area').val('');
+            });
+        }
+        function addHistory(stockCode) {
+            let stockName = '';
+            let re = /([0-9]+)\((.*)\)/;
+            for(let i = 0; i < stockList.length; i++) {
+                let result = re.exec(stockList[i]);
+                if(stockCode === result[1]) {
+                    stockName = result[2];
+                    console.log(stockName);
+                    break;
+                }
+            }
+
+            // 浏览器缓存
+            let recentStocks = [];
+            if (localStorage.getItem('recentStocks'))
+                recentStocks = JSON.parse(localStorage.getItem('recentStocks'));
+
+            let newItem = [stockName, stockCode]
+            let alreadyExist = false;
+            let existIndex = 0;
+
+            for (let i = 0; i < recentStocks.length; i++) {
+                if (recentStocks[i][1] === newItem[1]) {
+                    alreadyExist = true;
+                    existIndex = i;
+                    break;
+                }
+            }
+
+            if (alreadyExist) {
+                recentStocks.splice(existIndex, 1);
+                recentStocks.push(newItem);
+            } else {
+                recentStocks.push(newItem);
+            }
+
+            if (recentStocks.length > 10)
+                recentStocks.shift();
+
+            localStorage.setItem('recentStocks', JSON.stringify(recentStocks));
+        }
         function getCharts(stockCode) {
             $('#firstTab').tab('show');
+            $('#addToPersonalStockBtn').removeAttr('disabled');
 
+            addHistory(stockCode);
+            updateHistory();
             getBasicData(stockCode);
 
             getIndustry(stockCode);
@@ -409,8 +474,6 @@
         }
     </script>
     <script type="text/javascript">
-        let stockList = [];
-
         // 自动补全
         $.widget("ui.autocomplete", $.ui.autocomplete, {
             options: {
@@ -431,47 +494,43 @@
         $(document).ready(function () {
             $.get('single-stock/getAllStockList', (result) => {
                 stockList = result;
+
                 $('#search_area').autocomplete({
                     autoFocus: true,
                     maxItems: 8,
                     source: stockList
                 });
-            });
 
-            let recent_stocks = [];
+                let recent_stocks = [];
 
-            if (localStorage.getItem('recentStocks')) {
-                recent_stocks = JSON.parse(localStorage.getItem('recentStocks'));
-                <% if(typeof stockCode === "undefined") { %>
-                $('#search_area').val(recent_stocks[recent_stocks.length - 1][1] + '(' + recent_stocks[recent_stocks.length - 1][0] + ')');
-                getCharts(recent_stocks[recent_stocks.length - 1][1]);
-                $('#search_area').val('');
+                if (localStorage.getItem('recentStocks')) {
+                    recent_stocks = JSON.parse(localStorage.getItem('recentStocks'));
+                    <% if(typeof stockCode === "undefined") { %>
+                    $('#search_area').val(recent_stocks[recent_stocks.length - 1][1] + '(' + recent_stocks[recent_stocks.length - 1][0] + ')');
+                    getCharts(recent_stocks[recent_stocks.length - 1][1]);
+                    $('#search_area').val('');
+                    <% } %>
+                }<% if(typeof stockCode === "undefined") { %>
+                else {
+                    $('#search_area').val('000001(平安银行)');
+                    getCharts('000001');
+                    $('#search_area').val('');
+                }
                 <% } %>
-            }<% if(typeof stockCode === "undefined") { %>
-            else {
-                $('#search_area').val('000001(平安银行)');
-                getCharts('000001');
-                $('#search_area').val('');
-            }
-            <% } %>
 
-            for (let i = recent_stocks.length - 1; i >= 0; i--) {
-                let appendedStr = '<tr><th>' + recent_stocks[i][0] + '</th><td>' + recent_stocks[i][1] + '</td></tr>';
-                $('#recent_stock_table > tbody').append(appendedStr);
-            }
-
-            $('#recent_stock_table > tbody > tr').click(function (e) {
-                e.preventDefault();
-                $('#search_area').val($(this).children()[1].innerText + '(' + $(this).children()[0].innerText + ')');
-                getCharts($(this).children()[1].innerText);
-                $('#search_area').val('');
+                $('#recent_stock_table > tbody > tr').click(function (e) {
+                    e.preventDefault();
+                    $('#search_area').val($(this).children()[1].innerText + '(' + $(this).children()[0].innerText + ')');
+                    getCharts($(this).children()[1].innerText);
+                    $('#search_area').val('');
+                });
             });
 
             // 表单提交
             $("#stock_form").submit(function (e) {
                 e.preventDefault();
-
                 let query = $('#search_area').val();
+
                 if ($.inArray(query, stockList) < 0) {
                     $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>输入格式不正确！请在下拉框中选择一项输入</strong></div>');
 
@@ -485,35 +544,6 @@
                 let re = /([0-9]+)\((.*)\)/;
                 let result = re.exec(query);
                 let stockCode = result[1];
-
-                // 浏览器缓存
-                let recentStocks = [];
-                if (localStorage.getItem('recentStocks'))
-                    recentStocks = JSON.parse(localStorage.getItem('recentStocks'));
-
-                let newItem = [result[2], stockCode]
-                let alreadyExist = false;
-                let existIndex = 0;
-
-                for (let i = 0; i < recentStocks.length; i++) {
-                    if (recentStocks[i][1] === newItem[1]) {
-                        alreadyExist = true;
-                        existIndex = i;
-                        break;
-                    }
-                }
-
-                if (alreadyExist) {
-                    recentStocks.splice(existIndex, 1);
-                    recentStocks.push(newItem);
-                } else {
-                    recentStocks.push(newItem);
-                }
-
-                if (recentStocks.length > 10)
-                    recentStocks.shift();
-
-                localStorage.setItem('recentStocks', JSON.stringify(recentStocks));
 
                 getCharts(stockCode);
             });

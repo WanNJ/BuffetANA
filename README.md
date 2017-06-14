@@ -52,5 +52,5 @@ MacOS和Linux下运行
 
     node www
 
-即可运行服务器端
+即可运行服务器端。
 注意：请保证你的"python3"命令可用

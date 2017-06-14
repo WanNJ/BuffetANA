@@ -26,6 +26,7 @@
             url: "process", //请求发送到TestServlet处
             success: (result) => {
                 $("#progressbar").width(result+"%");
+                $("#progressbar").text(Math.round(parseFloat(result))+"%");
                 if(Number(result)>=100){
                     clearInterval(interval);
                     standardGet('result');

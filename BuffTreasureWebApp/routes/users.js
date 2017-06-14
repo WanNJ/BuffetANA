@@ -167,7 +167,13 @@ router.get('/marketthermometer', function (req, res, next) {
     thememometerRT.getCurrentThermometor((err,thermometer)=>{
         let data=thermometer;
         thememometerRT.getCurrentENV((err,currentENV)=>{
-            data.currentENV=currentENV;
+            let ENVMap={
+                "HighAndSame": "温度高，持续上涨",
+                "HighAndOpposite": "温度高，开始反转",
+                "LowAndOpposite": "温度低，持续下降",
+                "LowAndSame": "温度低，开始回暖",
+            };
+            data.currentENV=ENVMap[currentENV];
             res.render('User/marketthermometer',data);
         });
     });

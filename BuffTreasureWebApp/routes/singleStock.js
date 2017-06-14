@@ -186,35 +186,37 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
     if(model==="SVM"){
         singleStockPredict.SVMAnalyze(req.session.user, req.body.stockCode, req.body.stockName, Number(req.body.openPrice),
             Number(req.body.holdingDays), req.body.time, (err, isOK) => {
-
+            if(err){
+                console.error(err);
+            }
         });
-        req.session.alertType = "alert-success";
-        req.session.alertMessage = "SVM分析中，分析完毕后在网页右上角会有提示";
-        res.send("SVMAnalyzing");
+        res.send("SVM分析中，分析完毕后在网页右上角会有提示");
     }else  if(model==="RFC"){
         singleStockPredict.RFCAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
             Number(req.body.holdingDays), req.body.time, (err, isOK) => {
-
+                if(err){
+                    console.error(err);
+                }
         });
-        req.session.alertType = "alert-success";
-        req.session.alertMessage = "RFC分析中，分析完毕后在网页右上角会有提示";
-        res.send("RFCAnalyzing");
+        res.send("RFC分析中，分析完毕后在网页右上角会有提示");
     }else  if(model==="CNN"){
         if(req.body.advancedOptions==="on"){
             singleStockPredict.CNNAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
                 Number(req.body.holdingDays),req.body.isMarket==="on"? true:false,Number(req.body.iterationNum),
                 req.body.learningWay, req.body.time, (err, isOK) => {
-
+                    if(err){
+                        console.error(err);
+                    }
             });
         }else {
             singleStockPredict.CNNAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
                 Number(req.body.holdingDays),undefined,undefined,undefined, req.body.time, (err, isOK) => {
-
+                    if(err){
+                        console.error(err);
+                    }
             });
         }
-        req.session.alertType = "alert-success";
-        req.session.alertMessage = "CNN分析中，分析完毕后在网页右上角会有提示";
-        res.send("CNNAnalyzing");
+        res.send("CNN分析中，分析完毕后在网页右上角会有提示");
     }else {
         req.session.alertType = "alert-warning";
         req.session.alertMessage = "不能识别分析模型:"+model;

@@ -221,7 +221,7 @@
                 $(RTInfos[6]).css({color: "green"});
 
                 if(isNaN(result.today_open)){ //如果没有开盘价，则禁用SVM模型
-                    $('#model > option:contains("SVM")').attr("disabled","disabled");
+                    $('#model > option[value=SVM]').attr("disabled","disabled");
                     $('#model').val("RFC");
                     $('#model').change();
                 }
@@ -947,34 +947,34 @@
         </div>
         <div class="collapse" id="analysis-collapse">
             <div class="well">
-                <div class="container">
+                <div class="container" style="width: 100%;">
                     <div class="alert alert-success" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Success:</span>
-                        <span id="model-info">SVM模型：</span>
+                        <span id="model-info">相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。</span>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <span>模型：</span>
                             <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;"
                                     id="model">
-                                <option selected="selected">SVM</option>
-                                <option>RFC</option>
-                                <option>CNN</option>
+                                <option value="SVM" selected="selected">相关性分析</option>
+                                <option value="RFC">特征分析</option>
+                                <option value="CNN">涨幅预测</option>
                             </select>
                             <script type="text/javascript">
                                 $("#model").change(() => {
                                     if ($("#model").val() === "CNN") {
                                         $("#other-option").collapse('show');
-                                        $("#model-info").text("CNN模型：");
+                                        $("#model-info").text("涨幅预测 模型：该模型为您预测这只股票在未来一段时间内的涨幅情况，预测的范围将更加具体。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
                                     } else {
                                         $("#advanced-options").attr('checked', false);
                                         $("#other-option").collapse('hide');
                                         $("#advanced-collapse").collapse('hide');
                                         if ($("#model").val() === "SVM") {
-                                            $("#model-info").text("SVM模型：");
+                                            $("#model-info").text("相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
                                         }else if ($("#model").val() === "RFC") {
-                                            $("#model-info").text("RFC模型：");
+                                            $("#model-info").text("特征分析 模型：该模型可以选择出对这只股票上涨影响力最大的十个特征，并会根据这些特征进一步预测未来的涨幅情况，关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
                                         }
                                     }
                                 })
@@ -983,8 +983,8 @@
                         <div class="col-md-4">
                             <span style="line-height: 35px;">持股天数：</span>
                             <input class="text-center" style="max-width: 50px;margin-left: 28px;" required="required"
-                                   value="3" pattern="[0-9]{1,}"
-                                   id="holding-days" onchange="number_validate(this,1,60)"/>
+                                   value="1" pattern="[0-9]{1,}"
+                                   id="holding-days" onchange="number_validate(this,1,10,1)"/>
                             <span>天</span>
                         </div>
                         <div class="col-md-4 collapse" id="other-option">
@@ -997,6 +997,7 @@
                                        onclick="$(this).val($(this).val()==='on'? 'off':'on')">
                                 <label for="advanced-options"></label>
                             </div>
+                            <span class="help-block" style="font-size: 12px;">该模型采用了机器学习，如果您对机器学习有所了解可以修改里面的设置来达到更好的结果，如果您不是很了解请不要打开高级选项。</span>
                         </div>
                     </div>
                     <div class="collapse" id="advanced-collapse">
@@ -1013,8 +1014,8 @@
                             <div class="col-md-4">
                                 <span style="line-height: 35px">迭代量：</span>
                                 <input class="text-center" style="max-width: 50px;margin-left: 40px;"
-                                       required="required" value="1" pattern="[0-9]{1,}"
-                                       id="iteration-quantity" onchange="number_validate(this,1,5)"/>
+                                       required="required" value="4" pattern="[0-9]{1,}"
+                                       id="iteration-quantity" onchange="number_validate(this,1,5,4)"/>
                             </div>
                             <div class="col-md-4">
                                 <span style="width: 150px;line-height: 36px;">学习方式：</span>
@@ -1030,7 +1031,7 @@
                     <div class="row" style="margin-top: 20px">
                         <div class="text-center">
                             <button class="btn btn-primary" style="min-width: 150px;" onclick="analysisStock()">
-                                走你
+                                开始分析
                             </button>
                         </div>
                     </div>

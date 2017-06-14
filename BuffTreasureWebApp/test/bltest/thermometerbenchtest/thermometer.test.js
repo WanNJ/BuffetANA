@@ -56,6 +56,7 @@ mongoose.connection.on('open', function () {
 describe('#WriteDailyEnvironmentRange()', function() {
     it('write to db', function(done) {
         thermometerbl.WriteDailyEnvironmentRange(new Date("2001-01-01"),new Date("2005-06-14"), () => {
+
                 //this.setTimeout(1500);
                 console.log('finish');
                 done();
@@ -63,19 +64,3 @@ describe('#WriteDailyEnvironmentRange()', function() {
     });
 });
 
-
-// describe('#writerCurrentThermometor()', function() {
-//     it('print the list', function(done) {
-//         thermometerbl.writerCurrentThermometor((err,data) => {
-//             if (err) {
-//                 console.log('wrong')
-//                 done(err);
-//             }
-//             else {
-//                 console.log(data);
-//                 done();
-//             }
-//         });
-//     });
-// });
-//

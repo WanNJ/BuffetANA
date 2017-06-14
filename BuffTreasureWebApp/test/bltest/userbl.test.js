@@ -18,7 +18,7 @@ mongoose.connection.on('open', function () {
 describe('userbl', function() {
     describe('#signUp()', function() {
         it('just a test', function(done) {
-            userbl.signUp('ty','123456', '151250135@smail.nju.edu.cn',function (err, doc) {
+            userbl.signUp('ty','123456', '151250134@smail.nju.edu.cn',function (err, doc) {
                 if (err) {
                     done(err);
                 }

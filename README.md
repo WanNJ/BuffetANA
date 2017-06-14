@@ -41,7 +41,7 @@ MacOS和Linux下运行
 
 以及python库：
 
-    numpy scipy sklearn tensorflow pymongo
+    numpy scipy sklearn tensorflow pymongo pandas
 
 以及mongodb数据库，并将BuffTreasureWebApp/app中连接数据库的语句
 

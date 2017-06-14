@@ -135,6 +135,11 @@
                         $("#hot-board-list tr:last td:eq(0)").text(key);
                         $("#hot-board-list tr:last td:eq(1)").text(result[key][0]);
                         $("#hot-board-list tr:last td:eq(2)").text((result[key][1]>0?"+":"") +result[key][1]+"%");
+                        if(result[key][1]>0){
+                            $("#hot-board-list tr:last td:eq(2)").css("color","red");
+                        }else if(result[key][1]<0){
+                            $("#hot-board-list tr:last td:eq(2)").css("color","green");
+                        }
                     }
                 },
             });
@@ -151,6 +156,11 @@
                         $("#hot-stocks-list tr:last td:eq(0) a").text(result[i][0]);
                         $("#hot-stocks-list tr:last td:eq(1)").text(result[i][1]);
                         $("#hot-stocks-list tr:last td:eq(2)").text((result[i][2]>0?"+":"") +result[i][2]+"%");
+                        if(result[i][2]>0){
+                            $("#hot-stocks-list tr:last td:eq(2)").css("color","red");
+                        }else if(result[i][2]<0){
+                            $("#hot-stocks-list tr:last td:eq(2)").css("color","green");
+                        }
                     }
                 },
             });

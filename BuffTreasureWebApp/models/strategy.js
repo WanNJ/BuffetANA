@@ -52,7 +52,8 @@ exports.strategyDB ={
         arg[str] = 'desc';
         let select = {sort:arg ,limit:num};
         strategySchema.find({},null, select,(err, doc) => {
-            callback(err, doc);
+            // console.log(doc)
+            callback(err,doc);
         });
     },
 

@@ -64,8 +64,8 @@ describe('#compareTo()', function () {
             endDate: '2017-04-27T16:00:00.000Z',
             stockPoolConditionVO:
         { excludeST: true,
-            benches: null,
             industries: null,
+            benches: null,
             stockPool: '沪深300' },
         rank:
         { rank1: [ 'KDJ_D', 'asd', 4, 1 ],

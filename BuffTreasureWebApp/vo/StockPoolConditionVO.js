@@ -12,8 +12,8 @@ exports.StockPoolConditionVO = class {
      */
     constructor (stockPool, benches, industries , excludeST ) {
         this.excludeST = excludeST;
-        this.benches = benches;
         this.industries = industries;
+        this.benches = benches;
         this.stockPool = stockPool;
     }
 };

@@ -27,6 +27,8 @@ let PickleDataVO =require('../../vo/PickleData').PickleData
  */
 exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
     let set = new Set();
+    if(typeof filter==='undefined')
+        filter = {}
     let rankKeys =  Object.keys(rank);
     let filterKeys =  Object.keys(filter);
     for(let i = 0 ; i < rankKeys.length;i++){

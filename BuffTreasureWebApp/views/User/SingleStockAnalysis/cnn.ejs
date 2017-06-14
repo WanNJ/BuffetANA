@@ -3,7 +3,7 @@
 <head>
     <% include ../../Components/settings.html %>
     <script src="/echarts/echarts.min.js"></script>
-    <title>BUFF-CNN</title>
+    <title>BUFF-涨幅预测</title>
 </head>
 <body>
 <!-- Main container -->
@@ -18,19 +18,42 @@
                         <span class="fa fa-4x fa-laptop"></span>
                     </div>
                     <div class="info text-center">
-                        <h4 class="text-center">CNN机器学习</h4>
-                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-CNN分析结果已经得出，以下给出该分析方法<br>
-                            随着学习次数的增加 模型准确率在测试集上的表现的变化情况和各种变化情况的概率。<br>
+                        <h4 class="text-center">BUFF-涨幅预测</h4>
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的<strong>BUFF-涨幅预测</strong>分析结果已经得出——<br>
+                            <strong>随着学习次数的增，模型准确率在测试集上的表现的变化情况</strong>
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="折线图的说明"
+                                   data-content="本模型采用机器学习，这张折线图反映了梯度下降阶段随着迭代次数的增加模型在测试集上的准确度变化。如果您了解机器学习，可以通过这张图来发现模型存在的问题(过度学习，学习量不足等)，并来可以修改模型的高级特征来得到更准确的模型。如果您不了解，可以暂时忽略之。"></a>
+                            </span>
+                            <br>
+                            <strong>该个股今日各种涨跌幅情况出现的概率。</strong>
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="饼图的说明"
+                                   data-content="这是我们通过这只股票的历史信息作出的判断，您可以根据不同涨幅区间的概率合理选择买卖股票。"></a>
+                            </span>
+                            <br>
                             其中，测试结果取概率最大时，在测试集上的准确度为——
                         </p>
-                        <h2><%= accuracy %>%</h2>
+                        <h2><%= accuracy %>%
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="准确率的解释"
+                                   data-content="对于饼图中的预测，通过利用我们较为全面的数据，我们为您了提供这一模型在过往数据中测试出的准确率。由于我们采用了较为稳妥的测试方法，所以即使它在测试上的准确性不高也仍然具有参考价值，但是如果准确率低于35%，还是需要谨慎对待的。"></a>
+                            </span>
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
         <div class="box col-md-12">
             <table class="text-left table table-bordered">
-                <caption class="text-center">预测时参数</caption>
+                <caption class="text-center">预测时参数<span>
+                            <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                               data-toggle="popover" data-trigger="hover" title="回测时数据"
+                               data-content="为了防止您遗忘回测时的数据以造成对结果的错误理解，我们为您提供了您使用该模型回测时相应的数据。"></a>
+                        </span></caption>
                 <thead>
                 <tr>
                     <th>股票名称</th>
@@ -68,7 +91,7 @@
         let line_x_data = [];
         let pie_data = [];
 
-        for (let i = 0; i <  '<%= line_y_data.length %>'; i++) {
+        for (let i = 0; i < '<%= line_y_data.length %>'; i++) {
             line_x_data.push(i);
         }
 
@@ -120,7 +143,7 @@
                 splitArea: {
                     show: false
                 },
-                axisLabel : {
+                axisLabel: {
                     formatter: '{value}'
                 },
             }
@@ -200,7 +223,9 @@
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
-
+    <script>
+        $('[data-toggle="popover"]').popover();
+    </script>
 </div>
 <!-- Main container END -->
 </body>

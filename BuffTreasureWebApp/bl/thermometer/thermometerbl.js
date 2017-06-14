@@ -53,16 +53,17 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
          * @param lastDownToday
          */
         let getClassify = function(temp , earnEffect50, earnEffectAll, lastUpToday, lastDownToday) {
-            let w = temp * 0.5 + earnEffect50 *0.3 + earnEffectAll*0.2;
+            // let w = temp * 0.5 + earnEffect50 *0.3 + earnEffectAll*0.2;
+            let w = temp ;
             let q = lastUpToday - lastDownToday;
             let strw;
             let strq;
            // console.log(w)
 
             //console.log(w)
-            if(w >= 55)
+            if(w >= 50)
                 strw = 'High'
-            else if(w < 55)
+            else if(w < 50)
                 strw = 'Low';
             else
                 return 'Normal';

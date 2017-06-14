@@ -10,9 +10,9 @@ exports.TradeModelVO = class {
      * @param loserate {Number}       止损率（为小数，如0.1）
      */
     constructor(holdingDays, holdingNums, winRate = null, loserate = null) {
-        this.holdingDays = holdingDays;
-        this.holdingNums = holdingNums;
-        this.winRate = winRate;
         this.loseRate = loserate;
+        this.winRate = winRate;
+        this.holdingNums = holdingNums;
+        this.holdingDays = holdingDays;
     }
 };

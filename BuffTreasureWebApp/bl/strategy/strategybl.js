@@ -116,7 +116,7 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
         if (err)
             callback(err, null);
         else {
-            setProcess(98)
+            setProcess(98);
             let results = [];
             let keys = Object.keys(docs);
             for (let i = 0; i < 5; i++) {
@@ -157,13 +157,16 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
             };
             strategyDB.getAllStrategy((err, strategies) => {
                 if (!err) {
+                    console.log('no err');
                     let same = false;
                     for (let i = 0; i < strategies.length; i++) {
 
-
+                        console.log(strategies[i]);
+                        console.log(strategy);
                         // 两个策略是否相同
                         if (strategyTool.compareTo(strategies[i], strategy)) {
                             same = true;
+                            console.log(same);
                             // 策略相同，回测区间不相同
                             if ((strategy["beginDate"] - strategies[i]["beginDate"]) !== 0 || (strategy["endDate"] - strategies[i]["endDate"]) !== 0) {
                                 // 回测区间不同，且新策略的回测区间更加接近现在的日期
@@ -175,6 +178,9 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                                             });
                                         }
                                     });
+                                }
+                                else {
+                                    callback(null, results);
                                 }
                             }
                             // 策略相同，回测区间也相同
@@ -207,20 +213,24 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
                                             }
                                         });
                                     }
+                                    else {
+                                        callback(null, results);
+                                    }
                                 }
                             }
-
                             break;
                         }
                     }
                     if (!same) {
+                        console.log('not same');
                         strategyDB.saveStrategy(strategy, (err, data) => {
                             callback(err, results);
                         });
                     }
                 }
-                else
+                else {
                     callback(err, null);
+                }
             });
         }
     });
@@ -231,17 +241,6 @@ exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, ran
 /**
  * ================================下面是一些私有的计算方法，并不是调用的接口=================================
  */
-
-
-/**
- * 保存策略
- * @param strategy
- */
-function saveStrategy(strategy) {
-    strategyDB.getAllStrategy((err, strategies) => {
-
-    });
-}
 
 
 
@@ -328,6 +327,16 @@ function initParaWithDynamic(beginDate, endDate, winRate, loseRate) {
  * @returns {{yearProfitRate: *, baseYearProfitRate: *, largestBackRate: (number|*), sharpRate: number, alpha: number, beta: number}}
  */
 function getBackDetail() {
+    if (baseRates.length === 0 || strategyRates.length === 0) {
+        return {
+            "yearProfitRate": yearProfitRate,            // 年化收益率
+            "baseYearProfitRate": baseYearProfitRate,    // 基准年化收益率
+            "largestBackRate": 0,                       // 最大回撤率
+            "sharpRate": 0,                             // 夏普率
+            "alpha": 0,                                 // alpha
+            "beta": 0
+        };
+    }
     let beta = statisticTool.getCOV(strategyRates, baseRates) / statisticTool.getVariance(baseRates);
 
     /**
@@ -447,10 +456,15 @@ function getProfitDistributePie() {
 
 function getStrategyEstimateResult() {
     let antiRiskAbility = Math.round(20 - largestBackRate * 10);
-    if (antiRiskAbility > 20)
-        antiRiskAbility = 20;
-    else if (antiRiskAbility < 0)
+    if (largestBackRate === 0) {
         antiRiskAbility = 0;
+    }
+    else {
+        if (antiRiskAbility > 20)
+            antiRiskAbility = 20;
+        else if (antiRiskAbility < 0)
+            antiRiskAbility = 0;
+    }
 
     let absoluteProfit = Math.round(yearProfitRate / 2 * 20);
     if (absoluteProfit > 20)

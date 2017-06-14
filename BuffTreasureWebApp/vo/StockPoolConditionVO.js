@@ -11,9 +11,9 @@ exports.StockPoolConditionVO = class {
      * @param excludeST     Bool   是否排除ST股，排除为true，不排除为false
      */
     constructor (stockPool, benches, industries , excludeST ) {
-        this.stockPool = stockPool;
+        this.excludeST = excludeST;
         this.benches = benches;
         this.industries = industries;
-        this.excludeST = excludeST;
+        this.stockPool = stockPool;
     }
 };

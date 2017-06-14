@@ -9,7 +9,7 @@ let expect = require('chai').expect;
 let mongoose = require('mongoose');
 var describe = require("mocha").describe;
 var it = require("mocha").it;
-mongoose.connect('mongodb://localhost/allInfo');
+mongoose.connect('mongodb://localhost/latestInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -27,9 +27,7 @@ describe('singleStockDB', function() {
                     done(err);
                 }
                 else {
-                    // 如果想看docs里面的内容，可以将下面的这条打印语句解注释
-                    // console.log(docs);
-                    //expect(docs.length).to.be.equal(6396);
+                    console.log(docs[0]);
                     done();
                 }
             });

@@ -63,9 +63,9 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
            // console.log(w)
 
             //console.log(w)
-            if(w >= 50)
+            if(w >= 60)
                 strw = 'High'
-            else if(w < 50)
+            else if(w < 60)
                 strw = 'Low';
             else
                 return 'Normal';

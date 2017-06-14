@@ -5,7 +5,7 @@ let realTimeTool = require('../../../bl/realtime/singleStockRT');
 let it = require("mocha").it;
 let describe = require("mocha").describe;
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/allInfo');
+mongoose.connect('mongodb://localhost/latestInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

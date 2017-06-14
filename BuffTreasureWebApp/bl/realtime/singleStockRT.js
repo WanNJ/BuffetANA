@@ -56,7 +56,7 @@ exports.updateAllStockRTInfo = (callback) => {
         }));
         Promise.all(promises).then(results => {
             let stockRTInfo = results.map(info => new Promise((resolve, reject) => {
-                stockRTDB.updateRTInfo(info["code"], info, (err, isSucceed) => {
+                stockRTDB.addRTInfo(info, (err, isSucceed) => {
                     if (err)
                         reject(err);
                     else

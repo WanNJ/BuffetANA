@@ -173,10 +173,14 @@ function obtainRTInfo(code, callback) {
     else
         code = 'sz' + code;
     let url = 'http://web.ifzq.gtimg.cn/appstock/app/minute/query?_var=min_data_' + code + '&code=' + code + '&r=0.5755017222238814';
+    console.log(url);
     request.get(url)
         .end(function (err, res) {
-            if (err)
+            if (err) {
+                // console.log('kkk');
+                console.log(err);
                 callback(err, null);
+            }
             else {
                 let jd = JSON.parse(res.text.substr(18));
                 let stockRTInfo = {

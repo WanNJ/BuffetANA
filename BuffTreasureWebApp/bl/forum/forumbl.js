@@ -43,35 +43,38 @@ exports.forumbl = {
     pressContentGood:(content_id,userID,callback)=>{
         contentDB.pressGood(content_id,userID,(err, stockCode)=>{
             allStockDB.getNameByCode(stockCode, (err, name) => {
-                let message = {};
-                if (err) {
-                    message = {
-                        time: new Date(),
-                        isRead: false,
-                        type: 'error',
-                        codeOrName: '点赞出错',
-                        stockName: name["name"],
-                        content: {
-                            content_id: content_id,
-                            userID: userID
+                contentDB.getSenderByID(content_id, (err, userName) => {
+                    let message = {};
+                    if (err) {
+                        message = {
+                            time: new Date(),
+                            isRead: false,
+                            type: 'error',
+                            codeOrName: '点赞出错',
+                            stockName: name["name"],
+                            content: {
+                                content_id: content_id,
+                                userID: userID
+                            }
                         }
                     }
-                }
-                else {
-                    message = {
-                        time: new Date(),
-                        isRead: false,
-                        type: 'thumbs_up',
-                        codeOrName: stockCode,
-                        stockName: name["name"],
-                        content: {
-                            content_id: content_id,
-                            userID: userID
+                    else {
+                        message = {
+                            time: new Date(),
+                            isRead: false,
+                            type: 'thumbs_up',
+                            codeOrName: stockCode,
+                            stockName: name["name"],
+                            content: {
+                                content_id: content_id,
+                                userID: userID
+                            }
                         }
                     }
-                }
-                userDB.addUnreadMessage(userID, message, (err) => {
-                    callback(err);
+                    userDB.addUnreadMessage(userName, message, (err) => {
+                        callback(err);
+                    });
+
                 });
             });
         });
@@ -86,35 +89,37 @@ exports.forumbl = {
     pressContentBad:(content_id,userID,callback)=>{
         contentDB.pressBad(content_id,userID,(err, stockCode)=>{
             allStockDB.getNameByCode(stockCode, (err, name) => {
-                let message = {};
-                if (err) {
-                    message = {
-                        time: new Date(),
-                        isRead: false,
-                        type: 'error',
-                        codeOrName: '点踩出错',
-                        stockName: name["name"],
-                        content: {
-                            content_id: content_id,
-                            userID: userID
+                contentDB.getSenderByID(content_id, (err, userName) => {
+                    let message = {};
+                    if (err) {
+                        message = {
+                            time: new Date(),
+                            isRead: false,
+                            type: 'error',
+                            codeOrName: '点踩出错',
+                            stockName: name["name"],
+                            content: {
+                                content_id: content_id,
+                                userID: userID
+                            }
                         }
                     }
-                }
-                else {
-                    message = {
-                        time: new Date(),
-                        isRead: false,
-                        type: 'thumbs_down',
-                        codeOrName: stockCode,
-                        stockName: name["name"],
-                        content: {
-                            content_id: content_id,
-                            userID: userID
+                    else {
+                        message = {
+                            time: new Date(),
+                            isRead: false,
+                            type: 'thumbs_down',
+                            codeOrName: stockCode,
+                            stockName: name["name"],
+                            content: {
+                                content_id: content_id,
+                                userID: userID
+                            }
                         }
                     }
-                }
-                userDB.addUnreadMessage(userID, message, (err) => {
-                    callback(err);
+                    userDB.addUnreadMessage(userName, message, (err) => {
+                        callback(err);
+                    });
                 });
             });
         });

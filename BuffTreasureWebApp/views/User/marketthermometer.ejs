@@ -122,11 +122,11 @@
                 </div>
                 <div class="col-md-8">
                     <header class="section-header animated fadeInDown">
-                        <blockquote class="text-box" style="margin-top: 15px">
+                        <div class="text-box" style="margin-top: 15px">
                             <h2 class="section-title">
                                 <%= currentENV %>
                             </h2>
-                        </blockquote>
+                        </div>
                     </header>
                     <div class="row">
                         <div class="col-md-6">
@@ -195,6 +195,7 @@
         $(document).ready(function () {
             $("#bloc-0").removeClass("bgc-white");
             $("#bloc-0 a").css("color","white");
+            $("#bloc-0 .dropdown-menu a").css("color","black");
             changeThermometer('<%- temperature %>');
         });
 

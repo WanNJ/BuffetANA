@@ -76,4 +76,18 @@ describe('测试conten', function() {
         });
     });
 
+    describe('#getSenderByID()', function() {
+        it('找到用户的名字', function(done) {
+            contentDB.getSenderByID('593ba86716dc285464427c58', function (err, docs) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    console.log(docs);
+                    done();
+                }
+            });
+        });
+    });
+
 });

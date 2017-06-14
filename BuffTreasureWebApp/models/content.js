@@ -97,6 +97,16 @@ exports.contentDB = {
             }
 
         });
-    }
+    },
+
+    /**
+     * 通过帖子的ID  获得是谁的帖子 
+     * @param callback
+     */
+    getSenderByID: (content_id , callback) => {
+        contentSchema.find({_id: content_id},"userID",(err, doc) => {
+            callback(err, doc[0]['userID'])
+        });
+    },
 
 }

@@ -1038,7 +1038,7 @@
                                 <span>考虑市场环境：</span>
                                 <div class="switch" style="display: inline-flex;margin-top: 5px;">
                                     <input id="market-environment" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                           checked="checked"
+                                           value="off"
                                            onclick="$(this).val($(this).val()==='on'? 'off':'on')">
                                     <label for="market-environment"></label>
                                 </div>
@@ -1047,15 +1047,15 @@
                                 <span style="line-height: 35px">迭代量：</span>
                                 <input class="text-center" style="max-width: 50px;margin-left: 40px;"
                                        required="required" value="4" pattern="[0-9]{1,}"
-                                       id="iteration-quantity" onchange="number_validate(this,1,5,4)"/>
+                                       id="iteration-quantity" onchange="number_validate(this,1,6,4)"/>
                             </div>
                             <div class="col-md-4">
                                 <span style="width: 150px;line-height: 36px;">学习方式：</span>
                                 <select class="form-control"
                                         style="max-width: 120px;display: inline-flex;margin-left: 25px"
                                         id="learning-way">
-                                    <option selected="selected">分批</option>
-                                    <option>全部</option>
+                                    <option selected="selected">全部</option>
+                                    <option>分批</option>
                                 </select>
                             </div>
                         </div>

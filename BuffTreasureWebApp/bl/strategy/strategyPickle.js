@@ -158,6 +158,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             });
             AllDataList[keys[i]] = pickleDataList;
         }
+        setProcess(92)
         return AllDataList;
     }
 
@@ -188,7 +189,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             });
             AllDataList[keys[i]] = pickleDataList;
         }
-
+        setProcess(95)
         return AllDataList;
     }
 

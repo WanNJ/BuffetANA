@@ -122,9 +122,13 @@
                 RTInfos[1].innerHTML = result.high;
                 RTInfos[2].innerHTML = result.yesterday_close;
                 RTInfos[3].innerHTML = result.low;
-                RTInfos[4].innerHTML = result.volume + '万手';
+                if(result.volume/100000000 >= 1) {
+                    RTInfos[4].innerHTML = (result.volume/100000000).toFixed(2) + '亿手';
+                } else {
+                    RTInfos[4].innerHTML = (result.volume/10000).toFixed(2) + '万手';
+                }
                 RTInfos[5].innerHTML = result.amplitude + '%';
-                RTInfos[6].innerHTML = result.volume_of_transaction + '亿元';
+                RTInfos[6].innerHTML = (result.volume_of_transaction/10000).toFixed(2) + '亿元';
 
                 if (result.today_open > result.yesterday_close)
                     $(RTInfos[0]).css({color: "red"});

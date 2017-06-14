@@ -258,7 +258,7 @@ function getCoefficientOfRisk(code, callback) {
  * ['53.23',                             '1']
  */
 function isUpOrDown(code, open_price, callback) {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/statistics/StockPredict.py ' +code + ' ' + open_price, function(err, stdout, stderr){
+    exec('python3' + ' ../bl/statistics/StockPredict.py ' +code + ' ' + open_price, function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }

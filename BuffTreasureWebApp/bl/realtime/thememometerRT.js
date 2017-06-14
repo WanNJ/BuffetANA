@@ -201,9 +201,9 @@ exports.getCurrentENV = (callback) =>{
                 strw = 'Low';
             else
                 return 'Normal';
-            if(q > 0)
+            if(q > 4.8)
                 strq = 'Same';
-            else if(q < 0)
+            else if(q < 4.8)
                 strq = 'Opposite';
             else
                 return 'Normal';

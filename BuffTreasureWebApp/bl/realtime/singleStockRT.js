@@ -56,7 +56,7 @@ exports.updateAllStockRTInfo = (callback) => {
         }));
         Promise.all(promises).then(results => {
             let stockRTInfo = results.map(info => new Promise((resolve, reject) => {
-                stockRTDB.addRTInfo(info, (err, isSucceed) => {
+                stockRTDB.updateRTInfo(info["code"], info, (err, isSucceed) => {
                     if (err)
                         reject(err);
                     else
@@ -114,7 +114,7 @@ exports.getHotBoard = (callback) => {
  * @param callback
  */
 exports.updateHotBoard = (callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/realtime/hot_board.py', function(err, stdout, stderr){
+    exec('python3' + ' /Users/Accident/BuffettANA/BuffTreasureWebApp/bl/realtime/hot_board.py', function(err, stdout, stderr){
         if(err) {
             callback(err, null);
         }

@@ -8,7 +8,7 @@ let expect = require('chai').expect;
 // MongoDB
 let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/allInfo');
+mongoose.connect('mongodb://localhost/latestInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');
@@ -18,7 +18,7 @@ mongoose.connection.on('open', function () {
 describe('userbl', function() {
     describe('#signUp()', function() {
         it('just a test', function(done) {
-            userbl.signUp('时间很慢','123456', '151250136@smail.nju.edu.cn',function (err, doc) {
+            userbl.signUp('ty','123456', '151250135@smail.nju.edu.cn',function (err, doc) {
                 if (err) {
                     done(err);
                 }

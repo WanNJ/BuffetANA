@@ -1269,7 +1269,7 @@ exports.getHotStocks = (callback) => {
  * @param callback
  */
 exports.updateHotStocks = (callback) => {
-    exec('python3' + ' /Users/slow_time/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function (err, stdout, stderr) {
+    exec('python3' + ' /Users/Accident/BuffettANA/BuffTreasureWebApp/bl/hot_stock.py', function (err, stdout, stderr) {
         if (err) {
             callback(err, null);
         }

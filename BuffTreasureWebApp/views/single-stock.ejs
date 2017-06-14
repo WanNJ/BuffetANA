@@ -1039,6 +1039,16 @@
         </div>
     </div>
 
+    <% if(typeof stockCode !== "undefined") { %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#search_area').val('<%= stockCode %>' + '(' + '<%= stockName %>' + ')');
+            getCharts('<%= stockCode %>');
+            $('#search_area').val('');
+        });
+    </script>
+    <% } %>
+
     <div id="comments_seg" class="col-md-12 bordered-div"></div>
 </div>
 </body>

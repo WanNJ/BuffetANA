@@ -18,18 +18,36 @@
                         <span class="fa fa-4x fa-lightbulb-o"></span>
                     </div>
                     <div class="info text-center">
-                        <h4 class="text-center">RFC机器学习</h4>
-                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-RFC分析结果已经得出<br>
-                            以下给出该分析方法分析出的对该股票影响最大的参数及其相对重要性，并给出了该个股各种变化情况的概率。<br>
-                            其中，测试结果取概率最大时，在测试集上的准确度为——
+                        <h4 class="text-center">BUFF-特征分析</h4>
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>
+                            ）的BUFF-特征分析结果已经得出。分析结果——
+                        <ul>
+                            <li>对该股票影响最大的参数及其相对重要性。</li>
+                            <li>该个股今日各种涨跌幅情况出现的概率。</li>
+                        </ul>
+                            当测试结果取概率最大时，在测试集上的准确度为——
                         </p>
-                        <h2><%= accuracy %>%</h2>
+                        <h2>
+                            <%= accuracy %>%
+                            <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="准确率的解释"
+                                   data-content="通过利用我们较为全面的数据，我们为您提供这一模型在过往数据中回溯测试出的预测准确率<br>如果准确率低于50% 请谨慎对待"></a>
+                            </span>
+                        </h2>
                     </div>
                 </div>
             </div>
             <div class="box col-md-12">
                 <table class="text-left table table-bordered">
-                    <caption class="text-center">预测时参数</caption>
+                    <caption class="text-center">
+                        预测时参数
+                        <span>
+                            <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                               data-toggle="popover" data-trigger="hover" title="回测时数据"
+                               data-content="为了防止您遗忘回测时的数据以造成对结果的错误理解，我们为您提供了您使用该模型回测时相应的数据。"></a>
+                        </span>
+                    </caption>
                     <thead>
                     <tr>
                         <th>股票名称</th>
@@ -154,6 +172,9 @@
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
 
+    <script>
+        $('[data-toggle="popover"]').popover();
+    </script>
 </div>
 <!-- Main container END -->
 </body>

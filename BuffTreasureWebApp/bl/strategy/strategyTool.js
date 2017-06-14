@@ -246,7 +246,7 @@ let rankMap = require('../functionMap/rankMap').funtionMap;
  */
 exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
                                             beginDate, endDate, rank, filter,
-                                            projection, use , callback ) =>{
+                                            projection, use ,setProcess, callback ) =>{
 
     /**
      *
@@ -346,6 +346,11 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
         return new Promise((resolve,reject)=>{
             //console.log(codeList)
 
+            if(codeList.length!==0) {
+                let tempPro = codeIndex * (80 / codeList.length())+8
+                console.log(tempPro)
+                setProcess(tempPro)
+            }
             if(codeIndex === codeList.length)
                 resolve (listAll);
             else {

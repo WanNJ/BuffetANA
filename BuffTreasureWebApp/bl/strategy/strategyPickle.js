@@ -24,7 +24,7 @@ let proMap  =require('../functionMap/projectionMap').proMap;
             'LowAndOpposite':LowAndOppositePickleList
          }
  */
-exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, callback) => {
+exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, setProcess,callback) => {
 
     /**
      * 参数检验
@@ -89,11 +89,15 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
 
     console.timeEnd('pro')
 
+    setProcess(2)
+
 
     let getCodeList = function () {
         return new Promise((resolve,reject) => {
             strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
+                setProcess(5)
                 resolve(list);
+
             })
         })
     }
@@ -116,6 +120,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
                     'pickle':list
                 };
                 //console.log(data)
+                setProcess(8)
                 resolve(data);
             })
         })
@@ -130,7 +135,10 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
         return new Promise((resolve,reject) =>{
             //console.log('ere')
             strategyTool.setRankAndFilterToPickleDataList
-            (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,0,(err,list) =>{
+            (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,0,(pro)=>{
+                setProcess(pro)
+            },(err,list) =>{
+                setProcess(88)
                 resolve(list);
             })
         })
@@ -151,7 +159,7 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             });
             AllDataList[keys[i]] = pickleDataList;
         }
-
+        setProcess(90)
         return AllDataList;
     }
 

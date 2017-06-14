@@ -100,7 +100,7 @@ exports.contentDB = {
     },
 
     /**
-     * 通过帖子的ID  获得是谁的帖子 
+     * 通过帖子的ID  获得是谁的帖子
      * @param callback
      */
     getSenderByID: (content_id , callback) => {

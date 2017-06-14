@@ -110,18 +110,23 @@ let largestBackRate;
  */
 exports.getBackResults = function (beginDate, endDate, stockPoolConditionVO, rank, filter, tradeModelVO, envSpecDay, setProcess, callback) {
     strategyDAO.getPickleData(beginDate, endDate, stockPoolConditionVO,
-        rank, filter, tradeModelVO, envSpecDay, (err, docs) => {
+        rank, filter, tradeModelVO, envSpecDay,(pro)=>{
+            setProcess(pro)
+        } ,(err, docs) => {
         if (err)
             callback(err, null);
         else {
+            setProcess(98)
             let results = [];
             let keys = Object.keys(docs);
             for (let i = 0; i < 5; i++) {
                 pickleDatas =  docs[keys[i]];
 
                 // 没有动态持仓
-                if (tradeModelVO.winRate === null)
+                if (tradeModelVO.winRate === null){
                     initPara(beginDate, endDate);
+                }
+
                 // 有动态持仓
                 else
                     initParaWithDynamic(beginDate, endDate, tradeModelVO.winRate, tradeModelVO.loseRate);

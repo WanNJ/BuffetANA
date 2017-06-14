@@ -190,7 +190,7 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
                 console.error(err);
             }
         });
-        res.send("SVM分析中，分析完毕后在网页右上角会有提示");
+        res.send("相关性分析 分析中，分析完毕后在网页右上角会有提示");
     }else  if(model==="RFC"){
         singleStockPredict.RFCAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
             Number(req.body.holdingDays), req.body.time, (err, isOK) => {
@@ -198,7 +198,7 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
                     console.error(err);
                 }
         });
-        res.send("RFC分析中，分析完毕后在网页右上角会有提示");
+        res.send("特征分析 分析中，分析完毕后在网页右上角会有提示");
     }else  if(model==="CNN"){
         if(req.body.advancedOptions==="on"){
             singleStockPredict.CNNAnalyze(req.session.user, req.body.stockCode, req.body.stockName,
@@ -216,7 +216,7 @@ router.post('/analysisStock', (req, res, next) => {//TODO:接口还没敲定
                     }
             });
         }
-        res.send("CNN分析中，分析完毕后在网页右上角会有提示");
+        res.send("涨幅预测 分析中，分析完毕后在网页右上角会有提示");
     }else {
         req.session.alertType = "alert-warning";
         req.session.alertMessage = "不能识别分析模型:"+model;

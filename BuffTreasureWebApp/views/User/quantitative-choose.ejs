@@ -433,6 +433,7 @@
 </div>
 
 <script type="text/javascript">
+    var chmap,allIndustries,allBoards;
     let option="<li>                                                                             \
                         <a class=\"active\">                                                                     \
                             <input type=\"checkbox\" autocomplete=\"off\" checked>                         \
@@ -481,18 +482,23 @@
         });
 
         <% if(typeof strategyID !== "undefined") { %>
-        $.ajax({
-            type: "post",
-            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            data: {"strategyID": "<%= strategyID %>"},
-            url: "getStrategy", //请求发送到TestServlet处
-            success: (result) => {
-                load_strategy(result);
-            },
-            error: function(request, err){
-                console.error(err);
-            },
-        });
+        let interval = setInterval(()=>{
+            if(chmap &&　allBoards　&& allIndustries){
+                clearInterval(interval);
+                $.ajax({
+                    type: "post",
+                    async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                    data: {"strategyID": "<%= strategyID %>"},
+                    url: "getStrategy", //请求发送到TestServlet处
+                    success: (result) => {
+                        load_strategy(result);
+                    },
+                    error: function(request, err){
+                        console.error(err);
+                    },
+                });
+            }
+        },100);
         <% } %>
     });
 

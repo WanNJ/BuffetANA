@@ -588,7 +588,7 @@
     <div class="page-container">
 
         <!--Recently Browsed-->
-        <div class="col-md-2 center-block" style="padding-right: 0px;padding-left: 0px;">
+        <div class="col-md-2 hidden-xs center-block" style="padding-right: 0px;padding-left: 0px;">
             <div class="col-sm-12" style="height: 50px;"></div>
 
             <div>
@@ -680,7 +680,7 @@
                 <div class="row">
                     <% if(typeof user !== "undefined") { %>
                     <!--Names-->
-                    <div class="col-sm-4 text-center" target="_blank" data-toggle="tooltip" data-placement="top"
+                    <div class="col-md-4 col-xs-12 text-center" target="_blank" data-toggle="tooltip" data-placement="top"
                          title="点击查看公司信息" style="height: 102px;padding-left: 0px;padding-right: 0px">
                         <a class="my-link" id="stock_name_link" href="#"><h2 id="stock_name"
                                                                              style="color: #337ab7;font-weight: bold;"></h2>
@@ -689,33 +689,21 @@
                     </div>
 
                     <!--Numbers-->
-                    <div class="col-sm-5" style="padding-left: 10px;padding-right: 0px">
+                    <div class="col-md-6 col-xs-12" style="padding-left: 10px;padding-right: 0px">
                         <div class="row">
-                            <div class="col-sm-5 text-right"
+                            <div class="col-xs-5 text-right"
                                  style="height: 102px;padding-left: 10px;padding-right: 0px">
                                 <h2 id="current_price" style="height: 102px;"></h2>
                             </div>
-                            <div class="col-sm-3" style="padding-left: 7px;padding-right: 0px">
+                            <div class="col-xs-3" style="padding-left: 7px;padding-right: 0px">
                                 <h1>
                                     <sapn id="imp_icon" class="fa fa-x fa-fw text-center"></sapn>
                                 </h1>
                             </div>
-                            <div class="col-sm-4 text-center"
+                            <div class="col-xs-4 text-center"
                                  style="height: 102px;padding-left: 5px;padding-right: 10px;padding-top: 5px">
                                 <h4 id="chg"></h4>
                                 <h4 id="chg_p"></h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Add to personal Button-->
-                    <div class="col-sm-3" style="padding-left: 15px;padding-right: 0px">
-                        <div class="row">
-                            <div class="col-sm-12 text-center"
-                                 style="height: 102px;padding-top:19px;  line-height: 10px;">
-                                <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
-                                        style="height: 40px;">
-                                    <span class="fa fa-plus"></span> 加入自选股
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -749,6 +737,14 @@
                     </div>
                     <% } %>
                 </div>
+                <% if(typeof user !== "undefined") { %>
+                <div class="row text-center">
+                    <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
+                            style="height: 40px;">
+                        <span class="fa fa-plus"></span> 加入自选股
+                    </button>
+                </div>
+                <% } %>
             </div>
             <div class="col-sm-6">
                 <table border="0" cellpadding="0" cellspacing="0">
@@ -786,7 +782,7 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <th>昨收：</th>
+                        <th>昨收: </th>
                         <td>--</td>
                         <th>流通市值:</th>
                         <td>--</td>
@@ -891,7 +887,7 @@
         </div>
 
         <!-- Right Side -->
-        <div class="col-md-2 center-block" style="padding-right: 0px;padding-left: 0px;">
+        <div class="col-md-2 hidden-xs center-block" style="padding-right: 0px;padding-left: 0px;">
             <div class="col-sm-12" style="height: 50px;"></div>
 
             <div>

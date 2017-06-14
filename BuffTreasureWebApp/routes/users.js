@@ -355,6 +355,9 @@ router.post('/quantitative-analysis/loading', function (req, res, next) {
 });
 
 router.get('/quantitative-analysis/process', function (req, res, next) {
+    if(req.session.user==undefined){
+        res.send('0');
+    }
     let process = strategyJSON[req.session.user].process;
     res.send(process.toString());
 });

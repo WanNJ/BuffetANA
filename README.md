@@ -31,4 +31,26 @@ MacOS和Linux下运行
 
 
 #  迭代三
-开发中...
+## 浏览网站
+迭代三是是WEB项目，如果你在自己的电脑上运行了服务器，在浏览器输入网址http://localhost:3000 即可访问。
+
+## 服务器端运行说明
+需要安装的依赖：
+
+    Node.js 6.10以上  python3.6  
+
+以及python库：
+
+    numpy scipy sklearn tensorflow pymongo
+
+以及mongodb数据库，并将BuffTreasureWebApp/app中连接数据库的语句
+
+    mongoose.connect('mongodb://localhost/allInfo');
+
+中localhost改成你的数据库的的ip地址
+进入到BuffTreasureWebApp/bin下，运行：
+
+    node www
+
+即可运行服务器端
+注意：请保证你的"python"命令运行的是python3，而不是python2

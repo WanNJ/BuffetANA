@@ -525,6 +525,7 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                     res.locals.relatedName = msg.content.relatedName;
 
                     res.locals.CR = msg.content.CR[0];
+                    res.locals.CRString = msg.content.CR[1];
                     res.locals.reliablity = msg.content.upOrDown[0];
                     res.locals.isUp = msg.content.upOrDown[1];
 
@@ -545,7 +546,6 @@ router.get('/:id/msg-result/:type', (req, res, next) => {
                         msg.content["5-7_5"],
                         msg.content["7_5-10"],
                         msg.content["more10"]
-
                     ];
                     res.locals.accuracy = Math.round(msg.content.accuracy * 10000) / 100;
                     res.locals.holdingDays = msg.content.holdingDays;

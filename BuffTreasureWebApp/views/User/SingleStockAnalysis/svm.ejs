@@ -20,8 +20,8 @@
                     </div>
                     <div class="info text-center">
                         <h4 class="text-center">看涨</h4>
-                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日涨</strong><br>
-                            其中可信度表示在多大程度上该预测结果可信。风险系数表示在多大可能上该预测可能出现问题。
+                        <p>嗨, WAN！您在<%= time.toLocaleString() %>对个股——<%= stockName %>（<%= stockCode %>
+                            ）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日涨</strong>
                         </p>
                     </div>
                     <% } else { %>
@@ -30,14 +30,19 @@
                     </div>
                     <div class="info text-center">
                         <h4 class="text-center">看跌</h4>
-                        <p>嗨, WAN！您在<%= time %>对个股——<%= stockName %>（<%= stockCode %>）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日跌</strong><br>
+                        <p>嗨, WAN！您在<%= time %>对个股——<%= stockName %>（<%= stockCode %>
+                            ）的BUFF-SVM分析结果已经得出，预测结果为——<br><strong>今日跌</strong><br>
                             其中可信度表示在多大程度上该预测结果可信。风险系数表示在多大可能上该预测可能出现问题。
                         </p>
                     </div>
                     <% } %>
                     <div class="box col-md-12">
                         <table class="text-left table table-bordered">
-                            <caption class="text-center">预测时参数</caption>
+                            <caption class="text-center">预测时参数<span>
+                            <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                               data-toggle="popover" data-trigger="hover" title="回测时数据"
+                               data-content="为了防止您遗忘回测时的数据以造成对结果的错误理解，我们为您提供了您使用该模型回测时相应的数据。"></a>
+                        </span></caption>
                             <thead>
                             <tr>
                                 <th>股票名称</th>
@@ -69,14 +74,20 @@
                         <div class="col-md-12 text-center">
                             <h1 class="display-1"><%= reliablity %>%</h1>
                             <div class="rating">
-                                <% for(let i = 0; i < reliablity/20; i++) { %>
+                                <% for(let i = 0; i < Math.round(reliablity / 20); i++) { %>
                                 <span class="glyphicon glyphicon-star"></span>
                                 <% } %>
-                                <% for(let i = 0; i < 5 - reliablity/20; i++) { %>
+                                <% for(let i = 0; i < 5 - Math.round(reliablity / 20); i++) { %>
                                 <span class="glyphicon glyphicon-star-empty"></span>
                                 <% } %>
                             </div>
-                            <h4 class="small">可信度</h4>
+                            <h4 class="small">可信度
+                                <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="可信度的说明"
+                                   data-content="通过利用我们较为全面的数据，我们用该股票近500个交易日的数据一定的比例划分训练集和测试集做交叉验证，最终得改预测的可信度。如果可信度低于50%，请谨慎对待。"></a>
+                            </span>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -88,14 +99,34 @@
                             <div class="col-xs-12 col-md-12 text-center">
                                 <h1 class="display-1"><%= CR %></h1>
                                 <div class="rating">
-                                    <% for(let i = 0; i < Math.round(CR/0.2); i++) { %>
+                                    <% for(let i = 0; i < Math.round(CR / 0.2); i++) { %>
                                     <span class="glyphicon glyphicon-star"></span>
                                     <% } %>
-                                    <% for(let i = 0; i < 5 - Math.round(CR/0.2); i++) { %>
+                                    <% for(let i = 0; i < 5 - Math.round(CR / 0.2); i++) { %>
                                     <span class="glyphicon glyphicon-star-empty"></span>
                                     <% } %>
                                 </div>
-                                <h4 class="small">风险系数</h4>
+                                <h4 class="small">风险系数(<%- CRString %>)
+                                    <% if(CRString === '高') { %>
+                                    <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="风险系数的说明"
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"高"，表示该股票很能出现暴涨暴跌的状况，如果您是个冒险主义者，这个时候买入是比较好的选择。'></a>
+                                </span>
+                                    <% } else if (CRString === '中') { %>
+                                    <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="风险系数的说明"
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"中"，表示该股票的涨跌幅不太可能出现暴涨暴跌的情况，因此就算亏损，也不会"损失惨重"。但与此同时，您的收益也不会太高。'></a>
+                                </span>
+                                    <% } else { %>
+                                    <span>
+                                <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                                   data-toggle="popover" data-trigger="hover" title="风险系数的说明"
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"低"，表示该股票表现比较稳定，是支比较"沉得住气"的股票，比较适合做长线——钓大鱼。'></a>
+                                </span>
+                                    <% } %>
+                                </h4>
                             </div>
                         </div>
                     </div>
@@ -104,7 +135,11 @@
 
             <div class="col-md-12 text-left" style="padding-right: 40px; padding-left: 40px;">
                 <table class="table table-bordered">
-                    <caption class="text-center">同行业中正相关度最高的个股</caption>
+                    <caption class="text-center">同行业中正相关度最高的个股<span>
+                            <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
+                               data-toggle="popover" data-trigger="hover" title="相关性分析的说明"
+                               data-content="通过将与该股票同行业的股票用我们的独特算法做相关性分析之后，我们得出了与该个股最相关的同行业股票。我们通过散点图将这一特点进行了可视化处理，供您参考。"></a>
+                        </span></caption>
                     <thead>
                     <tr>
                         <th>股票名称</th>
@@ -153,7 +188,7 @@
                 name: '基准股价',
                 scale: true,
                 type: 'value',
-                axisLabel : {
+                axisLabel: {
                     formatter: '{value} 元'
                 },
                 splitLine: {
@@ -166,7 +201,7 @@
                 name: '比较股价',
                 scale: true,
                 type: 'value',
-                axisLabel : {
+                axisLabel: {
                     formatter: '{value} 元'
                 },
                 splitLine: {
@@ -197,6 +232,9 @@
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
 
+    <script>
+        $('[data-toggle="popover"]').popover();
+    </script>
 </div>
 <!-- Main container END -->
 </body>

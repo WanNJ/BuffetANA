@@ -726,6 +726,13 @@
     }
 
     function save(name,overwrite=false) {
+        if(name==undefined || name===""){
+            $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>名字不能为空</strong></div>');
+
+            window.setTimeout(function () {
+                $("#bottom-alert").alert("close");
+            }, 2000);
+        }
         let data=collect_data();
         data.strategyName=name;
         data.markNormal=-1;
@@ -744,6 +751,11 @@
                     $('#confirmModal').modal('show')
                 }else {
                     console.log("SAVE:"+result);
+                    $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-success fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>保存策略成功</strong></div>');
+
+                    window.setTimeout(function () {
+                        $("#bottom-alert").alert("close");
+                    }, 2000);
                 }
             },
             error: function(request, err){

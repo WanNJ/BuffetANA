@@ -53,7 +53,7 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
          * @param lastDownToday
          */
         let getClassify = function(temp , earnEffect50, earnEffectAll, lastUpToday, lastDownToday) {
-            let w = temp * 0.3 + earnEffect50 *0.3 + earnEffectAll*0.4;
+            let w = temp * 0.5 + earnEffect50 *0.3 + earnEffectAll*0.2;
             let q = lastUpToday - lastDownToday;
             let strw;
             let strq;
@@ -228,7 +228,7 @@ exports.getDailyEnvironment  = (date , callback) =>{
                            }
 
                            while(js< before.length && before[js]['code']<data['code']){
-                               console.log(before[js]['code'],data['code'])
+                               // console.log(before[js]['code'],data['code'])
                                js++;
                            }
 

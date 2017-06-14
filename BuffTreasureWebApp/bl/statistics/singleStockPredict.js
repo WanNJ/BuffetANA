@@ -21,7 +21,7 @@ const RFCModel = require('./ML/testRFCModel').RFCPredict;
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time, callback) => {
+exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time = new Date(), callback) => {
     async.parallel([
         function (callback) {
             industryCorrelationTool.getIndustryCorrelationResult(code, holdingDays, callback);
@@ -93,7 +93,7 @@ exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time, 
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.RFCAnalyze = (userName, code, stockName, holdingDays, time, callback) => {
+exports.RFCAnalyze = (userName, code, stockName, holdingDays, time = new Date(), callback) => {
     RFCModel.rfcPredict(code, holdingDays, (err, result) => {
         let message = {};
         if (err) {
@@ -152,7 +152,7 @@ exports.RFCAnalyze = (userName, code, stockName, holdingDays, time, callback) =>
  * @param time {Date} 用户进行个股分析时的时间
  * @param callback {function} (err, isOK) => {} 暂时就当成一个空壳的函数，里面没有内容
  */
-exports.CNNAnalyze = (userName, code, stockName, holdingDays, isMarket=false, iterationNum=4, learningWay='ALL', time, callback) => {
+exports.CNNAnalyze = (userName, code, stockName, holdingDays, isMarket=false, iterationNum=4, learningWay='ALL', time = new Date(), callback) => {
     CNNModel.betterPredict(code, holdingDays, iterationNum, isMarket, "2006-04-05", learningWay, (err, result) => {
         let message = {};
         if (err) {

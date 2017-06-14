@@ -88,7 +88,7 @@ app.use((err, req, res, next) => {
 
 mongoose.Promise = global.Promise;
 // 数据库连接 MongoDB
-mongoose.connect('mongodb://172.26.217.130/allInfo');
+mongoose.connect('mongodb://localhost/allInfo');
 
 mongoose.connection.on('open', function () {
     console.log('Connected to Mongoose');

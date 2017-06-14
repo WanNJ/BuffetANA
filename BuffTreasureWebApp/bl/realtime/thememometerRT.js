@@ -194,15 +194,15 @@ exports.getCurrentENV = (callback) =>{
             // console.log(w)
 
             //console.log(w)
-            if(w > 69)
+            if(w >= 55)
                 strw = 'High'
-            else if(w < 69)
+            else if(w < 55)
                 strw = 'Low';
             else
                 return 'Normal';
-            if(q > 4.8)
+            if(q > 0)
                 strq = 'Same';
-            else if(q < 4.8)
+            else if(q < 0)
                 strq = 'Opposite';
             else
                 return 'Normal';

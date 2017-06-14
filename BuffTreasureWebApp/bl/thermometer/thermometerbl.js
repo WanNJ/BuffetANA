@@ -12,12 +12,12 @@ let bl = require('./thermometerbl');
  * 根据开始日期，结束日期 和观察期的天数 返回这个期间每一天的市场温度分类列表
  * TODO 划分参数可能修改!!!!!!
  * 划分说明    温度高低判断:   0.3 * 市场温度(0~100) + 0.3 * 换手率前50赚钱效应(0~100) + 0.4 * 整体赚钱效应(0~100)
- *            高温  > 65
- *            低温  < 65
+ *            高温  > 55
+ *            低温  < 55
  *
  *            走势趋同性判断   昨日涨停股票今日表现(-10~10) - 昨日跌停股票今日表现(-10~10)
- *            趋同  > 4.8
- *            驱反  < 4.8
+ *            趋同  > 2.4
+ *            驱反  < 2.4
  *
  *
  * @param beginDate  开始日期
@@ -60,15 +60,15 @@ exports.getEachDayEnvironmentByFormation = (beginDate , endDate, formationDays, 
            // console.log(w)
 
             //console.log(w)
-            if(w > 69)
+            if(w >= 55)
                 strw = 'High'
-            else if(w < 69)
+            else if(w < 55)
                 strw = 'Low';
             else
                 return 'Normal';
-            if(q > 4.8)
+            if(q > 0)
                 strq = 'Same';
-            else if(q < 4.8)
+            else if(q < 0)
                 strq = 'Opposite';
             else
                 return 'Normal';

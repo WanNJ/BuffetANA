@@ -164,25 +164,26 @@ router.get('/comparison', function (req, res, next) {
 });
 
 router.get('/marketthermometer', function (req, res, next) {
-    // thememometerRT.getCurrentThermometor((err,thermometer)=>{
-    //     let data=thermometer;
-    //     thememometerRT.getCurrentENV((err,currentENV)=>{
-    //         data.currentENV=currentENV;
-    //         res.render('User/marketthermometer',data);
-    //     });
-    // });
-    res.render('User/marketthermometer',{
-        limitUp: 7,
-        limitDown: 1,
-        halfLimitUp: 42,
-        halfLimitDown: 4,
-        temperature: 87.5,
-        lastLimitUp: '0.00000',
-        lastLimitDown: '-0.26000',
-        lastTurnOver: '62.00000',//换手率前50只股票的赚钱效应
-        moneyEffect: '37.78990', //赚钱效应
-        currentENV: '低温反转',
+    thememometerRT.getCurrentThermometor((err,thermometer)=>{
+        let data=thermometer;
+        thememometerRT.getCurrentENV((err,currentENV)=>{
+            data.currentENV=currentENV;
+            res.render('User/marketthermometer',data);
+        });
     });
+
+    // res.render('User/marketthermometer',{
+    //     limitUp: 7,
+    //     limitDown: 1,
+    //     halfLimitUp: 42,
+    //     halfLimitDown: 4,
+    //     temperature: 87.5,
+    //     lastLimitUp: '0.00000',
+    //     lastLimitDown: '-0.26000',
+    //     lastTurnOver: '62.00000',//换手率前50只股票的赚钱效应
+    //     moneyEffect: '37.78990', //赚钱效应
+    //     currentENV: '低温反转',
+    // });
 });
 
 router.get('/quantitative-analysis', function (req, res, next) {

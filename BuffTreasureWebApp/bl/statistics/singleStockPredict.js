@@ -40,7 +40,7 @@ exports.SVMAnalyze = (userName, code, stockName, open_price, holdingDays, time =
                 time: time,
                 isRead: false,
                 type: 'error',
-                codeOrName: '代码为' + code + '的股票SVM分析结果出错',
+                codeOrName: '代码为' + code + '的股票相关性分析结果出错',
                 stockName: stockName,
                 content: {
                     code: code,
@@ -101,7 +101,7 @@ exports.RFCAnalyze = (userName, code, stockName, holdingDays, time = new Date(),
                 time: time,
                 isRead: false,
                 type: 'error',
-                codeOrName: '代码为' + code + '的股票RFC分析结果出错',
+                codeOrName: '代码为' + code + '的股票特征分析结果出错',
                 stockName: stockName,
                 content: {
                     code: code,
@@ -160,7 +160,7 @@ exports.CNNAnalyze = (userName, code, stockName, holdingDays, isMarket=false, it
                 time: time,
                 isRead: false,
                 type: 'error',
-                codeOrName: '代码为' + code + '的股票CNN分析结果出错',
+                codeOrName: '代码为' + code + '的股票涨幅预测结果出错',
                 stockName: stockName,
                 content: {
                     code: code,

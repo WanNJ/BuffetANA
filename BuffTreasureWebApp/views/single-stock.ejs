@@ -953,7 +953,7 @@
                     <div class="alert alert-success" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Success:</span>
-                        <span id="model-info">相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。</span>
+                        <span id="model-info">相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票今日的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。</span>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
@@ -974,7 +974,7 @@
                                         $("#other-option").collapse('hide');
                                         $("#advanced-collapse").collapse('hide');
                                         if ($("#model").val() === "SVM") {
-                                            $("#model-info").text("相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
+                                            $("#model-info").text("相关性分析 模型：通过行业内对市场敏感度高的股票来预估该股票今日的涨跌。关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
                                         }else if ($("#model").val() === "RFC") {
                                             $("#model-info").text("特征分析 模型：该模型可以选择出对这只股票上涨影响力最大的十个特征，并会根据这些特征进一步预测未来的涨幅情况，关于预测的准确性，我们会诚实地提供该模型在测试集上的表现供您参考。");
                                         }

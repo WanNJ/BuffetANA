@@ -41,7 +41,7 @@ describe('singleStockPredict', function() {
             });
         });
         it('RFC', function (done) {
-            statistics.RFCAnalyze('wnj', '000005', '万科 A', 10, new Date(), (err, isOK) => {
+            statistics.RFCAnalyze('wnj', '000530', '大冷股份', 1, new Date(), (err, isOK) => {
                 if (err)
                     done(err);
                 else {

@@ -3,7 +3,7 @@
  */
 
 const exec = require('child_process').exec;
-const testModel = './bl/statistics/ML/CNNModel.py';
+const testModel = '../bl/statistics/ML/CNNModel.py';
 
 exports.CNNPredict ={
     /**

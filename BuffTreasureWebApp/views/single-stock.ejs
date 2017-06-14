@@ -35,7 +35,11 @@
         }
         function analysisStock() {
             let data = {
-                "model": $("#model option:selected").val(),
+                "model": $("#model").val(),
+                "stockCode": currentStockCode,
+                "stockName": $("#stock_name").text().trim(),
+                "openPrice": $('#RTInfo_seg > tr > td:first').text(),
+                "time": new Date(),
                 "holdingDays": $("#holding-days").val(),
                 "advancedOptions": $("#advanced-options").val(),
                 "isMarket": $("#market-environment").val(),
@@ -215,6 +219,11 @@
 
                 $(RTInfos[3]).css({color: "red"});
                 $(RTInfos[6]).css({color: "green"});
+
+                if(isNaN(result.today_open)){ //如果没有开盘价，则禁用SVM模型
+                    $('#model > option:contains("SVM")').attr("disabled","disabled");
+                    $('#model').val("RFC");
+                }
             });
         }
         // 板块行业
@@ -944,12 +953,12 @@
                             <select class="form-control" style="max-width: 120px;display: inline;margin-left: 55px;"
                                     id="model">
                                 <option selected="selected">SVM</option>
-                                <option>NN</option>
+                                <option>RFC</option>
                                 <option>CNN</option>
                             </select>
                             <script type="text/javascript">
                                 $("#model").change(() => {
-                                    if ($("#model option:selected").val() === "CNN") {
+                                    if ($("#model").val() === "CNN") {
                                         $("#other-option").collapse('show');
                                     } else {
                                         $("#advanced-options").attr('checked', false);

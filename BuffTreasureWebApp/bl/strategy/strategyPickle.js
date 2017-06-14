@@ -138,7 +138,6 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             (data['code'],data['pickle'],beginDate,endDate,rank,filter,pro,0,(pro)=>{
                 setProcess(pro)
             },(err,list) =>{
-                setProcess(88)
                 resolve(list);
             })
         })
@@ -159,7 +158,6 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
             });
             AllDataList[keys[i]] = pickleDataList;
         }
-        setProcess(90)
         return AllDataList;
     }
 
@@ -169,7 +167,6 @@ exports.getPickleData =  (beginDate, endDate, stockPoolConditionVO, rank, filter
      * @returns {*}
      */
     let calculateBase = function (AllDataList) {
-        //console.log(AllDataList['Normal'][0])
         let keys = Object.keys(AllDataList);
         for(let i = 0 ; i < 5 ; i++){
             let pickleDataList =  AllDataList[keys[i]];

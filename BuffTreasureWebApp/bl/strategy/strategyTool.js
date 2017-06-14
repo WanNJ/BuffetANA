@@ -338,17 +338,18 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
     let operatePromise = function (codeList ,codeIndex , listAll, projection,use){
         // console.log('start' + new Date())
         //console.log(codeList)
+
         if(typeof codeList ==='undefined'||codeList.length === 0){
             throw new Error('股票池为空');
         }
         // console.log('here')
-        //console.log(codeList[codeIndex])
+        //  console.log(codeList[codeIndex])
         return new Promise((resolve,reject)=>{
-            //console.log(codeList)
+
 
             if(codeList.length!==0) {
-                let tempPro = codeIndex * (80 / codeList.length())+8
-                console.log(tempPro)
+                let tempPro = codeIndex * (80 / codeList.length)+8
+                // console.log(tempPro)
                 setProcess(tempPro)
             }
             if(codeIndex === codeList.length)
@@ -374,7 +375,7 @@ exports.setRankAndFilterToPickleDataList = (codeList,  AllPickleDataList,
 
 
     };
-
+    // console.log(codeList)
     operatePromise(codeList,0,AllPickleDataList,projection,use).then(list =>callback(null,list)).catch(e=>callback(e,null));
 
 };

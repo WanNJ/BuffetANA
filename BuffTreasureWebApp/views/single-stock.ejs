@@ -223,6 +223,7 @@
                 if(isNaN(result.today_open)){ //如果没有开盘价，则禁用SVM模型
                     $('#model > option:contains("SVM")').attr("disabled","disabled");
                     $('#model').val("RFC");
+                    $('#model').change();
                 }
             });
         }
@@ -947,6 +948,11 @@
         <div class="collapse" id="analysis-collapse">
             <div class="well">
                 <div class="container">
+                    <div class="alert alert-success" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Success:</span>
+                        <span id="model-info">SVM模型：</span>
+                    </div>
                     <div class="row">
                         <div class="col-md-4">
                             <span>模型：</span>
@@ -960,10 +966,16 @@
                                 $("#model").change(() => {
                                     if ($("#model").val() === "CNN") {
                                         $("#other-option").collapse('show');
+                                        $("#model-info").text("CNN模型：");
                                     } else {
                                         $("#advanced-options").attr('checked', false);
                                         $("#other-option").collapse('hide');
                                         $("#advanced-collapse").collapse('hide');
+                                        if ($("#model").val() === "SVM") {
+                                            $("#model-info").text("SVM模型：");
+                                        }else if ($("#model").val() === "RFC") {
+                                            $("#model-info").text("RFC模型：");
+                                        }
                                     }
                                 })
                             </script>

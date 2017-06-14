@@ -14,45 +14,44 @@
         <div class="container fill-bloc-top-edge">
             <nav class="navbar row">
                 <div class="navbar-header navbar-right">
-                    <a class="navbar-brand" href="/"><img src="img/favicon.ico" alt="logo" height="46"/></a>
                     <button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle" data-toggle="collapse"
-                            data-target=".navbar-1">
+                            data-target=".navbar-1" onclick="collapseToggle()">
                         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
                                 class="icon-bar"></span><span class="icon-bar"></span>
                     </button>
                 </div>
-                <div class="collapse navbar-collapse navbar-1">
+                <div class="collapse navbar-collapse navbar-1" id="menu">
                     <ul class="nav navbar-nav navbar-left">
                         <li>
-                            <a href="/">主页</a>
+                            <a style="color: #fff6dc;" href="/">主页</a>
                         </li>
                         <li>
-                            <a href="market">大盘</a>
+                            <a style="color: #fff6dc;" href="market">大盘</a>
                         </li>
                         <li>
-                            <a href="single-stock">个股</a>
+                            <a style="color: #fff6dc;" href="single-stock">个股</a>
                         </li>
 
                         <% if(typeof user !== "undefined") { %>
-                        <li><a href="user/marketthermometer">市场温度计</a></li>
-                        <li><a href="user/quantitative-analysis">量化回测</a></li>
+                        <li><a style="color: #fff6dc;" href="user/marketthermometer">市场温度计</a></li>
+                        <li><a style="color: #fff6dc;" href="user/quantitative-analysis">量化回测</a></li>
                         <% } %>
                         <li>
-                            <a href="about-us">关于我们</a>
+                            <a style="color: #fff6dc;" href="about-us">关于我们</a>
                         </li>
                         <% if(typeof user === "undefined") { %>
-                        <li><a href="sign-in">登录</a></li>
+                        <li><a style="color: #fff6dc;" href="sign-in">登录</a></li>
                         <% } else { %>
-                        <li><a href="logout">注销</a></li>
+                        <li><a style="color: #fff6dc;" href="logout">注销</a></li>
                         <% } %>
                     </ul>
                     <% if(typeof user !== "undefined") { %>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" style="border-top: 0px;">
                         <li class="dropdown no_act_link">
-                            <a href="#"  data-toggle="dropdown">
+                            <a style="color: #fff6dc;" href="#"  data-toggle="dropdown">
                                 <span class="fa fa-2x fa-user fa-fw"></span><span class="fa fa-2x fa-caret-down"></span>
                             </a>
-                            <ul class="dropdown-menu text-center">
+                            <ul class="dropdown-menu text-center" style="background-color: #948771">
                                 <li class="text-center">您好!  <em><strong> <%= user %></strong></em></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="text-center"><a href="/user/<%= user %>/allMsg">我的消息 <sup><span id="unread_badge" class="badge" style="background-color: red;"></span></sup></a></li>
@@ -224,6 +223,15 @@
         $('[data-toggle="popover"]').popover({
             html: true
         });
+
+        function collapseToggle() {
+            if($("#menu").attr("aria-expanded")==='true'){
+                $("#bloc-1 h1").show();
+            }
+            else {
+                $("#bloc-1 h1").hide();
+            }
+        }
     </script>
 
     <% include Components/bottomAlert.ejs %>

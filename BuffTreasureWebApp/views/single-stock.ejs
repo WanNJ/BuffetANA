@@ -736,18 +736,10 @@
                         </div>
                     </div>
                     <% } %>
-                    <% if(typeof user !== "undefined") { %>
-                    <div class="row text-center">
-                        <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-sm"
-                                style="height: 40px;">
-                            <span class="fa fa-plus"></span> 加入自选股
-                        </button>
-                    </div>
-                    <% } %>
                 </div>
             </div>
-            <div class="col-sm-6" style="height: 147px">
-                <table border="0" cellpadding="0" cellspacing="0" style="height: 147px">
+            <div class="col-sm-6">
+                <table border="0" cellpadding="0" cellspacing="0">
                     <colgroup>
                         <col width="12%">
                         <col width="10%">
@@ -793,6 +785,13 @@
                 </table>
             </div>
 
+            <% if(typeof user !== "undefined") { %>
+            <div class="col-md-12 text-center">
+                <button id="addToPersonalStockBtn" type="button" class="btn btn-primary btn-block">
+                    <span class="fa fa-plus"></span> 加入自选股
+                </button>
+            </div>
+            <% } %>
 
             <div class="col-sm-12" style="height: 20px;"></div>
             <!--Headers of All kinds of Charts-->

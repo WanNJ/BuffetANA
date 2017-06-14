@@ -85,7 +85,7 @@
                                 <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="可信度的说明"
-                                   data-content="通过利用我们较为全面的数据，我们用该股票近500个交易日的数据一定的比例划分训练集和测试集做交叉验证，最终得改预测的可信度。如果可信度低于50%，请谨慎对待。"></a>
+                                   data-content="通过利用我们较为全面的数据，我们用该股票近500个交易日的数据进行交叉验证，最终得出该预测的可信度。<br>如果可信度低于50%，请谨慎对待。"></a>
                             </span>
                             </h4>
                         </div>
@@ -111,19 +111,19 @@
                                     <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="风险系数的说明"
-                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"高"，表示该股票很能出现暴涨暴跌的状况，如果您是个冒险主义者，这个时候买入是比较好的选择。'></a>
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——<br>"高"，表示该股票很能出现暴涨暴跌的状况，如果您是个冒险主义者，这个时候买入是比较好的选择。'></a>
                                 </span>
                                     <% } else if (CRString === '中') { %>
                                     <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="风险系数的说明"
-                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"中"，表示该股票的涨跌幅不太可能出现暴涨暴跌的情况，因此就算亏损，也不会"损失惨重"。但与此同时，您的收益也不会太高。'></a>
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——<br>"中"，表示该股票的涨跌幅不太可能出现暴涨暴跌的情况，因此就算亏损，也不会"损失惨重"。但与此同时，您的收益也不会太高。'></a>
                                 </span>
                                     <% } else { %>
                                     <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="风险系数的说明"
-                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——"低"，表示该股票表现比较稳定，是支比较"沉得住气"的股票，比较适合做长线——钓大鱼。'></a>
+                                   data-content='通过分析该股票近500个交易日的日收益率波动性，我们得出了该系数最后的值——<br>"低"，表示该股票表现比较稳定，是支比较"沉得住气"的股票，比较适合做长线——钓大鱼。'></a>
                                 </span>
                                     <% } %>
                                 </h4>
@@ -138,7 +138,7 @@
                     <caption class="text-center">同行业中正相关度最高的个股<span>
                             <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                data-toggle="popover" data-trigger="hover" title="相关性分析的说明"
-                               data-content="通过将与该股票同行业的股票用我们的独特算法做相关性分析之后，我们得出了与该个股最相关的同行业股票。我们通过散点图将这一特点进行了可视化处理，供您参考。"></a>
+                               data-content="通过将与该股票同行业的股票用我们的独特算法做相关性分析之后，我们得出了与该个股最相关的同行业股票。<br>我们通过散点图将这一特点进行了可视化处理，供您参考。"></a>
                         </span></caption>
                     <thead>
                     <tr>
@@ -233,7 +233,9 @@
     <!-- ScrollToTop Button END-->
 
     <script>
-        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover({
+            html: true
+        });
     </script>
 </div>
 <!-- Main container END -->

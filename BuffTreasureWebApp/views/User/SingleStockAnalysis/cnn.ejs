@@ -24,7 +24,7 @@
                             <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="折线图的说明"
-                                   data-content="本模型采用机器学习，这张折线图反映了梯度下降阶段随着迭代次数的增加模型在测试集上的准确度变化。如果您了解机器学习，可以通过这张图来发现模型存在的问题(过度学习，学习量不足等)，并来可以修改模型的高级特征来得到更准确的模型。如果您不了解，可以暂时忽略之。"></a>
+                                   data-content="本模型采用<b>机器学习</b>，这张折线图反映了梯度下降阶段随着迭代次数的增加模型在测试集上的准确度变化。<br>如果您了解机器学习，可以通过这张图来发现模型存在的问题(过度学习，学习量不足等)，并来可以修改模型的高级特征来得到更准确的模型。<br>如果您不了解，可以暂时忽略之。"></a>
                             </span>
                             <br>
                             <strong>该个股今日各种涨跌幅情况出现的概率。</strong>
@@ -40,7 +40,7 @@
                             <span>
                                 <a tabindex="0" class="fa fa-info-circle" style="color: black" role="button"
                                    data-toggle="popover" data-trigger="hover" title="准确率的解释"
-                                   data-content="对于饼图中的预测，通过利用我们较为全面的数据，我们为您了提供这一模型在过往数据中测试出的准确率。由于我们采用了较为稳妥的测试方法，所以即使它在测试上的准确性不高也仍然具有参考价值，但是如果准确率低于35%，还是需要谨慎对待的。"></a>
+                                   data-content="对于饼图中的预测，通过利用我们较为全面的数据，我们为您提供了这一模型在过往数据中测试出的准确率。<br>由于我们采用了较为稳妥的测试方法，所以即使它在测试上的准确性不高也仍然具有参考价值，<b>但是如果准确率低于35%，还是需要谨慎对待的</b>。"></a>
                             </span>
                         </h2>
                     </div>
@@ -224,7 +224,9 @@
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
     <script>
-        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover({
+            html: true
+        });
     </script>
 </div>
 <!-- Main container END -->

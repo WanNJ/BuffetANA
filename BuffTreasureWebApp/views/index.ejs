@@ -123,7 +123,7 @@
             <div class="row tada animated">
                 <div class="col-sm-12 text-center">
                     <a href="sign-in" class="btn btn-xl btn-black " data-toggle="popover" data-trigger="hover" title="为什么您需要登录？"
-                       data-content="登录之后您可以使用我们提供的更多功能——个股分析、市场温度计、量化回测，这将大大提高您的分析效率以及分析精度。所以，还等什么呢，赶快来登录吧！"><span
+                       data-content="登录之后您可以使用我们提供的更多功能——<br><b>个股分析</b>、<strong>市场温度计</strong>、<b>量化回测</b>、<b>用户系统</b>，以及您将会拥有权限<b>发帖点赞</b>，拥有<b>自选股</b>。<br>这将大大提高您的分析效率以及分析精度。所以，还等什么呢，赶快登录吧！"><span
                                 class="et-icon-heart icon-spacer icon-md icon-white"></span>立即登录
                     </a>
                 </div>
@@ -222,7 +222,9 @@
     <!-- ScrollToTop Button END-->
 
     <script>
-        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover({
+            html: true
+        });
     </script>
 
     <% include Components/bottomAlert.ejs %>

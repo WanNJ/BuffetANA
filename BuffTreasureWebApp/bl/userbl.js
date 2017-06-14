@@ -343,8 +343,9 @@ exports.getAllMessages = (userName, callback) => {
                         "stockName": m["stockName"]
                     });
             });
-            readMessages.sort((a, b) => a["time"] < b["time"]?-1:1);
-            unreadMessages.sort((a, b) => a["time"] < b["time"]?-1:1);
+            readMessages.sort((a, b) => a["time"] < b["time"]?1:-1);
+            console.log(readMessages)
+            unreadMessages.sort((a, b) => a["time"] < b["time"]?1:-1);
             readMessages.forEach(t => t["time"] = t["time"].toLocaleString());
             unreadMessages.forEach(t => t["time"] = t["time"].toLocaleString());
             callback(null, readMessages, unreadMessages);

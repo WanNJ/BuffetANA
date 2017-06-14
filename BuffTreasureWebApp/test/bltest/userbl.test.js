@@ -150,7 +150,7 @@ describe('userbl', function() {
     });
     describe('#getAllMessages()', function() {
         it('just a te', function(done) {
-            userbl.getAllMessages('wnj', function (err, doc1, doc2) {
+            userbl.getAllMessages('wsw', function (err, doc1, doc2) {
                 if (err) {
                     done(err);
                 }

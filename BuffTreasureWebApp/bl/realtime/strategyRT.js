@@ -30,6 +30,7 @@ exports.calculateStockRt = (callback) =>{
                     // console.log(cap)
                     // console.log(doc[0]['_id'])
                     let stockpool = new StockPool(temp.stockPool,temp.benches,temp.industries,temp.excludeST)
+                    // console.log(stockpool)
                     stockRTRec.getRTPickleData(stockpool,doc[0]['rank'],doc[0]['filter'],(err,stocks)=>{
                         result[cap] = [doc[0]['tradeModelVO'].holdingDays];
                         for(let i = 0 ; i < 5 ; i++){

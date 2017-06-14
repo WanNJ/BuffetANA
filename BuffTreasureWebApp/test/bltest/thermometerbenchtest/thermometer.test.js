@@ -64,3 +64,18 @@ describe('#WriteDailyEnvironmentRange()', function() {
     });
 });
 
+describe('#writerCurrentThermometor()', function() {
+    it('print the list', function(done) {
+        thermometerbl.writerCurrentThermometor((err,data) => {
+            if (err) {
+                console.log('wrong');
+                done(err);
+            }
+            else {
+                console.log(data);
+                done();
+            }
+        });
+    });
+});
+

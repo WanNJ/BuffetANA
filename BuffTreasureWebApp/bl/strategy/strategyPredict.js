@@ -40,6 +40,8 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
     set.add('date');
     let pro = [...set]
 
+    // console.log(set)
+
 
     /**
      *
@@ -50,7 +52,7 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
         //console.log(stockList)
         return new Promise((resolve,reject) =>{
             let list = []
-            list.push(new PickleDataVO(new Date("2017-05-01"),Date.now(),[],0));
+            list.push(new PickleDataVO(new Date("2017-06-13"),Date.now(),[],0));
             let pickle ={
                 'predict':list
             }
@@ -70,7 +72,7 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
                 if(stockPoolConditionVO.benches===null) stockPoolConditionVO.benches = []
                 if(stockPoolConditionVO.industries===null) stockPoolConditionVO.industries = []
                 strategyTool.getChoosedStockList(stockPoolConditionVO, (err, list) => {
-                resolve(list);
+                    resolve(list);
             })
         })
     }
@@ -78,7 +80,8 @@ exports.getRTPickleData = (stockPoolConditionVO, rank, filter,callback) =>{
     let setValue = function (data) {
         return new Promise((resolve,reject) =>{
             strategyTool.setRankAndFilterToPickleDataList
-            (data['code'],data['pickle'],new Date("2017-01-01"),Date.now(),rank,filter,pro,1,(err,list) =>{
+            (data['code'],data['pickle'],new Date("2017-06-10"),Date.now(),rank,filter,pro,1
+                ,(pro)=>{//console.log(pro)},(err,list) =>{
                 //console.log(list)
                 //console.log(list)
                 resolve(list);

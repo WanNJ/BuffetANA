@@ -487,7 +487,7 @@ exports.writerCurrentThermometor = (callback) =>{
                     "lastTurnOver": lastTurnOver.toFixed(5),  //换手率前50只个股赚钱效应为26%
                     "moneyEffect": moneyEffect.toFixed(5),   //总体赚钱效应在一个总体内赚钱效应  上涨家数与涨跌总家数之比
                 };
-
+                console.log(thermometer)
                 return thermometer
 
             }

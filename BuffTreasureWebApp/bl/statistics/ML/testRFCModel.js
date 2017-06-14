@@ -3,7 +3,7 @@
  */
 
 const exec = require('child_process').exec;
-const testModel = '../bl/statistics/ML/NNAfterRFC.py';
+const testModel = './bl/statistics/ML/NNAfterRFC.py';
 
 exports.RFCPredict ={
     /**

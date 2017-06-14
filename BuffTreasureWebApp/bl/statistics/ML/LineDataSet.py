@@ -7,7 +7,7 @@ import datetime
 def connect_mongodb():
     servers = "mongodb://localhost:27017"
     conn = pymongo.MongoClient(servers)
-    db = conn.allInfo
+    db = conn.latestInfo
     return db
 
 

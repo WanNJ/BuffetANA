@@ -24,7 +24,7 @@ labels = [label0, label1, label2, label3, label4, label5, label6, label7, label8
 def connect_mongodb():
     servers = "mongodb://localhost:27017"
     conn = pymongo.MongoClient(servers)
-    db = conn.allInfo
+    db = conn.latestInfo
     return db
 
 

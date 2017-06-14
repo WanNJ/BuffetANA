@@ -521,7 +521,7 @@
             // 添加自选股
             $('#addToPersonalStockBtn').click(function (e) {
                 e.preventDefault();
-
+                $(this).attr('disabled', 'true');
                 $.ajax({
                     type: "post",
                     url: 'single-stock/addToPersonalStock',

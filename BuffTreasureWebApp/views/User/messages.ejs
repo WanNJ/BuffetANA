@@ -19,38 +19,42 @@
                     <% unreadMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/svm?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">SVM——<%= msg.stockName %></span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/svm?time=<%= msg.time %>"
+                           target="_blank">
+                            <span class="mail-sender">相关性分析——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的SVM分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的相关性分析分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
                     <% } else if(msg.type == 'CNN') { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">CNN——<%= msg.stockName %></span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/cnn?time=<%= msg.time %>"
+                           target="_blank">
+                            <span class="mail-sender">涨幅预测——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的CNN分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的涨幅预测分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
                     <% } else if((msg.type == 'RFC')) { %>
                     <li>
-                        <a class="unread" href="/user/<%= username %>/msg-result/rfc?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">RFC——<%= msg.stockName %></span>
+                        <a class="unread" href="/user/<%= username %>/msg-result/rfc?time=<%= msg.time %>"
+                           target="_blank">
+                            <span class="mail-sender">特征分析——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的RFC分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的特征分析分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
                     <% } else if((msg.type == 'thumbs_up')) { %>
                     <li>
                         <a class="unread"
-                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>"
+                           target="_blank">
                             <span class="mail-sender">点赞消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -61,7 +65,9 @@
                     </li>
                     <% } else if (msg.type == 'thumbs_down') { %>
                     <li>
-                        <a class="unread" href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                        <a class="unread"
+                           href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>"
+                           target="_blank">
                             <span class="mail-sender">点踩消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -69,34 +75,44 @@
                                 （<%= msg.codeOrName %>）下的评论点了踩。<br>
                             点击查看结果...</span>
                         </a>
-                        <% } %>
+                    </li>
+                    <% } else if (msg.type == 'error') { %>
+                    <li>
+                        <a class="unread" href="#">
+                            <span class="mail-sender">错误</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview"><%= msg.codeOrName %>
+                                <br>点击将其设为已读...</span>
+                        </a>
+                    </li>
+                    <% } %>
                     <% }) %>
 
                     <% readMsg.forEach(function (msg) { %>
                     <% if(msg.type == 'SVM') { %>
                     <li>
                         <a href="/user/<%= username %>/msg-result/svm?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">SVM——<%= msg.stockName %></span>
+                            <span class="mail-sender">相关性分析——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的SVM分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的相关性分析分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
                     <% } else if (msg.type == 'CNN') { %>
                     <li>
                         <a href="/user/<%= username %>/msg-result/cnn?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">CNN——<%= msg.stockName %></span>
+                            <span class="mail-sender">涨幅预测——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
-                                （<%= msg.codeOrName %>）进行的CNN分析结果已经得出。<br>
+                                （<%= msg.codeOrName %>）进行的涨幅预测分析结果已经得出。<br>
                             点击查看结果...</span>
                         </a>
                     </li>
                     <% } else if (msg.type == 'RFC') { %>
                     <li>
                         <a href="/user/<%= username %>/msg-result/rfc?time=<%= msg.time %>" target="_blank">
-                            <span class="mail-sender">RFC——<%= msg.stockName %></span>
+                            <span class="mail-sender">特征分析——<%= msg.stockName %></span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！您在<%= msg.time %>对<%= msg.stockName %>
                                 （<%= msg.codeOrName %>）进行的RFC分析结果已经得出。<br>
@@ -105,7 +121,8 @@
                     </li>
                     <% } else if(msg.type == 'thumbs_up') { %>
                     <li>
-                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>"
+                           target="_blank">
                             <span class="mail-sender">点赞消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -116,7 +133,8 @@
                     </li>
                     <% } else if (msg.type == 'thumbs_down') { %>
                     <li>
-                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>" target="_blank">
+                        <a href="/single-stock?stockCode=<%= msg.codeOrName %>&stockName=<%= msg.stockName %>"
+                           target="_blank">
                             <span class="mail-sender">点踩消息</span>
                             <span class="mail-subject"><%= msg.time %></span>
                             <span class="mail-message-preview">嗨，<%= username %>！有人在<%= msg.time %>
@@ -124,6 +142,16 @@
                                 （<%= msg.codeOrName %>）下的评论点了踩。<br>
                             点击查看结果...</span>
                         </a>
+                    </li>
+                    <% } else if (msg.type == 'error') { %>
+                    <li>
+                        <a href="#">
+                            <span class="mail-sender">错误</span>
+                            <span class="mail-subject"><%= msg.time %></span>
+                            <span class="mail-message-preview"><%= msg.codeOrName %>
+                                <br>点击将其设为已读...</span>
+                        </a>
+                    </li>
                     <% } %>
                     <% }) %>
                 </ul>
@@ -145,10 +173,12 @@
                 e.preventDefault();
                 $(this).removeClass('unread');
                 $.post("/user/<%= username %>/markAsRead", {time: $(this)[0].children[1].innerHTML}, (result) => {
-                    if(result === 'ERROR')
+                    if (result === 'ERROR')
                         $('#scrollTop').before('<div id="bottom-alert" class="text-center alert alert-dismissible alert-danger fade in navbar-fixed-bottom" style="bottom: -20px;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><spanaria-hidden="true">&times;</span></button><strong>服务器忙，请稍后再试！</strong></div>');
-                    else if(result === 'SUCCESS')
-                        window.location.replace(($(this).attr('href')));
+                    else if (result === 'SUCCESS' && $(this).attr('href') !== '#')
+                        window.open(($(this).attr('href')), '_self');
+                    else
+                        window.location.reload();
                 });
             });
         </script>

@@ -116,19 +116,23 @@
     </div>
     <!-- bloc-1 END -->
 
+    <% if(typeof user === "undefined") { %>
     <!-- bloc-2 -->
     <div class="bloc bgc-white l-bloc" id="bloc-2">
         <div class="container bloc-md b-divider-dashed">
             <div class="row tada animated">
                 <div class="col-sm-12 text-center">
-                    <a href="sign-in" class="btn btn-xl btn-black "><span
-                                class="et-icon-heart icon-spacer icon-md icon-white"></span>立即体验</a>
+                    <a href="sign-in" class="btn btn-xl btn-black " data-toggle="popover" data-trigger="hover" title="为什么您需要登录？"
+                       data-content="登录之后您可以使用我们提供的更多功能——个股分析、市场温度计、量化回测，这将大大提高您的分析效率以及分析精度。所以，还等什么呢，赶快来登录吧！"><span
+                                class="et-icon-heart icon-spacer icon-md icon-white"></span>立即登录
+                    </a>
                 </div>
             </div>
         </div>
         <a class="blocs-hero-btn-dwn scroll-hero" href="#"><span class="fa fa-chevron-down" style="color: black"></span></a>
     </div>
     <!-- bloc-2 END -->
+    <% } %>
 
     <!-- bloc-3 -->
     <div class="bloc bgc-white l-bloc" id="bloc-3">
@@ -216,6 +220,10 @@
     <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
                 class="fa fa-chevron-up"></span></a>
     <!-- ScrollToTop Button END-->
+
+    <script>
+        $('[data-toggle="popover"]').popover();
+    </script>
 
     <% include Components/bottomAlert.ejs %>
 </div>

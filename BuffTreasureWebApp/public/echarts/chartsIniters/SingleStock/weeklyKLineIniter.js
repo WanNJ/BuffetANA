@@ -76,8 +76,8 @@ function loadWeeklyKLineChart(objData) {
             {
                 top: '10%',
                 height: '55%',
-                left: 35,
-                right: 0
+                left: 50,
+                right: 30
             },
             {
                 top: '72%',

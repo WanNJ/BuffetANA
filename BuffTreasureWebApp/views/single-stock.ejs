@@ -143,8 +143,8 @@
 
                     document.getElementById("stock_name_link").href = "single-stock/enterprise?stockCode=" + stockCode;
 
-                    if (Math.abs(realTimeInfo[3]) < 0.001) {
-                        $('#current_price').text('停牌');
+                    if (Math.abs(realTimeInfo[3]) < 0.00001) {
+                        $('#current_price').text('--');
                         $("#current_price").css({color: "grey"});
                         $('#chg').html('--');
                         $("#chg").css({color: "grey"});
@@ -159,7 +159,7 @@
                         $('#chg_p').html(Math.round((realTimeInfo[3] - realTimeInfo[2]) / realTimeInfo[2] * 10000) / 100 + '%');
                     }
 
-                    if (Math.abs(realTimeInfo[3]) > 0.001) {
+                    if (Math.abs(realTimeInfo[3]) > 0.00001) {
                         $("#imp_icon").html('');
                         $("#imp_icon").addClass('fa');
 

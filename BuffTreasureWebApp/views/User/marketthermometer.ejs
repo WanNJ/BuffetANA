@@ -15,175 +15,165 @@
             $('li.dropdown').addClass('no_act_link');
         </script>
         <div class="container bloc-md b-divider-dashed">
-            <div class="row col-xs-offset-1">
-                <div class="item">
-                    <div class="item-inner">
-                        <div class="">
-                            <% if(limitUp<5) { %>
-                            <img src="/img/thunderstorm.png">
-                            <% }else if(limitUp>=5 && limitUp<12) { %>
-                            <img src="/img/rain.png">
-                            <% }else if(limitUp>=12 && limitUp<20) { %>
-                            <img src="/img/cloudyDay.png">
-                            <% }else { %>
-                            <img src="/img/sunning.png">
-                            <% } %>
-                        </div>
-                        <div class="">
-                            涨停股票数
-                        </div>
-                        <div class="" style="color: #f85640">
-                            <span><%= limitUp %></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="item-inner">
-                        <div class="">
-                            <% if(halfLimitUp<10) { %>
-                            <img src="/img/thunderstorm.png">
-                            <% }else if(halfLimitUp>=10 && halfLimitUp<22) { %>
-                            <img src="/img/rain.png">
-                            <% }else if(halfLimitUp>=22 && halfLimitUp<40) { %>
-                            <img src="/img/cloudyDay.png">
-                            <% }else { %>
-                            <img src="/img/sunning.png">
-                            <% } %>
-                        </div>
-                        <div class="">
-                            涨5%股票数
-                        </div>
-                        <div class="" style="color: #f85640">
-                            <span><%= halfLimitUp %></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="item-inner">
-                        <div class="">
-                            <% if(limitDown<5) { %>
-                            <img src="/img/sunning.png">
-                            <% }else if(limitDown>=5 && limitDown<12) { %>
-                            <img src="/img/cloudyDay.png">
-                            <% }else if(limitDown>=12 && limitDown<20) { %>
-                            <img src="/img/rain.png">
-                            <% }else { %>
-                            <img src="/img/thunderstorm.png">
-                            <% } %>
-                        </div>
-                        <div class="">
-                            跌停股票数
-                        </div>
-                        <div class="" style="color: #19f074">
-                            <span><%= limitDown %></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="item-inner">
-                        <div class="">
-                            <% if(halfLimitDown<10) { %>
-                            <img src="/img/sunning.png">
-                            <% }else if(halfLimitDown>=10 && halfLimitDown<22) { %>
-                            <img src="/img/cloudyDay.png">
-                            <% }else if(halfLimitDown>=22 && halfLimitDown<40) { %>
-                            <img src="/img/rain.png">
-                            <% }else { %>
-                            <img src="/img/thunderstorm.png">
-                            <% } %>
-                        </div>
-                        <div class="">
-                            跌5%股票数
-                        </div>
-                        <div class="" style="color: #19f074">
-                            <span><%= halfLimitDown %></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row">
-                <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" id="thermometer-viewport">
-                    <img src="/img/thermometer-20.png" class="img-responsive center-block swing animated thermometer"
-                         data-container="#thermometer-viewport" data-toggle="popover" data-placement="left" data-trigger="click"
-                         data-viewport="#thermometer-viewport" title="10°" data-content="市场较弱，操作难度大。"
-                         data-template='<div class="popover" style="max-width:190px;" role="tooltip"><div class="arrow"></div><h1 class="popover-title text-center" style="font-size: 36px;color: deepskyblue;font-weight: bold;"></h1><div class="popover-content"></div></div>'>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="item" style="margin-right: 25px">
+                            <div class="item-inner">
+                                <div class="">
+                                    <% if(limitUp<5) { %>
+                                    <img src="/img/thunderstorm.png">
+                                    <% }else if(limitUp>=5 && limitUp<12) { %>
+                                    <img src="/img/rain.png">
+                                    <% }else if(limitUp>=12 && limitUp<20) { %>
+                                    <img src="/img/cloudyDay.png">
+                                    <% }else { %>
+                                    <img src="/img/sunning.png">
+                                    <% } %>
+                                </div>
+                                <div class="">
+                                    涨停股票数
+                                </div>
+                                <div class="" style="color: #f85640">
+                                    <span><%= limitUp %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item" style="margin-right: 25px">
+                            <div class="item-inner">
+                                <div class="">
+                                    <% if(halfLimitUp<10) { %>
+                                    <img src="/img/thunderstorm.png">
+                                    <% }else if(halfLimitUp>=10 && halfLimitUp<22) { %>
+                                    <img src="/img/rain.png">
+                                    <% }else if(halfLimitUp>=22 && halfLimitUp<40) { %>
+                                    <img src="/img/cloudyDay.png">
+                                    <% }else { %>
+                                    <img src="/img/sunning.png">
+                                    <% } %>
+                                </div>
+                                <div class="">
+                                    涨5%股票数
+                                </div>
+                                <div class="" style="color: #f85640">
+                                    <span><%= halfLimitUp %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item" style="margin-right: 25px">
+                            <div class="item-inner">
+                                <div class="">
+                                    <% if(limitDown<5) { %>
+                                    <img src="/img/sunning.png">
+                                    <% }else if(limitDown>=5 && limitDown<12) { %>
+                                    <img src="/img/cloudyDay.png">
+                                    <% }else if(limitDown>=12 && limitDown<20) { %>
+                                    <img src="/img/rain.png">
+                                    <% }else { %>
+                                    <img src="/img/thunderstorm.png">
+                                    <% } %>
+                                </div>
+                                <div class="">
+                                    跌停股票数
+                                </div>
+                                <div class="" style="color: #19f074">
+                                    <span><%= limitDown %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item" style="margin-right: 25px">
+                            <div class="item-inner">
+                                <div class="">
+                                    <% if(halfLimitDown<10) { %>
+                                    <img src="/img/sunning.png">
+                                    <% }else if(halfLimitDown>=10 && halfLimitDown<22) { %>
+                                    <img src="/img/cloudyDay.png">
+                                    <% }else if(halfLimitDown>=22 && halfLimitDown<40) { %>
+                                    <img src="/img/rain.png">
+                                    <% }else { %>
+                                    <img src="/img/thunderstorm.png">
+                                    <% } %>
+                                </div>
+                                <div class="">
+                                    跌5%股票数
+                                </div>
+                                <div class="" style="color: #19f074">
+                                    <span><%= halfLimitDown %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <header class="section-header fadeInDown">
+                            <div class="text-box" style="margin-top: 15px">
+                                <h2 class="section-title">
+                                    <%= currentENV %>
+                                </h2>
+                            </div>
+                        </header>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-box slideInUp">
+                                    <div class="fp-icon-small">
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="text">
+                                        <h5 class="title">昨日涨停股，今日涨幅：<span style="color: #f85640"><%= parseFloat(lastLimitUp).toFixed(2) %>%</span></h5>
+                                        <p style="color:black">通过计算昨日涨停的所有股票在今日的涨跌幅的平均值，而得到的的指标，是判断所有个股整体走势的重要指标。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-box slideInUp">
+                                    <div class="fp-icon-small">
+                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="text">
+                                        <h5 class="title">昨日跌停股，今日均涨幅：<span style="color: #19f074"><%= parseFloat(lastLimitDown).toFixed(2) %>%</span></h5>
+                                        <p style="color:black">通过计算昨日跌停的所有股票在今日的涨跌幅的平均值，而得到的的指标，是判断所有个股整体走势的重要指标。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-box slideInUp">
+                                    <div class="fp-icon-small">
+                                        <span class="glyphicon glyphicon-yen" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="text">
+                                        <h5 class="title">赚钱效应：<span style="color: #357ff2"><%= parseFloat(moneyEffect).toFixed(2) %>%</span></h5>
+                                        <p style="color: black">反应短期交易者的平均赚钱情况，不考虑赚多少只考虑赚不赚!赚钱效应越高说明赚钱的可能性更大</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-box slideInUp">
+                                    <div class="fp-icon-small">
+                                        <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="text">
+                                        <h5 class="title">换手率前50只股票的赚钱效应：<span style="color: #357ff2"><%= parseFloat(lastTurnOver).toFixed(2) %>%</span></h5>
+                                        <p style="color: black">反应买卖最频繁的前50只股票是赔是赚，反应股民实在急于求购还是急于抛售</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <div id="thermometer-viewport">
+                        <img src="/img/thermometer-20.png" class="img-responsive center-block swing thermometer"
+                             data-container="#thermometer-viewport" data-toggle="popover" data-placement="left" data-trigger="click"
+                             data-viewport="#thermometer-viewport" title="10°" data-content="市场较弱，操作难度大。"
+                             data-template='<div class="popover" style="max-width:190px;" role="tooltip"><div class="arrow"></div><h1 class="popover-title text-center" style="font-size: 36px;color: deepskyblue;font-weight: bold;"></h1><div class="popover-content"></div></div>'>
+                    </div>
                 </div>
             </div>
-            <a class="blocs-hero-btn-dwn scroll-hero" href="#"><span class="fa fa-chevron-down" style="color: black"></span></a>
         </div>
     </div>
     <!-- bloc-1 END -->
-
-    <!-- bloc-2 -->
-    <div class="bloc bgc-white" id="bloc-2">
-        <div class="container bloc-md b-divider-dashed">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="animated fadeInLeft">
-                        <img class="hidden-sm hidden-xs" style="margin-top: 20px;" src="/img/redMan.png">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <header class="section-header animated fadeInDown">
-                        <div class="text-box" style="margin-top: 15px">
-                            <h2 class="section-title">
-                                <%= currentENV %>
-                            </h2>
-                        </div>
-                    </header>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="text-box animated slideInUp">
-                                <div class="fp-icon-small">
-                                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                                </div>
-                                <div class="text">
-                                    <h5 class="title">昨日涨停股，今日涨幅：<span style="color: #f85640"><%= parseFloat(lastLimitUp).toFixed(2) %>%</span></h5>
-                                    <p>通过计算昨日涨停的所有股票在今日的涨跌幅的平均值，而得到的的指标，是判断所有个股整体走势的重要指标。</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-box animated slideInUp">
-                                <div class="fp-icon-small">
-                                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                </div>
-                                <div class="text">
-                                    <h5 class="title">昨日跌停股，今日均涨幅：<span style="color: #19f074"><%= parseFloat(lastLimitDown).toFixed(2) %>%</span></h5>
-                                    <p>通过计算昨日跌停的所有股票在今日的涨跌幅的平均值，而得到的的指标，是判断所有个股整体走势的重要指标。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="text-box animated slideInUp">
-                                <div class="fp-icon-small">
-                                    <span class="glyphicon glyphicon-yen" aria-hidden="true"></span>
-                                </div>
-                                <div class="text">
-                                    <h5 class="title">赚钱效应：<span style="color: #357ff2"><%= parseFloat(moneyEffect).toFixed(2) %>%</span></h5>
-                                    <p>反应短期交易者的平均赚钱情况，不考虑赚多少只考虑赚不赚!赚钱效应越高说明赚钱的可能性更大</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-box animated slideInUp">
-                                <div class="fp-icon-small">
-                                    <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
-                                </div>
-                                <div class="text">
-                                    <h5 class="title">换手率前50只股票的赚钱效应：<span style="color: #357ff2"><%= parseFloat(lastTurnOver).toFixed(2) %>%</span></h5>
-                                    <p>反应买卖最频繁的前50只股票是赔是赚，反应股民实在急于求购还是急于抛售</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- bloc-2 END -->
 
     <!-- ScrollToTop Button -->
     <a id="scrollTop" class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
@@ -245,7 +235,7 @@
             $(".thermometer").attr("data-content",text);
             setTimeout(()=>{
                 $(".thermometer").click();
-            },1000);
+        },1000);
         }
     </script>
 </div>
